@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>A Great Yesterday</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #f5c842;
+      --gold-light: #fdf3c0;
+      --dark: #1a1a2e;
+      --text: #2d2d2d;
+      --muted: #888;
+      --bg: #fafaf7;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 20px 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    header p.date {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    /* ── Tab bar ── */
+    .tabs {
+      display: flex;
+      background: var(--dark);
+      padding: 0 20px 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 0;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ── Views ── */
+    .view {
+      display: none;
+      padding: 20px;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* ── Log view ── */
+    .prompt-card {
+      background: var(--gold-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .prompt-card .emoji {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .prompt-card p {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #5a4a00;
+    }
+
+    .input-area {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .input-area textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      resize: none;
+      min-height: 80px;
+      background: transparent;
+    }
+
+    .input-area textarea::placeholder {
+      color: #bbb;
+    }
+
+    .input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .save-btn {
+      background: var(--gold);
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #3a2e00;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .save-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
+
+    .save-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    /* Tag chips */
+    .tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag-chip {
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      background: white;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .tag-chip.selected {
+      border-color: var(--gold);
+      background: var(--gold-light);
+      color: #5a4a00;
+    }
+
+    .tags-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Summary view ── */
+    .day-section {
+      margin-bottom: 28px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .day-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+    }
+
+    .day-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .moment-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .moment-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .moment-body {
+      flex: 1;
+    }
+
+    .moment-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .moment-time {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .moment-tag {
+      font-size: 0.7rem;
+      background: var(--gold-light);
+      color: #7a6200;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-weight: 600;
+    }
+
+    .moment-delete {
+      border: none;
+      background: none;
+      color: #ddd;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .moment-delete:hover {
+      color: #e57373;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .big {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* ── Stats banner ── */
+    .stats-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Streak flame */
+    .streak-flame {
+      color: #ff8c00;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>A Great Yesterday ✨</h1>
+    <p class="date" id="headerDate"></p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('log')">+ Log a Moment</button>
+    <button class="tab-btn" onclick="switchTab('summary')">My Good Days</button>
+  </div>
+
+  <!-- LOG VIEW -->
+  <div class="view active" id="view-log">
+    <div class="prompt-card">
+      <div class="emoji">🌟</div>
+      <p>What's something good that just happened?</p>
+    </div>
+
+    <div class="input-area">
+      <textarea
+        id="momentInput"
+        placeholder="e.g. Had a great coffee chat with Sarah, finished a hard task, felt proud of myself..."
+        maxlength="280"
+        oninput="updateCharCount()"
+      ></textarea>
+      <div class="input-footer">
+        <span class="char-count"><span id="charCount">0</span>/280</span>
+        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
+      </div>
+    </div>
+
+    <div class="tags-label">Tag it (optional)</div>
+    <div class="tags-row" id="tagsRow">
+      <div class="tag-chip" onclick="toggleTag(this)">😄 Joy</div>
+      <div class="tag-chip" onclick="toggleTag(this)">💪 Win</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🤝 Connection</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🧠 Growth</div>
+      <div class="tag-chip" onclick="toggleTag(this)">❤️ Gratitude</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🎯 Focus</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🌿 Calm</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY VIEW -->
+  <div class="view" id="view-summary">
+    <div class="stats-bar" id="statsBar"></div>
+    <div id="summaryContent"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Helpers ──────────────────────────────────────────────
+    const STORAGE_KEY = 'greatYesterday_moments';
+
+    function loadMoments() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch { return []; }
+    }
+
+    function saveMoments(moments) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(moments));
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      const sameDay = (a, b) =>
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+
+      if (sameDay(d, today)) return 'Today';
+      if (sameDay(d, yesterday)) return 'Yesterday';
+
+      return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    }
+
+    function formatTime(isoString) {
+      return new Date(isoString).toLocaleTimeString('en-US', {
+        hour: 'numeric', minute: '2-digit'
+      });
+    }
+
+    function todayKey() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ── Header date ──────────────────────────────────────────
+    document.getElementById('headerDate').textContent =
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric'
+      });
+
+    // ── Tabs ─────────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && tab === 'log') || (i === 1 && tab === 'summary'));
+      });
+      document.getElementById('view-log').classList.toggle('active', tab === 'log');
+      document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
+      if (tab === 'summary') renderSummary();
+    }
+
+    // ── Input / tag logic ────────────────────────────────────
+    function updateCharCount() {
+      const val = document.getElementById('momentInput').value;
+      document.getElementById('charCount').textContent = val.length;
+      document.getElementById('saveBtn').disabled = val.trim().length === 0;
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    function getSelectedTags() {
+      return [...document.querySelectorAll('.tag-chip.selected')]
+        .map(el => el.textContent.trim());
+    }
+
+    // ── Save ─────────────────────────────────────────────────
+    function saveMoment() {
+      const text = document.getElementById('momentInput').value.trim();
+      if (!text) return;
+
+      const moments = loadMoments();
+      moments.unshift({
+        id: Date.now(),
+        text,
+        tags: getSelectedTags(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey()
+      });
+      saveMoments(moments);
+
+      // Reset form
+      document.getElementById('momentInput').value = '';
+      document.getElementById('charCount').textContent = '0';
+      document.getElementById('saveBtn').disabled = true;
+      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+
+      showToast('Moment saved! 🌟');
+    }
+
+    // ── Delete ───────────────────────────────────────────────
+    function deleteMoment(id) {
+      const moments = loadMoments().filter(m => m.id !== id);
+      saveMoments(moments);
+      renderSummary();
+      showToast('Removed');
+    }
+
+    // ── Summary ──────────────────────────────────────────────
+    function renderSummary() {
+      const moments = loadMoments();
+      const container = document.getElementById('summaryContent');
+      const statsBar = document.getElementById('statsBar');
+
+      // Stats
+      const today = moments.filter(m => m.dateKey === todayKey()).length;
+      const totalDays = new Set(moments.map(m => m.dateKey)).size;
+      const streak = calcStreak(moments);
+
+      statsBar.innerHTML = `
+        <div class="stat-box">
+          <div class="stat-num">${today}</div>
+          <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">${moments.length}</div>
+          <div class="stat-label">All Time</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num streak-flame">${streak}🔥</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+      `;
+
+      if (moments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="big">✨</div>
+            <p>No moments yet.<br>Go log your first good thing!</p>
+          </div>`;
+        return;
+      }
+
+      // Group by date
+      const groups = {};
+      moments.forEach(m => {
+        if (!groups[m.dateKey]) groups[m.dateKey] = [];
+        groups[m.dateKey].push(m);
+      });
+
+      const sorted = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+      container.innerHTML = sorted.map(dateKey => {
+        const items = groups[dateKey];
+        const label = formatDate(dateKey);
+        const cards = items.map(m => `
+          <div class="moment-card" id="mc-${m.id}">
+            <div class="moment-dot"></div>
+            <div class="moment-body">
+              <div class="moment-text">${escapeHtml(m.text)}</div>
+              <div class="moment-meta">
+                <span class="moment-time">${formatTime(m.createdAt)}</span>
+                ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}
+              </div>
+            </div>
+            <button class="moment-delete" onclick="deleteMoment(${m.id})" title="Remove">✕</button>
+          </div>
+        `).join('');
+
+        return `
+          <div class="day-section">
+            <div class="day-header">
+              <span class="day-label">${label}</span>
+              <span class="day-count">${items.length} moment${items.length !== 1 ? 's' : ''}</span>
+            </div>
+            ${cards}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function calcStreak(moments) {
+      if (moments.length === 0) return 0;
+      const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
+      let streak = 0;
+      let expected = todayKey();
+
+      // Allow streak if yesterday is the most recent day logged (you just haven't logged today yet)
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yKey = yesterday.toISOString().slice(0, 10);
+      if (days[0] !== expected && days[0] !== yKey) return 0;
+      if (days[0] === yKey) expected = yKey;
+
+      for (const day of days) {
+        if (day === expected) {
+          streak++;
+          const d = new Date(expected);
+          d.setDate(d.getDate() - 1);
+          expected = d.toISOString().slice(0, 10);
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>

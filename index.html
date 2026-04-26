@@ -506,9 +506,10 @@
     /* ── Log tab streak pill ── */
     .log-streak {
       display: none;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       margin-bottom: 14px;
     }
 
@@ -524,6 +525,14 @@
       font-size: 0.82rem;
       font-weight: 700;
       letter-spacing: 0.2px;
+    }
+
+    .log-streak-meaning {
+      font-size: 0.8rem;
+      color: #7B2FBE;
+      font-style: italic;
+      text-align: center;
+      opacity: 0.8;
     }
 
     /* ── Yesterday tab ── */
@@ -723,6 +732,7 @@
 
     <div class="log-streak" id="logStreak">
       <span class="log-streak-pill" id="logStreakPill"></span>
+      <div class="log-streak-meaning" id="logStreakMeaning"></div>
     </div>
 
     <div class="input-area">
@@ -810,6 +820,7 @@
   <script>
     // ── Helpers ──────────────────────────────────────────────
     const STORAGE_KEY = 'greatYesterday_moments';
+    const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     function loadMoments() {
       try {
@@ -825,24 +836,24 @@
       const today = todayKey();
       const d = new Date(today + 'T00:00:00');
       d.setDate(d.getDate() - 1);
-      const yesterday = d.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+      const yesterday = d.toLocaleDateString('en-CA', { timeZone: TZ });
 
       if (dateStr === today) return 'Today';
       if (dateStr === yesterday) return 'Yesterday';
 
       return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', {
-        weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/Chicago'
+        weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
       });
     }
 
     function formatTime(isoString) {
       return new Date(isoString).toLocaleTimeString('en-US', {
-        hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago'
+        hour: 'numeric', minute: '2-digit', timeZone: TZ
       });
     }
 
     function todayKey() {
-      return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+      return new Date().toLocaleDateString('en-CA', { timeZone: TZ });
     }
 
     function showToast(msg) {
@@ -877,7 +888,38 @@
       }
     }
 
+    // ── Re-engagement tiers ──────────────────────────────────
+    const LAST_OPEN_KEY = 'dopamine_lastOpen';
+
+    function checkReEngagement() {
+      const lastOpen = localStorage.getItem(LAST_OPEN_KEY);
+      const today = todayKey();
+
+      if (lastOpen && lastOpen !== today) {
+        const lastDate = new Date(lastOpen + 'T12:00:00');
+        const todayDate = new Date(today + 'T12:00:00');
+        const daysDiff = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+        if (daysDiff === 1) {
+          // Came back after exactly one day — streak preserved via grace
+          // No message needed — the streak number says it all
+        } else if (daysDiff === 2) {
+          setTimeout(() => showToast("You built something real. It's still here. 💜"), 600);
+        } else if (daysDiff >= 3 && daysDiff <= 5) {
+          const total = loadMoments().length;
+          setTimeout(() => showToast(`Welcome back. All ${total} good moments waited for you. ✨`), 600);
+        } else if (daysDiff >= 6 && daysDiff <= 14) {
+          setTimeout(() => showToast("Life got full. That's okay. What's good right now? 💜"), 600);
+        } else if (daysDiff > 14) {
+          setTimeout(() => showToast("The practice doesn't judge time away. It just welcomes you back. ✨"), 600);
+        }
+      }
+
+      localStorage.setItem(LAST_OPEN_KEY, today);
+    }
+
     initName();
+    checkReEngagement();
 
     // Auto-focus textarea on load if no name modal is shown
     if (localStorage.getItem(NAME_KEY)) {
@@ -890,7 +932,7 @@
     document.getElementById('headerDate').textContent =
       new Date().toLocaleDateString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
-        timeZone: 'America/Chicago'
+        timeZone: TZ
       });
 
     // ── Tabs ─────────────────────────────────────────────────
@@ -936,13 +978,26 @@
       100: "100 days. You are not the same person who started this."
     };
 
+    // ── Streak meaning messages ──────────────────────────────
+    function getStreakMeaning(streak) {
+      if (streak >= 100) return "You see the world differently than most people.";
+      if (streak >= 50)  return "This is who you are now.";
+      if (streak >= 30)  return "You have proof. Real proof.";
+      if (streak >= 14)  return "Your brain is filing things differently now.";
+      if (streak >= 7)   return "One week of choosing to notice.";
+      if (streak >= 4)   return "You're building new eyes.";
+      return "You started. That's everything.";
+    }
+
     function updateLogStreak() {
       const moments = loadMoments();
       const streak = calcStreak(moments);
       const el = document.getElementById('logStreak');
       const pill = document.getElementById('logStreakPill');
+      const meaning = document.getElementById('logStreakMeaning');
       if (streak > 0) {
-        pill.textContent = '🔥 ' + streak + ' day streak';
+        pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
+        meaning.textContent = getStreakMeaning(streak);
         el.classList.add('visible');
       } else {
         el.classList.remove('visible');
@@ -958,7 +1013,7 @@
     // ── Auto time-of-day tag ─────────────────────────────────
     function getTimeOfDayTag() {
       const hour = new Date().toLocaleString('en-US', {
-        hour: 'numeric', hour12: false, timeZone: 'America/Chicago'
+        hour: 'numeric', hour12: false, timeZone: TZ
       });
       const h = parseInt(hour, 10);
       if (h >= 5  && h <= 11) return 'Morning';
@@ -1084,7 +1139,7 @@
     function yesterdayKey() {
       const d = new Date();
       d.setDate(d.getDate() - 1);
-      return d.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+      return d.toLocaleDateString('en-CA', { timeZone: TZ });
     }
 
     function renderYesterday() {
@@ -1192,22 +1247,40 @@
     function calcStreak(moments) {
       if (moments.length === 0) return 0;
       const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
-      let streak = 0;
-      let expected = todayKey();
 
-      // Allow streak if yesterday is the most recent day logged (you just haven't logged today yet)
+      const today = todayKey();
       const yDate = new Date();
       yDate.setDate(yDate.getDate() - 1);
-      const yKey = yDate.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
-      if (days[0] !== expected && days[0] !== yKey) return 0;
-      if (days[0] === yKey) expected = yKey;
+      const yKey = yDate.toLocaleDateString('en-CA', { timeZone: TZ });
+
+      // Must start from today or yesterday
+      if (days[0] !== today && days[0] !== yKey) return 0;
+
+      let streak = 0;
+      let expected = days[0] === today ? today : yKey;
+      let graceUsed = false;  // One grace day allowed per streak
 
       for (const day of days) {
         if (day === expected) {
           streak++;
-          const d = new Date(expected);
+          const d = new Date(expected + 'T12:00:00');
           d.setDate(d.getDate() - 1);
-          expected = d.toISOString().slice(0, 10);
+          expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+        } else if (!graceUsed) {
+          // Check if exactly one day was skipped
+          const expectedDate = new Date(expected + 'T12:00:00');
+          const dayDate = new Date(day + 'T12:00:00');
+          const diffDays = Math.round((expectedDate - dayDate) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) {
+            // One day gap — apply grace, count this day, continue
+            graceUsed = true;
+            streak++;
+            const d = new Date(day + 'T12:00:00');
+            d.setDate(d.getDate() - 1);
+            expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+          } else {
+            break;
+          }
         } else {
           break;
         }

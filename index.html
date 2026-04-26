@@ -443,13 +443,43 @@
     }
 
     .tags-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.3);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 20px;
-      margin-bottom: 8px;
+      display: none;
+    }
+
+    /* ── Mood picker ── */
+    .mood-picker {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(123,47,190,0.2);
+    }
+
+    .mood-picker.visible { display: block; }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .mood-chip {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 8px 4px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+
+    .mood-chip:active { transform: scale(0.9); }
+
+    .mood-chip.selected {
+      border-color: #7B2FBE;
+      background: rgba(123,47,190,0.3);
     }
 
     /* Toast */
@@ -1000,25 +1030,33 @@
       <!-- Media buttons + save row -->
       <div class="media-row">
         <button class="media-btn" id="photoBtnToggle" onclick="togglePhotoCapture()">📷 Photo</button>
+        <button class="media-btn" id="moodBtnToggle" onclick="toggleMoodPicker()">😊 Mood</button>
         <input type="file" id="photoInput" accept="image/*"
           style="display:none" onchange="handlePhotoSelect(event)" />
+      </div>
+
+      <!-- Mood picker -->
+      <div class="mood-picker" id="moodPicker">
+        <div class="mood-grid" id="moodGrid">
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="😄 Joy">😄</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="💪 Win">💪</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🤝 Connection">🤝</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🧠 Growth">🧠</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="❤️ Gratitude">❤️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎯 Focus">🎯</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🌿 Calm">🌿</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🍸 Cheers">🍸</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏃 Active">🏃</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏋️ Gym">🏋️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🛍️ Shopping">🛍️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎂 Birthday">🎂</button>
+        </div>
       </div>
 
       <div class="input-footer">
         <span class="char-count"><span id="charCount">0</span>/280</span>
         <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
-    </div>
-
-    <div class="tags-label">Tag it (optional)</div>
-    <div class="tags-row" id="tagsRow">
-      <div class="tag-chip" onclick="toggleTag(this)">😄 Joy</div>
-      <div class="tag-chip" onclick="toggleTag(this)">💪 Win</div>
-      <div class="tag-chip" onclick="toggleTag(this)">🤝 Connection</div>
-      <div class="tag-chip" onclick="toggleTag(this)">🧠 Growth</div>
-      <div class="tag-chip" onclick="toggleTag(this)">❤️ Gratitude</div>
-      <div class="tag-chip" onclick="toggleTag(this)">🎯 Focus</div>
-      <div class="tag-chip" onclick="toggleTag(this)">🌿 Calm</div>
     </div>
   </div>
 
@@ -1226,9 +1264,44 @@
       el.classList.toggle('selected');
     }
 
+    // ── Mood picker ─────────────────────────────────────────
+    function toggleMoodPicker() {
+      const picker = document.getElementById('moodPicker');
+      const btn = document.getElementById('moodBtnToggle');
+      const isVisible = picker.classList.contains('visible');
+      picker.classList.toggle('visible', !isVisible);
+      btn.classList.toggle('active', !isVisible);
+      if (!isVisible) updateMoodBtn();
+    }
+
+    function toggleMoodTag(el) {
+      el.classList.toggle('selected');
+      updateMoodBtn();
+    }
+
+    function updateMoodBtn() {
+      const selected = [...document.querySelectorAll('#moodGrid .mood-chip.selected')];
+      const btn = document.getElementById('moodBtnToggle');
+      if (selected.length > 0) {
+        btn.textContent = selected.map(el => el.textContent).join(' ');
+        btn.classList.add('active');
+      } else {
+        btn.textContent = '😊 Mood';
+        btn.classList.remove('active');
+      }
+    }
+
     function getSelectedTags() {
-      return [...document.querySelectorAll('.tag-chip.selected')]
-        .map(el => el.textContent.trim());
+      return [...document.querySelectorAll('#moodGrid .mood-chip.selected')]
+        .map(el => el.dataset.tag);
+    }
+
+    function resetMoodPicker() {
+      document.querySelectorAll('#moodGrid .mood-chip.selected')
+        .forEach(el => el.classList.remove('selected'));
+      document.getElementById('moodPicker').classList.remove('visible');
+      document.getElementById('moodBtnToggle').textContent = '😊 Mood';
+      document.getElementById('moodBtnToggle').classList.remove('active');
     }
 
     // ── Streak pill (Log tab) ────────────────────────────────
@@ -1341,6 +1414,7 @@
 
     function resetMediaInputs() {
       removePhoto();
+      resetMoodPicker();
     }
 
     // ── Save ─────────────────────────────────────────────────

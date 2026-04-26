@@ -895,11 +895,15 @@
       <!-- Song input -->
       <div class="song-input-wrap" id="songInputWrap">
         <input type="text" id="songInput" class="song-input"
-          placeholder="Song name and artist..." maxlength="100" />
+          placeholder="Song name and artist..." maxlength="100"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('saveBtn').click();}" />
         <div class="song-platform-row">
           <button class="platform-btn" id="btnSpotify" onclick="selectPlatform('spotify')">🎵 Spotify</button>
           <button class="platform-btn" id="btnYoutube" onclick="selectPlatform('youtube')">▶️ YouTube</button>
           <button class="platform-btn" id="btnApple" onclick="selectPlatform('apple')">🍎 Apple Music</button>
+        </div>
+        <div style="font-size:0.75rem;color:#9ca3af;margin-top:6px;text-align:center;">
+          Select a platform above, then tap Save ✓ to attach the song
         </div>
       </div>
 
@@ -907,7 +911,7 @@
       <div class="media-row">
         <button class="media-btn" id="photoBtnToggle" onclick="togglePhotoCapture()">📷 Photo</button>
         <button class="media-btn" id="songBtnToggle" onclick="toggleSongInput()">🎵 Song</button>
-        <input type="file" id="photoInput" accept="image/*" capture="environment"
+        <input type="file" id="photoInput" accept="image/*"
           style="display:none" onchange="handlePhotoSelect(event)" />
       </div>
 
@@ -1255,7 +1259,10 @@
       wrap.classList.toggle('visible', !isVisible);
       btn.classList.toggle('active', !isVisible);
       if (!isVisible) {
-        selectPlatform('spotify');
+        selectedPlatform = 'spotify';
+        // Visually select Spotify by default
+        document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
+        document.getElementById('btnSpotify').classList.add('selected');
         setTimeout(() => document.getElementById('songInput').focus(), 50);
       }
     }

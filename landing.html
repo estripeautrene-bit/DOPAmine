@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOPAmine — Your dopamine. From the inside.</title>
+  <meta name="description" content="Your life has more good in it than you think. You just keep forgetting. DOPAmine helps you capture the small good moments before your brain discards them." />
+  <meta property="og:title" content="DOPAmine — Your dopamine. From the inside." />
+  <meta property="og:description" content="Your life has more good in it than you think. You just keep forgetting." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #0E0B1A;
+      --darker:  #080610;
+      --purple:  #7B2FBE;
+      --purple2: #9B4FDE;
+      --glow:    #B57BF7;
+      --soft:    #F4F0FA;
+      --muted:   rgba(255,255,255,0.5);
+      --white:   #ffffff;
+      --cream:   #FAF8F5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Ambient glow blobs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.35) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      animation: float1 8s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(155,79,222,0.2) 0%, transparent 70%);
+      bottom: -50px;
+      left: -100px;
+      animation: float2 10s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-30px, 40px) scale(1.1); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.15); }
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(14,11,26,0.95), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: white;
+    }
+
+    .nav-logo span {
+      color: var(--glow);
+    }
+
+    .nav-cta {
+      background: var(--purple);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .nav-cta:hover {
+      background: var(--purple2);
+      transform: translateY(-1px);
+    }
+
+    /* Hero content */
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(123,47,190,0.2);
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--glow);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--glow);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--glow);
+    }
+
+    .hero-subheadline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-body {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.72);
+      max-width: 560px;
+      margin: 0 auto 48px;
+      font-weight: 300;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-body strong {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* CTA Block */
+    .cta-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--purple);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      padding: 18px 40px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      transition: all 0.2s;
+      box-shadow: 0 0 40px rgba(123,47,190,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    }
+
+    .cta-primary:hover {
+      background: var(--purple2);
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(123,47,190,0.7);
+    }
+
+    .cta-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .cta-hint strong {
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover, .lang-btn.active {
+      background: rgba(123,47,190,0.3);
+      border-color: rgba(123,47,190,0.6);
+      color: white;
+    }
+
+    /* Phone mockup */
+    .phone-wrap {
+      position: relative;
+      margin: 80px auto 0;
+      width: 260px;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    .phone {
+      width: 260px;
+      height: 520px;
+      background: linear-gradient(160deg, #1a1030 0%, #0e0b1a 100%);
+      border-radius: 40px;
+      border: 1.5px solid rgba(123,47,190,0.4);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 40px 80px rgba(0,0,0,0.6),
+        0 0 60px rgba(123,47,190,0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-notch {
+      width: 80px;
+      height: 24px;
+      background: var(--darker);
+      border-radius: 0 0 16px 16px;
+      margin: 0 auto 16px;
+    }
+
+    .phone-screen {
+      padding: 0 16px;
+    }
+
+    .phone-header {
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .phone-header-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .phone-header-date {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .phone-tabs {
+      display: flex;
+      gap: 4px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      padding: 6px;
+      margin-bottom: 12px;
+    }
+
+    .phone-tab {
+      flex: 1;
+      text-align: center;
+      font-size: 0.6rem;
+      padding: 4px;
+      border-radius: 6px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 600;
+    }
+
+    .phone-tab.active {
+      background: #7B2FBE;
+      color: white;
+    }
+
+    .phone-prompt {
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .phone-moment {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .phone-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7B2FBE;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .phone-moment-text {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+    }
+
+    .phone-moment-time {
+      font-size: 0.58rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 3px;
+    }
+
+    .phone-streak {
+      background: rgba(123,47,190,0.1);
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 0.65rem;
+      color: #B57BF7;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* Glow ring around phone */
+    .phone-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 60px;
+      background: radial-gradient(ellipse, rgba(123,47,190,0.2) 0%, transparent 70%);
+      z-index: -1;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION: THE SCIENCE ── */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 100px 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--glow);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--glow);
+    }
+
+    .section-body {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 60px;
+      font-weight: 300;
+    }
+
+    /* Science cards */
+    .science-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .science-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .science-card:hover {
+      border-color: rgba(123,47,190,0.5);
+      transform: translateY(-4px);
+    }
+
+    .science-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .science-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .science-card-body {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    .science-card-attr {
+      font-size: 0.75rem;
+      color: var(--glow);
+      margin-top: 14px;
+      font-weight: 600;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(123,47,190,0.4), transparent);
+      margin: 0 auto;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(123,47,190,0.3);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 60px;
+      text-align: right;
+    }
+
+    .step-content { flex: 1; padding-top: 6px; }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .step-body {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    /* ── FOUNDER STORY ── */
+    .story-section {
+      background: rgba(123,47,190,0.08);
+      border-top: 1px solid rgba(123,47,190,0.2);
+      border-bottom: 1px solid rgba(123,47,190,0.2);
+      padding: 100px 24px;
+    }
+
+    .story-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .story-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.4;
+      color: white;
+      margin-bottom: 32px;
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .story-quote::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -8px;
+      font-size: 4rem;
+      color: var(--purple);
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+
+    .story-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .story-body strong {
+      color: white;
+      font-weight: 600;
+    }
+
+    .story-attr {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .story-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--glow));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .story-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .story-title {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      padding: 120px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.25) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .final-cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .final-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .final-headline em {
+      font-style: italic;
+      color: var(--glow);
+    }
+
+    .final-body {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .footer-logo span { color: var(--glow); }
+
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-logo { font-size: 1.2rem; }
+      .phone-wrap { width: 220px; }
+      .phone { width: 220px; height: 440px; }
+      .step { gap: 16px; }
+      .step-num { font-size: 2.2rem; width: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">DOPA<span>mine</span></div>
+    <a href="https://estripeautrene-bit.github.io/DOPAmine" class="nav-cta">Try It Free →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+
+      <div class="hero-eyebrow">The Science of Building a Better Tomorrow</div>
+
+      <h1 class="hero-headline">
+        Your tomorrow is being<br><em>written right now.</em>
+      </h1>
+
+      <p class="hero-subheadline">One good moment at a time. One great life as a result.</p>
+
+      <p class="hero-body">
+        Your brain is wired to discard positive moments in seconds —
+        while storing every worry, every setback, every hard day forever.
+        We know how difficult it is to capture or even remember the small
+        good things that happen to you every single day.
+        <strong>So we built the simplest possible tool to help you do exactly that.</strong>
+        Capture the good things as they happen. Build a documented record
+        of a life that is already better than your brain lets you believe.
+      </p>
+
+      <div class="cta-block">
+        <a href="https://estripeautrene-bit.github.io/DOPAmine" class="cta-primary">
+          ✦ &nbsp;Add to my phone — it's free
+        </a>
+        <p class="cta-hint">No App Store. No download. <strong>Open and add to home screen.</strong></p>
+        <div class="lang-toggle">
+          <a href="landing.html" class="lang-btn active">🇺🇸 English</a>
+          <a href="landing-es.html" class="lang-btn">🇪🇸 Español</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Phone Mockup -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-header">
+            <div class="phone-header-title">Rene, what just made you smile? ✨</div>
+            <div class="phone-header-date">Sunday, April 26</div>
+          </div>
+          <div class="phone-tabs">
+            <div class="phone-tab active">+ Log</div>
+            <div class="phone-tab">Yesterday</div>
+            <div class="phone-tab">My Days</div>
+          </div>
+          <div class="phone-prompt">What just made you smile?</div>
+          <div class="phone-moment">
+            <div class="phone-dot"></div>
+            <div>
+              <div class="phone-moment-text">Found a parking spot immediately 🙌</div>
+              <div class="phone-moment-time">9:14 AM · Morning</div>
+            </div>
+          </div>
+          <div class="phone-moment">
+            <div class="phone-dot"></div>
+            <div>
+              <div class="phone-moment-text">My son got an A in math</div>
+              <div class="phone-moment-time">11:32 AM · Morning</div>
+            </div>
+          </div>
+          <div class="phone-moment">
+            <div class="phone-dot"></div>
+            <div>
+              <div class="phone-moment-text">Stranger smiled at me at the coffee shop</div>
+              <div class="phone-moment-time">2:07 PM · Afternoon</div>
+            </div>
+          </div>
+          <div class="phone-streak">🔥 7 day streak — your brain is changing</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SCIENCE SECTION -->
+  <div class="section">
+    <div class="section-label">The Neuroscience</div>
+    <h2 class="section-title">Why good things <em>disappear</em><br>from your memory</h2>
+    <p class="section-body">
+      This is not a character flaw. It's biology. And once you understand it,
+      everything changes.
+    </p>
+
+    <div class="science-grid">
+      <div class="science-card">
+        <div class="science-icon">🧠</div>
+        <div class="science-card-title">The Negativity Bias</div>
+        <div class="science-card-body">
+          Your brain uses two-thirds of its threat-detection neurons scanning for bad news.
+          Negative events are stored automatically and immediately.
+          Positive moments need 12–20 seconds of conscious attention just to register.
+          They almost never get those seconds.
+        </div>
+        <div class="science-card-attr">Rick Hanson, PhD — UC Berkeley</div>
+      </div>
+
+      <div class="science-card">
+        <div class="science-icon">🌱</div>
+        <div class="science-card-title">Positive Neuroplasticity</div>
+        <div class="science-card-body">
+          Every time you consciously notice and record a good moment,
+          you are holding it in awareness long enough for it to transfer
+          to long-term memory. You are literally rewiring your brain
+          to see more of what is already good.
+        </div>
+        <div class="science-card-attr">Positive Neuroplasticity Training — Hanson</div>
+      </div>
+
+      <div class="science-card">
+        <div class="science-icon">📈</div>
+        <div class="science-card-title">The Upward Spiral</div>
+        <div class="science-card-body">
+          Positive emotions captured today increase the likelihood
+          of positive emotions tomorrow. This compounds over time.
+          A documented record of good days becomes the brain's
+          reference point for what life looks like — and what it expects.
+        </div>
+        <div class="science-card-attr">Broaden & Build Theory — Barbara Fredrickson, UNC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Notice. Capture.<br><em>Become.</em></h2>
+    <p class="section-body">
+      Three things happen every time you open DOPAmine.
+      Each one is backed by neuroscience. Together they build
+      something no single moment could — a documented life
+      that pulls your future forward.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">You choose to look — and capture what you find</div>
+          <div class="step-body">
+            A stranger smiles at you. You find what you needed on sale.
+            Five green lights in a row. Your kid says something beautiful.
+            Most people react to the bad and let the good evaporate in seconds.
+            DOPAmine trains a different reflex — to notice the good
+            the moment it happens and capture it before your brain discards it.
+            The act of looking is the practice. What you find is the reward.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Every morning, you walk into today differently</div>
+          <div class="step-body">
+            The real value of capturing good moments yesterday is not
+            remembering them — it's how they change the posture you bring
+            to today. People who practice noticing the good don't just
+            remember more good things. They walk into their day looking for them.
+            That shift — from reacting to looking — is what DOPAmine builds
+            one day at a time.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Your past becomes the architecture of your future</div>
+          <div class="step-body">
+            Think of a student who focuses on today's chapter — not last year's grade,
+            not next year's exam. Just today's work. Those daily efforts stack quietly
+            into an academic record that makes their future inevitable.
+            DOPAmine works the same way. You are not trying to remember yesterday.
+            You are building it — one noticed moment at a time — so that the person
+            you are becoming has a documented past to stand on.
+            Consistency today. A great life as a result.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUNDER STORY -->
+  <section class="story-section">
+    <div class="story-inner">
+      <div class="section-label" style="text-align:left;margin-bottom:32px;">The Story Behind DOPAmine</div>
+
+      <div class="story-quote">
+        I was on the treadmill at the gym when I heard something that changed how I
+        see my own life.
+      </div>
+
+      <p class="story-body">
+        A podcast. A concept I'd never heard framed that way before.
+        The idea that if you capture small good moments throughout the day —
+        not at the end when you've forgotten them, but <strong>in real time, as they happen</strong> —
+        you can literally rewire how your brain remembers your own life.
+      </p>
+
+      <p class="story-body">
+        I had spent years feeling like my life was harder than it actually was.
+        Not because bad things didn't happen — they did. But because my brain
+        was faithfully filing every difficult moment while quietly discarding
+        every good one. I had a <strong>false sense of my own life</strong>,
+        built from an incomplete archive.
+      </p>
+
+      <p class="story-body">
+        I started journaling small good things in real time. A smile from a stranger.
+        Finding a parking spot. My son's grade. Five green lights.
+        After 9 months, something shifted. After hearing that podcast,
+        I broke the exercise down even further — capturing moments
+        <strong>the instant they happened</strong> instead of at the end of the day.
+        The boost was even better.
+      </p>
+
+      <p class="story-body">
+        I built DOPAmine because carrying a notebook everywhere is cumbersome.
+        But everyone has a phone. And everyone deserves a tool that helps them
+        see how good their life already is.
+      </p>
+
+      <div class="story-attr">
+        <div class="story-avatar">🧬</div>
+        <div>
+          <div class="story-name">Rene</div>
+          <div class="story-title">Founder, DOPAmine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="final-cta-inner">
+      <h2 class="final-headline">
+        Your tomorrow is being<br>written <em>right now.</em>
+      </h2>
+      <p class="final-body">
+        We know how hard it is to remember the small things that made you
+        feel good today — because by evening, most of them are already gone.
+        That's not your fault. That's your brain doing exactly what it was
+        designed to do. DOPAmine was built to be so simple that capturing
+        a good moment takes less time than reading this sentence.
+        Free. No App Store. Works on any phone.
+      </p>
+
+      <div class="cta-block">
+        <a href="https://estripeautrene-bit.github.io/DOPAmine" class="cta-primary">
+          ✦ &nbsp;Add to my phone — it's free
+        </a>
+        <p class="cta-hint">Open in Safari · Tap Share · Add to Home Screen</p>
+        <div class="lang-toggle">
+          <a href="landing.html" class="lang-btn active">🇺🇸 English</a>
+          <a href="landing-es.html" class="lang-btn">🇪🇸 Español</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">DOPA<span>mine</span></div>
+    <div class="footer-tagline">Your dopamine. From the inside.</div>
+    <div class="footer-tagline" style="margin-top:4px;font-size:0.75rem;">Consistency today. A great life as a result.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">How It Works</a>
+      <a href="mailto:hello@mydopa.app">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>

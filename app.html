@@ -742,6 +742,86 @@
       border-width: 2px;
     }
 
+    .dot-day.has-entries {
+      cursor: pointer;
+    }
+
+    .dot-day.has-entries:active {
+      transform: scale(0.9);
+    }
+
+    .dot-num {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+
+    .dot-day:not(.active) .dot-num {
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* Day detail panel */
+    .day-detail-panel {
+      display: none;
+      margin-top: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 14px;
+      padding: 14px;
+      animation: fadeQuote 0.3s ease;
+    }
+
+    .day-detail-panel.open { display: block; }
+
+    .day-detail-header {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #B57BF7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .day-detail-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-left: 2px solid #7B2FBE;
+    }
+
+    .day-detail-text {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .day-detail-meta {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .day-detail-photo {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 6px;
+      max-height: 160px;
+      object-fit: cover;
+    }
+
+    /* Today stat clickable */
+    .quick-stat.clickable {
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .quick-stat.clickable:hover {
+      border-color: rgba(123,47,190,0.5);
+      background: rgba(123,47,190,0.1);
+    }
+
     /* Top tags */
     .top-tags-row {
       display: flex;
@@ -1682,7 +1762,56 @@
       localStorage.setItem(LAST_OPEN_KEY, today);
     }
 
-    // ── Next Step Modal ──────────────────────────────────────
+    // ── Day detail panel ─────────────────────────────────────
+    let currentDetailKey = null;
+
+    function showDayDetail(dateKey, dateObj) {
+      const panel = document.getElementById('dayDetailPanel');
+
+      // Toggle closed if same day tapped again
+      if (currentDetailKey === dateKey && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        currentDetailKey = null;
+        return;
+      }
+
+      currentDetailKey = dateKey;
+      const moments = loadMoments().filter(m => m.dateKey === dateKey);
+
+      if (moments.length === 0) {
+        panel.innerHTML = `<div class="day-detail-header">No moments this day</div>`;
+        panel.classList.add('open');
+        return;
+      }
+
+      const dateLabel = dateObj.toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+      });
+
+      const cards = moments
+        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+        .map(m => `
+          <div class="day-detail-card">
+            <div class="day-detail-text">${escapeHtml(m.text)}</div>
+            ${m.photo ? `<img class="day-detail-photo" src="${m.photo}" alt="moment" />` : ''}
+            <div class="day-detail-meta">
+              ${formatTime(m.createdAt)}
+              ${m.tags && m.tags.length ? ' · ' + m.tags.join(' ') : ''}
+              ${m.autoTag ? ' · ' + m.autoTag : ''}
+            </div>
+          </div>`).join('');
+
+      panel.innerHTML = `
+        <div class="day-detail-header">
+          ${dateLabel} — ${moments.length} moment${moments.length !== 1 ? 's' : ''}
+        </div>
+        ${cards}`;
+
+      panel.classList.add('open');
+
+      // Scroll panel into view
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
     function openNextStep() {
       document.getElementById('nextStepModal').classList.add('open');
     }
@@ -2171,9 +2300,9 @@
 
         <!-- Quick stats -->
         <div class="quick-stats">
-          <div class="quick-stat">
+          <div class="quick-stat clickable" onclick="showDayDetail('${todayKey()}', new Date())">
             <div class="quick-stat-num">${todayCount}</div>
-            <div class="quick-stat-label">Today</div>
+            <div class="quick-stat-label">Today ↓</div>
           </div>
           <div class="quick-stat">
             <div class="quick-stat-num">${totalDays}</div>
@@ -2186,8 +2315,9 @@
         </div>
 
         <!-- 30-day dot calendar -->
-        <div class="progress-section-label">Last 30 Days</div>
+        <div class="progress-section-label">Last 30 Days — tap a date to see entries</div>
         <div class="dot-calendar" id="dotCalendar"></div>
+        <div class="day-detail-panel" id="dayDetailPanel"></div>
 
         <!-- Top mood tags -->
         <div class="progress-section-label">Your Top Moments</div>
@@ -2205,10 +2335,16 @@
         const d = new Date();
         d.setDate(d.getDate() - i);
         const key = d.toLocaleDateString('en-CA', { timeZone: TZ });
+        const dayNum = d.getDate();
+        const hasEntries = activeDays.has(key);
         const dot = document.createElement('div');
         dot.className = 'dot-day' +
-          (activeDays.has(key) ? ' active' : '') +
+          (hasEntries ? ' active has-entries' : '') +
           (key === today ? ' today' : '');
+        dot.innerHTML = `<span class="dot-num">${dayNum}</span>`;
+        if (hasEntries) {
+          dot.onclick = () => showDayDetail(key, d);
+        }
         cal.appendChild(dot);
       }
 

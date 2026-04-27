@@ -1047,7 +1047,115 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ── Progress dashboard ── */
+    /* ── Yesterday wisdom seed ── */
+    .wisdom-seed {
+      margin: 16px 0;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.6));
+      border-left: 3px solid #B57BF7;
+      border-radius: 0 14px 14px 0;
+      position: relative;
+    }
+
+    .wisdom-seed-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #B57BF7;
+      margin-bottom: 8px;
+    }
+
+    .wisdom-seed-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ── How do you feel field ── */
+    .feel-section {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(123,47,190,0.1);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 16px;
+    }
+
+    .feel-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #B57BF7;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .feel-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: white;
+      resize: none;
+      min-height: 80px;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .feel-textarea::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+
+    .feel-textarea:focus {
+      border-color: #7B2FBE;
+    }
+
+    .feel-save-btn {
+      width: 100%;
+      margin-top: 10px;
+      background: rgba(123,47,190,0.3);
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 50px;
+      padding: 10px;
+      color: #B57BF7;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .feel-save-btn:hover {
+      background: rgba(123,47,190,0.5);
+    }
+
+    body.light-mode .wisdom-seed {
+      background: white !important;
+      border-left-color: #7B2FBE !important;
+    }
+
+    body.light-mode .wisdom-seed-text {
+      color: #1A1A2E !important;
+    }
+
+    body.light-mode .feel-section {
+      background: white !important;
+      border-color: rgba(123,47,190,0.2) !important;
+    }
+
+    body.light-mode .feel-textarea {
+      background: #F4F0FA !important;
+      color: #1A1A2E !important;
+      border-color: rgba(123,47,190,0.2) !important;
+    }
+
+    body.light-mode .feel-textarea::placeholder {
+      color: rgba(0,0,0,0.3) !important;
+    }
     .progress-hero {
       text-align: center;
       padding: 24px 0 20px;
@@ -2021,8 +2129,10 @@
       <div class="yesterday-headline">Yesterday Was Good.</div>
       <div id="yesterdaySubtitle" class="yesterday-subtitle"></div>
     </div>
+    <div id="yesterdayWisdom"></div>
     <div class="yesterday-list" id="yesterdayList"></div>
-    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today</button>
+    <div id="yesterdayFeel"></div>
+    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today →</button>
   </div>
 
   <!-- SUMMARY VIEW -->
@@ -2689,6 +2799,80 @@
       return d.toLocaleDateString('en-CA', { timeZone: TZ });
     }
 
+    // ── Wisdom seed library ──────────────────────────────────
+    const WISDOM_SEEDS = {
+      mindset: [
+        "Trust your consistency more than you trust your feelings. Trust your doing more than your feeling.",
+        "Consistency beats talent. Every time. Without exception. Yesterday is your proof.",
+        "Done is better than perfect. What you captured yesterday — imperfect, small, real — is worth more than the perfect entry you never wrote.",
+        "Doing is more important than thinking. You didn't just think about yesterday. You lived it. And you caught it.",
+        "Never use your past to plan your future. Your past was written without your full awareness. Your future gets to be different.",
+        "People are optimizing for the wrong things when they try to acquire dopamine from the outside. The real win comes from within.",
+      ],
+      body: [
+        "Watch your environment. Make choices that are aligned with your true needs. Your body knows the difference.",
+        "Discipline is doing consistent things to achieve your goals. Yesterday you were disciplined.",
+        "Engineer this to be something you enjoy doing. Make this the most interesting part of your day.",
+        "Consistency beats talent. The body you want is built one good day at a time. Yesterday was one of those days.",
+      ],
+      emotions: [
+        "Feel good about getting, rather than waiting for external things to make you happy.",
+        "The moments you noticed yesterday — people, warmth, small kindnesses — these are not distractions from your growth. They are your growth.",
+        "DOPAmine is your tool. Every good input is meant to build you up, generate your dopamine, make you a much better person.",
+        "Be happy for your advance here. Yesterday you chose to notice the good. That is a practice most people never start.",
+      ],
+      goals: [
+        "Your future is a reflection of the past you build today. Yesterday you built good moments. That's your future being written right now.",
+        "Memory is a liability. Build systems and consistency. DOPAmine is the system. Yesterday you used it.",
+        "Pick goals. Enjoy the process. Yesterday was part of the process.",
+        "Feel good about the streak you are leading. That confidence applies to every other aspect of your life.",
+      ],
+      default: [
+        "Trust your consistency more than you trust your feelings. Trust your doing more than your feeling.",
+        "Your future is a reflection of the past you build today. Yesterday you built good moments.",
+        "Done is better than perfect. You showed up yesterday. That's everything.",
+        "Consistency beats talent. Every time. Without exception.",
+      ]
+    };
+
+    function getWisdomSeed(moments) {
+      // Count tag categories
+      const tagCounts = { mindset: 0, body: 0, emotions: 0, goals: 0 };
+      const mindsetTags = ['😄 Joy', '💪 Win', '🧠 Growth', '🎯 Focus'];
+      const bodyTags = ['🏃 Active', '🏋️ Gym'];
+      const emotionTags = ['❤️ Gratitude', '🤝 Connection', '🌿 Calm', '🍸 Cheers', '🎂 Birthday', '🛍️ Shopping'];
+      const goalTags = ['🎯 Focus', '💪 Win'];
+
+      moments.forEach(m => {
+        (m.tags || []).forEach(t => {
+          if (mindsetTags.includes(t)) tagCounts.mindset++;
+          if (bodyTags.includes(t)) tagCounts.body++;
+          if (emotionTags.includes(t)) tagCounts.emotions++;
+          if (goalTags.includes(t)) tagCounts.goals++;
+        });
+      });
+
+      // Find dominant category
+      const dominant = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0];
+      const pool = dominant[1] > 0 ? WISDOM_SEEDS[dominant[0]] : WISDOM_SEEDS.default;
+
+      // Pick based on day of week for variety
+      const idx = new Date().getDay() % pool.length;
+      return pool[idx];
+    }
+
+    const FEEL_KEY = 'dopamine_feel_';
+
+    function saveFeeling() {
+      const yKey = yesterdayKey();
+      const text = document.getElementById('feelInput').value.trim();
+      if (!text) return;
+      localStorage.setItem(FEEL_KEY + yKey, text);
+      document.getElementById('feelInput').disabled = true;
+      document.getElementById('feelSaveBtn').style.display = 'none';
+      document.getElementById('feelSaved').style.display = 'block';
+    }
+
     function renderYesterday() {
       const yKey = yesterdayKey();
       const moments = loadMoments().filter(m => m.dateKey === yKey)
@@ -2696,25 +2880,55 @@
 
       const subtitle = document.getElementById('yesterdaySubtitle');
       const list = document.getElementById('yesterdayList');
+      const wisdom = document.getElementById('yesterdayWisdom');
+      const feel = document.getElementById('yesterdayFeel');
 
       if (moments.length === 0) {
         subtitle.innerHTML = '';
+        wisdom.innerHTML = '';
+        feel.innerHTML = '';
         list.innerHTML = `<p class="yesterday-empty">Yesterday is a blank page.<br>Today doesn't have to be.</p>`;
         return;
       }
 
-      subtitle.textContent = `You captured ${moments.length} good moment${moments.length !== 1 ? 's' : ''}`;
+      // ── Subtitle ──
+      subtitle.textContent = `You chose to notice ${moments.length} time${moments.length !== 1 ? 's' : ''} yesterday.`;
 
+      // ── Smart wisdom seed ──
+      const seed = getWisdomSeed(moments);
+      wisdom.innerHTML = `
+        <div class="wisdom-seed">
+          <div class="wisdom-seed-label">✦ From the DOPAmine philosophy</div>
+          <div class="wisdom-seed-text">${seed}</div>
+        </div>`;
+
+      // ── Entries ──
       list.innerHTML = moments.map(m => `
         <div class="yesterday-card">
           <div class="moment-text">${escapeHtml(m.text)}</div>
           ${m.photo ? `<img class="card-photo" src="${m.photo}" alt="moment" />` : ''}
           <div class="moment-meta">
             <span class="moment-time">${formatTime(m.createdAt)}</span>
-            ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
+            ${(m.tags || []).map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}
+            ${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
           </div>
         </div>
       `).join('');
+
+      // ── How do you feel ──
+      const savedFeeling = localStorage.getItem(FEEL_KEY + yKey);
+      feel.innerHTML = `
+        <div class="feel-section">
+          <div class="feel-label">How does yesterday make you feel today?</div>
+          <textarea class="feel-textarea" id="feelInput"
+            placeholder="Write how you feel after seeing yesterday's good moments..."
+            ${savedFeeling ? 'disabled' : ''}>${savedFeeling || ''}</textarea>
+          ${savedFeeling
+            ? `<div id="feelSaved" style="text-align:center;font-size:0.8rem;color:#B57BF7;margin-top:8px;font-style:italic;">Saved ✓</div>`
+            : `<button class="feel-save-btn" id="feelSaveBtn" onclick="saveFeeling()">Save how I feel</button>
+               <div id="feelSaved" style="display:none;text-align:center;font-size:0.8rem;color:#B57BF7;margin-top:8px;font-style:italic;">Saved ✓</div>`
+          }
+        </div>`;
     }
 
     // ── Summary ──────────────────────────────────────────────

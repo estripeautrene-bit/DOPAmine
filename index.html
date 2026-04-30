@@ -2,637 +2,3071 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>DOPAmine — Write your wins. Get happier every day.</title>
-  <meta name="description" content="Capture every small win as it happens. They compound into real, lasting happiness." />
-  <meta name="theme-color" content="#0E0B1A" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DOPAmine" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <title>DOPAmine</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --bg:     #0E0B1A;
-      --purple: #7B2FBE;
-      --violet: #9B4FDE;
-      --glow:   #B57BF7;
-      --white:  #ffffff;
-      --soft:   rgba(255,255,255,0.55);
-      --softer: rgba(255,255,255,0.25);
+      --gold: #7B2FBE;
+      --gold-light: rgba(123,47,190,0.15);
+      --dark: #0E0B1A;
+      --dark2: #1A1A2E;
+      --text: #F0EEFF;
+      --muted: rgba(255,255,255,0.5);
+      --bg: #0E0B1A;
+      --card: rgba(255,255,255,0.06);
+      --card-border: rgba(123,47,190,0.3);
+      --radius: 16px;
     }
 
-    html { -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: 'DM Sans', -apple-system, sans-serif;
-      background: var(--bg); color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
     }
 
-    /* ─── NAV ─── */
-    nav {
-      padding: 20px 28px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .logo {
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      font-size: 0.95rem; color: var(--white); text-decoration: none;
-    }
-    .logo strong { color: var(--glow); }
-    .nav-link {
-      font-size: 0.82rem; font-weight: 300; color: var(--soft);
-      text-decoration: none; transition: color 0.2s;
-    }
-    .nav-link:hover { color: var(--white); }
-
-    /* ══════════════════════════════════
-       HERO — unchanged from v8
-    ══════════════════════════════════ */
-    .hero {
-      min-height: calc(100svh - 62px);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 32px 24px 56px; text-align: center;
+    /* ── Header ── */
+    header {
+      background: linear-gradient(180deg, #0E0B1A 0%, #1A1A2E 100%);
+      color: white;
+      padding: 24px 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(123,47,190,0.2);
     }
 
-    .title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.2rem, 8.5vw, 4rem);
-      line-height: 1.1; letter-spacing: -0.02em;
-      margin-bottom: 14px; max-width: 580px;
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
     }
-    /* ACTION — what the user does: regular weight, softer white */
-    .t-action {
+
+    .header-logo-d {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: white;
+      font-style: italic;
+      flex-shrink: 0;
+    }
+
+    .header-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-logo-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      color: white;
+    }
+
+    .header-logo-name span {
+      color: #B57BF7;
+      font-weight: 400;
+    }
+
+    .header-logo-tagline {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 1px;
+    }
+
+    .header-greeting {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 8px;
+      font-weight: 400;
+    }
+
+    .header-greeting strong {
+      color: #B57BF7;
+      font-weight: 700;
+    }
+
+    header p.date {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 2px;
+    }
+
+    /* ── Tab bar ── */
+    .tabs {
+      display: flex;
+      background: #0E0B1A;
+      padding: 0 20px 14px;
+      border-bottom: 1px solid rgba(123,47,190,0.15);
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 0;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ── Views ── */
+    .view {
+      display: none;
+      padding: 20px;
+      background: var(--bg);
+      min-height: calc(100vh - 140px);
+    }
+
+    .view.active {
       display: block;
-      font-weight: 400; font-style: normal;
+    }
+
+    /* ── Log view ── */
+    .prompt-card {
+      background: linear-gradient(135deg, rgba(123,47,190,0.25), rgba(181,123,247,0.1));
+      border: 1px solid rgba(123,47,190,0.35);
+      border-radius: var(--radius);
+      padding: 22px 20px 16px;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .prompt-text {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .prompt-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      min-height: 8px;
+    }
+
+    .input-area {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .input-area textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-family: inherit;
+      color: white;
+      resize: none;
+      min-height: 80px;
+      background: transparent;
+    }
+
+    .input-area textarea::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .save-btn {
+      background: var(--gold);
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .save-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
+
+    .save-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    /* ── Media attachments (photo + song) ── */
+    .media-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .media-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1.5px solid rgba(181,123,247,0.45);
+      border-radius: 50px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      background: rgba(123,47,190,0.1);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .media-btn:hover {
+      border-color: var(--gold);
+      color: #B57BF7;
+    }
+
+    .media-btn.active {
+      border-color: var(--gold);
+      background: rgba(123,47,190,0.2);
+      color: #B57BF7;
+    }
+
+    .song-input {
+      width: 100%;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      color: white;
+      background: rgba(255,255,255,0.06);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .song-input:focus { border-color: var(--gold); }
+
+    .platform-btn {
+      flex: 1;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      padding: 6px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: transparent;
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      text-align: center;
+    }
+
+    .platform-btn.selected {
+      border-color: var(--gold);
+      background: rgba(123,47,190,0.25);
+      color: #B57BF7;
+    }
+
+    .photo-preview {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+      position: relative;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .photo-preview.visible { display: block; }
+
+    .photo-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.55);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .song-input-wrap {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .song-input-wrap.visible { display: block; }
+
+    .song-input {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .song-input:focus { border-color: var(--gold); }
+
+    .song-platform-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .platform-btn {
+      flex: 1;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 6px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: white;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      text-align: center;
+    }
+
+    .platform-btn.selected {
+      border-color: var(--gold);
+      background: var(--gold-light);
+      color: #7B2FBE;
+    }
+
+    /* ── Media display on moment cards ── */
+    .card-photo {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+      max-height: 240px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-song {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #7B2FBE;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--gold-light);
+      border-radius: 50px;
+      padding: 4px 10px;
+    }
+
+    .card-song:hover { opacity: 0.8; }
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag-chip {
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      background: transparent;
+      cursor: pointer;
+      color: rgba(255,255,255,0.5);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .tag-chip.selected {
+      border-color: var(--gold);
+      background: rgba(123,47,190,0.25);
+      color: #B57BF7;
+    }
+
+    .tags-label {
+      display: none;
+    }
+
+    /* ── Science visual cards ── */
+    .science-card {
+      margin-top: 16px;
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.8));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 16px;
+      padding: 18px;
+      animation: fadeQuote 0.8s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .science-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.3), transparent 70%);
+    }
+
+    .science-card-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #B57BF7;
+      margin-bottom: 10px;
+    }
+
+    .science-card-headline {
+      font-size: 1rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .science-card-headline span {
+      color: #B57BF7;
+    }
+
+    .science-card-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .science-card-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .science-step-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(123,47,190,0.3);
+      border: 1px solid rgba(123,47,190,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .science-step-text {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.3;
+    }
+
+    .science-step-text strong {
+      color: white;
+      font-weight: 700;
+    }
+
+    .science-card-divider {
+      height: 1px;
+      background: rgba(123,47,190,0.3);
+      margin: 12px 0;
+    }
+
+    .science-card-bottom {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .science-card-bottom strong {
+      color: #B57BF7;
+      font-style: normal;
+    }
+
+    .science-card-stats {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .science-stat {
+      flex: 1;
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .science-stat-num {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #B57BF7;
+      line-height: 1;
+    }
+
+    .science-stat-label {
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes fadeQuote {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .mood-picker {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(123,47,190,0.2);
+    }
+
+    .mood-picker.visible { display: block; }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .mood-chip {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 8px 4px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+
+    .mood-chip:active { transform: scale(0.9); }
+
+    .mood-chip.selected {
+      border-color: #7B2FBE;
+      background: rgba(123,47,190,0.3);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Progress dashboard ── */
+    .progress-hero {
+      text-align: center;
+      padding: 24px 0 20px;
+    }
+
+    .progress-total-num {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ffffff, #B57BF7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .progress-total-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .progress-streak-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 50px;
+      padding: 10px 20px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .progress-streak-num {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #B57BF7;
+    }
+
+    .progress-streak-text {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+
+    .progress-streak-meaning {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Dot calendar */
+    .progress-section-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #B57BF7;
+      margin: 24px 0 12px;
+    }
+
+    .dot-calendar {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+    }
+
+    .dot-day {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      color: transparent;
+      transition: background 0.2s;
+      position: relative;
+    }
+
+    .dot-day.active {
+      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      border-color: transparent;
+      box-shadow: 0 0 8px rgba(123,47,190,0.5);
+    }
+
+    .dot-day.today {
+      border-color: #B57BF7;
+      border-width: 2px;
+    }
+
+    .dot-day.has-entries {
+      cursor: pointer;
+    }
+
+    .dot-day.has-entries:active {
+      transform: scale(0.9);
+    }
+
+    .dot-num {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+
+    .dot-day:not(.active) .dot-num {
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* Day detail panel */
+    .day-detail-panel {
+      display: none;
+      margin-top: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 14px;
+      padding: 14px;
+      animation: fadeQuote 0.3s ease;
+    }
+
+    .day-detail-panel.open { display: block; }
+
+    .day-detail-header {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #B57BF7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .day-detail-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-left: 2px solid #7B2FBE;
+    }
+
+    .day-detail-text {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .day-detail-meta {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .day-detail-photo {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 6px;
+      max-height: 160px;
+      object-fit: cover;
+    }
+
+    /* Today stat clickable */
+    .quick-stat.clickable {
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .quick-stat.clickable:hover {
+      border-color: rgba(123,47,190,0.5);
+      background: rgba(123,47,190,0.1);
+    }
+
+    /* Top tags */
+    .top-tags-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-tag-bubble {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 14px;
+      padding: 12px 16px;
+      min-width: 70px;
+    }
+
+    .top-tag-emoji {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .top-tag-count {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #B57BF7;
+    }
+
+    .top-tag-name {
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+      text-align: center;
+    }
+
+    /* Quick stats row */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .quick-stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(123,47,190,0.2);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .quick-stat-num {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #B57BF7;
+      line-height: 1;
+    }
+
+    .quick-stat-label {
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .progress-motivator {
+      margin-top: 20px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.5));
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 14px;
+      text-align: center;
+      font-size: 0.85rem;
       color: rgba(255,255,255,0.7);
+      line-height: 1.6;
     }
-    /* REACTION — what they get back: bold, italic, glowing */
-    .t-reaction {
+
+    .progress-motivator strong {
+      color: white;
+      font-weight: 800;
       display: block;
-      font-weight: 700; font-style: italic;
-      color: var(--glow);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .progress-motivator.unlocked {
+      background: linear-gradient(135deg, rgba(123,47,190,0.35), rgba(181,123,247,0.1));
+      border-color: #7B2FBE;
+      border-width: 2px;
+    }
+
+    .next-step-btn {
+      display: inline-block;
+      margin-top: 14px;
+      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 20px rgba(123,47,190,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .next-step-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Next step modal */
+    .next-step-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .next-step-modal.open {
+      display: flex;
+    }
+
+    .next-step-sheet {
+      background: #1A1A2E;
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 24px 24px 0 0;
+      padding: 32px 24px 48px;
+      width: 100%;
+      max-width: 480px;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .next-step-close {
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .next-step-close button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .next-step-headline {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .next-step-headline span { color: #B57BF7; }
+
+    .next-step-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .pillar-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .pillar-card {
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .pillar-card-icon { font-size: 1.5rem; margin-bottom: 4px; }
+
+    .pillar-card-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .pillar-card-desc {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.3;
+    }
+
+    .next-step-cta {
+      width: 100%;
+      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    .next-step-later {
+      width: 100%;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .day-section {
+      margin-bottom: 28px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .day-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: rgba(181,123,247,0.8);
+    }
+
+    .day-count {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .moment-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .moment-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .moment-body {
+      flex: 1;
+    }
+
+    .moment-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-top: 6px;
     }
 
-    .subtitle {
-      font-size: clamp(0.9rem, 2.8vw, 1rem);
-      font-weight: 300; color: var(--soft);
-      line-height: 1.65; max-width: 320px;
-      margin-bottom: 36px;
+    .moment-time {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
     }
 
-    /* White input box */
-    .capture-box {
-      width: 100%; max-width: 540px;
-      background: #ffffff; border-radius: 20px;
-      padding: 22px 22px 18px; text-align: left;
-      box-shadow: 0 12px 60px rgba(0,0,0,0.5), 0 0 40px rgba(123,47,190,0.15);
-      cursor: text;
+    .moment-tag {
+      font-size: 0.7rem;
+      background: rgba(123,47,190,0.25);
+      color: #B57BF7;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-weight: 600;
     }
 
-    .capture-label {
-      font-size: 0.62rem; font-weight: 500;
-      letter-spacing: 0.13em; text-transform: uppercase;
-      color: var(--purple); margin-bottom: 10px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .capture-label::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--purple);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    .capture-input {
-      width: 100%; background: none; border: none; outline: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: clamp(1rem, 3.5vw, 1.15rem);
-      font-weight: 400; color: #1a0f30;
-      line-height: 1.6; resize: none; min-height: 68px;
-      caret-color: var(--purple);
-    }
-    .capture-input::placeholder { color: rgba(0,0,0,0.25); }
-
-    .capture-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 16px; padding-top: 14px;
-      border-top: 1px solid rgba(0,0,0,0.07);
+    .moment-delete {
+      border: none;
+      background: none;
+      color: rgba(255,255,255,0.2);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
     }
 
-    .photo-btn {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 0.78rem; font-weight: 400; color: rgba(0,0,0,0.38);
-      background: none; border: none; cursor: pointer;
-      padding: 0; transition: color 0.2s;
+    .moment-delete:hover {
+      color: #e57373;
     }
-    .photo-btn:hover { color: var(--purple); }
-    .photo-btn svg { width: 17px; height: 17px; }
+
+    .moment-edit {
+      border: none;
+      background: none;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .moment-edit:hover {
+      color: var(--gold);
+    }
+
+    /* ── Edit modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg);
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 40px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    .modal label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    .modal textarea {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      resize: none;
+      min-height: 80px;
+      outline: none;
+    }
+
+    .modal textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .modal input[type="date"] {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      background: white;
+    }
+
+    .modal input[type="date"]:focus {
+      border-color: var(--gold);
+    }
+
+    .modal-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: white;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .btn-save-edit {
+      flex: 2;
+      border: none;
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: var(--gold);
+      color: white;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .empty-state .big {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* ── Stats banner ── */
+    .stats-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.2);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #B57BF7;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Streak flame */
+    .streak-flame {
+      color: #B57BF7;
+    }
+
+    /* ── Log tab streak pill ── */
+    .log-streak {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .log-streak.visible {
+      display: flex;
+    }
+
+    .log-streak-pill {
+      background: rgba(123,47,190,0.25);
+      color: #B57BF7;
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .log-streak-meaning {
+      font-size: 0.8rem;
+      color: #7B2FBE;
+      font-style: italic;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* ── Yesterday tab ── */
+    .yesterday-hero {
+      text-align: center;
+      padding: 32px 20px 24px;
+      background: linear-gradient(135deg, rgba(123,47,190,0.25) 0%, rgba(181,123,247,0.1) 100%);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(181,123,247,0.25);
+    }
+
+    .yesterday-headline {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 16px rgba(123,47,190,0.5);
+    }
+
+    .yesterday-subtitle {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .yesterday-empty {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .yesterday-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      border-left: 3px solid #7B2FBE;
+    }
+
+    .yesterday-card .moment-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .yesterday-card .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .yesterday-list {
+      margin-top: 20px;
+    }
+
+    .yesterday-start-btn {
+      display: block;
+      width: 100%;
+      margin-top: 28px;
+      background: #7B2FBE;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    /* ── Auto time-of-day tag ── */
+    .moment-tag-auto {
+      font-size: 0.7rem;
+      background: #ede8f5;
+      color: #9b59c0;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    /* ── Save ripple animation ── */
+    @keyframes ripple-out {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.4;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(6);
+        opacity: 0;
+      }
+    }
+
+    .save-ripple {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(123, 47, 190, 0.4);
+      pointer-events: none;
+      animation: ripple-out 0.4s ease-out forwards;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+    }
 
     .save-btn {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--purple); color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem; font-weight: 500;
-      padding: 10px 22px; border-radius: 100px;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .save-btn:hover { background: var(--violet); transform: translateY(-1px); }
-
-    /* Pills */
-    .examples {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 8px; margin-top: 16px;
-      max-width: 540px; width: 100%;
-    }
-    .examples-label {
-      width: 100%; text-align: center;
-      font-size: 0.67rem; color: var(--softer);
-      font-weight: 300; margin-bottom: 2px;
-    }
-    .pill {
-      font-size: 0.77rem; font-weight: 300; color: var(--soft);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 100px; padding: 7px 14px; cursor: pointer;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .pill:hover {
-      background: rgba(181,123,247,0.12);
-      border-color: rgba(181,123,247,0.35);
-      color: var(--white);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ══════════════════════════════════
-       BELOW FOLD — institutional
-    ══════════════════════════════════ */
-
-    .wrap {
-      max-width: 580px; margin: 0 auto;
-      padding: 72px 28px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+    /* ── Delete confirmation modal ── */
+    .delete-modal-body {
+      text-align: center;
+      padding: 8px 0 4px;
     }
 
-    .sec-h {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.7rem, 6vw, 2.4rem);
-      font-weight: 700; line-height: 1.12;
-      letter-spacing: -0.02em; margin-bottom: 28px;
-    }
-    .sec-h em { font-style: italic; font-weight: 400; color: var(--glow); }
-
-    .prose {
-      font-size: 0.93rem; font-weight: 300;
-      color: var(--soft); line-height: 1.78;
-    }
-    .prose p { margin-bottom: 16px; }
-    .prose p:last-child { margin-bottom: 0; }
-    .prose strong { color: var(--white); font-weight: 400; }
-
-    /* ─── COMPOUND BAR CHART ─── */
-    .chart-wrap {
-      margin-top: 40px; padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .chart-label {
-      font-size: 0.65rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--softer); margin-bottom: 16px;
-    }
-    .bars {
-      display: flex; align-items: flex-end;
-      gap: 6px; height: 88px;
-    }
-    .bar-col {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 6px; flex: 1;
-    }
-    .bar {
-      width: 100%; border-radius: 3px 3px 0 0;
-      background: rgba(181,123,247,0.2);
-    }
-    .bar.lit { background: var(--glow); }
-    .bar-d {
-      font-size: 0.52rem; color: var(--softer); font-weight: 300;
-    }
-    .chart-caption {
-      font-size: 0.78rem; font-weight: 300;
-      color: var(--soft); margin-top: 16px; font-style: italic;
-    }
-    .chart-caption strong {
-      font-style: normal; font-weight: 500; color: var(--white);
+    .delete-modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
     }
 
-    /* ─── DOPAMINE LOOP ─── */
-    .loop-outer {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 28px;
-      margin: 8px 0 32px; width: 100%;
-    }
-    .loop-svg { width: min(360px, 92vw); }
-
-    .loop-labels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px 32px;
-      width: 100%; max-width: 520px;
-    }
-    .ll-name {
-      display: block;
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem; font-weight: 700;
-      font-style: italic;
-      color: var(--glow); margin-bottom: 7px;
-    }
-    .ll-desc {
-      font-size: 0.88rem; font-weight: 300;
-      color: var(--soft); line-height: 1.6;
+    .delete-modal-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 24px;
     }
 
-    .orbit-arm   { animation: spin 7s linear infinite; transform-origin: 150px 150px; }
-    .orbit-trail { animation: spin 7s linear -0.55s infinite; transform-origin: 150px 150px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .node-ring { animation: nodePulse 3s ease-in-out infinite; }
-    .n1 .node-ring { animation-delay: 0s; }
-    .n2 .node-ring { animation-delay: 1.75s; }
-    .n3 .node-ring { animation-delay: 3.5s; }
-    .n4 .node-ring { animation-delay: 5.25s; }
-    @keyframes nodePulse { 0%,100%{opacity:0.25} 50%{opacity:0.7} }
-
-    /* ─── HOW IT WORKS ─── */
-    .step { display: flex; gap: 18px; margin-bottom: 26px; }
-    .step-n {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem; font-weight: 700;
-      color: rgba(181,123,247,0.35);
-      padding-top: 2px; width: 18px; flex-shrink: 0;
-    }
-    .step-text {
-      font-size: 0.92rem; font-weight: 300;
-      color: var(--soft); line-height: 1.65;
-    }
-    .step-text strong { color: var(--white); font-weight: 400; }
-
-    /* ─── ANALOGIES ─── */
-    .analogy { margin-bottom: 32px; }
-    .analogy-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem; font-weight: 700;
-      color: var(--white); margin-bottom: 10px;
-      letter-spacing: -0.01em;
-    }
-    .analogy-title em { font-style: italic; font-weight: 400; color: var(--glow); }
-    .analogy-body {
-      font-size: 0.9rem; font-weight: 300;
-      color: var(--soft); line-height: 1.72;
-    }
-    .analogy-body strong { color: var(--white); font-weight: 400; }
-    .analogy-rule {
-      width: 100%; height: 1px;
-      background: rgba(255,255,255,0.06);
-      margin: 28px 0;
+    .delete-modal-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
 
-    /* ─── CLOSER ─── */
-    .closer-h {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 8vw, 3rem);
-      font-weight: 700; line-height: 1.1;
-      letter-spacing: -0.02em; margin-bottom: 16px;
-    }
-    .closer-h em { font-style: italic; font-weight: 400; color: var(--glow); }
-
-    .btn {
-      display: inline-block;
-      background: var(--purple); color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem; font-weight: 500;
-      padding: 15px 34px; border-radius: 100px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn:hover { background: var(--violet); transform: translateY(-1px); }
-
-    .hint {
-      font-size: 0.73rem; color: var(--softer);
-      font-weight: 300; margin-top: 12px;
+    .btn-keep {
+      flex: 2;
+      border: none;
+      border-radius: 50px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #7B2FBE;
+      color: white;
+      cursor: pointer;
     }
 
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 24px 28px; text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.04);
+    .btn-delete-confirm {
+      flex: 1;
+      border: none;
+      border-radius: 50px;
+      padding: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: #f5f5f5;
+      color: #DC2626;
+      cursor: pointer;
     }
-    footer p { font-size: 0.68rem; font-weight: 300; color: rgba(255,255,255,0.18); }
 
-    /* ─── REVEAL ─── */
-    .reveal {
-      opacity: 0; transform: translateY(18px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+    .visual-share-card {
+      background: linear-gradient(135deg, #3d1278 0%, #2a0d5e 50%, #1a0840 100%);
+      border-radius: 20px; padding: 28px 24px;
+      border: 2px solid rgba(181,123,247,0.6);
+      margin-bottom: 16px; position: relative;
+      overflow: hidden; text-align: center;
+      box-shadow: 0 0 40px rgba(123,47,190,0.4), 0 8px 32px rgba(0,0,0,0.4);
     }
-    .reveal.in { opacity: 1; transform: none; }
-    .r2 { transition-delay: 0.13s; }
-    .r3 { transition-delay: 0.26s; }
+    .visual-share-card::before {
+      content: ''; position: absolute;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.4) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .vsc-brand { font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(181,123,247,0.7); margin-bottom:16px; }
+    .vsc-number { font-size:3.5rem; font-weight:800; color:white; line-height:1; margin-bottom:4px; text-shadow:0 0 30px rgba(181,123,247,0.5); }
+    .vsc-label { font-size:0.85rem; font-weight:300; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .vsc-streak { display:inline-block; background:rgba(181,123,247,0.2); border:1px solid rgba(181,123,247,0.35); border-radius:100px; padding:6px 16px; font-size:0.78rem; font-weight:500; color:#B57BF7; margin-bottom:16px; }
+    .vsc-tagline { font-size:0.72rem; color:rgba(255,255,255,0.35); font-weight:300; line-height:1.6; }
+    .vsc-tagline strong { color:rgba(181,123,247,0.7); font-weight:600; }
+    .share-btn-top { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:linear-gradient(135deg,#7B2FBE,#B57BF7); color:white; border:none; border-radius:14px; padding:16px; font-size:1rem; font-weight:700; cursor:pointer; margin-bottom:24px; box-shadow:0 4px 20px rgba(123,47,190,0.45); font-family:inherit; }
+    .share-btn-top:active { transform:scale(0.97); }
+
+    /* ══ FULL APP LIGHT MODE ══ */
+    body.light {
+      background: #F0ECFF !important;
+      color: #1a0f30 !important;
+    }
+    body.light header {
+      background: linear-gradient(180deg, #e8e0ff 0%, #d8ccff 100%) !important;
+      border-bottom: 1px solid rgba(123,47,190,0.2) !important;
+    }
+    body.light header * { color: #1a0f30 !important; }
+    body.light header .header-logo-name span { color: #7B2FBE !important; }
+    body.light header p.date { color: rgba(26,15,48,0.45) !important; }
+    body.light header .header-greeting { color: rgba(26,15,48,0.6) !important; }
+    body.light .tabs {
+      background: #e8e0ff !important;
+      border-bottom: 1px solid rgba(123,47,190,0.15) !important;
+    }
+    body.light .tab-btn { color: rgba(26,15,48,0.45) !important; background: transparent !important; }
+    body.light .tab-btn.active { color: #7B2FBE !important; border-bottom-color: #7B2FBE !important; }
+    body.light .view { background: #F0ECFF !important; }
+    body.light .prompt-card {
+      background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(181,123,247,0.06)) !important;
+      border-color: rgba(123,47,190,0.25) !important;
+    }
+    body.light .prompt-text { color: #1a0f30 !important; }
+    body.light .input-area {
+      background: #ffffff !important;
+      border-color: rgba(123,47,190,0.25) !important;
+    }
+    body.light .input-area textarea { color: #1a0f30 !important; background: transparent !important; }
+    body.light .input-area textarea::placeholder { color: rgba(26,15,48,0.3) !important; }
+    body.light .char-count { color: rgba(26,15,48,0.4) !important; }
+    body.light .media-btn {
+      border-color: rgba(123,47,190,0.4) !important;
+      color: rgba(26,15,48,0.7) !important;
+      background: rgba(123,47,190,0.07) !important;
+    }
+    body.light .science-card {
+      background: #ffffff !important;
+      border-color: rgba(123,47,190,0.2) !important;
+      color: #1a0f30 !important;
+    }
+    body.light .science-card * { color: #1a0f30 !important; }
+    body.light .log-streak-pill {
+      background: rgba(123,47,190,0.1) !important;
+      color: #7B2FBE !important;
+      border-color: rgba(123,47,190,0.25) !important;
+    }
+    body.light .log-streak-meaning { color: rgba(26,15,48,0.55) !important; }
+    body.light .yesterday-hero {
+      background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(181,123,247,0.06)) !important;
+      border-color: rgba(123,47,190,0.2) !important;
+    }
+    body.light .yesterday-headline { color: #1a0f30 !important; text-shadow: none !important; }
+    body.light .yesterday-subtitle { color: rgba(26,15,48,0.6) !important; }
+    body.light .yesterday-card {
+      background: #ffffff !important;
+      border-color: rgba(123,47,190,0.15) !important;
+    }
+    body.light .yesterday-card .moment-text { color: #1a0f30 !important; }
+    body.light .moment-time { color: rgba(26,15,48,0.45) !important; }
+    body.light .moment-tag { background: rgba(123,47,190,0.1) !important; color: #7B2FBE !important; }
+    body.light #yesterdayQuestion {
+      background: #ffffff !important;
+      border-color: rgba(123,47,246,0.2) !important;
+    }
+    body.light #yesterdayQuestion textarea { color: #1a0f30 !important; }
+    body.light #todayEntriesSection > div { color: rgba(26,15,48,0.35) !important; }
+    body.light #todayEntriesSection [style*="background:rgba(255,255,255,0.05)"] {
+      background: #ffffff !important;
+      border-color: rgba(123,47,190,0.15) !important;
+    }
+    body.light .progress-hero * { color: #1a0f30 !important; }
+    body.light .quick-stats { background: rgba(123,47,190,0.06) !important; }
+    body.light .quick-stat-num { color: #7B2FBE !important; }
+    body.light .quick-stat-label { color: rgba(26,15,48,0.5) !important; }
+    body.light .dot-day { background: rgba(26,15,48,0.08) !important; color: rgba(26,15,48,0.4) !important; }
+    body.light .dot-day.active { background: #7B2FBE !important; color: white !important; }
+    body.light .dot-day.today { border-color: #7B2FBE !important; }
+    body.light .progress-motivator {
+      background: #ffffff !important;
+      border-color: rgba(123,47,190,0.2) !important;
+      color: #1a0f30 !important;
+    }
+    body.light .progress-motivator * { color: #1a0f30 !important; }
+    body.light .modal { background: #ffffff !important; }
+    body.light .modal-title { color: #1a0f30 !important; }
+    body.light .modal textarea, body.light .modal input { color: #1a0f30 !important; background: #f5f0ff !important; }
+
+    /* Catch-all: every text element in light mode is dark */
+    body.light { color: #1a0f30 !important; }
+    body.light p, body.light div, body.light span,
+    body.light h1, body.light h2, body.light h3,
+    body.light label, body.light button:not(.save-btn):not(.yesterday-start-btn):not(.share-btn-top):not(.tab-btn.active) {
+      color: #1a0f30 !important;
+    }
+    body.light .science-card-headline span { color: #7B2FBE !important; }
+    body.light .science-card-label { color: rgba(26,15,48,0.55) !important; }
+    body.light .science-card-step-text { color: rgba(26,15,48,0.7) !important; }
+    body.light .science-step-label { color: #7B2FBE !important; }
+
+    /* Dark mode catch-all — ensure nothing shows dark text on dark bg */
+    body:not(.light) p, body:not(.light) div, body:not(.light) span {
+      /* inherit from parent — don't override intentional colors */
+    }
+    body:not(.light) .delete-modal-title { color: #F0EEFF !important; }
+    body:not(.light) .delete-modal-sub { color: rgba(255,255,255,0.6) !important; }
+    body:not(.light) .progress-section-label { color: rgba(255,255,255,0.4) !important; }
+
+    /* Visual share card — always white text regardless of theme */
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
+    /* Remove duplicate number below card */
+    #vscNumber:not(.vsc-number) { display: none !important; }
+
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
+
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">DOPA<strong>mine</strong></a>
-    <a href="app.html" class="nav-link">Open the app →</a>
-  </nav>
-
-  <!-- ══════ HERO ══════ -->
-  <section class="hero">
-
-    <h1 class="title">
-      <span class="t-action">Write all your<br>daily wins,</span>
-      <span class="t-reaction">see how much happier<br>you get every day.</span>
-    </h1>
-
-    <p class="subtitle">
-      Capture every good moment as it happens.
-      The more you log, the more happiness compounds.
-    </p>
-
-    <!-- WHITE INPUT BOX -->
-    <div class="capture-box" onclick="document.getElementById('win-input').focus()">
-      <div class="capture-label">Log a win</div>
-      <textarea id="win-input" class="capture-input" rows="3">I just had a delicious ice cream 🍦</textarea>
-      <div class="capture-footer">
-        <button class="photo-btn" onclick="event.stopPropagation(); window.location.href='app.html'">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
-            <circle cx="12" cy="13" r="4"/>
-          </svg>
-          Add a photo
-        </button>
-        <a href="app.html" class="save-btn">Save it →</a>
+  <header style="position:relative;">
+    <button onclick="toggleTheme()" id="themeToggle" style="position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(181,123,247,0.4);background:rgba(123,47,190,0.15);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">🌙</button>
+    <div class="header-logo">
+      <div class="header-logo-d">D</div>
+      <div class="header-logo-text">
+        <div class="header-logo-name">DOPA<span>mine</span></div>
+        <div class="header-logo-tagline">Great Yesterday. Better Tomorrow.</div>
       </div>
     </div>
+    <div class="header-greeting" id="headerGreeting"></div>
+    <p class="date" id="headerDate"></p>
+  </header>
 
-    <div class="examples">
-      <p class="examples-label">More examples of small wins:</p>
-      <span class="pill" onclick="fillInput('My morning coffee was absolutely perfect')">Perfect coffee</span>
-      <span class="pill" onclick="fillInput('Made a colleague laugh today')">Made someone laugh</span>
-      <span class="pill" onclick="fillInput('Got outside for a walk today')">Got outside</span>
-      <span class="pill" onclick="fillInput('Finished something I was putting off')">Finished something</span>
-      <span class="pill" onclick="fillInput('Caught a beautiful sunset tonight')">Caught the sunset</span>
-    </div>
-
-  </section>
-
-  <!-- ══════ COMPOUND INTEREST ══════ -->
-  <div class="wrap">
-    <h2 class="sec-h reveal">
-      Like compound interest —<br>
-      <em>for how you feel.</em>
-    </h2>
-    <div class="prose">
-      <p class="reveal r2">
-        One win logged today doesn't feel like much.
-        But <strong>ten wins a day, every day, for two weeks</strong> —
-        that starts to change something real.
-      </p>
-      <p class="reveal r3">
-        Your brain learns what you consistently show it.
-        Show it good things, repeatedly, and it starts finding them
-        on its own — before you even open the app.
-        <strong>That's when the feeling becomes permanent.</strong>
-      </p>
-    </div>
-
-    <!-- Bar chart -->
-    <div class="chart-wrap reveal">
-      <p class="chart-label">Happiness level — week by week</p>
-      <div class="bars">
-        <div class="bar-col"><div class="bar" style="height:14px"></div><span class="bar-d">Wk 1</span></div>
-        <div class="bar-col"><div class="bar" style="height:22px"></div><span class="bar-d">Wk 2</span></div>
-        <div class="bar-col"><div class="bar" style="height:32px"></div><span class="bar-d">Wk 3</span></div>
-        <div class="bar-col"><div class="bar" style="height:45px"></div><span class="bar-d">Wk 4</span></div>
-        <div class="bar-col"><div class="bar" style="height:58px"></div><span class="bar-d">Wk 5</span></div>
-        <div class="bar-col"><div class="bar lit" style="height:72px"></div><span class="bar-d">Wk 6</span></div>
-        <div class="bar-col"><div class="bar lit" style="height:88px"></div><span class="bar-d">Wk 7</span></div>
+  <!-- NAME MODAL -->
+  <div class="modal-overlay" id="nameModal">
+    <div class="modal">
+      <div class="modal-title">Welcome! 👋</div>
+      <p style="font-size:0.95rem;color:var(--muted);margin-bottom:16px;">What's your first name? We'll personalize the app for you.</p>
+      <input type="text" id="nameInput" placeholder="Your first name" maxlength="30"
+        style="width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:12px;font-size:1rem;font-family:inherit;outline:none;"
+        oninput="document.getElementById('nameSubmitBtn').disabled = this.value.trim().length === 0"
+        onkeydown="if(event.key==='Enter' && this.value.trim()) saveName()"
+      />
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn-save-edit" id="nameSubmitBtn" onclick="saveName()" disabled style="flex:1;">Let's go ✓</button>
       </div>
-      <p class="chart-caption">
-        It doesn't happen overnight. <strong>That's the point.</strong>
-      </p>
     </div>
   </div>
 
-  <!-- ══════ THE DOPAMINE LOOP ══════ -->
-  <div class="wrap">
-    <h2 class="sec-h reveal">
-      The dopamine loop<br>
-      <em>you are building.</em>
-    </h2>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('log')">✨ Today</button>
+    <button class="tab-btn" onclick="switchTab('yesterday')">🌅 Yesterday</button>
+    <button class="tab-btn" onclick="switchTab('summary')">📈 My Progress</button>
+  </div>
 
-    <!-- Scientific loop diagram with labels below -->
-    <div class="loop-outer reveal r2">
+  <!-- LOG VIEW -->
+  <div class="view active" id="view-log">
+    <div class="prompt-card" id="promptCard" onclick="nextPrompt()">
+      <div class="prompt-text" id="promptText">ONLY GOOD THINGS</div>
+      <div class="prompt-dots" id="promptDots"></div>
+    </div>
 
-    <svg class="loop-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <div class="log-streak" id="logStreak">
+      <span class="log-streak-pill" id="logStreakPill"></span>
+      <div class="log-streak-meaning" id="logStreakMeaning"></div>
+    </div>
 
-      <!-- Track -->
-      <circle cx="150" cy="150" r="100"
-        fill="none" stroke="rgba(181,123,247,0.15)" stroke-width="1.5" stroke-dasharray="3 8"/>
+    <div class="input-area">
+      <textarea
+        id="momentInput"
+        placeholder="I just ....."
+        maxlength="280"
+        oninput="updateCharCount()"
+      ></textarea>
 
-      <!-- Center branding -->
-      <text x="150" y="153" text-anchor="middle" dominant-baseline="central">
-        <tspan font-family="DM Sans,sans-serif" font-weight="700" font-size="11" fill="rgba(255,255,255,0.9)" letter-spacing="0.5">DOPA</tspan><tspan font-family="DM Sans,sans-serif" font-weight="300" font-size="11" fill="#B57BF7">mine</tspan>
-      </text>
+      <!-- Photo preview -->
+      <div class="photo-preview" id="photoPreview">
+        <img id="photoImg" src="" alt="moment photo" />
+        <button class="photo-remove" onclick="removePhoto()" title="Remove photo">✕</button>
+      </div>
 
-      <!-- NODE 1: TOP — Daily win -->
-      <g class="n1">
-        <circle class="node-ring" cx="150" cy="50" r="34" fill="rgba(123,47,190,0.18)"/>
-        <circle cx="150" cy="50" r="28"
-          fill="#130C26" stroke="rgba(181,123,247,0.45)" stroke-width="1.5"/>
-        <text x="150" y="53" text-anchor="middle"
-          font-family="DM Sans,sans-serif" font-weight="500"
-          font-size="6.5" fill="rgba(255,255,255,0.9)" letter-spacing="0.3">NOTICE</text>
-      </g>
+      <!-- Media buttons + save row -->
+      <div class="media-row">
+        <button class="media-btn" id="photoBtnToggle" onclick="togglePhotoCapture()">📷 Photo</button>
+        <button class="media-btn" id="moodBtnToggle" onclick="toggleMoodPicker()">😊 Mood</button>
+        <input type="file" id="photoInput" accept="image/*"
+          style="display:none" onchange="handlePhotoSelect(event)" />
+      </div>
 
-      <!-- NODE 2: RIGHT — Optimism -->
-      <g class="n2">
-        <circle class="node-ring" cx="250" cy="150" r="34" fill="rgba(123,47,190,0.18)"/>
-        <circle cx="250" cy="150" r="28"
-          fill="#130C26" stroke="rgba(181,123,247,0.45)" stroke-width="1.5"/>
-        <text x="250" y="153" text-anchor="middle"
-          font-family="DM Sans,sans-serif" font-weight="500"
-          font-size="6.5" fill="rgba(255,255,255,0.9)" letter-spacing="0.3">SIGNAL</text>
-      </g>
-
-      <!-- NODE 3: BOTTOM — Your dopamine -->
-      <g class="n3">
-        <circle class="node-ring" cx="150" cy="250" r="34" fill="rgba(123,47,190,0.18)"/>
-        <circle cx="150" cy="250" r="28"
-          fill="#130C26" stroke="rgba(181,123,247,0.45)" stroke-width="1.5"/>
-        <text x="150" y="253" text-anchor="middle"
-          font-family="DM Sans,sans-serif" font-weight="500"
-          font-size="6.5" fill="rgba(255,255,255,0.9)" letter-spacing="0.3">REWARD</text>
-      </g>
-
-      <!-- NODE 4: LEFT — Happiness -->
-      <g class="n4">
-        <circle class="node-ring" cx="50" cy="150" r="34" fill="rgba(123,47,190,0.18)"/>
-        <circle cx="50" cy="150" r="28"
-          fill="#130C26" stroke="rgba(181,123,247,0.45)" stroke-width="1.5"/>
-        <text x="50" y="153" text-anchor="middle"
-          font-family="DM Sans,sans-serif" font-weight="500"
-          font-size="6.5" fill="rgba(255,255,255,0.9)" letter-spacing="0.3">REPEAT</text>
-      </g>
-
-      <!-- Orbit trail -->
-      <g class="orbit-trail">
-        <circle cx="150" cy="50" r="5" fill="rgba(181,123,247,0.28)"/>
-      </g>
-
-      <!-- Orbit dot -->
-      <g class="orbit-arm">
-        <circle cx="150" cy="50" r="9" fill="#B57BF7" opacity="0.9"/>
-      </g>
-
-    </svg>
-
-      <!-- 2x2 label grid -->
-      <div class="loop-labels">
-        <div>
-          <span class="ll-name">Notice</span>
-          <p class="ll-desc">You spot something good. A moment worth keeping.</p>
-        </div>
-        <div>
-          <span class="ll-name">Signal</span>
-          <p class="ll-desc">Your brain registers the moment as meaningful.</p>
-        </div>
-        <div>
-          <span class="ll-name">Reward</span>
-          <p class="ll-desc">Dopamine is released. Small. Real. Immediate.</p>
-        </div>
-        <div>
-          <span class="ll-name">Repeat</span>
-          <p class="ll-desc">The habit reinforces. Brain seeks more.</p>
+      <!-- Mood picker -->
+      <div class="mood-picker" id="moodPicker">
+        <div class="mood-grid" id="moodGrid">
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="😄 Joy">😄</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="💪 Win">💪</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🤝 Connection">🤝</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🧠 Growth">🧠</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="❤️ Gratitude">❤️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎯 Focus">🎯</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🌿 Calm">🌿</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🍸 Cheers">🍸</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏃 Active">🏃</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏋️ Gym">🏋️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🛍️ Shopping">🛍️</button>
+          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎂 Birthday">🎂</button>
         </div>
       </div>
 
-    </div><!-- end loop-outer -->
+      <div class="input-footer">
+        <span class="char-count"><span id="charCount">0</span>/280</span>
+        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
+      </div>
+    </div>
 
-    <div class="prose reveal r3">
-      <p>
-        Every win you capture sends a signal to your brain.
-        <strong>That signal is dopamine.</strong>
-        Repeat it enough, and your brain builds a preference —
-        it begins scanning your environment for good things
-        automatically, because that is what gets rewarded.
-      </p>
-      <p>
-        This is not motivation. This is not positive thinking.
-        <strong>This is neuroscience.</strong>
-        You are literally reshaping the neural pathways
-        that determine how you experience daily life.
-      </p>
+    <!-- Science visual card -->
+    <div class="science-card" id="scienceQuote"></div>
+
+    <!-- Today's entries list -->
+    <div id="todayEntriesSection" style="margin-top:20px; padding-bottom: 24px;"></div>
+
+  </div>
+
+  <!-- YESTERDAY VIEW -->
+  <div class="view" id="view-yesterday">
+    <div class="yesterday-hero">
+      <div class="yesterday-headline">Yesterday Was Good.</div>
+      <div id="yesterdaySubtitle" class="yesterday-subtitle"></div>
+    </div>
+
+    <!-- Reflection question -->
+    <div id="yesterdayQuestion" style="
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(181,123,247,0.2);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    ">
+      <div style="font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#B57BF7;margin-bottom:8px;">How does yesterday make you feel today?</div>
+      <textarea id="yesterdayFeelInput" placeholder="Reading these moments, I feel…" maxlength="200"
+        style="width:100%;background:none;border:none;outline:none;font-family:inherit;font-size:0.9rem;font-weight:300;color:white;line-height:1.6;resize:none;min-height:52px;caret-color:#B57BF7;"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    </div>
+
+    <div class="yesterday-list" id="yesterdayList"></div>
+    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today →</button>
+  </div>
+
+  <!-- SUMMARY VIEW -->
+  <div class="view" id="view-summary">
+    <div class="stats-bar" id="statsBar"></div>
+
+    <!-- Visual share card — always visible at top of progress -->
+    <div class="visual-share-card" id="visualShareCard">
+      <div class="vsc-brand">DOPAmine</div>
+      <div class="vsc-number" id="vscNumber">0</div>
+      <div class="vsc-label">good moments captured</div>
+      <div class="vsc-streak" id="vscStreak">🔥 0 day streak</div>
+      <div class="vsc-tagline">Training my brain to find good.<br><strong>mydopa.app</strong></div>
+    </div>
+
+    <!-- Share button -->
+    <button class="share-btn-top" onclick="shareProgress()">
+      🚀 Share my progress
+    </button>
+
+    <div id="summaryContent"></div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-title">Edit Moment</div>
+      <label>What happened</label>
+      <textarea id="editText" maxlength="280" oninput="updateEditCount()"></textarea>
+      <label>Date</label>
+      <input type="date" id="editDate" />
+      <label>Tag (optional)</label>
+      <div class="modal-tags" id="editTagsRow">
+        <div class="tag-chip" onclick="toggleTag(this)">😄 Joy</div>
+        <div class="tag-chip" onclick="toggleTag(this)">💪 Win</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🤝 Connection</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🧠 Growth</div>
+        <div class="tag-chip" onclick="toggleTag(this)">❤️ Gratitude</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🎯 Focus</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🌿 Calm</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-save-edit" onclick="saveEdit()">Save Changes ✓</button>
+      </div>
     </div>
   </div>
 
-  <!-- ══════ HOW TO USE IT ══════ -->
-  <div class="wrap">
-    <h2 class="sec-h reveal">
-      Built for<br><em>zero friction.</em>
-    </h2>
-
-    <div class="step reveal r2">
-      <span class="step-n">1</span>
-      <p class="step-text">
-        <strong>Something good happens — open the app and log it.</strong>
-        Takes three seconds. That is the whole interaction.
-        No journaling. No reflection. No effort.
-      </p>
-    </div>
-    <div class="step reveal r2">
-      <span class="step-n">2</span>
-      <p class="step-text">
-        <strong>Do it as many times a day as you can.</strong>
-        Three is good. Five is great. Ten means your brain
-        is already starting to see the world differently.
-      </p>
-    </div>
-    <div class="step reveal r3">
-      <span class="step-n">3</span>
-      <p class="step-text">
-        <strong>Show up every single day.</strong>
-        Consistency over time is what creates the compound effect —
-        not any individual entry.
-      </p>
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="delete-modal-body">
+        <div class="delete-modal-title">Delete this moment?</div>
+        <div class="delete-modal-sub">This can't be undone.</div>
+        <div class="delete-modal-actions">
+          <button class="btn-keep" onclick="closeDeleteModal()">Keep It</button>
+          <button class="btn-delete-confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ══════ GYM + DIET ══════ -->
-  <div class="wrap">
-    <h2 class="sec-h reveal">
-      You already know<br>
-      <em>how this works.</em>
-    </h2>
-
-    <div class="analogy reveal r2">
-      <div class="analogy-title">Like going to the gym.</div>
-      <p class="analogy-body">
-        One workout does not change your body.
-        But showing up consistently — even for 20 minutes —
-        transforms you over months.
-        <strong>DOPAmine is your daily rep for happiness.</strong>
-        Each win you log is a rep. Each day you show up is a session.
-        Miss one day and you have not failed. Miss two weeks
-        and you have lost the compound effect. That is the only rule.
-      </p>
-    </div>
-
-    <div class="analogy-rule"></div>
-
-    <div class="analogy reveal r3">
-      <div class="analogy-title">Like eating well.</div>
-      <p class="analogy-body">
-        One salad does not make you healthy.
-        One bad meal does not destroy you.
-        It is the pattern over time that shapes how you feel every day.
-        <strong>Logging wins is feeding your brain good information,
-        consistently.</strong>
-        The compound effect is real — and it works
-        exactly the same way.
-      </p>
-    </div>
-  </div>
-
-  <!-- ══════ CLOSER ══════ -->
-  <div class="wrap" style="text-align: center; padding-bottom: 88px;">
-    <h2 class="closer-h reveal">
-      Your wins are<br>already happening.<br>
-      <em>Start counting them.</em>
-    </h2>
-    <p class="prose reveal r2" style="margin-bottom: 32px; max-width: 300px; margin-left: auto; margin-right: auto;">
-      Free. No account. No app store needed.
-    </p>
-    <a href="app.html" class="btn reveal r2">Open DOPAmine →</a>
-    <p class="hint reveal r3" style="margin-top: 14px;">
-      Add to home screen for one-tap access throughout your day
-    </p>
-  </div>
-
-  <footer>
-    <p>DOPAmine — your brain on good things.</p>
-  </footer>
+  <div class="toast" id="toast"></div>
 
   <script>
-    function fillInput(text) {
-      const el = document.getElementById('win-input');
-      el.value = text; el.focus();
+    // ── Helpers ──────────────────────────────────────────────
+    const STORAGE_KEY = 'greatYesterday_moments';
+    const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const SB_URL = 'https://qcfoykmmbjvduspunvsb.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjZm95a21tYmp2ZHVzcHVudnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MTc1OTAsImV4cCI6MjA5Mjk5MzU5MH0.9WwCW0pbbciBy3sUO9Y6qpQK6-LclMCRUuF9cr_NEOE';
+    const SB_HEADS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
+
+    const UID_KEY = 'dopamine_uid';
+    function getUserId() {
+      let uid = localStorage.getItem(UID_KEY);
+      if (!uid) { uid = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,9); localStorage.setItem(UID_KEY, uid); }
+      return uid;
     }
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    async function sbSave(m) {
+      try {
+        await fetch(SB_URL+'/rest/v1/moments', {method:'POST', headers:SB_HEADS,
+          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id)})});
+      } catch(e) { console.log('sbSave offline:', e.message); }
+    }
+
+    async function sbSync() {
+      try {
+        const res = await fetch(SB_URL+'/rest/v1/moments?user_id=eq.'+getUserId()+'&order=created_at.desc&limit=500',
+          {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (!Array.isArray(rows) || rows.length === 0) return;
+        const remote = rows.map(r => ({id:parseInt(r.moment_id)||Date.now(), text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:null}));
+        const local = loadMomentsLocal();
+        const merged = [...remote];
+        local.forEach(lm => { if (!merged.find(rm => String(rm.id)===String(lm.id))) merged.push(lm); });
+        merged.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(UID_KEY, getUserId());
+        renderTodayEntries(); updateLogStreak();
+        updateVisualCard(merged, calcStreak(merged));
+        console.log('Synced', merged.length, 'moments');
+      } catch(e) { console.log('sbSync offline:', e.message); }
+    }
+
+    function loadMomentsLocal() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+    }
+    function loadMoments() { return loadMomentsLocal(); }
+    function saveMoments(moments) { localStorage.setItem(STORAGE_KEY, JSON.stringify(moments)); }
+
+    function formatDate(dateStr) {
+      const today = todayKey();
+      const d = new Date(today + 'T00:00:00');
+      d.setDate(d.getDate() - 1);
+      const yesterday = d.toLocaleDateString('en-CA', { timeZone: TZ });
+
+      if (dateStr === today) return 'Today';
+      if (dateStr === yesterday) return 'Yesterday';
+
+      return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+      });
+    }
+
+    function formatTime(isoString) {
+      return new Date(isoString).toLocaleTimeString('en-US', {
+        hour: 'numeric', minute: '2-digit', timeZone: TZ
+      });
+    }
+
+    function todayKey() {
+      return new Date().toLocaleDateString('en-CA', { timeZone: TZ });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ── Name & greeting ──────────────────────────────────────
+    const NAME_KEY = 'greatYesterday_name';
+
+    function saveName() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+      localStorage.setItem(NAME_KEY, name);
+      document.getElementById('nameModal').classList.remove('open');
+      applyGreeting(name);
+    }
+
+    function applyGreeting(name) {
+      document.getElementById('headerGreeting').innerHTML =
+        '<strong>' + name + '</strong>, create your own DOPAmine.';
+    }
+
+    function initName() {
+      const name = localStorage.getItem(NAME_KEY);
+      if (name) {
+        applyGreeting(name);
+      } else {
+        document.getElementById('nameModal').classList.add('open');
+        setTimeout(() => document.getElementById('nameInput').focus(), 100);
+      }
+    }
+
+    // ── Re-engagement tiers ──────────────────────────────────
+    const LAST_OPEN_KEY = 'dopamine_lastOpen';
+
+    function checkReEngagement() {
+      const lastOpen = localStorage.getItem(LAST_OPEN_KEY);
+      const today = todayKey();
+
+      if (lastOpen && lastOpen !== today) {
+        const lastDate = new Date(lastOpen + 'T12:00:00');
+        const todayDate = new Date(today + 'T12:00:00');
+        const daysDiff = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+        if (daysDiff === 1) {
+          // Came back after exactly one day — streak preserved via grace
+          // No message needed — the streak number says it all
+        } else if (daysDiff === 2) {
+          setTimeout(() => showToast("You built something real. It's still here. 💜"), 600);
+        } else if (daysDiff >= 3 && daysDiff <= 5) {
+          const total = loadMoments().length;
+          setTimeout(() => showToast(`Welcome back. All ${total} good moments waited for you. ✨`), 600);
+        } else if (daysDiff >= 6 && daysDiff <= 14) {
+          setTimeout(() => showToast("Life got full. That's okay. What's good right now? 💜"), 600);
+        } else if (daysDiff > 14) {
+          setTimeout(() => showToast("The practice doesn't judge time away. It just welcomes you back. ✨"), 600);
+        }
+      }
+
+      localStorage.setItem(LAST_OPEN_KEY, today);
+    }
+
+    // ── Day detail panel ─────────────────────────────────────
+    let currentDetailKey = null;
+
+    function showDayDetail(dateKey, dateObj) {
+      const panel = document.getElementById('dayDetailPanel');
+
+      // Toggle closed if same day tapped again
+      if (currentDetailKey === dateKey && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        currentDetailKey = null;
+        return;
+      }
+
+      currentDetailKey = dateKey;
+      const moments = loadMoments().filter(m => m.dateKey === dateKey);
+
+      if (moments.length === 0) {
+        panel.innerHTML = `<div class="day-detail-header">No moments this day</div>`;
+        panel.classList.add('open');
+        return;
+      }
+
+      const dateLabel = dateObj.toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+      });
+
+      const cards = moments
+        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+        .map(m => `
+          <div class="day-detail-card">
+            <div class="day-detail-text">${escapeHtml(m.text)}</div>
+            ${m.photo ? `<img class="day-detail-photo" src="${m.photo}" alt="moment" />` : ''}
+            <div class="day-detail-meta">
+              ${formatTime(m.createdAt)}
+              ${m.tags && m.tags.length ? ' · ' + m.tags.join(' ') : ''}
+              ${m.autoTag ? ' · ' + m.autoTag : ''}
+            </div>
+          </div>`).join('');
+
+      panel.innerHTML = `
+        <div class="day-detail-header">
+          ${dateLabel} — ${moments.length} moment${moments.length !== 1 ? 's' : ''}
+        </div>
+        ${cards}`;
+
+      panel.classList.add('open');
+
+      // Scroll panel into view
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+    function openNextStep() {
+      document.getElementById('nextStepModal').classList.add('open');
+    }
+
+    function closeNextStep() {
+      document.getElementById('nextStepModal').classList.remove('open');
+      showToast("We'll let you know when DOPAmine+ is ready. 💜");
+    }
+
+    initName();
+    checkReEngagement();
+
+    // Auto-focus textarea on load if no name modal is shown
+    if (localStorage.getItem(NAME_KEY)) {
+      setTimeout(() => document.getElementById('momentInput').focus(), 100);
+    }
+
+    updateLogStreak();
+    sbSync();
+
+    // ── Header date ──────────────────────────────────────────
+    document.getElementById('headerDate').textContent =
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric',
+        timeZone: TZ
+      });
+
+    // ── Tabs ─────────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active',
+          (i === 0 && tab === 'log') ||
+          (i === 1 && tab === 'yesterday') ||
+          (i === 2 && tab === 'summary')
+        );
+      });
+      document.getElementById('view-log').classList.toggle('active', tab === 'log');
+      document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
+      document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
+      if (tab === 'summary') renderSummary();
+      if (tab === 'yesterday') renderYesterday();
+      if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
+    }
+
+    // ── Input / tag logic ────────────────────────────────────
+    function updateCharCount() {
+      const val = document.getElementById('momentInput').value;
+      document.getElementById('charCount').textContent = val.length;
+      document.getElementById('saveBtn').disabled = val.trim().length === 0;
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    // ── Science visual cards ─────────────────────────────────
+    const SCIENCE_CARDS = {
+      morning: `
+        <div class="science-card-label">🧠 The Dopamine Loop</div>
+        <div class="science-card-headline">You do something good.<br><span>Your brain remembers.</span></div>
+        <div class="science-card-steps">
+          <div class="science-card-step">
+            <div class="science-step-icon">✓</div>
+            <div class="science-step-text"><strong>Do</strong> something meaningful</div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">⚡</div>
+            <div class="science-step-text"><strong>Dopamine</strong> is released</div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">🧠</div>
+            <div class="science-step-text">Brain says: <strong>"This matters — remember this"</strong></div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">🔄</div>
+            <div class="science-step-text">You're <strong>more likely to repeat it</strong></div>
+          </div>
+        </div>
+        <div class="science-card-divider"></div>
+        <div class="science-card-bottom">DOPAmine trains your brain to seek more of <strong>what matters.</strong></div>`,
+
+      afternoon: `
+        <div class="science-card-label">📈 How Consistency Works</div>
+        <div class="science-card-headline"><span>Consistency</span> builds<br>more dopamine.</div>
+        <div class="science-card-steps">
+          <div class="science-card-step">
+            <div class="science-step-icon">1</div>
+            <div class="science-step-text"><strong>Repeat</strong> — You take a good action consistently</div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">2</div>
+            <div class="science-step-text"><strong>Anticipate</strong> — Your brain expects the positive outcome</div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">3</div>
+            <div class="science-step-text"><strong>Release</strong> — Dopamine fires more efficiently</div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">4</div>
+            <div class="science-step-text"><strong>Reinforce</strong> — The habit gets stronger. You repeat it.</div>
+          </div>
+        </div>
+        <div class="science-card-divider"></div>
+        <div class="science-card-bottom"><strong>More consistency = More dopamine = Stronger you.</strong></div>`,
+
+      evening: `
+        <div class="science-card-label">⚡ Consistent vs Inconsistent</div>
+        <div class="science-card-headline">Small moments.<br><span>Compounding forever.</span></div>
+        <div class="science-card-stats">
+          <div class="science-stat">
+            <div class="science-stat-num">📉</div>
+            <div class="science-stat-label">Inconsistent</div>
+            <div class="science-step-text" style="font-size:0.7rem;margin-top:4px;color:rgba(255,255,255,0.4)">Spikes then drops. Hard to build momentum.</div>
+          </div>
+          <div class="science-stat">
+            <div class="science-stat-num">📈</div>
+            <div class="science-stat-label">Consistent</div>
+            <div class="science-step-text" style="font-size:0.7rem;margin-top:4px;color:rgba(255,255,255,0.6)">Steady growth. Habits become automatic.</div>
+          </div>
+        </div>
+        <div class="science-card-divider"></div>
+        <div class="science-card-bottom">Every small, consistent action is a vote for <strong>the person you want to become.</strong></div>`,
+
+      night: `
+        <div class="science-card-label">🌙 What You Built Today</div>
+        <div class="science-card-headline">Today becomes<br><span>your yesterday.</span></div>
+        <div class="science-card-steps">
+          <div class="science-card-step">
+            <div class="science-step-icon">📝</div>
+            <div class="science-step-text">You noticed the good. Your brain <strong>filed it permanently.</strong></div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">💪</div>
+            <div class="science-step-text">Stronger neural pathways. <strong>Habits becoming automatic.</strong></div>
+          </div>
+          <div class="science-card-step">
+            <div class="science-step-icon">⭐</div>
+            <div class="science-step-text">Tomorrow you wake up with a <strong>better past than yesterday.</strong></div>
+          </div>
+        </div>
+        <div class="science-card-divider"></div>
+        <div class="science-card-bottom"><strong>Consistency today. Dopamine tomorrow. A better you forever.</strong></div>`,
+    };
+
+    function showScienceQuote() {
+      const hour = new Date().getHours();
+      let card;
+      if (hour >= 5  && hour < 12) card = SCIENCE_CARDS.morning;
+      else if (hour >= 12 && hour < 18) card = SCIENCE_CARDS.afternoon;
+      else if (hour >= 18 && hour < 23) card = SCIENCE_CARDS.evening;
+      else card = SCIENCE_CARDS.night;
+
+      const el = document.getElementById('scienceQuote');
+      el.innerHTML = card;
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = 'fadeQuote 0.8s ease';
+    }
+
+    showScienceQuote();
+
+    // ── Prompt carousel ─────────────────────────────────
+    const PROMPTS = [
+      '✨  ONLY GOOD THINGS',
+      '😊  DO TELL, WHAT MADE YOU SMILE?',
+      '📸  CAPTURE THE MOMENT',
+      '🌟  WRITE ABOUT SOMETHING GOOD THAT HAPPENED',
+      '🧠  YOUR BRAIN IS WATCHING',
+      '💜  LOG IT BEFORE YOU FORGET IT',
+      '⚡  FEED YOUR DOPAMINE'
+    ];
+    let promptIdx = 0;
+
+    function buildPromptDots() {
+      const dots = document.getElementById('promptDots');
+      if (!dots) return;
+      dots.innerHTML = PROMPTS.map((_, i) =>
+        `<span style="
+          display:inline-block; width:5px; height:5px; border-radius:50%;
+          background:${i === 0 ? 'rgba(181,123,247,0.9)' : 'rgba(255,255,255,0.2)'};
+          margin: 0 3px; transition: background 0.3s;
+        " data-dot="${i}"></span>`
+      ).join('');
+    }
+
+    function showPrompt(idx) {
+      const el = document.getElementById('promptText');
+      const dots = document.querySelectorAll('[data-dot]');
+      if (!el) return;
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.textContent = PROMPTS[idx];
+        el.style.opacity = '1';
+      }, 200);
+      dots.forEach((d, i) => {
+        d.style.background = i === idx
+          ? 'rgba(181,123,247,0.9)'
+          : 'rgba(255,255,255,0.2)';
+      });
+    }
+
+    function nextPrompt() {
+      promptIdx = (promptIdx + 1) % PROMPTS.length;
+      showPrompt(promptIdx);
+    }
+
+    buildPromptDots();
+    setInterval(() => {
+      promptIdx = (promptIdx + 1) % PROMPTS.length;
+      showPrompt(promptIdx);
+    }, 4000);
+
+    // ── Today entries renderer ───────────────────────────
+    function renderTodayEntries() {
+      const section = document.getElementById('todayEntriesSection');
+      if (!section) return;
+      const moments = loadMoments();
+      const today = todayKey();
+      const todayMoments = moments.filter(m => m.dateKey === today);
+      if (todayMoments.length === 0) {
+        section.innerHTML = '';
+        return;
+      }
+      section.innerHTML = `
+        <div style="font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(181,123,247,0.7);margin-bottom:12px;">
+          Today's wins · ${todayMoments.length}
+        </div>
+        ${todayMoments.map(m => `
+          <div style="
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            border-left: 3px solid rgba(123,47,190,0.7);
+            border-radius:10px; padding:12px 14px; margin-bottom:8px;
+          ">
+            <div style="font-size:0.9rem;font-weight:300;color:rgba(255,255,255,0.88);line-height:1.5;">${escapeHtml(m.text)}</div>
+            ${m.tags && m.tags.length ? `<div style="margin-top:6px;font-size:0.72rem;color:rgba(181,123,247,0.7);">${m.tags.join(' · ')}</div>` : ''}
+          </div>`).join('')}`;
+    }
+
+    renderTodayEntries();
+
+    // ── Share progress (Canvas image) ────────────────────
+    async function shareProgress() {
+      const moments = loadMoments();
+      const streak  = calcStreak(moments);
+      const total   = moments.length;
+
+      showToast('Generating image...');
+
+      try {
+        // ── Build canvas ──────────────────────────────────
+        const W = 1080, H = 1080;
+        const canvas = document.createElement('canvas');
+        canvas.width  = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0,   '#3d1278');
+        bg.addColorStop(0.5, '#2a0d5e');
+        bg.addColorStop(1,   '#1a0840');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Top radial glow
+        const glow = ctx.createRadialGradient(W/2, 160, 0, W/2, 160, 440);
+        glow.addColorStop(0, 'rgba(123,47,190,0.55)');
+        glow.addColorStop(1, 'rgba(123,47,190,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, W, H);
+
+        // Bottom-right accent glow
+        const glow2 = ctx.createRadialGradient(W, H, 0, W, H, 500);
+        glow2.addColorStop(0, 'rgba(181,123,247,0.22)');
+        glow2.addColorStop(1, 'rgba(181,123,247,0)');
+        ctx.fillStyle = glow2;
+        ctx.fillRect(0, 0, W, H);
+
+        // Border
+        const br = 56;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(br, 0); ctx.lineTo(W-br, 0);
+        ctx.quadraticCurveTo(W, 0, W, br);
+        ctx.lineTo(W, H-br);
+        ctx.quadraticCurveTo(W, H, W-br, H);
+        ctx.lineTo(br, H);
+        ctx.quadraticCurveTo(0, H, 0, H-br);
+        ctx.lineTo(0, br);
+        ctx.quadraticCurveTo(0, 0, br, 0);
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(181,123,247,0.65)';
+        ctx.lineWidth   = 8;
+        ctx.stroke();
+        ctx.clip();
+
+        // ── Text — use only system fonts, no emoji in canvas ──
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'alphabetic';
+
+        // Brand
+        ctx.font      = '700 40px sans-serif';
+        ctx.fillStyle = 'rgba(181,123,247,0.85)';
+        ctx.fillText('D O P A m i n e', W/2, 210);
+
+        // Decorative line
+        ctx.strokeStyle = 'rgba(181,123,247,0.3)';
+        ctx.lineWidth   = 2;
+        ctx.beginPath();
+        ctx.moveTo(240, 240); ctx.lineTo(W-240, 240);
+        ctx.stroke();
+
+        // Big number with gradient
+        const numGrad = ctx.createLinearGradient(0, 300, 0, 570);
+        numGrad.addColorStop(0, '#ffffff');
+        numGrad.addColorStop(1, '#B57BF7');
+        ctx.fillStyle  = numGrad;
+        ctx.shadowColor = 'rgba(181,123,247,0.7)';
+        ctx.shadowBlur  = 70;
+        ctx.font = `900 ${total >= 1000 ? 210 : 260}px sans-serif`;
+        ctx.fillText(String(total), W/2, 565);
+        ctx.shadowBlur = 0;
+
+        // Moments label
+        ctx.font      = '300 46px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.60)';
+        ctx.fillText('good moments captured', W/2, 645);
+
+        // Streak pill background
+        const pillW = 460, pillH = 80, pillX = (W-pillW)/2, pillY = 700;
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(pillX, pillY, pillW, pillH, 40)
+          : (()=>{
+              ctx.moveTo(pillX+40,pillY); ctx.lineTo(pillX+pillW-40,pillY);
+              ctx.quadraticCurveTo(pillX+pillW,pillY,pillX+pillW,pillY+40);
+              ctx.lineTo(pillX+pillW,pillY+pillH-40);
+              ctx.quadraticCurveTo(pillX+pillW,pillY+pillH,pillX+pillW-40,pillY+pillH);
+              ctx.lineTo(pillX+40,pillY+pillH);
+              ctx.quadraticCurveTo(pillX,pillY+pillH,pillX,pillY+pillH-40);
+              ctx.lineTo(pillX,pillY+40);
+              ctx.quadraticCurveTo(pillX,pillY,pillX+40,pillY);
+              ctx.closePath();
+            })();
+        ctx.fillStyle   = 'rgba(255,255,255,0.12)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+        ctx.lineWidth   = 2;
+        ctx.stroke();
+
+        // Streak text (fire emoji works in fillText on modern iOS/Android)
+        ctx.font      = '600 40px sans-serif';
+        ctx.fillStyle = '#e0b8ff';
+        ctx.fillText(
+          '\uD83D\uDD25 ' + streak + ' day' + (streak !== 1 ? 's' : '') + ' streak',
+          W/2, pillY + 52
+        );
+
+        // Tagline
+        ctx.font      = '300 36px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.32)';
+        ctx.fillText('Training my brain to find good.', W/2, 858);
+
+        ctx.font      = '600 36px sans-serif';
+        ctx.fillStyle = 'rgba(181,123,247,0.80)';
+        ctx.fillText('mydopa.app', W/2, 912);
+
+        ctx.restore();
+
+        // ── Convert canvas → dataURL → Blob (most compatible path) ──
+        const dataURL = canvas.toDataURL('image/png');
+
+        // dataURL → Blob via fetch (avoids FileReader quirks on iOS)
+        const fetchRes = await fetch(dataURL);
+        const blob     = await fetchRes.blob();
+        const file     = new File([blob], 'dopamine-progress.png', { type: 'image/png' });
+
+        // ── Try native share sheet with image file ──
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'My DOPAmine Progress',
+              text:  `${total} good moments. ${streak}-day streak. mydopa.app`
+            });
+            return;
+          } catch (e) {
+            if (e.name === 'AbortError') return; // user cancelled
+            // fall through to download
+          }
+        }
+
+        // ── Fallback: save image to device ──
+        const objURL = URL.createObjectURL(blob);
+        const a      = document.createElement('a');
+        a.href        = objURL;
+        a.download    = 'dopamine-progress.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(objURL), 1000);
+        showToast('Image saved to your device! \uD83D\uDDBC\uFE0F');
+
+      } catch (err) {
+        console.error('shareProgress error:', err);
+        showToast('Could not generate image \u2014 try again');
+      }
+    }
+
+    // ── Update visual share card in progress ─────────────
+    function updateVisualCard(moments, streak) {
+      const numEl = document.getElementById('vscNumber');
+      const strEl = document.getElementById('vscStreak');
+      if (numEl) numEl.textContent = moments.length;
+      if (strEl) strEl.textContent = `🔥 ${streak} day${streak !== 1 ? 's' : ''} streak`;
+    }
+
+    function toggleMoodPicker() {
+      const picker = document.getElementById('moodPicker');
+      const btn = document.getElementById('moodBtnToggle');
+      const isVisible = picker.classList.contains('visible');
+      picker.classList.toggle('visible', !isVisible);
+      btn.classList.toggle('active', !isVisible);
+      if (!isVisible) updateMoodBtn();
+    }
+
+    function toggleMoodTag(el) {
+      el.classList.toggle('selected');
+      updateMoodBtn();
+    }
+
+    function updateMoodBtn() {
+      const selected = [...document.querySelectorAll('#moodGrid .mood-chip.selected')];
+      const btn = document.getElementById('moodBtnToggle');
+      if (selected.length > 0) {
+        btn.textContent = selected.map(el => el.textContent).join(' ');
+        btn.classList.add('active');
+      } else {
+        btn.textContent = '😊 Mood';
+        btn.classList.remove('active');
+      }
+    }
+
+    function getSelectedTags() {
+      return [...document.querySelectorAll('#moodGrid .mood-chip.selected')]
+        .map(el => el.dataset.tag);
+    }
+
+    function resetMoodPicker() {
+      document.querySelectorAll('#moodGrid .mood-chip.selected')
+        .forEach(el => el.classList.remove('selected'));
+      document.getElementById('moodPicker').classList.remove('visible');
+      document.getElementById('moodBtnToggle').textContent = '😊 Mood';
+      document.getElementById('moodBtnToggle').classList.remove('active');
+    }
+
+    // ── Streak pill (Log tab) ────────────────────────────────
+    const STREAK_MILESTONES = {
+      3:   "You're building something real.",
+      7:   "One week. Your brain is changing.",
+      14:  "Two weeks of good moments.",
+      30:  "30 days. You have proof your life is good.",
+      50:  "50 days of dopamine. From the inside.",
+      100: "100 days. You are not the same person who started this."
+    };
+
+    // ── Streak meaning messages ──────────────────────────────
+    function getStreakMeaning(streak) {
+      if (streak >= 100) return "This is who you are now.";
+      if (streak >= 50)  return "This is a habit. You own it.";
+      if (streak >= 30)  return "A month of showing up. Look at that.";
+      if (streak >= 14)  return "Two weeks. Consistent.";
+      if (streak >= 7)   return "One week. You showed up.";
+      if (streak >= 4)   return "You're showing up.";
+      return "You started. That's everything.";
+    }
+
+    function updateLogStreak() {
+      const moments = loadMoments();
+      const streak = calcStreak(moments);
+      const el = document.getElementById('logStreak');
+      const pill = document.getElementById('logStreakPill');
+      const meaning = document.getElementById('logStreakMeaning');
+      if (streak > 0) {
+        pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
+        meaning.textContent = getStreakMeaning(streak);
+        el.classList.add('visible');
+      } else {
+        el.classList.remove('visible');
+      }
+    }
+
+    function checkStreakMilestone(streakBefore, streakAfter) {
+      if (STREAK_MILESTONES[streakAfter] && streakAfter !== streakBefore) {
+        setTimeout(() => showToast(STREAK_MILESTONES[streakAfter]), 400);
+      }
+    }
+
+    // ── Auto time-of-day tag ─────────────────────────────────
+    function getTimeOfDayTag() {
+      const hour = new Date().toLocaleString('en-US', {
+        hour: 'numeric', hour12: false, timeZone: TZ
+      });
+      const h = parseInt(hour, 10);
+      if (h >= 5  && h <= 11) return 'Morning';
+      if (h >= 12 && h <= 17) return 'Afternoon';
+      if (h >= 18 && h <= 22) return 'Evening';
+      return 'Night';
+    }
+
+    // ── Save ripple ──────────────────────────────────────────
+    function triggerRipple() {
+      const btn = document.getElementById('saveBtn');
+      const ripple = document.createElement('div');
+      ripple.className = 'save-ripple';
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 400);
+    }
+
+    // ── Photo capture ────────────────────────────────────────
+    let currentPhotoData = null;
+
+    function togglePhotoCapture() {
+      document.getElementById('photoInput').click();
+    }
+
+    function handlePhotoSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Compress image using canvas before storing
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX = 800;
+          let w = img.width, h = img.height;
+          if (w > MAX) { h = h * MAX / w; w = MAX; }
+          if (h > MAX) { w = w * MAX / h; h = MAX; }
+          canvas.width = w;
+          canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          currentPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+
+          // Show preview
+          document.getElementById('photoImg').src = currentPhotoData;
+          document.getElementById('photoPreview').classList.add('visible');
+          document.getElementById('photoBtnToggle').classList.add('active');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      // Reset input so same file can be selected again
+      event.target.value = '';
+    }
+
+    function removePhoto() {
+      currentPhotoData = null;
+      document.getElementById('photoImg').src = '';
+      document.getElementById('photoPreview').classList.remove('visible');
+      document.getElementById('photoBtnToggle').classList.remove('active');
+    }
+
+    function resetMediaInputs() {
+      removePhoto();
+      resetMoodPicker();
+    }
+
+    // ── Save ─────────────────────────────────────────────────
+    function saveMoment() {
+      const text = document.getElementById('momentInput').value.trim();
+      if (!text) return;
+
+      const momentsBefore = loadMoments();
+      const streakBefore = calcStreak(momentsBefore);
+
+      const newMoment = {
+        id: Date.now(),
+        text,
+        tags: getSelectedTags(),
+        autoTag: getTimeOfDayTag(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey(),
+        photo: currentPhotoData || null,
+      };
+      momentsBefore.unshift(newMoment);
+      saveMoments(momentsBefore);
+      sbSave(newMoment);
+
+      const streakAfter = calcStreak(momentsBefore);
+
+      triggerRipple();
+
+      document.getElementById('momentInput').value = '';
+      document.getElementById('charCount').textContent = '0';
+      document.getElementById('saveBtn').disabled = true;
+      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+      resetMediaInputs();
+
+      showToast('Moment saved! 🌟');
+      updateLogStreak();
+      renderTodayEntries();
+      checkStreakMilestone(streakBefore, streakAfter);
+    }
+
+    // ── Edit ─────────────────────────────────────────────────
+    let editingId = null;
+
+    function openEditModal(id) {
+      const moments = loadMoments();
+      const m = moments.find(m => m.id === id);
+      if (!m) return;
+      editingId = id;
+
+      document.getElementById('editText').value = m.text;
+      document.getElementById('editDate').value = m.dateKey;
+
+      // Reset and pre-select tags
+      document.querySelectorAll('#editTagsRow .tag-chip').forEach(chip => {
+        chip.classList.toggle('selected', m.tags.includes(chip.textContent.trim()));
+      });
+
+      document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('open');
+      editingId = null;
+    }
+
+    function updateEditCount() {}
+
+    function saveEdit() {
+      const text = document.getElementById('editText').value.trim();
+      if (!text) return;
+
+      const newDate = document.getElementById('editDate').value;
+      const newTags = [...document.querySelectorAll('#editTagsRow .tag-chip.selected')]
+        .map(el => el.textContent.trim());
+
+      const moments = loadMoments();
+      const idx = moments.findIndex(m => m.id === editingId);
+      if (idx === -1) return;
+
+      moments[idx].text = text;
+      moments[idx].dateKey = newDate;
+      moments[idx].tags = newTags;
+
+      saveMoments(moments);
+      closeEditModal();
+      renderSummary();
+      showToast('Updated! ✓');
+    }
+
+    // ── Delete ───────────────────────────────────────────────
+    let pendingDeleteId = null;
+
+    function deleteMoment(id) {
+      pendingDeleteId = id;
+      document.getElementById('deleteModal').classList.add('open');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('open');
+      pendingDeleteId = null;
+    }
+
+    function confirmDelete() {
+      if (pendingDeleteId === null) return;
+      const moments = loadMoments().filter(m => m.id !== pendingDeleteId);
+      saveMoments(moments);
+      closeDeleteModal();
+      renderSummary();
+      showToast('Removed');
+    }
+
+    // ── Yesterday ────────────────────────────────────────────
+    function yesterdayKey() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return d.toLocaleDateString('en-CA', { timeZone: TZ });
+    }
+
+    function renderYesterday() {
+      const yKey = yesterdayKey();
+      const moments = loadMoments().filter(m => m.dateKey === yKey)
+        .slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+      const subtitle = document.getElementById('yesterdaySubtitle');
+      const list = document.getElementById('yesterdayList');
+
+      if (moments.length === 0) {
+        subtitle.innerHTML = '';
+        list.innerHTML = `<p class="yesterday-empty">Yesterday is a blank page.<br>Today doesn't have to be.</p>`;
+        return;
+      }
+
+      subtitle.textContent = `You captured ${moments.length} good moment${moments.length !== 1 ? 's' : ''}`;
+
+      list.innerHTML = moments.map(m => `
+        <div class="yesterday-card">
+          <div class="moment-text">${escapeHtml(m.text)}</div>
+          ${m.photo ? `<img class="card-photo" src="${m.photo}" alt="moment" />` : ''}
+          <div class="moment-meta">
+            <span class="moment-time">${formatTime(m.createdAt)}</span>
+            ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Summary ──────────────────────────────────────────────
+    function renderSummary() {
+      const moments = loadMoments();
+      const container = document.getElementById('summaryContent');
+      const statsBar = document.getElementById('statsBar');
+      statsBar.innerHTML = ''; // Clear old stats bar — progress tab handles its own layout
+
+      if (moments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="big">✨</div>
+            <p style="font-weight:600;color:white;margin-bottom:6px;">Your first good moment is waiting.</p>
+            <p>What just made you smile?</p>
+          </div>`;
+        return;
+      }
+
+      const streak = calcStreak(moments);
+      const totalDays = new Set(moments.map(m => m.dateKey)).size;
+      const todayCount = moments.filter(m => m.dateKey === todayKey()).length;
+      const meaning = getStreakMeaning(streak);
+
+      // ── Big number ──
+      container.innerHTML = `
+        <div class="progress-hero">
+          <div class="progress-total-num">${moments.length}</div>
+          <div class="progress-total-label">Good moments captured</div>
+          <div class="progress-streak-row">
+            <span style="font-size:1.4rem">🔥</span>
+            <span class="progress-streak-num">${streak}</span>
+            <span class="progress-streak-text">day streak</span>
+          </div>
+          ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
+        </div>
+
+        <!-- Quick stats -->
+        <div class="quick-stats">
+          <div class="quick-stat clickable" onclick="showDayDetail('${todayKey()}', new Date())">
+            <div class="quick-stat-num">${todayCount}</div>
+            <div class="quick-stat-label">Today ↓</div>
+          </div>
+          <div class="quick-stat">
+            <div class="quick-stat-num">${totalDays}</div>
+            <div class="quick-stat-label">Active Days</div>
+          </div>
+          <div class="quick-stat">
+            <div class="quick-stat-num">${totalDays > 0 ? (moments.length / totalDays).toFixed(1) : 0}</div>
+            <div class="quick-stat-label">Avg / Day</div>
+          </div>
+        </div>
+
+        <!-- 30-day dot calendar -->
+        <div class="progress-section-label">Last 30 Days — tap a date to see entries</div>
+        <div class="dot-calendar" id="dotCalendar"></div>
+        <div class="day-detail-panel" id="dayDetailPanel"></div>
+
+        <!-- Top mood tags -->
+        <div class="progress-section-label">Your Top Moments</div>
+        <div class="top-tags-row" id="topTagsRow"></div>
+
+        <!-- Motivator -->
+        <div class="progress-motivator" id="progressMotivator"></div>
+      `;
+
+      // ── Build 30-day dot calendar ──
+      const activeDays = new Set(moments.map(m => m.dateKey));
+      const today = todayKey();
+      const cal = document.getElementById('dotCalendar');
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toLocaleDateString('en-CA', { timeZone: TZ });
+        const dayNum = d.getDate();
+        const hasEntries = activeDays.has(key);
+        const dot = document.createElement('div');
+        dot.className = 'dot-day' +
+          (hasEntries ? ' active has-entries' : '') +
+          (key === today ? ' today' : '');
+        dot.innerHTML = `<span class="dot-num">${dayNum}</span>`;
+        if (hasEntries) {
+          dot.onclick = () => showDayDetail(key, d);
+        }
+        cal.appendChild(dot);
+      }
+
+      // ── Top tags ──
+      const tagCounts = {};
+      moments.forEach(m => {
+        (m.tags || []).forEach(t => {
+          tagCounts[t] = (tagCounts[t] || 0) + 1;
+        });
+      });
+      const topTags = Object.entries(tagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      const tagRow = document.getElementById('topTagsRow');
+      if (topTags.length > 0) {
+        topTags.forEach(([tag, count]) => {
+          const parts = tag.split(' ');
+          const emoji = parts[0];
+          const name = parts.slice(1).join(' ');
+          tagRow.innerHTML += `
+            <div class="top-tag-bubble">
+              <div class="top-tag-emoji">${emoji}</div>
+              <div class="top-tag-count">${count}x</div>
+              <div class="top-tag-name">${name}</div>
+            </div>`;
+        });
+      } else {
+        tagRow.innerHTML = `<div style="font-size:0.82rem;color:rgba(255,255,255,0.3);font-style:italic;">Tag your moments to see patterns here.</div>`;
+      }
+
+      // ── Update visual share card ──────────────────────
+      updateVisualCard(moments, streak);
+
+      // ── Conversion trigger logic ──────────────────────────
+      const mot = document.getElementById('progressMotivator');
+      const total = moments.length;
+
+      // Determine if user has hit a conversion milestone
+      const conversionMilestone =
+        streak >= 30 || total >= 100 ? 'champion' :
+        streak >= 14 || total >= 50  ? 'ready' :
+        streak >= 7  || total >= 30  ? 'emerging' : null;
+
+      if (conversionMilestone === 'champion') {
+        mot.classList.add('unlocked');
+        mot.innerHTML = `
+          <strong>You've proven something rare.</strong>
+          ${total} moments. ${streak} days of showing up.
+          Most people never get here. You did.<br><br>
+          There's a next level built for exactly this moment.
+          <br>
+          <button class="next-step-btn" onclick="openNextStep()">
+            Show me what's next →
+          </button>`;
+      } else if (conversionMilestone === 'ready') {
+        mot.classList.add('unlocked');
+        mot.innerHTML = `
+          <strong>This consistency is real.</strong>
+          ${total} moments captured. ${streak} days strong.
+          You're not just trying anymore — you're doing it.<br><br>
+          When you're ready, there's more waiting for you.
+          <br>
+          <button class="next-step-btn" onclick="openNextStep()">
+            Show me what's next →
+          </button>`;
+      } else if (conversionMilestone === 'emerging') {
+        mot.innerHTML = `
+          <strong>You showed up.</strong>
+          ${total} good moments that didn't disappear.
+          This shelf is yours. Keep filling it.`;
+      } else if (total < 10) {
+        mot.innerHTML = `
+          <strong>You started.</strong>
+          Most people never do. Keep going.`;
+      } else {
+        mot.innerHTML = `
+          <strong>${total} moments saved.</strong>
+          This is real. Look what consistency looks like.`;
+      }
+    }
+
+    function calcStreak(moments) {
+      if (moments.length === 0) return 0;
+      const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
+
+      const today = todayKey();
+      const yDate = new Date();
+      yDate.setDate(yDate.getDate() - 1);
+      const yKey = yDate.toLocaleDateString('en-CA', { timeZone: TZ });
+
+      // Must start from today or yesterday
+      if (days[0] !== today && days[0] !== yKey) return 0;
+
+      let streak = 0;
+      let expected = days[0] === today ? today : yKey;
+      let graceUsed = false;  // One grace day allowed per streak
+
+      for (const day of days) {
+        if (day === expected) {
+          streak++;
+          const d = new Date(expected + 'T12:00:00');
+          d.setDate(d.getDate() - 1);
+          expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+        } else if (!graceUsed) {
+          // Check if exactly one day was skipped
+          const expectedDate = new Date(expected + 'T12:00:00');
+          const dayDate = new Date(day + 'T12:00:00');
+          const diffDays = Math.round((expectedDate - dayDate) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) {
+            // One day gap — apply grace, count this day, continue
+            graceUsed = true;
+            streak++;
+            const d = new Date(day + 'T12:00:00');
+            d.setDate(d.getDate() - 1);
+            expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    const THEME_KEY = 'dopamine_theme';
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light');
+      localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+      document.getElementById('themeToggle').textContent = isLight ? '☀️' : '🌙';
+    }
+    (function(){
+      if(localStorage.getItem(THEME_KEY)==='light'){
+        document.body.classList.add('light');
+        const btn = document.getElementById('themeToggle');
+        if(btn) btn.textContent = '☀️';
+      }
+    })();
   </script>
+  <!-- NEXT STEP MODAL -->
+  <div class="next-step-modal" id="nextStepModal">
+    <div class="next-step-sheet">
+      <div class="next-step-close">
+        <button onclick="closeNextStep()">✕</button>
+      </div>
+      <div class="next-step-headline">
+        You're ready for<br><span>DOPAmine+</span>
+      </div>
+      <div class="next-step-sub">
+        You've proven the habit. Now go deeper.
+        DOPAmine+ opens four pillars of personal development —
+        organized, curated, and built on the same consistency
+        that got you here.
+      </div>
+      <div class="pillar-row">
+        <div class="pillar-card">
+          <div class="pillar-card-icon">🧠</div>
+          <div class="pillar-card-name">Mindset</div>
+          <div class="pillar-card-desc">Beliefs, patterns, mental strength</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card-icon">💪</div>
+          <div class="pillar-card-name">Body</div>
+          <div class="pillar-card-desc">Energy, movement, recovery</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card-icon">❤️</div>
+          <div class="pillar-card-name">Emotions</div>
+          <div class="pillar-card-desc">Awareness, resilience, connection</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card-icon">🎯</div>
+          <div class="pillar-card-name">Goals</div>
+          <div class="pillar-card-desc">Direction, intention, progress</div>
+        </div>
+      </div>
+      <button class="next-step-cta" onclick="closeNextStep()">
+        I'm interested — notify me when it's ready
+      </button>
+      <button class="next-step-later" onclick="closeNextStep()">
+        Maybe later
+      </button>
+    </div>
+  </div>
 
 </body>
 </html>

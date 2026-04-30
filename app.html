@@ -1627,6 +1627,26 @@
     body.light .modal { background: #ffffff !important; }
     body.light .modal-title { color: #1a0f30 !important; }
     body.light .modal textarea, body.light .modal input { color: #1a0f30 !important; background: #f5f0ff !important; }
+
+    /* Catch-all: every text element in light mode is dark */
+    body.light { color: #1a0f30 !important; }
+    body.light p, body.light div, body.light span,
+    body.light h1, body.light h2, body.light h3,
+    body.light label, body.light button:not(.save-btn):not(.yesterday-start-btn):not(.share-btn-top):not(.tab-btn.active) {
+      color: #1a0f30 !important;
+    }
+    body.light .science-card-headline span { color: #7B2FBE !important; }
+    body.light .science-card-label { color: rgba(26,15,48,0.55) !important; }
+    body.light .science-card-step-text { color: rgba(26,15,48,0.7) !important; }
+    body.light .science-step-label { color: #7B2FBE !important; }
+
+    /* Dark mode catch-all — ensure nothing shows dark text on dark bg */
+    body:not(.light) p, body:not(.light) div, body:not(.light) span {
+      /* inherit from parent — don't override intentional colors */
+    }
+    body:not(.light) .delete-modal-title { color: #F0EEFF !important; }
+    body:not(.light) .delete-modal-sub { color: rgba(255,255,255,0.6) !important; }
+    body:not(.light) .progress-section-label { color: rgba(255,255,255,0.4) !important; }
   </style>
 </head>
 <body>
@@ -2168,11 +2188,13 @@
 
     // ── Prompt carousel ─────────────────────────────────
     const PROMPTS = [
-      'ONLY GOOD THINGS',
-      'WHAT MADE YOU SMILE?',
-      'CAPTURE THE MOMENT',
-      'SOMETHING GOOD HAPPENED',
-      'YOUR BRAIN IS WATCHING'
+      '✨  ONLY GOOD THINGS',
+      '😊  WHAT MADE YOU SMILE?',
+      '📸  CAPTURE THE MOMENT',
+      '🌟  SOMETHING GOOD HAPPENED',
+      '🧠  YOUR BRAIN IS WATCHING',
+      '💜  LOG IT BEFORE YOU FORGET',
+      '⚡  FEED YOUR DOPAMINE'
     ];
     let promptIdx = 0;
 

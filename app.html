@@ -1711,15 +1711,49 @@
     const STORAGE_KEY = 'greatYesterday_moments';
     const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    function loadMoments() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      } catch { return []; }
+    const SB_URL = 'https://qcfoykmmbjvduspunvsb.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjZm95a21tYmp2ZHVzcHVudnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MTc1OTAsImV4cCI6MjA5Mjk5MzU5MH0.9WwCW0pbbciBy3sUO9Y6qpQK6-LclMCRUuF9cr_NEOE';
+    const SB_HEADS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
+
+    const UID_KEY = 'dopamine_uid';
+    function getUserId() {
+      let uid = localStorage.getItem(UID_KEY);
+      if (!uid) { uid = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,9); localStorage.setItem(UID_KEY, uid); }
+      return uid;
     }
 
-    function saveMoments(moments) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(moments));
+    async function sbSave(m) {
+      try {
+        await fetch(SB_URL+'/rest/v1/moments', {method:'POST', headers:SB_HEADS,
+          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id)})});
+      } catch(e) { console.log('sbSave offline:', e.message); }
     }
+
+    async function sbSync() {
+      try {
+        const res = await fetch(SB_URL+'/rest/v1/moments?user_id=eq.'+getUserId()+'&order=created_at.desc&limit=500',
+          {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (!Array.isArray(rows) || rows.length === 0) return;
+        const remote = rows.map(r => ({id:parseInt(r.moment_id)||Date.now(), text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:null}));
+        const local = loadMomentsLocal();
+        const merged = [...remote];
+        local.forEach(lm => { if (!merged.find(rm => String(rm.id)===String(lm.id))) merged.push(lm); });
+        merged.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(UID_KEY, getUserId());
+        renderTodayEntries(); updateLogStreak();
+        updateVisualCard(merged, calcStreak(merged));
+        console.log('Synced', merged.length, 'moments');
+      } catch(e) { console.log('sbSync offline:', e.message); }
+    }
+
+    function loadMomentsLocal() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+    }
+    function loadMoments() { return loadMomentsLocal(); }
+    function saveMoments(moments) { localStorage.setItem(STORAGE_KEY, JSON.stringify(moments)); }
 
     function formatDate(dateStr) {
       const today = todayKey();
@@ -1876,6 +1910,7 @@
     }
 
     updateLogStreak();
+    sbSync();
 
     // ── Header date ──────────────────────────────────────────
     document.getElementById('headerDate').textContent =
@@ -2279,7 +2314,7 @@
       const momentsBefore = loadMoments();
       const streakBefore = calcStreak(momentsBefore);
 
-      momentsBefore.unshift({
+      const newMoment = {
         id: Date.now(),
         text,
         tags: getSelectedTags(),
@@ -2287,8 +2322,10 @@
         createdAt: new Date().toISOString(),
         dateKey: todayKey(),
         photo: currentPhotoData || null,
-      });
+      };
+      momentsBefore.unshift(newMoment);
       saveMoments(momentsBefore);
+      sbSave(newMoment);
 
       const streakAfter = calcStreak(momentsBefore);
 

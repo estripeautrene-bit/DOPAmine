@@ -3169,5 +3169,33 @@
     </div>
   </div>
 
+  <!-- NOTIFICATION PERMISSION MODAL -->
+  <div class="notif-overlay" id="notifModal">
+    <div class="notif-sheet">
+      <div class="notif-handle"></div>
+      <div class="notif-headline">Want a daily nudge to find your 3 good things?</div>
+      <div class="notif-sub">When does your morning usually start? We'll check in around that time.</div>
+      <div class="notif-times">
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'06:30')">
+          <span>6:30am</span><span class="notif-time-label">Before the day gets loud</span>
+        </button>
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'08:00')">
+          <span>8:00am</span><span class="notif-time-label">Coffee in hand, day starting</span>
+        </button>
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'09:30')">
+          <span>9:30am</span><span class="notif-time-label">Once things are moving</span>
+        </button>
+        <button class="notif-time-btn" onclick="toggleCustomTime(this)">
+          <span>Pick a different time</span><span class="notif-time-label">Your choice</span>
+        </button>
+      </div>
+      <div class="notif-custom" id="notifCustom">
+        <input type="time" id="notifCustomInput" value="09:00" onchange="setCustomTime(this.value)" />
+      </div>
+      <button class="notif-cta" onclick="requestNotifPermission()">Yes, remind me</button>
+      <button class="notif-skip" onclick="closeNotifModal(false)">Not now</button>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -3037,8 +3037,6 @@
     function shouldShowNotifPrompt(){
       if(localStorage.getItem(NOTIF_PROMPT_KEY))return false;
       if(localStorage.getItem(NOTIF_TIME_KEY))return false;
-      if(!('Notification'in window)||!('serviceWorker'in navigator))return false;
-      if(Notification.permission==='denied')return false;
       return true;
     }
 
@@ -3080,6 +3078,12 @@
 
     async function requestNotifPermission(){
       try{
+        if(!('Notification'in window)||!('serviceWorker'in navigator)){
+          localStorage.setItem(NOTIF_TIME_KEY,selectedNotifTime);
+          closeNotifModal(true);
+          showToast('Add DOPAmine to your home screen for full notifications!');
+          return;
+        }
         const perm=await Notification.requestPermission();
         if(perm!=='granted'){closeNotifModal(false);showToast('Notifications blocked. Enable in settings.');return;}
         const reg=await navigator.serviceWorker.register('/sw.js');

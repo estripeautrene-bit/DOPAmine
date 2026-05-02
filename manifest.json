@@ -1,7 +1,7 @@
 {
   "name": "DOPAmine",
   "short_name": "DOPAmine",
-  "start_url": "./app.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#7B2FBE",

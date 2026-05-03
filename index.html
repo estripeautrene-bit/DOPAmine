@@ -2182,7 +2182,7 @@ remote.forEach(rm => { if (!merged.find(lm => String(lm.id)===String(rm.id))) me
       document.getElementById('view-log').classList.toggle('active', tab === 'log');
       document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
       document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
-      if (tab === 'summary') renderSummary();
+      if (tab === 'summary') { renderSummary(); sbSync(); }
       if (tab === 'yesterday') renderYesterday();
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
     }

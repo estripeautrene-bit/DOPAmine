@@ -1960,10 +1960,11 @@
 
     const UID_KEY = 'dopamine_uid';
     function getUserId() {
-      let uid = localStorage.getItem(UID_KEY);
-      if (!uid) { uid = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,9); localStorage.setItem(UID_KEY, uid); }
-      return uid;
-    }
+  // FOUNDER UID — hardcoded until user auth is built (Phase 2)
+  const FOUNDER_UID = 'user_1777422617172_vcol8q3';
+  localStorage.setItem(UID_KEY, FOUNDER_UID);
+  return FOUNDER_UID;
+}
 
     async function sbSave(m) {
       try {

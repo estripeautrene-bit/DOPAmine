@@ -2182,7 +2182,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       });
       document.getElementById('view-log').classList.toggle('active', tab === 'log');
       document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
-      document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
+      if (tab === 'summary') { renderSummary(); sbSync(); }
       if (tab === 'summary') { renderSummary(); sbSync(); }
       if (tab === 'yesterday') renderYesterday();
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);

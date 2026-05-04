@@ -1961,12 +1961,12 @@
     const SB_HEADS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
 
     const UID_KEY = 'dopamine_uid';
-    function getUserId() {
+   function getUserId() {
   const FOUNDER_UID = 'user_1777422617172_vcol8q3';
   let uid = localStorage.getItem(UID_KEY);
   if (!uid) {
-    uid = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
-    localStorage.setItem(UID_KEY, uid);
+    localStorage.setItem(UID_KEY, FOUNDER_UID);
+    return FOUNDER_UID;
   }
   return uid;
 }

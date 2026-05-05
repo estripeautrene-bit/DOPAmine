@@ -29,7 +29,8 @@ const COPY: Record<Slot, string[]> = {
   ]
 }
 
-// Target local times for afternoon and evening slots
+const AFTERNOON_GOAL_REACHED = "Already at 3. Good morning."
+
 const FIXED_TIMES: Record<string, string> = {
   afternoon: '12:30',
   evening: '20:30'
@@ -52,6 +53,19 @@ function localHHMM(timezone: string): string {
     return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`
   } catch {
     return '00:00'
+  }
+}
+
+function todayDateKey(timezone: string): string {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date())
+  } catch {
+    return new Date().toISOString().substring(0, 10)
   }
 }
 
@@ -81,7 +95,7 @@ Deno.serve(async (req) => {
 
     const { data: subs, error } = await supabase
       .from('push_subscriptions')
-      .select('id, subscription, notify_time, timezone')
+      .select('id, user_id, subscription, notify_time, timezone')
       .eq('active', true)
 
     if (error) {
@@ -102,28 +116,43 @@ Deno.serve(async (req) => {
       return now === FIXED_TIMES[slot]
     })
 
-    const message = pick(COPY[slot])
-    const payload = JSON.stringify({
-      title: 'DOPAmine',
-      body: message,
-      icon: '/icon.png'
-    })
+    let winsTodayByUser: Record<string, number> = {}
+
+    if (slot === 'afternoon' && targets.length > 0) {
+      const userIds = [...new Set(targets.map(t => t.user_id).filter(Boolean))]
+      const dateKeys = [...new Set(targets.map(t => todayDateKey(t.timezone ?? 'UTC')))]
+
+      const { data: moments } = await supabase
+        .from('moments')
+        .select('user_id, date_key')
+        .in('user_id', userIds)
+        .in('date_key', dateKeys)
+
+      for (const m of moments ?? []) {
+        winsTodayByUser[m.user_id] = (winsTodayByUser[m.user_id] ?? 0) + 1
+      }
+    }
 
     const results = await Promise.allSettled(
-      targets.map(s => webpush.sendNotification(s.subscription, payload))
+      targets.map(s => {
+        let message: string
+        if (slot === 'afternoon' && (winsTodayByUser[s.user_id] ?? 0) >= 3) {
+          message = AFTERNOON_GOAL_REACHED
+        } else {
+          message = pick(COPY[slot])
+        }
+        const payload = JSON.stringify({ title: 'DOPAmine', body: message, icon: '/icon.png' })
+        return webpush.sendNotification(s.subscription, payload)
+      })
     )
 
-    // Deactivate gone subscriptions (410 = unsubscribed)
     const expiredIds = results
       .map((r, i) => ({ r, id: targets[i].id }))
       .filter(({ r }) => r.status === 'rejected' && (r.reason as any)?.statusCode === 410)
       .map(({ id }) => id)
 
     if (expiredIds.length > 0) {
-      await supabase
-        .from('push_subscriptions')
-        .update({ active: false })
-        .in('id', expiredIds)
+      await supabase.from('push_subscriptions').update({ active: false }).in('id', expiredIds)
     }
 
     const sent = results.filter(r => r.status === 'fulfilled').length

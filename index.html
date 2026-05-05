@@ -2796,6 +2796,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     // ── Photo capture ────────────────────────────────────────
     let currentPhotoData = null;
+    let currentPhotoBlob = null;
 
     function togglePhotoCapture() {
       document.getElementById('photoInput').click();
@@ -2819,6 +2820,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           currentPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+          canvas.toBlob(blob => { currentPhotoBlob = blob; }, 'image/jpeg', 0.7);
 
           // Show preview
           document.getElementById('photoImg').src = currentPhotoData;
@@ -2834,9 +2836,24 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function removePhoto() {
       currentPhotoData = null;
+      currentPhotoBlob = null;
       document.getElementById('photoImg').src = '';
       document.getElementById('photoPreview').classList.remove('visible');
       document.getElementById('photoBtnToggle').classList.remove('active');
+    }
+
+    async function uploadPhotoToStorage(blob, momentId) {
+      try {
+        const uid = getUserId();
+        if (!uid || !blob) return null;
+        const path = uid + '/' + momentId + '.jpg';
+        const { error } = await sbClient.storage
+          .from('moment-photos')
+          .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+        if (error) { console.log('photo upload error:', error.message); return null; }
+        const { data } = sbClient.storage.from('moment-photos').getPublicUrl(path);
+        return data.publicUrl;
+      } catch(e) { console.log('photo upload offline:', e.message); return null; }
     }
 
     function resetMediaInputs() {
@@ -2845,7 +2862,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     // ── Save ─────────────────────────────────────────────────
-    function saveMoment() {
+    async function saveMoment() {
       const text = document.getElementById('momentInput').value.trim();
       if (!text) return;
 
@@ -2873,6 +2890,9 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       document.getElementById('charCount').textContent = '0';
       document.getElementById('saveBtn').disabled = true;
       document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+
+      const blobToUpload = currentPhotoBlob;
+      const uploadId = String(newMoment.id);
       resetMediaInputs();
 
       showToast('Moment saved! 🌟');
@@ -2880,6 +2900,16 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       renderTodayEntries();
       checkStreakMilestone(streakBefore, streakAfter);
       maybeShowNotifPrompt();
+
+      // Upload photo to Storage and replace base64 with public URL
+      if (blobToUpload) {
+        const url = await uploadPhotoToStorage(blobToUpload, uploadId);
+        if (url) {
+          const moments = loadMoments();
+          const idx = moments.findIndex(m => String(m.id) === uploadId);
+          if (idx !== -1) { moments[idx].photo = url; saveMoments(moments); renderTodayEntries(); }
+        }
+      }
     }
 
     // ── Edit ─────────────────────────────────────────────────

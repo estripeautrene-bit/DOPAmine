@@ -3522,13 +3522,7 @@ function checkInstallPrompt() {
     }
 
     (async () => {
-      const { data: { session } } = await sbClient.auth.getSession();
-      if (session && !recoveryMode) {
-        currentUser = session.user;
-        initApp();
-      } else if (!recoveryMode) {
-        showAuthScreen();
-      }
+      let authShowTimer = null;
 
       sbClient.auth.onAuthStateChange((event, session) => {
         if (event === 'PASSWORD_RECOVERY') {
@@ -3538,6 +3532,7 @@ function checkInstallPrompt() {
         }
         if (recoveryMode) return;
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          clearTimeout(authShowTimer);
           currentUser = session ? session.user : null;
           if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
           hideAuthScreen();
@@ -3548,6 +3543,15 @@ function checkInstallPrompt() {
           showAuthScreen();
         }
       });
+
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (session && !recoveryMode) {
+        currentUser = session.user;
+        if (session.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+        initApp();
+      } else if (!recoveryMode) {
+        authShowTimer = setTimeout(showAuthScreen, 500);
+      }
     })();
   </script>
   <!-- NEXT STEP MODAL -->

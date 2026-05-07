@@ -16,7 +16,8 @@
       "Bash(supabase functions *)",
       "Bash(git -C /Users/reneestripeaut/DOPAmine/DOPAmine add index.html supabase/functions/send-daily-notifications/index.ts)",
       "Bash(git *)",
-      "Bash(pip3 install *)"
+      "Bash(pip3 install *)",
+      "Bash(gh api *)"
     ]
   }
 }

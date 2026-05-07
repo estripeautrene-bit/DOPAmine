@@ -3,89 +3,185 @@ import webpush from 'npm:web-push'
 
 type Slot = 'morning' | 'afternoon' | 'evening'
 
-const COPY: Record<Slot, string[]> = {
-  morning: [
-    "3 wins minimum. Go go go.",
-    "Good morning. I will be coming back for the rest later.",
-    "Your day has at least 3 good things in it. Prove it.",
-    "Chop Chop, 3+ wins today. Go.",
-    "Morning. Hunt for 3 good things. The first one is the easiest.",
-    "Day just started. 3 wins are already out there. Go find them.",
-    "3 good things. That's all. What's number one?"
-  ],
-  afternoon: [
-    "Busy busy busy? Give me some wins.",
-    "Halfway through. How close are you to your 3?",
-    "Come on. You've had wins today. How many have you logged?",
-    "3+ wins by tonight. Where are you right now?",
-    "Don't tell me you only have one. Give me more."
-  ],
-  evening: [
-    "Don't you dare close this day without 3 wins logged.",
-    "I know today had something good in it. Spill it.",
-    "You're not done yet. One good thing. Go.",
-    "Last call. 3 good things. Are you done yet?",
-    "Don't go to sleep without celebrating your wins."
-  ]
+const PAIRS: Record<string, Record<Slot, string>> = {
+  A: {
+    morning:   "Something good is already out there. Go find your first one.",
+    afternoon: "Afternoon check. How many wins have you caught today?",
+    evening:   "Last chance to close the day right. What was good?"
+  },
+  B: {
+    morning:   "Bet you can't name 3 good things before noon.",
+    afternoon: "Still taking that bet. How many have you logged?",
+    evening:   "Don't you dare close this day without 3 wins logged."
+  },
+  C: {
+    morning:   "[N] days. Today makes [N+1]. Your 3 are out there.",
+    afternoon: "Day [N+1] in progress. How many wins today?",
+    evening:   "[N+1] days. Your 3 wins close it out."
+  },
+  D: {
+    morning:   "3 things are going to happen today. Start watching.",
+    afternoon: "What have you noticed so far? Catch what\'s worth keeping.",
+    evening:   "Day\'s almost done. What was good?"
+  },
+  E: {
+    morning:   "New day. What you built is still here. Find your 3.",
+    afternoon: "Welcome back. How many wins today?",
+    evening:   "End it strong. One more good thing is out there."
+  },
+  F: {
+    morning:   "Day [DAY]. Still building. 3 wins is the whole practice.",
+    afternoon: "Still building. How many wins today?",
+    evening:   "Day [DAY] done right means 3 wins. How close are you?"
+  },
+  H: {
+    morning:   "Weekend. Still 3. Easier when the day slows down.",
+    afternoon: "Mid-day. Weekend wins count just as much. How many?",
+    evening:   "End the weekend right. 3 wins. Done?"
+  },
+  I: {
+    morning:   "3 is your floor. What\'s today\'s ceiling?",
+    afternoon: "How many are you at? You usually go past 3.",
+    evening:   "3 minimum. You usually go past it. How many today?"
+  }
 }
 
-const AFTERNOON_GOAL_REACHED = "Already at 3. Good morning."
+const DEFAULT_ROTATION = ['A', 'B', 'D']
 
-const FIXED_TIMES: Record<string, string> = {
-  afternoon: '12:30',
-  evening: '20:30'
+interface UserState {
+  streak_count: number
+  wins_today: number
+  missed_yesterday: boolean
+  account_age_days: number
+  avg_daily_wins_7d: number
 }
 
-function pick(arr: string[]): string {
-  return arr[Math.floor(Math.random() * arr.length)]
+function applyVars(copy: string, state: UserState): string {
+  return copy
+    .replace(/\[N\+1\]/g, String(state.streak_count + 1))
+    .replace(/\[N\]/g,    String(state.streak_count))
+    .replace(/\[DAY\]/g,  String(state.account_age_days))
+}
+
+function afternoonCopy(pairId: string, state: UserState): string {
+  if (state.wins_today >= 3) return "Already at 3. Good morning."
+  if (state.wins_today === 2) return "Two in. One more and the day is done right."
+  if (state.wins_today === 1) return "One in. Two to go. You\'ve got time."
+  return applyVars(PAIRS[pairId]?.afternoon ?? PAIRS.A.afternoon, state)
+}
+
+function eveningCopy(pairId: string, state: UserState): string {
+  if (state.wins_today >= 4) return "Past 3 today. That\'s a good day."
+  if (state.wins_today === 3) return applyVars(PAIRS[pairId]?.evening ?? PAIRS.A.evening, state)
+  if (state.wins_today === 2) return "Two down. One more and the day is done right."
+  if (state.wins_today === 1) return "One down. Two more before the day closes."
+  return "Still time. What\'s one good thing from today? Start there."
 }
 
 function localHHMM(timezone: string): string {
   try {
     const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+      timeZone: timezone, hour: '2-digit', minute: '2-digit', hour12: false
     }).formatToParts(new Date())
     const h = parts.find(p => p.type === 'hour')?.value ?? '00'
     const m = parts.find(p => p.type === 'minute')?.value ?? '00'
     return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`
-  } catch {
-    return '00:00'
-  }
+  } catch { return '00:00' }
 }
 
-function todayDateKey(timezone: string): string {
+function dateKey(timezone: string, offsetDays = 0): string {
+  const d = new Date()
+  d.setDate(d.getDate() + offsetDays)
   try {
     return new Intl.DateTimeFormat('en-CA', {
-      timeZone: timezone,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }).format(new Date())
-  } catch {
-    return new Date().toISOString().substring(0, 10)
-  }
+      timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit'
+    }).format(d)
+  } catch { return d.toISOString().substring(0, 10) }
 }
+
+function dayOfWeek(timezone: string): string {
+  try {
+    return new Intl.DateTimeFormat('en-US', { timeZone: timezone, weekday: 'long' }).format(new Date())
+  } catch { return 'Monday' }
+}
+
+function computeState(
+  moments: { date_key: string; created_at: string }[],
+  timezone: string
+): UserState {
+  const today     = dateKey(timezone, 0)
+  const yesterday = dateKey(timezone, -1)
+
+  const byDate: Record<string, number> = {}
+  for (const m of moments) {
+    byDate[m.date_key] = (byDate[m.date_key] ?? 0) + 1
+  }
+
+  const wins_today       = byDate[today] ?? 0
+  const missed_yesterday = !(byDate[yesterday] && byDate[yesterday] > 0)
+
+  const days = Object.keys(byDate).sort((a, b) => b.localeCompare(a))
+  let streak_count = 0
+  if (days.length > 0) {
+    let cursor: string | null = days[0] === today ? today : days[0] === yesterday ? yesterday : null
+    if (cursor) {
+      for (const day of days) {
+        if (day === cursor) {
+          streak_count++
+          const d = new Date(cursor + 'T12:00:00Z')
+          d.setDate(d.getDate() - 1)
+          cursor = d.toISOString().substring(0, 10)
+        } else break
+      }
+    }
+  }
+
+  const earliest = moments[0]?.created_at ?? null
+  const account_age_days = earliest
+    ? Math.floor((Date.now() - new Date(earliest).getTime()) / 86400000)
+    : 0
+
+  let totalLast7 = 0
+  for (let i = 0; i < 7; i++) {
+    totalLast7 += byDate[dateKey(timezone, -i)] ?? 0
+  }
+  const avg_daily_wins_7d = totalLast7 / 7
+
+  return { streak_count, wins_today, missed_yesterday, account_age_days, avg_daily_wins_7d }
+}
+
+function selectPair(state: UserState, timezone: string): string {
+  const dow       = dayOfWeek(timezone)
+  const isWeekend = dow === 'Saturday' || dow === 'Sunday'
+
+  if (state.missed_yesterday && state.account_age_days > 14) return 'E'
+  if (state.avg_daily_wins_7d > 3.5 && state.account_age_days >= 7) return 'I'
+  if (state.streak_count >= 3) return 'C'
+  if (isWeekend) return 'H'
+  if (state.account_age_days <= 14) return 'F'
+
+  const dayIndex = Math.floor(Date.now() / 86400000) % 3
+  return DEFAULT_ROTATION[dayIndex]
+}
+
+const FIXED_TIMES: Record<string, string> = { afternoon: '12:30', evening: '20:30' }
 
 Deno.serve(async (req) => {
   try {
-    const body = await req.json().catch(() => ({}))
-    const slot = body.slot as Slot
+    const body  = await req.json().catch(() => ({}))
+    const slot  = body.slot as Slot
     const force = body.force === true
 
-    if (!slot || !COPY[slot]) {
+    if (!slot || !['morning', 'afternoon', 'evening'].includes(slot)) {
       return new Response(
         JSON.stringify({ error: 'slot must be morning | afternoon | evening' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    const VAPID_PUBLIC = Deno.env.get('VAPID_PUBLIC_KEY')!
+    const VAPID_PUBLIC  = Deno.env.get('VAPID_PUBLIC_KEY')!
     const VAPID_PRIVATE = Deno.env.get('VAPID_PRIVATE_KEY')!
-    const VAPID_EMAIL = Deno.env.get('VAPID_EMAIL') ?? 'mailto:admin@dopamine.app'
-
+    const VAPID_EMAIL   = Deno.env.get('VAPID_EMAIL') ?? 'mailto:hello@mydopa.app'
     webpush.setVapidDetails(VAPID_EMAIL, VAPID_PUBLIC, VAPID_PRIVATE)
 
     const supabase = createClient(
@@ -95,56 +191,77 @@ Deno.serve(async (req) => {
 
     const { data: subs, error } = await supabase
       .from('push_subscriptions')
-      .select('id, user_id, subscription, notify_time, timezone')
+      .select('id, user_id, subscription, notify_time, timezone, last_morning_pair_id')
       .eq('active', true)
 
-    if (error) {
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
+    if (error) return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    )
 
     const targets = (subs ?? []).filter(s => {
       if (force) return true
-      const tz = s.timezone ?? 'UTC'
+      const tz  = s.timezone ?? 'UTC'
       const now = localHHMM(tz)
-      if (slot === 'morning') {
-        const target = (s.notify_time ?? '09:00').substring(0, 5)
-        return now === target
-      }
+      if (slot === 'morning') return now === (s.notify_time ?? '08:00').substring(0, 5)
       return now === FIXED_TIMES[slot]
     })
 
-    let winsTodayByUser: Record<string, number> = {}
-
-    if (slot === 'afternoon' && targets.length > 0) {
-      const userIds = [...new Set(targets.map(t => t.user_id).filter(Boolean))]
-      const dateKeys = [...new Set(targets.map(t => todayDateKey(t.timezone ?? 'UTC')))]
-
-      const { data: moments } = await supabase
-        .from('moments')
-        .select('user_id, date_key')
-        .in('user_id', userIds)
-        .in('date_key', dateKeys)
-
-      for (const m of moments ?? []) {
-        winsTodayByUser[m.user_id] = (winsTodayByUser[m.user_id] ?? 0) + 1
-      }
+    if (targets.length === 0) {
+      return new Response(
+        JSON.stringify({ slot, sent: 0, skipped: 0, total_active: subs?.length ?? 0 }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      )
     }
 
+    const userIds    = [...new Set(targets.map(t => t.user_id).filter(Boolean))]
+    const cutoffDate = dateKey('UTC', -30)
+
+    const { data: allMoments } = await supabase
+      .from('moments')
+      .select('user_id, date_key, created_at')
+      .in('user_id', userIds)
+      .gte('date_key', cutoffDate)
+      .order('created_at', { ascending: true })
+
+    const momentsByUser: Record<string, { date_key: string; created_at: string }[]> = {}
+    for (const m of allMoments ?? []) {
+      if (!momentsByUser[m.user_id]) momentsByUser[m.user_id] = []
+      momentsByUser[m.user_id].push(m)
+    }
+
+    const pairUpdates: { id: string; pair: string }[] = []
+
     const results = await Promise.allSettled(
-      targets.map(s => {
+      targets.map(async s => {
+        const tz    = s.timezone ?? 'UTC'
+        const state = computeState(momentsByUser[s.user_id] ?? [], tz)
+
         let message: string
-        if (slot === 'afternoon' && (winsTodayByUser[s.user_id] ?? 0) >= 3) {
-          message = AFTERNOON_GOAL_REACHED
+
+        if (slot === 'morning') {
+          const pair = selectPair(state, tz)
+          message = applyVars(PAIRS[pair].morning, state)
+          pairUpdates.push({ id: s.id, pair })
         } else {
-          message = pick(COPY[slot])
+          const pair = s.last_morning_pair_id ?? 'A'
+          message = slot === 'afternoon'
+            ? afternoonCopy(pair, state)
+            : eveningCopy(pair, state)
         }
+
         const payload = JSON.stringify({ title: 'DOPAmine', body: message, icon: '/icon.png' })
         return webpush.sendNotification(s.subscription, payload)
       })
     )
+
+    if (slot === 'morning' && pairUpdates.length > 0) {
+      await Promise.all(
+        pairUpdates.map(({ id, pair }) =>
+          supabase.from('push_subscriptions').update({ last_morning_pair_id: pair }).eq('id', id)
+        )
+      )
+    }
 
     const expiredIds = results
       .map((r, i) => ({ r, id: targets[i].id }))
@@ -160,6 +277,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ slot, sent, skipped: targets.length - sent, total_active: subs?.length ?? 0 }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
+
   } catch (err) {
     return new Response(
       JSON.stringify({ error: String(err) }),

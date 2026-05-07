@@ -2378,7 +2378,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     function initBlankMomentScreen() {
       const moments = loadMoments();
       if (localStorage.getItem(BLANK_KEY) || moments.length > 0) return;
-      document.getElementById('blankMomentScreen').classList.add('visible');
+      document.getElementById('blankMomentScreen').style.cssText = 'display:flex; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;';
       const fill = document.getElementById('blankTimerFill');
       setTimeout(() => { fill.style.transition = 'width 5s linear'; fill.style.width = '100%'; }, 50);
       setTimeout(() => { document.getElementById('blankChoices').style.display = 'flex'; }, 5000);

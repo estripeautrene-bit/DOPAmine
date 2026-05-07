@@ -1236,6 +1236,87 @@
       padding: 4px 8px;
     }
 
+    /* ── Ritual Anchoring overlay (Item 16) ── */
+    #ritualOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0E0B1A;
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 28px;
+    }
+    #ritualOverlay.open { display: flex; }
+    .ritual-prompt {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.55;
+      text-align: center;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+    .ritual-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    .ritual-chip {
+      background: none;
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 50px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .ritual-chip:hover { border-color: rgba(123,47,190,0.8); color: var(--text); }
+    .ritual-textarea {
+      width: 100%;
+      max-width: 400px;
+      min-height: 110px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.35);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      padding: 14px 16px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+    .ritual-textarea:focus { border-color: rgba(123,47,190,0.7); }
+    .ritual-save-btn {
+      width: 100%;
+      max-width: 400px;
+      background: #7B2FBE;
+      border: none;
+      border-radius: 50px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: opacity 0.2s;
+    }
+    .ritual-save-btn:disabled { opacity: 0.35; cursor: default; }
+    .ritual-skip-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
     .modal {
       background: #ffffff;
       border-radius: 24px 24px 0 0;
@@ -2219,6 +2300,20 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
     </div>
   </div>
 
+  <!-- Ritual Anchoring overlay (Item 16) -->
+  <div id="ritualOverlay">
+    <p class="ritual-prompt">What's one thing you already did this morning?</p>
+    <div class="ritual-chips">
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Had coffee</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Went for a walk</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Hit the gym</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Made breakfast</button>
+    </div>
+    <textarea id="ritualInput" class="ritual-textarea" placeholder="Type something…"></textarea>
+    <button id="ritualSaveBtn" class="ritual-save-btn" disabled onclick="ritualSave()">Save ✓</button>
+    <button class="ritual-skip-btn" onclick="ritualSkip()">Skip</button>
+  </div>
+
   <!-- Re-entry overlay (Item 12) -->
   <div id="reentryOverlay">
     <p class="reentry-prompt">A few days went by. Something good probably happened. What's one thing worth keeping from it?</p>
@@ -2249,7 +2344,64 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
     window.dismissBlankScreen = function() {
       localStorage.setItem(BLANK_KEY, '1');
       document.getElementById('blankMomentScreen').style.display = 'none';
+      checkRitualAnchoring();
     };
+
+    // ── Ritual Anchoring (Item 16) ───────────────────────────
+    function checkRitualAnchoring() {
+      if (localStorage.getItem('dopamine_ritual_seen')) return;
+      if (loadMoments().length > 0) return;
+      document.getElementById('ritualOverlay').classList.add('open');
+      setTimeout(() => document.getElementById('ritualInput').focus(), 120);
+      document.getElementById('ritualInput').addEventListener('input', function() {
+        document.getElementById('ritualSaveBtn').disabled = this.value.trim().length === 0;
+      });
+    }
+
+    function ritualChipTap(el) {
+      const input = document.getElementById('ritualInput');
+      input.value = el.textContent;
+      document.getElementById('ritualSaveBtn').disabled = false;
+      input.focus();
+    }
+
+    async function ritualSave() {
+      const text = document.getElementById('ritualInput').value.trim();
+      if (!text) return;
+
+      const lc = text.toLowerCase();
+      if (/walk|gym|run|workout|yoga|bike|swim/.test(lc)) {
+        localStorage.setItem('dopamine_context_tag', 'post_gym');
+      }
+
+      const moments = loadMoments();
+      const newMoment = {
+        id: Date.now(),
+        text,
+        tags: ['anchor_entry'],
+        autoTag: getTimeOfDayTag(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey(),
+        photo: null,
+      };
+      moments.unshift(newMoment);
+      saveMoments(moments);
+      localStorage.setItem(LAST_SAVE_TS_KEY, Date.now());
+      sbSave(newMoment);
+      showToast('Moment saved! 🌟');
+      updateLogStreak();
+      renderTodayEntries();
+
+      localStorage.setItem('dopamine_ritual_seen', '1');
+      document.getElementById('ritualInput').value = '';
+      document.getElementById('ritualOverlay').classList.remove('open');
+    }
+
+    function ritualSkip() {
+      localStorage.setItem('dopamine_ritual_seen', '1');
+      document.getElementById('ritualOverlay').classList.remove('open');
+    }
+
     // ── Helpers ──────────────────────────────────────────────
     const STORAGE_KEY = 'greatYesterday_moments';
     const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;

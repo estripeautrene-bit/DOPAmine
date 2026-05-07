@@ -2160,6 +2160,26 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
   <div class="toast" id="toast"></div>
 
   <script>
+
+    // ── Blank Moment Onboarding (global scope) ───────────────────
+    const BLANK_KEY = 'dopamine_blank_seen';
+    window.blankChoose = function(path) {
+      document.getElementById('blankChoices').style.display = 'none';
+      const revealText = document.getElementById('blankRevealText');
+      const cta = document.getElementById('blankCTA');
+      if (path === 'A') {
+        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
+        cta.textContent = "DOPAmine fixes that. Let's start \u2192";
+      } else {
+        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
+        cta.textContent = "Let's build that reflex \u2192";
+      }
+      document.getElementById('blankReveal').style.display = 'flex';
+    };
+    window.dismissBlankScreen = function() {
+      localStorage.setItem(BLANK_KEY, '1');
+      document.getElementById('blankMomentScreen').style.display = 'none';
+    };
     // ── Helpers ──────────────────────────────────────────────
     const STORAGE_KEY = 'greatYesterday_moments';
     const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -2377,7 +2397,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     // ── Blank Moment Onboarding ────────────────────────────────────────
     const BLANK_KEY = 'dopamine_blank_seen';
 
-    window.initBlankMomentScreen = function() {
+    function initBlankMomentScreen_inner() {
       const moments = loadMoments();
       if (localStorage.getItem(BLANK_KEY) || moments.length > 0) return;
       document.getElementById('blankMomentScreen').style.cssText = 'display:flex; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;';
@@ -2386,7 +2406,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       setTimeout(() => { document.getElementById('blankChoices').style.display = 'flex'; }, 5000);
     }
 
-    window.blankChoose = function(path) {
+    function blankChoose_inner(path) {
       document.getElementById('blankChoices').style.display = 'none';
       const revealText = document.getElementById('blankRevealText');
       const cta = document.getElementById('blankCTA');
@@ -2400,7 +2420,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       document.getElementById('blankReveal').style.display = 'flex';
     }
 
-    window.dismissBlankScreen = function() {
+    function dismissBlankScreen_inner() {
       localStorage.setItem(BLANK_KEY, '1');
       document.getElementById('blankMomentScreen').classList.remove('visible');
     }

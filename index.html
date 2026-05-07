@@ -2163,7 +2163,7 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
         if (!res.ok) return;
         const rows = await res.json();
         if (!Array.isArray(rows) || rows.length === 0) return;
-       const remote = rows.map(r => ({id:r.moment_id||r.created_at, text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:null}));
+       const remote = rows.map(r => ({id:r.moment_id||r.created_at, text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:r.photo||null}));
         const local = loadMomentsLocal();
        const merged = [...local];
 remote.forEach(rm => { if (!merged.find(lm => String(lm.id)===String(rm.id) || lm.createdAt===rm.createdAt)) merged.push(rm); });
@@ -2971,6 +2971,9 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           const moments = loadMoments();
           const idx = moments.findIndex(m => String(m.id) === uploadId);
           if (idx !== -1) { moments[idx].photo = url; saveMoments(moments); renderTodayEntries(); }
+          fetch(SB_URL+'/rest/v1/moments?moment_id=eq.'+encodeURIComponent(uploadId),
+            {method:'PATCH', headers:SB_HEADS, body:JSON.stringify({photo:url})})
+            .catch(e => console.log('photo patch failed:', e.message));
         }
       }
     }

@@ -1767,7 +1767,8 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
 .auth-or-divider { display:flex; align-items:center; gap:12px; margin:16px 0 12px; color:rgba(255,255,255,0.3); font-size:0.8rem; }
 .auth-or-divider::before, .auth-or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
 .auth-google-btn { width:100%; height:48px; background:white; color:#1a1a2e; border:1px solid rgba(255,255,255,0.15); border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.95rem; font-weight:600; font-family:inherit; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
-.auth-google-btn:active { opacity:0.85; }</style>
+.auth-google-btn:active { opacity:0.85; }
+.auth-forgot { display:block; text-align:right; background:none; border:none; color:#B57BF7; font-size:0.78rem; font-family:inherit; cursor:pointer; padding:0; margin-top:-6px; margin-bottom:8px; }</style>
 </head>
 <body>
 
@@ -1778,26 +1779,39 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
         <div class="auth-logo-d">D</div>
         <div class="auth-logo-name">DOPA<span>mine</span></div>
       </div>
-      <div class="auth-title" id="authTitle">Sign In</div>
-      <input class="auth-input" type="email" id="authEmail" placeholder="Email" autocomplete="email" />
-      <input class="auth-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password"
-        onkeydown="if(event.key==='Enter') handleAuthSubmit()" />
-      <button class="auth-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign In</button>
-      <div class="auth-error" id="authError"></div>
-      <div id="authLegal" style="display:none;margin-top:14px;text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">
-        By signing up you agree to our
-        <button onclick="openTos()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Terms of Service</button>
-        and
-        <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.
+      <div id="authMainContent">
+        <div class="auth-title" id="authTitle">Sign In</div>
+        <input class="auth-input" type="email" id="authEmail" placeholder="Email" autocomplete="email" />
+        <input class="auth-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') handleAuthSubmit()" />
+        <button class="auth-forgot" onclick="showForgotPassword()">Forgot password?</button>
+        <button class="auth-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign In</button>
+        <div class="auth-error" id="authError"></div>
+        <div id="authLegal" style="display:none;margin-top:14px;text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">
+          By signing up you agree to our
+          <button onclick="openTos()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Terms of Service</button>
+          and
+          <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.
+        </div>
+        <div class="auth-or-divider"><span>or</span></div>
+        <button class="auth-google-btn" onclick="signInWithGoogle()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.8 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.6 20-21 0-1.4-.1-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15 16.1 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.8 0-14.5 4.4-18.2 10.9l.5.8z"/><path fill="#FBBC05" d="M24 45c5.5 0 10.6-1.9 14.6-5.1l-6.7-5.5C29.8 36.1 27 37 24 37c-5.8 0-10.7-3.1-11.8-7.5l-7 5.4C8.9 41.5 16 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.6 2.5-2 4.7-4 6.1v.1l6.7 5.5c-.4.4 6-4.4 6-13.2 0-1.4-.1-2.7-.5-4z"/></svg>
+          Continue with Google
+        </button>
+        <div class="auth-toggle">
+          <span id="authToggleText">Don't have an account?</span>
+          <button class="auth-toggle-link" onclick="toggleAuthMode()" id="authToggleLink">Sign Up</button>
+        </div>
       </div>
-      <div class="auth-or-divider"><span>or</span></div>
-      <button class="auth-google-btn" onclick="signInWithGoogle()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.8 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.6 20-21 0-1.4-.1-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15 16.1 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.8 0-14.5 4.4-18.2 10.9l.5.8z"/><path fill="#FBBC05" d="M24 45c5.5 0 10.6-1.9 14.6-5.1l-6.7-5.5C29.8 36.1 27 37 24 37c-5.8 0-10.7-3.1-11.8-7.5l-7 5.4C8.9 41.5 16 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.6 2.5-2 4.7-4 6.1v.1l6.7 5.5c-.4.4 6-4.4 6-13.2 0-1.4-.1-2.7-.5-4z"/></svg>
-        Continue with Google
-      </button>
-      <div class="auth-toggle">
-        <span id="authToggleText">Don't have an account?</span>
-        <button class="auth-toggle-link" onclick="toggleAuthMode()" id="authToggleLink">Sign Up</button>
+      <div id="authForgotContent" style="display:none">
+        <div class="auth-title">Reset Password</div>
+        <input class="auth-input" type="email" id="authResetEmail" placeholder="Email address" autocomplete="email"
+          onkeydown="if(event.key==='Enter') sendPasswordReset()" />
+        <button class="auth-btn" id="authResetBtn" onclick="sendPasswordReset()">Send Reset Email</button>
+        <div class="auth-error" id="authResetError"></div>
+        <div class="auth-toggle">
+          <button class="auth-toggle-link" onclick="hideForgotPassword()">Back to Sign In</button>
+        </div>
       </div>
     </div>
   </div>
@@ -3430,6 +3444,31 @@ function checkInstallPrompt() {
         options: { redirectTo: 'https://mydopa.app' }
       });
       if (error) showToast('Google sign-in failed. Try again.');
+    }
+
+    function showForgotPassword() {
+      document.getElementById('authMainContent').style.display = 'none';
+      document.getElementById('authForgotContent').style.display = 'block';
+      document.getElementById('authResetEmail').value = '';
+      document.getElementById('authResetError').textContent = '';
+    }
+
+    function hideForgotPassword() {
+      document.getElementById('authForgotContent').style.display = 'none';
+      document.getElementById('authMainContent').style.display = 'block';
+    }
+
+    async function sendPasswordReset() {
+      const email = document.getElementById('authResetEmail').value.trim();
+      const errEl = document.getElementById('authResetError');
+      if (!email) { errEl.textContent = 'Enter your email address.'; return; }
+      const btn = document.getElementById('authResetBtn');
+      btn.disabled = true;
+      const { error } = await sbClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://mydopa.app' });
+      btn.disabled = false;
+      if (error) { errEl.textContent = error.message; return; }
+      hideForgotPassword();
+      showToast('Password reset email sent. Check your inbox.');
     }
 
     async function signOutUser() {

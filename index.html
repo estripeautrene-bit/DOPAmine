@@ -2425,7 +2425,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       document.getElementById('blankMomentScreen').classList.remove('visible');
     }
 
-    initBlankMomentScreen();
+    initBlankMomentScreen_inner();
     initName();
       checkReEngagement();
       if (localStorage.getItem(NAME_KEY)) {

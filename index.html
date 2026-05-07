@@ -1768,7 +1768,8 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
 .auth-or-divider::before, .auth-or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
 .auth-google-btn { width:100%; height:48px; background:white; color:#1a1a2e; border:1px solid rgba(255,255,255,0.15); border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.95rem; font-weight:600; font-family:inherit; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
 .auth-google-btn:active { opacity:0.85; }
-.auth-forgot { display:block; text-align:right; background:none; border:none; color:#B57BF7; font-size:0.78rem; font-family:inherit; cursor:pointer; padding:0; margin-top:-6px; margin-bottom:8px; }</style>
+.auth-forgot { display:block; text-align:right; background:none; border:none; color:#B57BF7; font-size:0.78rem; font-family:inherit; cursor:pointer; padding:0; margin-top:-6px; margin-bottom:8px; }
+#recoveryScreen { position:fixed; inset:0; background:#0E0B1A; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }</style>
 </head>
 <body>
 
@@ -1813,6 +1814,22 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
           <button class="auth-toggle-link" onclick="hideForgotPassword()">Back to Sign In</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- RECOVERY SCREEN -->
+  <div id="recoveryScreen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-d">D</div>
+        <div class="auth-logo-name">DOPA<span>mine</span></div>
+      </div>
+      <div class="auth-title">Set New Password</div>
+      <input class="auth-input" type="password" id="newPasswordInput" placeholder="New password" autocomplete="new-password" />
+      <input class="auth-input" type="password" id="confirmPasswordInput" placeholder="Confirm password" autocomplete="new-password"
+        onkeydown="if(event.key==='Enter') saveNewPassword()" />
+      <button class="auth-btn" id="savePasswordBtn" onclick="saveNewPassword()" style="background:#7B2FBE;">Save Password</button>
+      <div class="auth-error" id="recoveryError"></div>
     </div>
   </div>
 
@@ -3471,6 +3488,25 @@ function checkInstallPrompt() {
       showToast('Password reset email sent. Check your inbox.');
     }
 
+    async function saveNewPassword() {
+      const pwd = document.getElementById('newPasswordInput').value;
+      const confirm = document.getElementById('confirmPasswordInput').value;
+      const errEl = document.getElementById('recoveryError');
+      if (pwd.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      if (pwd !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
+      const btn = document.getElementById('savePasswordBtn');
+      btn.disabled = true;
+      const { data, error } = await sbClient.auth.updateUser({ password: pwd });
+      btn.disabled = false;
+      if (error) { errEl.textContent = error.message; return; }
+      recoveryMode = false;
+      currentUser = data.user;
+      document.getElementById('recoveryScreen').style.display = 'none';
+      history.replaceState(null, '', window.location.pathname);
+      showToast('Password updated. You are now signed in.');
+      initApp();
+    }
+
     async function signOutUser() {
       await sbClient.auth.signOut();
       currentUser = null;
@@ -3479,16 +3515,28 @@ function checkInstallPrompt() {
     }
 
     // ── Auth init ─────────────────────────────────────────────
+    let recoveryMode = false;
+    if (window.location.hash.includes('type=recovery')) {
+      recoveryMode = true;
+      document.getElementById('recoveryScreen').style.display = 'flex';
+    }
+
     (async () => {
       const { data: { session } } = await sbClient.auth.getSession();
-      if (session) {
+      if (session && !recoveryMode) {
         currentUser = session.user;
         initApp();
-      } else {
+      } else if (!recoveryMode) {
         showAuthScreen();
       }
 
       sbClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          recoveryMode = true;
+          document.getElementById('recoveryScreen').style.display = 'flex';
+          return;
+        }
+        if (recoveryMode) return;
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
           currentUser = session ? session.user : null;
           if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);

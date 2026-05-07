@@ -1773,6 +1773,20 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
 </head>
 <body>
 
+  <!-- BLANK MOMENT ONBOARDING -->
+  <div class="blank-overlay" id="blankMomentScreen">
+    <div class="blank-question">What was the best moment from last Tuesday?</div>
+    <div class="blank-timer-wrap"><div class="blank-timer-fill" id="blankTimerFill"></div></div>
+    <div class="blank-choices" id="blankChoices">
+      <button class="blank-choice-btn" onclick="blankChoose('A')">I can't remember</button>
+      <button class="blank-choice-btn" onclick="blankChoose('B')">I remember it clearly</button>
+    </div>
+    <div class="blank-reveal" id="blankReveal">
+      <p class="blank-reveal-text" id="blankRevealText"></p>
+      <button class="blank-cta-btn" id="blankCTA" onclick="dismissBlankScreen()"></button>
+    </div>
+  </div>
+
   <!-- AUTH SCREEN -->
   <div id="authScreen">
     <div class="auth-card">
@@ -2345,7 +2359,40 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       if (appInitialized) return;
       appInitialized = true;
 
-      initName();
+  
+    // ── Blank Moment Onboarding ────────────────────────────────────────
+    const BLANK_KEY = 'dopamine_blank_seen';
+
+    function initBlankMomentScreen() {
+      const moments = loadMoments();
+      if (localStorage.getItem(BLANK_KEY) || moments.length > 0) return;
+      document.getElementById('blankMomentScreen').classList.add('visible');
+      const fill = document.getElementById('blankTimerFill');
+      setTimeout(() => { fill.style.transition = 'width 5s linear'; fill.style.width = '100%'; }, 50);
+      setTimeout(() => { document.getElementById('blankChoices').style.display = 'flex'; }, 5000);
+    }
+
+    function blankChoose(path) {
+      document.getElementById('blankChoices').style.display = 'none';
+      const revealText = document.getElementById('blankRevealText');
+      const cta = document.getElementById('blankCTA');
+      if (path === 'A') {
+        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
+        cta.textContent = "DOPAmine fixes that. Let's start →";
+      } else {
+        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
+        cta.textContent = "Let's build that reflex →";
+      }
+      document.getElementById('blankReveal').style.display = 'flex';
+    }
+
+    function dismissBlankScreen() {
+      localStorage.setItem(BLANK_KEY, '1');
+      document.getElementById('blankMomentScreen').classList.remove('visible');
+    }
+
+    initBlankMomentScreen();
+    initName();
       checkReEngagement();
       if (localStorage.getItem(NAME_KEY)) {
         setTimeout(() => document.getElementById('momentInput').focus(), 100);

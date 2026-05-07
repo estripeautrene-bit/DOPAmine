@@ -2077,6 +2077,17 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
     </button>
 
     <div id="summaryContent"></div>
+
+    <div id="notifSettingsRow" style="margin:24px 0 8px;padding:14px 16px;background:rgba(123,47,190,0.1);border:1px solid rgba(123,47,190,0.25);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="openNotifSettings()">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.1rem;">🔔</span>
+        <div>
+          <div style="font-size:0.88rem;font-weight:700;color:white;">Daily Reminder</div>
+          <div style="font-size:0.76rem;color:rgba(255,255,255,0.45);" id="notifSettingsCurrentTime">Not set</div>
+        </div>
+      </div>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.8rem;">Change ›</span>
+    </div>
   </div>
 
   <!-- EDIT MODAL -->
@@ -3075,6 +3086,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     // ── Summary ──────────────────────────────────────────────
     function renderSummary() {
+      updateNotifSettingsRow();
       const moments = loadMoments();
       const container = document.getElementById('summaryContent');
       const statsBar = document.getElementById('statsBar');
@@ -3362,6 +3374,75 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }
     }
 
+    let selectedSettingsTime = '09:00';
+
+    function updateNotifSettingsRow() {
+      const saved = localStorage.getItem(NOTIF_TIME_KEY);
+      const el = document.getElementById('notifSettingsCurrentTime');
+      if (!el) return;
+      if (saved) {
+        const [hh, mm] = saved.split(':');
+        const h = parseInt(hh);
+        el.textContent = (h % 12 || 12) + ':' + mm + (h >= 12 ? 'pm' : 'am');
+      } else {
+        el.textContent = 'Not set';
+      }
+    }
+
+    function openNotifSettings() {
+      if (!currentUser) return;
+      const saved = localStorage.getItem(NOTIF_TIME_KEY) || '09:00';
+      selectedSettingsTime = saved;
+      const timeMap = { '06:30': 'st-630', '08:00': 'st-800', '09:30': 'st-930' };
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('notifSettingsCustom').style.display = 'none';
+      if (timeMap[saved]) {
+        document.getElementById(timeMap[saved]).classList.add('selected');
+      } else {
+        document.getElementById('st-custom').classList.add('selected');
+        document.getElementById('notifSettingsCustomInput').value = saved;
+        document.getElementById('notifSettingsCustom').style.display = 'block';
+      }
+      document.getElementById('notifSettingsModal').classList.add('open');
+    }
+
+    function closeNotifSettings() {
+      document.getElementById('notifSettingsModal').classList.remove('open');
+    }
+
+    function selectSettingsTime(btn, time) {
+      selectedSettingsTime = time;
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifSettingsCustom').style.display = 'none';
+    }
+
+    function toggleSettingsCustomTime(btn) {
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifSettingsCustom').style.display = 'block';
+      selectedSettingsTime = document.getElementById('notifSettingsCustomInput').value || '09:00';
+    }
+
+    function setSettingsCustomTime(val) { selectedSettingsTime = val; }
+
+    async function saveNotifTime() {
+      const uid = getUserId();
+      if (!uid) return;
+      const btn = document.getElementById('notifSettingsSaveBtn');
+      btn.disabled = true;
+      await fetch(SB_URL + '/rest/v1/push_subscriptions?user_id=eq.' + uid, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ notify_time: selectedSettingsTime })
+      });
+      btn.disabled = false;
+      localStorage.setItem(NOTIF_TIME_KEY, selectedSettingsTime);
+      updateNotifSettingsRow();
+      closeNotifSettings();
+      showToast('Reminder updated.');
+    }
+
     function escapeHtml(str){
       return str
         .replace(/&/g, '&amp;')
@@ -3626,6 +3707,33 @@ function checkInstallPrompt() {
       </div>
       <button class="notif-cta" onclick="requestNotifPermission()">Yes, remind me</button>
       <button class="notif-skip" onclick="closeNotifModal(false)">Not now</button>
+    </div>
+  </div>
+
+  <div class="notif-overlay" id="notifSettingsModal">
+    <div class="notif-sheet">
+      <div class="notif-handle"></div>
+      <div class="notif-headline">Change Reminder Time</div>
+      <div class="notif-sub">When should we check in with you?</div>
+      <div class="notif-times">
+        <button class="notif-time-btn" id="st-630" onclick="selectSettingsTime(this,'06:30')">
+          <span>6:30am</span><span class="notif-time-label">Before the day gets loud</span>
+        </button>
+        <button class="notif-time-btn" id="st-800" onclick="selectSettingsTime(this,'08:00')">
+          <span>8:00am</span><span class="notif-time-label">Coffee in hand, day starting</span>
+        </button>
+        <button class="notif-time-btn" id="st-930" onclick="selectSettingsTime(this,'09:30')">
+          <span>9:30am</span><span class="notif-time-label">Once things are moving</span>
+        </button>
+        <button class="notif-time-btn" id="st-custom" onclick="toggleSettingsCustomTime(this)">
+          <span>Pick a different time</span><span class="notif-time-label">Your choice</span>
+        </button>
+      </div>
+      <div class="notif-custom" id="notifSettingsCustom">
+        <input type="time" id="notifSettingsCustomInput" value="09:00" onchange="setSettingsCustomTime(this.value)" />
+      </div>
+      <button class="notif-cta" id="notifSettingsSaveBtn" onclick="saveNotifTime()">Save</button>
+      <button class="notif-skip" onclick="closeNotifSettings()">Cancel</button>
     </div>
   </div>
 

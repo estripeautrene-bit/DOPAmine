@@ -2436,7 +2436,7 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
        const remote = rows.map(r => ({id:r.moment_id||r.created_at, text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:r.photo||null}));
         const local = loadMomentsLocal();
        const merged = [...local];
-remote.forEach(rm => { if (!merged.find(lm => String(lm.id)===String(rm.id) || lm.createdAt===rm.createdAt)) merged.push(rm); });
+remote.forEach(rm => { if (!deletedIds.has(String(rm.id)) && !merged.find(lm => String(lm.id)===String(rm.id) || lm.createdAt===rm.createdAt)) merged.push(rm); });
         merged.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         localStorage.setItem(UID_KEY, getUserId());
@@ -3370,6 +3370,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     // ── Delete ───────────────────────────────────────────────
     let pendingDeleteId = null;
+    const deletedIds = new Set();
 
     function deleteMoment(id) {
       pendingDeleteId = id;

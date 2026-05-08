@@ -1,9 +1,10 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import webpush from 'npm:web-push'
 
-type Slot = 'morning' | 'afternoon' | 'evening'
+type Slot     = 'ywg' | 'morning' | 'afternoon' | 'evening'
+type PairSlot = 'morning' | 'afternoon' | 'evening'
 
-const PAIRS: Record<string, Record<Slot, string>> = {
+const PAIRS: Record<string, Record<PairSlot, string>> = {
   A: {
     morning:   "Something good is already out there. Go find your first one.",
     afternoon: "Afternoon check. How many wins have you caught today?",
@@ -47,7 +48,7 @@ const PAIRS: Record<string, Record<Slot, string>> = {
 }
 
 // Pair J – "The Ghost": 3 context variants, selected at job creation time
-const PAIR_J: Record<string, Partial<Record<Slot, string>>> = {
+const PAIR_J: Record<string, Partial<Record<PairSlot, string>>> = {
   WEEKDAY: {
     morning:   "Something good is about to happen today. Will you catch it?",
     afternoon: "Something good probably just happened. Did you keep it?",
@@ -66,9 +67,35 @@ const PAIR_J: Record<string, Partial<Record<Slot, string>>> = {
 
 const DEFAULT_ROTATION = ['A', 'B', 'D']
 
+// Yesterday Was Good – tiered personalized copy
+const YWG_TIERS = {
+  TIER1: [
+    "Yesterday you kept {n} things. Your past is building itself.",
+    "{n} wins yesterday. That's a day worth remembering.",
+    "Yesterday had {n} good moments in it. You caught them all."
+  ],
+  TIER2: [
+    "Yesterday you kept {n} things. That's not nothing.",
+    "{n} wins from yesterday. Still yours this morning.",
+    "Yesterday didn't disappear. You kept {n} pieces of it."
+  ],
+  TIER3: [
+    "Yesterday had at least one good thing in it. You kept it.",
+    "One win from yesterday. Still counts this morning."
+  ],
+  COLD: [
+    "Yesterday is waiting. See what you kept."
+  ],
+  MILESTONE: [
+    "{streak} days of keeping things. That's a great past being built."
+  ]
+}
+const STREAK_MILESTONES = new Set([7, 14, 30, 50, 100])
+
 interface UserState {
   streak_count: number
   wins_today: number
+  wins_yesterday: number
   missed_yesterday: boolean
   account_age_days: number
   avg_daily_wins_7d: number
@@ -94,6 +121,34 @@ function eveningCopy(pairId: string, state: UserState): string {
   if (state.wins_today === 2) return "Two down. One more and the day is done right."
   if (state.wins_today === 1) return "One down. Two more before the day closes."
   return "Still time. What\'s one good thing from today? Start there."
+}
+
+function addMinutesToHHMM(hhmm: string, minutes: number): string {
+  const [h, m] = hhmm.split(':').map(Number)
+  const total = h * 60 + m + minutes
+  return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
+}
+
+function getYWGCopy(state: UserState, variantIndex: number): { copy: string; tierSize: number } {
+  if (STREAK_MILESTONES.has(state.streak_count)) {
+    return {
+      copy: YWG_TIERS.MILESTONE[0].replace('{streak}', String(state.streak_count)),
+      tierSize: 1
+    }
+  }
+  const n = state.wins_yesterday
+  let tier: string[]
+  if (state.account_age_days <= 3 || n === 0) {
+    tier = YWG_TIERS.COLD
+  } else if (n >= 5) {
+    tier = YWG_TIERS.TIER1
+  } else if (n >= 2) {
+    tier = YWG_TIERS.TIER2
+  } else {
+    tier = YWG_TIERS.TIER3
+  }
+  const copy = tier[variantIndex % tier.length].replace(/{n}/g, String(n))
+  return { copy, tierSize: tier.length }
 }
 
 function localHHMM(timezone: string): string {
@@ -136,7 +191,8 @@ function computeState(
   }
 
   const wins_today       = byDate[today] ?? 0
-  const missed_yesterday = !(byDate[yesterday] && byDate[yesterday] > 0)
+  const wins_yesterday   = byDate[yesterday] ?? 0
+  const missed_yesterday = wins_yesterday === 0
 
   const days = Object.keys(byDate).sort((a, b) => b.localeCompare(a))
   let streak_count = 0
@@ -165,7 +221,7 @@ function computeState(
   }
   const avg_daily_wins_7d = totalLast7 / 7
 
-  return { streak_count, wins_today, missed_yesterday, account_age_days, avg_daily_wins_7d }
+  return { streak_count, wins_today, wins_yesterday, missed_yesterday, account_age_days, avg_daily_wins_7d }
 }
 
 function detectJVariant(
@@ -195,7 +251,7 @@ function detectJVariant(
   return 'J_WEEKDAY'
 }
 
-function getJCopy(pairId: string, slot: Slot): string {
+function getJCopy(pairId: string, slot: PairSlot): string {
   const variant = pairId.slice(2) // strip 'J_' → WEEKDAY / POSTGYM / WEEKEND
   return PAIR_J[variant]?.[slot] ?? PAIR_J.WEEKDAY[slot] ?? ''
 }
@@ -227,9 +283,9 @@ Deno.serve(async (req) => {
     const slot  = body.slot as Slot
     const force = body.force === true
 
-    if (!slot || !['morning', 'afternoon', 'evening'].includes(slot)) {
+    if (!slot || !['ywg', 'morning', 'afternoon', 'evening'].includes(slot)) {
       return new Response(
-        JSON.stringify({ error: 'slot must be morning | afternoon | evening' }),
+        JSON.stringify({ error: 'slot must be ywg | morning | afternoon | evening' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
@@ -246,7 +302,7 @@ Deno.serve(async (req) => {
 
     const { data: subs, error } = await supabase
       .from('push_subscriptions')
-      .select('id, user_id, subscription, notify_time, timezone, last_morning_pair_id')
+      .select('id, user_id, subscription, notify_time, timezone, last_morning_pair_id, last_ywg_variant_index')
       .eq('active', true)
 
     if (error) return new Response(
@@ -256,9 +312,11 @@ Deno.serve(async (req) => {
 
     const targets = (subs ?? []).filter(s => {
       if (force) return true
-      const tz  = s.timezone ?? 'UTC'
-      const now = localHHMM(tz)
-      if (slot === 'morning') return now === (s.notify_time ?? '08:00').substring(0, 5)
+      const tz       = s.timezone ?? 'UTC'
+      const now      = localHHMM(tz)
+      const baseTime = (s.notify_time ?? '08:00').substring(0, 5)
+      if (slot === 'ywg')     return now === baseTime
+      if (slot === 'morning') return now === addMinutesToHHMM(baseTime, 30)
       return now === FIXED_TIMES[slot]
     })
 
@@ -286,6 +344,7 @@ Deno.serve(async (req) => {
     }
 
     const pairUpdates: { id: string; pair: string }[] = []
+    const ywgUpdates:  { id: string; nextIndex: number }[] = []
 
     const results = await Promise.allSettled(
       targets.map(async s => {
@@ -294,7 +353,12 @@ Deno.serve(async (req) => {
 
         let message: string
 
-        if (slot === 'morning') {
+        if (slot === 'ywg') {
+          const variantIndex = (s.last_ywg_variant_index ?? 0)
+          const { copy, tierSize } = getYWGCopy(state, variantIndex)
+          message = copy
+          ywgUpdates.push({ id: s.id, nextIndex: (variantIndex + 1) % tierSize })
+        } else if (slot === 'morning') {
           const pair = selectPair(state, tz, momentsByUser[s.user_id] ?? [])
           message = pair.startsWith('J_')
             ? getJCopy(pair, 'morning')
@@ -337,6 +401,14 @@ Deno.serve(async (req) => {
       await Promise.all(
         pairUpdates.map(({ id, pair }) =>
           supabase.from('push_subscriptions').update({ last_morning_pair_id: pair }).eq('id', id)
+        )
+      )
+    }
+
+    if (slot === 'ywg' && ywgUpdates.length > 0) {
+      await Promise.all(
+        ywgUpdates.map(({ id, nextIndex }) =>
+          supabase.from('push_subscriptions').update({ last_ywg_variant_index: nextIndex }).eq('id', id)
         )
       )
     }

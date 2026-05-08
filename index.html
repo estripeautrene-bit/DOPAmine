@@ -3389,6 +3389,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       saveMoments(moments);
       fetch(SB_URL+'/rest/v1/moments?moment_id=eq.'+encodeURIComponent(String(pendingDeleteId)),
         {method:'DELETE', headers:SB_HEADS}).catch(e => console.log('sbDelete offline:', e.message));
+      const card = document.getElementById('mc-' + idStr);
+      if (card) card.remove();
       closeDeleteModal();
       renderSummary();
       renderTodayEntries();

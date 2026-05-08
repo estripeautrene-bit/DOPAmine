@@ -3384,6 +3384,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function confirmDelete() {
       if (pendingDeleteId === null) return;
+      deletedIds.add(String(pendingDeleteId));
       const moments = loadMoments().filter(m => String(m.id) !== String(pendingDeleteId));
       saveMoments(moments);
       fetch(SB_URL+'/rest/v1/moments?moment_id=eq.'+encodeURIComponent(String(pendingDeleteId)),

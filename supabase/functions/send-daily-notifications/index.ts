@@ -46,6 +46,24 @@ const PAIRS: Record<string, Record<Slot, string>> = {
   }
 }
 
+// Pair J – "The Ghost": 3 context variants, selected at job creation time
+const PAIR_J: Record<string, Partial<Record<Slot, string>>> = {
+  WEEKDAY: {
+    morning:   "Something good is about to happen today. Will you catch it?",
+    afternoon: "Something good probably just happened. Did you keep it?",
+    evening:   "The day\'s almost gone. What\'s worth keeping from it?"
+  },
+  POSTGYM: {
+    morning:   "That workout just happened. You going to remember it tonight?"
+    // afternoon/evening fall back to WEEKDAY variant
+  },
+  WEEKEND: {
+    morning:   "Weekends move fast. Something good is already happening.",
+    afternoon: "Mid-weekend check. What\'s been good so far today?",
+    evening:   "Weekend\'s almost done. What would be a shame to forget?"
+  }
+}
+
 const DEFAULT_ROTATION = ['A', 'B', 'D']
 
 interface UserState {
@@ -150,7 +168,43 @@ function computeState(
   return { streak_count, wins_today, missed_yesterday, account_age_days, avg_daily_wins_7d }
 }
 
-function selectPair(state: UserState, timezone: string): string {
+function detectJVariant(
+  state: UserState,
+  tz: string,
+  moments: { date_key: string; created_at: string }[]
+): string {
+  const dow = dayOfWeek(tz)
+  if (dow === 'Saturday' || dow === 'Sunday') return 'J_WEEKEND'
+
+  const hour = parseInt(localHHMM(tz).substring(0, 2), 10)
+  if (hour >= 7 && hour < 9 && state.streak_count >= 3) {
+    const today = dateKey(tz, 0)
+    const hasMorningSave = moments.some(m => {
+      if (m.date_key !== today) return false
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz, hour: '2-digit', hour12: false
+        }).formatToParts(new Date(m.created_at))
+        const h = parseInt(parts.find(p => p.type === 'hour')?.value ?? '23', 10)
+        return h < 10
+      } catch { return false }
+    })
+    if (hasMorningSave) return 'J_POSTGYM'
+  }
+
+  return 'J_WEEKDAY'
+}
+
+function getJCopy(pairId: string, slot: Slot): string {
+  const variant = pairId.slice(2) // strip 'J_' → WEEKDAY / POSTGYM / WEEKEND
+  return PAIR_J[variant]?.[slot] ?? PAIR_J.WEEKDAY[slot] ?? ''
+}
+
+function selectPair(
+  state: UserState,
+  timezone: string,
+  moments: { date_key: string; created_at: string }[]
+): string {
   const dow       = dayOfWeek(timezone)
   const isWeekend = dow === 'Saturday' || dow === 'Sunday'
 
@@ -159,6 +213,7 @@ function selectPair(state: UserState, timezone: string): string {
   if (state.streak_count >= 3) return 'C'
   if (isWeekend) return 'H'
   if (state.account_age_days <= 14) return 'F'
+  if (state.account_age_days <= 21) return detectJVariant(state, timezone, moments)
 
   const dayIndex = Math.floor(Date.now() / 86400000) % 3
   return DEFAULT_ROTATION[dayIndex]
@@ -240,14 +295,37 @@ Deno.serve(async (req) => {
         let message: string
 
         if (slot === 'morning') {
-          const pair = selectPair(state, tz)
-          message = applyVars(PAIRS[pair].morning, state)
+          const pair = selectPair(state, tz, momentsByUser[s.user_id] ?? [])
+          message = pair.startsWith('J_')
+            ? getJCopy(pair, 'morning')
+            : applyVars(PAIRS[pair].morning, state)
           pairUpdates.push({ id: s.id, pair })
         } else {
-          const pair = s.last_morning_pair_id ?? 'A'
-          message = slot === 'afternoon'
-            ? afternoonCopy(pair, state)
-            : eveningCopy(pair, state)
+          const pair      = s.last_morning_pair_id ?? 'A'
+          const isJ       = pair.startsWith('J_')
+          const isSameDayG = pair === 'G'
+
+          if (slot === 'afternoon') {
+            if (isJ) {
+              // J suppression: wins >= 3 at send time → fall back to regular copy
+              message = state.wins_today >= 3
+                ? afternoonCopy('A', state)
+                : getJCopy(pair, 'afternoon')
+            } else if (!isSameDayG && state.wins_today === 0) {
+              // wins_today = 0 at midday trigger — fire J weekday afternoon copy
+              message = PAIR_J.WEEKDAY.afternoon!
+            } else {
+              message = afternoonCopy(pair, state)
+            }
+          } else {
+            if (isJ) {
+              message = state.wins_today >= 3
+                ? eveningCopy('A', state)
+                : getJCopy(pair, 'evening')
+            } else {
+              message = eveningCopy(pair, state)
+            }
+          }
         }
 
         const payload = JSON.stringify({ title: 'DOPAmine', body: message, icon: '/icon.png' })

@@ -3325,14 +3325,28 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         'pointer-events:none'
       ].join(';');
 
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute', 'bottom:0', 'left:50%',
+        'transform:translateX(-50%)',
+        'width:100%', 'height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none', 'z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center';
+
       const hero = document.createElement('p');
       hero.textContent = 'There it is.';
       hero.style.cssText = [
         'font-size:72px', 'font-weight:800', 'color:#FFB020',
         'line-height:1.0', 'text-align:center',
         'margin:0', 'padding:0 24px',
-        'font-family:inherit', 'letter-spacing:-0.5px',
-        'position:relative'
+        'font-family:inherit', 'letter-spacing:-0.5px'
       ].join(';');
 
       const ghost = document.createElement('p');
@@ -3342,12 +3356,14 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         'color:rgba(255,255,255,0.65)',
         'letter-spacing:0.02em', 'text-align:center',
         'margin:20px 0 0 0', 'padding:0 24px',
-        'position:relative', 'pointer-events:none'
+        'pointer-events:none'
       ].join(';');
 
+      textWrap.appendChild(hero);
+      textWrap.appendChild(ghost);
+      overlay.appendChild(bloom);
       overlay.appendChild(glow);
-      overlay.appendChild(hero);
-      overlay.appendChild(ghost);
+      overlay.appendChild(textWrap);
       document.body.appendChild(overlay);
 
       setTimeout(() => {

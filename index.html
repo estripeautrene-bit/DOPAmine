@@ -247,45 +247,10 @@
       cursor: default;
     }
 
-    #saveCaught {
-      position: fixed;
-      top: 0; right: 0; bottom: 0; left: 0;
-      background: rgba(10, 10, 20, 0.97);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      opacity: 0;
-      z-index: 999;
-    }
-    #saveCaught .sc-line1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #FFB020;
-      letter-spacing: -0.5px;
-      margin: 0;
-    }
-    #saveCaught .sc-line2 {
-      font-size: 1rem;
-      font-weight: 400;
-      color: rgba(255, 176, 32, 0.65);
-      margin: 12px 0 0 0;
-    }
-    #accumulationMoment {
-      position: fixed;
-      top: 50%;
-      left: 0; right: 0;
-      transform: translateY(-50%);
-      text-align: center;
-      padding: 40px 24px;
-      background: rgba(14, 14, 20, 0.95);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--gold);
-      pointer-events: none;
-      opacity: 0;
-      z-index: 200;
+    @keyframes save-overlay-glow {
+      0%   { opacity: 0; transform: scale(0.3); }
+      60%  { opacity: 1; transform: scale(1);   }
+      100% { opacity: 0; transform: scale(1.3); }
     }
 
     /* ── Media attachments (photo + song) ── */
@@ -1629,6 +1594,23 @@
       font-style: italic;
     }
 
+    /* ── Save button ripple ── */
+    @keyframes ripple-out {
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+      100% { transform: translate(-50%, -50%) scale(6); opacity: 0; }
+    }
+    .save-ripple {
+      position: absolute;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: rgba(123, 47, 190, 0.4);
+      pointer-events: none;
+      animation: ripple-out 0.4s ease-out forwards;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+    }
+    .save-btn { position: relative; overflow: hidden; }
+
     /* ── Delete confirmation modal ── */
     .delete-modal-body {
       text-align: center;
@@ -2292,12 +2274,6 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
         <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
     </div>
-    <div id="accumulationMoment">10 moments you almost didn't keep.</div>
-    <div id="saveCaught">
-      <p class="sc-line1">There it is.</p>
-      <p class="sc-line2">You stopped for it.</p>
-    </div>
-
     <!-- Science visual card -->
     <div class="science-card" id="scienceQuote"></div>
 
@@ -3291,28 +3267,94 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       return 'Night';
     }
 
-    // ── Save caught overlay ───────────────────────────────────
-    function showSaveCaught() {
-      const el = document.getElementById('saveCaught');
-      if (!el) return;
-      el.style.transition = 'opacity 0.2s ease';
-      el.style.opacity = '1';
-      setTimeout(() => {
-        el.style.transition = 'opacity 0.4s ease';
-        el.style.opacity = '0';
-      }, 1700);
+    // ── Save button ripple ────────────────────────────────────
+    function triggerRipple() {
+      const btn = document.getElementById('saveBtn');
+      if (!btn) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'save-ripple';
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 400);
     }
 
-    // ── First Accumulation Moment (Item 14) ───────────────────
-    function checkAccumulationMoment(totalCount) {
-      if (totalCount !== 10) return;
-      if (localStorage.getItem('accumulation_10_shown')) return;
-      localStorage.setItem('accumulation_10_shown', 'true');
-      const el = document.getElementById('accumulationMoment');
-      if (!el) return;
-      el.style.transition = 'opacity 0.4s ease';
-      el.style.opacity = '1';
-      setTimeout(() => { el.style.opacity = '0'; }, 3000);
+    // ── Save overlay (Items 1, 10, 14) ────────────────────────
+    const GHOST_VARIANTS = [
+      "You almost didn't keep that.",
+      "Gone if you hadn't.",
+      "Caught.",
+      "That one was close.",
+      "Most people let that go.",
+      "You stopped for it.",
+      "That one's yours now.",
+      "It would have disappeared."
+    ];
+
+    function showSaveCaught(totalCount) {
+      const isAccumulation = totalCount === 10 &&
+        !localStorage.getItem('dopa_accumulation_fired');
+      if (isAccumulation) localStorage.setItem('dopa_accumulation_fired', 'true');
+
+      const idx = parseInt(localStorage.getItem('dopa_ghost_index') || '0', 10);
+      const ghostText = isAccumulation
+        ? "10 moments you almost didn't keep."
+        : GHOST_VARIANTS[idx % GHOST_VARIANTS.length];
+      if (!isAccumulation) {
+        localStorage.setItem('dopa_ghost_index',
+          String((idx + 1) % GHOST_VARIANTS.length));
+      }
+
+      const holdMs = isAccumulation ? 3000 : 1200;
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed', 'top:0', 'left:0', 'width:100%', 'height:100%',
+        'background:rgba(0,0,0,0.92)', 'z-index:9999',
+        'display:flex', 'flex-direction:column',
+        'align-items:center', 'justify-content:center',
+        'pointer-events:none', 'opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)', 'left:calc(50% - 250px)',
+        'width:500px', 'height:500px',
+        'border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const hero = document.createElement('p');
+      hero.textContent = 'There it is.';
+      hero.style.cssText = [
+        'font-size:72px', 'font-weight:800', 'color:#FFB020',
+        'line-height:1.0', 'text-align:center',
+        'margin:0', 'padding:0 24px',
+        'font-family:inherit', 'letter-spacing:-0.5px',
+        'position:relative'
+      ].join(';');
+
+      const ghost = document.createElement('p');
+      ghost.textContent = ghostText;
+      ghost.style.cssText = [
+        'font-size:20px', 'font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em', 'text-align:center',
+        'margin:20px 0 0 0', 'padding:0 24px',
+        'position:relative', 'pointer-events:none'
+      ].join(';');
+
+      overlay.appendChild(glow);
+      overlay.appendChild(hero);
+      overlay.appendChild(ghost);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, holdMs);
     }
 
     // ── Photo capture ────────────────────────────────────────
@@ -3406,7 +3448,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       const streakAfter = calcStreak(momentsBefore);
 
-      showSaveCaught();
+      triggerRipple();
+      showSaveCaught(momentsBefore.length);
       const saveBtn = document.getElementById('saveBtn');
 
       document.getElementById('momentInput').value = '';
@@ -3420,7 +3463,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       updateLogStreak();
       renderTodayEntries();
-      checkAccumulationMoment(momentsBefore.length);
+      setTimeout(() => showToast('Moment saved! 🌟'), 1600);
       checkStreakMilestone(streakBefore, streakAfter);
       maybeShowNotifPrompt();
 

@@ -247,6 +247,13 @@
       cursor: default;
     }
 
+    .save-btn.save-success {
+      background: #D4A0FF;
+      transform: scale(1.18);
+      transition: transform 0.3s ease, background 0.3s ease;
+      font-size: 1.1rem;
+    }
+
     @keyframes save-pulse {
       0%   { transform: scale(1); }
       30%  { transform: scale(1.18); }
@@ -2320,7 +2327,7 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
 
       <div class="input-footer">
         <span class="char-count"><span id="charCount">0</span>/280</span>
-        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
+        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled><span id="saveBtnLabel">Save ✓</span></button>
       </div>
     </div>
     <div id="ghostLine">You almost didn't keep that.</div>
@@ -3334,15 +3341,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       btn.appendChild(flash);
       setTimeout(() => flash.remove(), 300);
 
-      btn.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
-      btn.style.transform = 'scale(1.18)';
-      btn.style.background = '#D4A0FF';
-      setTimeout(() => {
-        btn.style.transform = 'scale(1)';
-        btn.style.transition = 'transform 0.3s ease-out, background 0.4s ease';
-        btn.style.background = '';
-      }, 300);
-      setTimeout(() => { btn.style.transition = ''; btn.style.transform = ''; }, 700);
+      btn.classList.add('save-success');
+      setTimeout(() => btn.classList.remove('save-success'), 600);
     }
 
     // ── Ghost line (Item 10) ──────────────────────────────────
@@ -3459,9 +3459,9 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       triggerRipple();
       const saveBtn = document.getElementById('saveBtn');
-      saveBtn.textContent = '✓';
-      saveBtn.style.fontSize = '1.1rem';
-      setTimeout(() => { saveBtn.textContent = 'Save ✓'; saveBtn.style.fontSize = ''; }, 600);
+      const saveBtnLabel = document.getElementById('saveBtnLabel');
+      saveBtnLabel.textContent = '✓';
+      setTimeout(() => { saveBtnLabel.textContent = 'Save ✓'; }, 600);
 
       document.getElementById('momentInput').value = '';
       document.getElementById('charCount').textContent = '0';

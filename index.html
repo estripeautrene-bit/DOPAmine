@@ -192,6 +192,7 @@
       border: 1px solid rgba(123,47,190,0.25);
       border-radius: var(--radius);
       padding: 16px;
+      position: relative;
     }
 
     .input-area textarea {
@@ -244,6 +245,50 @@
     .save-btn:disabled {
       opacity: 0.35;
       cursor: default;
+    }
+
+    @keyframes save-pulse {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes save-flash {
+      0%   { opacity: 0; }
+      25%  { opacity: 0.2; }
+      100% { opacity: 0; }
+    }
+    .save-flash-overlay {
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      border-radius: 50px;
+      background: white;
+      pointer-events: none;
+      animation: save-flash 0.15s ease-out forwards;
+    }
+    #ghostLine {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -28px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--gold);
+      pointer-events: none;
+      opacity: 0;
+    }
+    #accumulationMoment {
+      position: fixed;
+      top: 50%;
+      left: 0; right: 0;
+      transform: translateY(-50%);
+      text-align: center;
+      padding: 40px 24px;
+      background: rgba(14, 14, 20, 0.95);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--gold);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 200;
     }
 
     /* ── Media attachments (photo + song) ── */
@@ -2277,7 +2322,10 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
         <span class="char-count"><span id="charCount">0</span>/280</span>
         <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
+      <div id="ghostLine">You almost didn't keep that.</div>
     </div>
+
+    <div id="accumulationMoment">10 moments you almost didn't keep.</div>
 
     <!-- Science visual card -->
     <div class="science-card" id="scienceQuote"></div>
@@ -3272,13 +3320,45 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       return 'Night';
     }
 
-    // ── Save ripple ──────────────────────────────────────────
+    // ── Save ripple + pulse + flash ───────────────────────────
     function triggerRipple() {
       const btn = document.getElementById('saveBtn');
+
       const ripple = document.createElement('div');
       ripple.className = 'save-ripple';
       btn.appendChild(ripple);
       setTimeout(() => ripple.remove(), 400);
+
+      const flash = document.createElement('div');
+      flash.className = 'save-flash-overlay';
+      btn.appendChild(flash);
+      setTimeout(() => flash.remove(), 150);
+
+      btn.style.transition = 'transform 0.3s ease-out';
+      btn.style.transform = 'scale(1.05)';
+      setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+      setTimeout(() => { btn.style.transition = ''; btn.style.transform = ''; }, 300);
+    }
+
+    // ── Ghost line (Item 10) ──────────────────────────────────
+    function showGhostLine() {
+      const el = document.getElementById('ghostLine');
+      if (!el) return;
+      el.style.transition = 'opacity 0.3s ease';
+      el.style.opacity = '1';
+      setTimeout(() => { el.style.opacity = '0'; }, 2200);
+    }
+
+    // ── First Accumulation Moment (Item 14) ───────────────────
+    function checkAccumulationMoment(totalCount) {
+      if (totalCount !== 10) return;
+      if (localStorage.getItem('accumulation_10_shown')) return;
+      localStorage.setItem('accumulation_10_shown', 'true');
+      const el = document.getElementById('accumulationMoment');
+      if (!el) return;
+      el.style.transition = 'opacity 0.4s ease';
+      el.style.opacity = '1';
+      setTimeout(() => { el.style.opacity = '0'; }, 3000);
     }
 
     // ── Photo capture ────────────────────────────────────────
@@ -3373,10 +3453,13 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const streakAfter = calcStreak(momentsBefore);
 
       triggerRipple();
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.textContent = '✓';
+      setTimeout(() => { saveBtn.textContent = 'Save ✓'; }, 600);
 
       document.getElementById('momentInput').value = '';
       document.getElementById('charCount').textContent = '0';
-      document.getElementById('saveBtn').disabled = true;
+      saveBtn.disabled = true;
       document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
 
       const blobToUpload = currentPhotoBlob;
@@ -3386,6 +3469,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       showToast('Moment saved! 🌟');
       updateLogStreak();
       renderTodayEntries();
+      setTimeout(showGhostLine, 500);
+      checkAccumulationMoment(momentsBefore.length);
       checkStreakMilestone(streakBefore, streakAfter);
       maybeShowNotifPrompt();
 

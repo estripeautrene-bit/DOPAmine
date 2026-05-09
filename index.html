@@ -660,6 +660,13 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .toast-milestone {
+      color: #FFB020 !important;
+      font-weight: 800 !important;
+      background: rgba(0, 0, 0, 0.95) !important;
+      border: 1px solid rgba(255, 176, 32, 0.3) !important;
+    }
+
     /* ── Progress dashboard ── */
     .progress-hero {
       text-align: center;
@@ -2977,7 +2984,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }
       section.innerHTML = `
         <div style="font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(181,123,247,0.7);margin-bottom:12px;">
-          Today's wins · ${todayMoments.length}
+          Today's wins · <span style="color:${todayMoments.length >= 3 ? '#FFB020' : 'inherit'}">${todayMoments.length}</span>
         </div>
         ${todayMoments.map(m => `
           <div class="moment-card">
@@ -3241,7 +3248,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const pill = document.getElementById('logStreakPill');
       const meaning = document.getElementById('logStreakMeaning');
       if (streak > 0) {
-        pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
+        pill.innerHTML = '🔥 <span style="color:#FFB020">' + streak + '</span> ' + (streak === 1 ? 'day' : 'days');
         meaning.textContent = getStreakMeaning(streak);
         el.classList.add('visible');
       } else {
@@ -3251,7 +3258,13 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function checkStreakMilestone(streakBefore, streakAfter) {
       if (STREAK_MILESTONES[streakAfter] && streakAfter !== streakBefore) {
-        setTimeout(() => showToast(STREAK_MILESTONES[streakAfter]), 400);
+        setTimeout(() => {
+          showToast(STREAK_MILESTONES[streakAfter]);
+          const t = document.getElementById('toast');
+          t.style.removeProperty('color');
+          t.style.removeProperty('background');
+          t.classList.add('toast-milestone');
+        }, 400);
       }
     }
 
@@ -3651,7 +3664,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         <!-- Quick stats -->
         <div class="quick-stats">
           <div class="quick-stat clickable" onclick="showDayDetail('${todayKey()}', new Date())">
-            <div class="quick-stat-num">${todayCount}</div>
+            <div class="quick-stat-num" style="${todayCount >= 3 ? 'color:#FFB020' : ''}">${todayCount}</div>
             <div class="quick-stat-label">Today ↓</div>
           </div>
           <div class="quick-stat">

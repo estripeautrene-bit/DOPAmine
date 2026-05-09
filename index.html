@@ -249,12 +249,12 @@
 
     @keyframes save-pulse {
       0%   { transform: scale(1); }
-      40%  { transform: scale(1.05); }
+      40%  { transform: scale(1.12); }
       100% { transform: scale(1); }
     }
     @keyframes save-flash {
       0%   { opacity: 0; }
-      25%  { opacity: 0.2; }
+      25%  { opacity: 0.35; }
       100% { opacity: 0; }
     }
     .save-flash-overlay {
@@ -266,12 +266,11 @@
       animation: save-flash 0.15s ease-out forwards;
     }
     #ghostLine {
-      position: absolute;
-      left: 0; right: 0;
-      bottom: -28px;
+      position: relative;
+      margin-top: 8px;
       text-align: center;
       font-size: 0.8rem;
-      color: var(--gold);
+      color: #B57BF7;
       pointer-events: none;
       opacity: 0;
     }
@@ -2322,8 +2321,8 @@ body.light #authScreen .auth-error { color:#ff6b8a !important; }
         <span class="char-count"><span id="charCount">0</span>/280</span>
         <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
-      <div id="ghostLine">You almost didn't keep that.</div>
     </div>
+    <div id="ghostLine">You almost didn't keep that.</div>
 
     <div id="accumulationMoment">10 moments you almost didn't keep.</div>
 
@@ -3335,9 +3334,10 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       setTimeout(() => flash.remove(), 150);
 
       btn.style.transition = 'transform 0.3s ease-out';
-      btn.style.transform = 'scale(1.05)';
+      btn.style.transform = 'scale(1.12)';
+      btn.style.backgroundColor = '#B57BF7';
       setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
-      setTimeout(() => { btn.style.transition = ''; btn.style.transform = ''; }, 300);
+      setTimeout(() => { btn.style.backgroundColor = ''; btn.style.transition = ''; btn.style.transform = ''; }, 300);
     }
 
     // ── Ghost line (Item 10) ──────────────────────────────────

@@ -682,15 +682,17 @@
       transform: translateX(-50%) translateY(20px);
       background: #1a1a2e !important;
       color: #ffffff !important;
-      padding: 12px 24px;
+      padding: 20px 32px;
       border-radius: 50px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s, transform 0.25s;
       z-index: 100;
       white-space: nowrap;
+      max-width: 340px;
+      text-align: center;
     }
 
     body.light .toast {
@@ -2621,7 +2623,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       t.style.setProperty('color', '#ffffff', 'important');
       t.style.setProperty('background', '#1a1a2e', 'important');
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2200);
+      setTimeout(() => t.classList.remove('show'), 6600);
     }
 
     // ── Name & greeting ──────────────────────────────────────

@@ -3332,6 +3332,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     // ── Save ripple + pulse + flash ───────────────────────────
     function triggerRipple() {
       const btn = document.getElementById('saveBtn');
+      btn.style.background = 'white';
 
       const ripple = document.createElement('div');
       ripple.className = 'save-ripple';

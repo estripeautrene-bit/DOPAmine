@@ -2411,6 +2411,7 @@ remote.forEach(rm => { if (!deletedIds.has(String(rm.id)) && !merged.find(lm => 
         localStorage.setItem(UID_KEY, getUserId());
         renderTodayEntries(); updateLogStreak();
         updateVisualCard(merged, calcStreak(merged));
+        updateBgScore(merged.filter(m => m.dateKey === todayKey()).length, calcStreak(merged), false);
         console.log('Synced', merged.length, 'moments');
 if (document.getElementById('view-summary').classList.contains('active')) renderSummary();
       } catch(e) { console.log('sbSync offline:', e.message); }
@@ -2887,6 +2888,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           </div>`).join('')}`;
     }
 
+    applyBloom(parseInt(localStorage.getItem('dopa_bg_score') || '0', 10));
     renderTodayEntries();
 
     // ── Share progress (Canvas image) ────────────────────
@@ -3396,6 +3398,69 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }, 4000);
     }
 
+    // ── Personal Progress Bloom ──────────────────────────────
+    function daysBetweenKeys(d1, d2) {
+      return Math.round((new Date(d2 + 'T12:00:00Z') - new Date(d1 + 'T12:00:00Z')) / 86400000);
+    }
+
+    function applyBloom(score) {
+      if (score <= 0) {
+        document.body.style.background = '#0E0B1A';
+        return;
+      }
+      const t = score / 30;
+      const W  = (60 + t * 60).toFixed(1);
+      const H  = (25 + t * 55).toFixed(1);
+      const o1 = (0.04 + t * 0.35).toFixed(3);
+      const o2 = (0.02 + t * 0.15).toFixed(3);
+      document.body.style.background =
+        `radial-gradient(ellipse ${W}% ${H}% at 50% 100%,` +
+        `rgba(255,176,32,${o1}) 0%,` +
+        `rgba(255,176,32,${o2}) 30%,` +
+        `rgba(255,176,32,0) 70%,` +
+        `#0E0B1A 100%)`;
+    }
+
+    function updateBgScore(todayWins, streak, patch) {
+      const currentDate = todayKey();
+      const lastDate    = localStorage.getItem('dopa_bg_date') || '';
+      let currentScore  = parseInt(localStorage.getItem('dopa_bg_score')    || '0', 10);
+      let prevTodayPts  = parseInt(localStorage.getItem('dopa_bg_today_pts') || '0', 10);
+
+      if (lastDate && currentDate !== lastDate) {
+        const daysMissed = Math.max(0, daysBetweenKeys(lastDate, currentDate) - 1);
+        currentScore = Math.max(0, currentScore - prevTodayPts - daysMissed);
+        prevTodayPts = 0;
+      }
+
+      let today_pts = 0;
+      if (todayWins >= 3 && streak > 0) {
+        if      (todayWins === 3)              today_pts = 1;
+        else if (todayWins >= 4 && todayWins <= 6) today_pts = 2;
+        else if (todayWins >= 7 && todayWins <= 9) today_pts = 3;
+        else                                   today_pts = 4;
+      }
+
+      const newScore = Math.min(30, Math.max(0, currentScore - prevTodayPts + today_pts));
+
+      localStorage.setItem('dopa_bg_score',     String(newScore));
+      localStorage.setItem('dopa_bg_date',      currentDate);
+      localStorage.setItem('dopa_bg_today_pts', String(today_pts));
+
+      applyBloom(newScore);
+
+      if (patch) {
+        const uid = getUserId();
+        if (uid) {
+          fetch(SB_URL + '/rest/v1/push_subscriptions?user_id=eq.' + uid, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ background_score: newScore })
+          }).catch(() => {});
+        }
+      }
+    }
+
     // ── Photo capture ────────────────────────────────────────
     let currentPhotoData = null;
     let currentPhotoBlob = null;
@@ -3495,6 +3560,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       } else {
         showSaveCaught(momentsBefore.length);
       }
+      updateBgScore(todayCount + 1, streakAfter, true);
       const saveBtn = document.getElementById('saveBtn');
 
       document.getElementById('momentInput').value = '';

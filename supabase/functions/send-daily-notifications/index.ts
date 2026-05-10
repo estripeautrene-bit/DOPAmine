@@ -382,7 +382,10 @@ Deno.serve(async (req) => {
               message = afternoonCopy(pair, state)
             }
           } else {
-            if (isJ) {
+            if (dayOfWeek(tz) === 'Sunday') {
+              if (state.wins_today >= 3) return
+              message = "What happened this week that you almost didn't catch?"
+            } else if (isJ) {
               message = state.wins_today >= 3
                 ? eveningCopy('A', state)
                 : getJCopy(pair, 'evening')

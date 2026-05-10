@@ -3342,7 +3342,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     ];
 
     function showSaveCaught(totalCount) {
-      const isAccumulation = totalCount === 10 &&
+      const isAccumulation = totalCount >= 10 &&
         !localStorage.getItem('dopa_accumulation_fired');
       if (isAccumulation) localStorage.setItem('dopa_accumulation_fired', 'true');
 

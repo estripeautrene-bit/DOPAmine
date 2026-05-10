@@ -3404,21 +3404,18 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     function applyBloom(score) {
-      if (score <= 0) {
-        document.body.style.background = '#0E0B1A';
-        return;
-      }
-      const t = score / 30;
-      const W  = (60 + t * 60).toFixed(1);
-      const H  = (25 + t * 55).toFixed(1);
-      const o1 = (0.04 + t * 0.35).toFixed(3);
-      const o2 = (0.02 + t * 0.15).toFixed(3);
-      document.body.style.background =
-        `radial-gradient(ellipse ${W}% ${H}% at 50% 100%,` +
-        `rgba(255,176,32,${o1}) 0%,` +
-        `rgba(255,176,32,${o2}) 30%,` +
-        `rgba(255,176,32,0) 70%,` +
-        `#0E0B1A 100%)`;
+      const bg = score <= 0
+        ? 'rgb(14,11,26)'
+        : `radial-gradient(ellipse ${(60 + (score/30)*60).toFixed(1)}% ${(25 + (score/30)*55).toFixed(1)}% at 50% 100%,` +
+          `rgba(255,176,32,${(0.04 + (score/30)*0.35).toFixed(3)}) 0%,` +
+          `rgba(255,176,32,${(0.02 + (score/30)*0.15).toFixed(3)}) 30%,` +
+          `rgba(14,11,26,0) 70%,` +
+          `rgba(14,11,26,1) 100%)`;
+      document.body.style.background = bg;
+      ['view-log','view-yesterday','view-summary'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.background = bg;
+      });
     }
 
     function updateBgScore(todayWins, streak, patch) {

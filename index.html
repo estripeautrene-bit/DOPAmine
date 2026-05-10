@@ -3425,6 +3425,97 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }, holdMs);
     }
 
+    // ── Day Completion State (3 wins) ─────────────────────────
+    const THREE_WIN_VARIANTS = [
+      { hero: "{name}. Day {N}. Three in.",            sub: "Every time you show up, your brain gets better at finding the good. There's more good today." },
+      { hero: "Day {N}. Challenge met.",               sub: "{name}, you're not just keeping a streak. You're becoming someone who does this." },
+      { hero: "{N} days. Three wins.",                 sub: "This is what your version of structure looks like. It's working." },
+      { hero: "{name}. Day {N} locked in.",            sub: "Three moments captured. More are waiting." },
+      { hero: "Day {N}. You showed up, {name}.",       sub: "Consistent people build extraordinary lives. You're being consistent." },
+      { hero: "{N} days strong.",                      sub: "{name}, growth doesn't announce itself. It just keeps happening. Like this." },
+      { hero: "Three in. Day {N} of your streak.",     sub: "Your best moments today may still be ahead." },
+      { hero: "{name}. {N} days of showing up.",       sub: "The day isn't finished with you yet." },
+      { hero: "Day {N}. Three and counting.",          sub: "You thought structure wasn't for you. Look at what you're building." },
+      { hero: "Challenge met. Day {N}, {name}.",       sub: "Three wins is the commitment. Everything after this is the reward." }
+    ];
+
+    function showThreeWinOverlay(streakCount) {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const N = String(streakCount);
+      const idx = parseInt(localStorage.getItem('dopa_three_win_index') || '0', 10);
+      const variant = THREE_WIN_VARIANTS[idx];
+      localStorage.setItem('dopa_three_win_index', String((idx + 1) % 10));
+
+      function fill(s) { return s.replace(/{name}/g, displayName).replace(/{N}/g, N); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+
     // ── Photo capture ────────────────────────────────────────
     let currentPhotoData = null;
     let currentPhotoBlob = null;
@@ -3516,9 +3607,14 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       const streakAfter = calcStreak(momentsBefore);
 
+      const todayCount = momentsBefore.filter(m => m.dateKey === todayKey()).length;
       playSaveTone();
       triggerRipple();
-      showSaveCaught(momentsBefore.length);
+      if (todayCount === 2) {
+        showThreeWinOverlay(streakAfter);
+      } else {
+        showSaveCaught(momentsBefore.length);
+      }
       const saveBtn = document.getElementById('saveBtn');
 
       document.getElementById('momentInput').value = '';

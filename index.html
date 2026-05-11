@@ -2655,7 +2655,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       if (tab === 'summary') { renderSummary(); sbSync(); }
       if (tab === 'yesterday') renderYesterday();
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
-      applyBloom(parseInt(localStorage.getItem('dopa_bg_score') || '0', 10));
+      applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     }
 
     // ── Input / tag logic ────────────────────────────────────
@@ -2752,7 +2752,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           </div>`).join('')}`;
     }
 
-    applyBloom(parseInt(localStorage.getItem('dopa_bg_score') || '0', 10));
+    applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     renderTodayEntries();
 
     // ── Share progress (Canvas image) ────────────────────
@@ -3591,7 +3591,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     function updateBgScore(todayWins, streak, patch) {
       const currentDate = todayKey();
       const lastDate    = localStorage.getItem('dopa_bg_date') || '';
-      let currentScore  = parseInt(localStorage.getItem('dopa_bg_score')    || '0', 10);
+      let currentScore  = parseFloat(localStorage.getItem('dopa_bg_score')    || '0');
       let prevTodayPts  = parseInt(localStorage.getItem('dopa_bg_today_pts') || '0', 10);
       const storedScore = currentScore;
 
@@ -3602,7 +3602,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       if (lastDate && currentDate !== lastDate) {
         const daysMissed = Math.max(0, daysBetweenKeys(lastDate, currentDate) - 1);
-        currentScore = Math.max(0, currentScore - prevTodayPts - daysMissed);
+        currentScore = Math.max(0, currentScore - prevTodayPts - daysMissed * 0.5);
         prevTodayPts = 0;
       }
 

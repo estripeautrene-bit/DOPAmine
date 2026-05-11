@@ -1835,7 +1835,7 @@
 .hs-ghost-btn:focus { outline:none; }
 #goodDayInput::placeholder { color:rgba(255,255,255,0.3); }
 #goodDayInput:focus { outline:none; border-color:rgba(255,176,32,0.4); }
-.s3-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px 18px; font-size:1rem; font-family:inherit; color:var(--text); outline:none; box-sizing:border-box; transition:border-color 0.15s; }
+.s3-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px 16px; font-size:1rem; font-family:inherit; color:var(--text); outline:none; box-sizing:border-box; transition:border-color 0.15s; }
 .s3-input::placeholder { color:rgba(255,255,255,0.3); }
 .s3-input:focus { border-color:rgba(255,176,32,0.4); }
 .s3-error { color:#ff6b8a; font-size:0.82rem; min-height:18px; text-align:center; margin-top:12px; }
@@ -1935,7 +1935,7 @@
   <div id="stage3Screen">
     <div id="stage3-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
     <div style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
-      <h1 style="font-size:1.6rem;font-weight:800;color:#ffffff;text-align:center;line-height:1.2;margin:0 0 10px;">One last thing.</h1>
+      <h1 style="font-size:1.6rem;font-weight:800;color:var(--text);text-align:center;line-height:1.2;margin:0 0 10px;">One last thing.</h1>
       <p style="font-size:0.92rem;color:var(--muted);text-align:center;line-height:1.5;margin:0 0 36px;">Where should we send your Day 7 results?</p>
       <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;margin-bottom:24px;">
         <input class="s3-input" id="s3FirstName" type="text" placeholder="First name" autocomplete="given-name" />
@@ -1952,7 +1952,7 @@
       </div>
       <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
       <div id="stage3Error" class="s3-error"></div>
-      <p style="font-size:0.78rem;color:var(--muted);margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
     </div>
   </div>
 

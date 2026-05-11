@@ -1432,17 +1432,16 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      margin: 12px 0;
       background: #1A1530;
-      border-radius: 16px;
-      padding: 12px 20px;
+      border-radius: 999px;
+      padding: 10px 24px;
       position: relative;
       z-index: 2;
       text-align: center;
     }
 
     .log-streak.visible {
-      display: flex;
+      display: inline-flex;
     }
 
     .log-streak-pill {
@@ -2086,9 +2085,11 @@
       <div class="prompt-dots" id="promptDots"></div>
     </div>
 
-    <div class="log-streak" id="logStreak">
-      <span class="log-streak-pill" id="logStreakPill"></span>
-      <div class="log-streak-meaning" id="logStreakMeaning"></div>
+    <div style="text-align:center;margin:12px 0;">
+      <div class="log-streak" id="logStreak">
+        <span class="log-streak-pill" id="logStreakPill"></span>
+        <div class="log-streak-meaning" id="logStreakMeaning"></div>
+      </div>
     </div>
 
     <div class="input-area">

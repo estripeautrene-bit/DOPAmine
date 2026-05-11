@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DOPAmine" />
-  <meta name="theme-color" content="#1a1a2e" />
+  <meta name="theme-color" content="#0E0B1A" />
   <link rel="apple-touch-icon" href="icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon.png" />
@@ -3549,7 +3549,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       if (protagonist) {
         const r = protagonist.getBoundingClientRect();
         X = ((r.left + r.width  / 2) / window.innerWidth  * 100).toFixed(1);
-        Y = ((r.top  + r.height / 2) / window.innerHeight * 100).toFixed(1);
+        Y = Math.max(45, (r.top  + r.height / 2) / window.innerHeight * 100).toFixed(1);
       }
 
       bl.style.background =

@@ -3925,15 +3925,17 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       // ── Big number ──
       container.innerHTML = `
-        <div class="progress-hero">
-          <div class="progress-total-num">${moments.length}</div>
-          <div class="progress-total-label">Good moments captured</div>
-          <div class="progress-streak-row">
-            <span style="font-size:1.4rem">🔥</span>
-            <span class="progress-streak-num">${streak}</span>
-            <span class="progress-streak-text">day streak</span>
+        <div style="background:#1A1530 !important;border-radius:16px;padding:24px 20px;position:relative;z-index:2;text-align:center;">
+          <div class="progress-hero">
+            <div class="progress-total-num">${moments.length}</div>
+            <div class="progress-total-label">Good moments captured</div>
+            <div class="progress-streak-row">
+              <span style="font-size:1.4rem">🔥</span>
+              <span class="progress-streak-num">${streak}</span>
+              <span class="progress-streak-text">day streak</span>
+            </div>
+            ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
           </div>
-          ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
         </div>
 
         <!-- Quick stats -->
@@ -3953,12 +3955,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         </div>
 
         <!-- 30-day dot calendar -->
-        <div class="progress-section-label">Last 30 Days — tap a date to see entries</div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Last 30 Days — tap a date to see entries</div></div>
         <div class="dot-calendar" id="dotCalendar"></div>
         <div class="day-detail-panel" id="dayDetailPanel"></div>
 
         <!-- Top mood tags -->
-        <div class="progress-section-label">Your Top Moments</div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Your Top Moments</div></div>
         <div class="top-tags-row" id="topTagsRow"></div>
 
         <!-- Motivator -->
@@ -3969,14 +3971,14 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const numEl = container.querySelector('.progress-total-num');
       if (numEl) { numEl.style.color = '#FFFFFF'; numEl.style.webkitTextFillColor = '#FFFFFF'; numEl.style.background = 'none'; }
       const totalLabelEl = container.querySelector('.progress-total-label');
-      if (totalLabelEl) totalLabelEl.style.color = 'rgba(255,255,255,0.8)';
+      if (totalLabelEl) totalLabelEl.style.color = '#FFFFFF';
       const streakNumEl = container.querySelector('.progress-streak-num');
       if (streakNumEl) streakNumEl.style.color = '#FFFFFF';
       const streakTextEl = container.querySelector('.progress-streak-text');
       if (streakTextEl) streakTextEl.style.color = '#FFFFFF';
       const streakMeaningEl = container.querySelector('.progress-streak-meaning');
-      if (streakMeaningEl) streakMeaningEl.style.color = 'rgba(255,255,255,0.8)';
-      container.querySelectorAll('.progress-section-label').forEach(el => { el.style.color = 'rgba(255,255,255,0.8)'; });
+      if (streakMeaningEl) streakMeaningEl.style.color = '#FFFFFF';
+      container.querySelectorAll('.progress-section-label').forEach(el => { el.style.color = '#FFFFFF'; });
 
       // ── Build 30-day dot calendar ──
       const activeDays = new Set(moments.map(m => m.dateKey));

@@ -1432,7 +1432,13 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      margin-bottom: 14px;
+      margin: 12px 0;
+      background: #1A1530;
+      border-radius: 16px;
+      padding: 12px 20px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
     }
 
     .log-streak.visible {
@@ -2725,7 +2731,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         return;
       }
       section.innerHTML = `
-        <div class="today-wins-label">
+        <div class="today-wins-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;">
           Today's wins · <span style="color:${todayMoments.length >= 3 ? '#FFB020' : '#FFFFFF'}">${todayMoments.length}</span>
         </div>
         ${todayMoments.map(m => `

@@ -855,10 +855,8 @@
       font-weight: 900;
       line-height: 1;
       letter-spacing: -2px;
-      background: linear-gradient(135deg, #ffffff, #B57BF7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #FFFFFF !important;
+      -webkit-text-fill-color: #FFFFFF !important;
       margin-bottom: 6px;
     }
     .personal-number-label {
@@ -3956,6 +3954,19 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         <!-- Motivator -->
         <div class="progress-motivator" id="progressMotivator"></div>
       `;
+
+      // Force white text on all progress elements regardless of CSS cascade
+      const numEl = container.querySelector('.progress-total-num');
+      if (numEl) { numEl.style.color = '#FFFFFF'; numEl.style.webkitTextFillColor = '#FFFFFF'; numEl.style.background = 'none'; }
+      const totalLabelEl = container.querySelector('.progress-total-label');
+      if (totalLabelEl) totalLabelEl.style.color = 'rgba(255,255,255,0.8)';
+      const streakNumEl = container.querySelector('.progress-streak-num');
+      if (streakNumEl) streakNumEl.style.color = '#FFFFFF';
+      const streakTextEl = container.querySelector('.progress-streak-text');
+      if (streakTextEl) streakTextEl.style.color = '#FFFFFF';
+      const streakMeaningEl = container.querySelector('.progress-streak-meaning');
+      if (streakMeaningEl) streakMeaningEl.style.color = 'rgba(255,255,255,0.8)';
+      container.querySelectorAll('.progress-section-label').forEach(el => { el.style.color = 'rgba(255,255,255,0.8)'; });
 
       // ── Build 30-day dot calendar ──
       const activeDays = new Set(moments.map(m => m.dateKey));

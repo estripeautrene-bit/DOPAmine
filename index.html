@@ -159,7 +159,7 @@
 
     /* ── Log view ── */
     .prompt-card {
-      background: #1A1530;
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.35);
       border-radius: var(--radius);
       padding: 22px 20px 16px;
@@ -188,7 +188,7 @@
     }
 
     .input-area {
-      background: #1A1530;
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.25);
       border-radius: var(--radius);
       padding: 16px;
@@ -678,7 +678,7 @@
     }
 
     .day-detail-card {
-      background: #1A1530;
+      background: #1A1530 !important;
       border-radius: 10px;
       padding: 10px 12px;
       margin-bottom: 8px;
@@ -966,7 +966,7 @@
     }
 
     .moment-card {
-      background: #1A1530;
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.2);
       border-radius: 12px;
       padding: 14px 16px;
@@ -1416,7 +1416,7 @@
     }
 
     .yesterday-card {
-      background: #1A1530;
+      background: #1A1530 !important;
       border-radius: 12px;
       padding: 14px 16px;
       margin-bottom: 10px;
@@ -3205,6 +3205,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const lastDate    = localStorage.getItem('dopa_bg_date') || '';
       let currentScore  = parseInt(localStorage.getItem('dopa_bg_score')    || '0', 10);
       let prevTodayPts  = parseInt(localStorage.getItem('dopa_bg_today_pts') || '0', 10);
+      const storedScore = currentScore;
 
       if (lastDate && currentDate !== lastDate) {
         const daysMissed = Math.max(0, daysBetweenKeys(lastDate, currentDate) - 1);
@@ -3226,7 +3227,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       localStorage.setItem('dopa_bg_date',      currentDate);
       localStorage.setItem('dopa_bg_today_pts', String(today_pts));
 
-      applyBloom(newScore);
+      applyBloom(patch ? Math.max(newScore, storedScore) : newScore);
 
       if (patch) {
         const uid = getUserId();

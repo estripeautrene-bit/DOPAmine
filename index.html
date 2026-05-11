@@ -1829,7 +1829,8 @@
 #promiseScreen, #stage2aScreen, #stage2bScreen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
 .hs-card { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px 20px; color:var(--text); font-size:1rem; font-weight:400; font-family:inherit; text-align:left; cursor:pointer; transition:background 0.15s; }
 .hs-card:active { background:rgba(255,255,255,0.12); }
-.hs-ghost-btn { background:transparent; border:1px solid rgba(255,255,255,0.4); border-radius:50px; padding:16px 48px; font-size:1rem; font-weight:500; color:var(--text); cursor:pointer; font-family:inherit; }
+.hs-ghost-btn { background:transparent; border:1px solid rgba(255,255,255,0.4); border-radius:50px; padding:16px 48px; font-size:1rem; font-weight:500; color:var(--text); cursor:pointer; font-family:inherit; transition:transform 150ms ease-out, border-color 150ms ease-out; }
+.hs-ghost-btn:active { transform:scale(0.96); border-color:rgba(255,255,255,0.8); transition:transform 80ms, border-color 80ms; }
 #goodDayInput::placeholder { color:rgba(255,255,255,0.3); }
 
 /* ── Auth screen — always dark, always white text regardless of theme ── */
@@ -1893,7 +1894,7 @@
     <div id="promise-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
     <div id="promise-content" style="position:absolute;left:0;right:0;top:52%;display:flex;flex-direction:column;align-items:center;padding:0 36px;opacity:0;transition:opacity 1s ease;">
       <p style="font-size:1.1rem;font-weight:500;color:white;text-align:center;line-height:1.65;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
-      <button onclick="advanceToStage2()" style="background:transparent;border:1px solid rgba(255,255,255,0.4);border-radius:50px;padding:16px 48px;font-size:16px;font-weight:500;color:white;cursor:pointer;font-family:inherit;">Start my 7 days</button>
+      <button class="hs-ghost-btn" onclick="advanceToStage2()">Start my 7 days</button>
     </div>
   </div>
 

@@ -3104,6 +3104,101 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     // ── Day Completion State (3 wins) ─────────────────────────
+    const LIGHT_MILESTONE_VARIANTS = {
+      10: { hero: "{name}. Look at your screen.",    sub: "Ten days of evidence. The difference is visible now." },
+      20: { hero: "{name}. Twenty days of this.",    sub: "The screen looks different because you are." },
+      30: { hero: "{name}. Thirty days. This is it.", sub: "The screen is at full light. So are you." }
+    };
+
+    function checkLightMilestone(scoreBefore, scoreAfter) {
+      for (const threshold of [10, 20, 30]) {
+        if (scoreBefore < threshold && scoreAfter >= threshold) {
+          const key = `dopa_light_${threshold}_fired`;
+          if (!localStorage.getItem(key)) {
+            localStorage.setItem(key, '1');
+            return threshold;
+          }
+        }
+      }
+      return null;
+    }
+
+    function showLightMilestoneOverlay(score) {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const variant = LIGHT_MILESTONE_VARIANTS[score];
+      if (!variant) return;
+
+      function fill(s) { return s.replace(/{name}/g, displayName); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+    window.showLightMilestoneOverlay = showLightMilestoneOverlay;
+
     const THREE_WIN_VARIANTS = [
       { hero: "{name}. Day {N}. Three in.",            sub: "Every time you show up, your brain gets better at finding the good. There's more good today." },
       { hero: "Day {N}. Challenge met.",               sub: "{name}, you're not just keeping a streak. You're becoming someone who does this." },
@@ -3471,8 +3566,17 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const todayCount = momentsBefore.filter(m => m.dateKey === todayKey()).length;
       playSaveTone();
       triggerRipple();
-      if (todayCount === 2) {
-        // Priority: Light Milestone (not yet built) → Return State → Day Completion
+
+      // Score update runs first so we can detect threshold crossing
+      const scoreBefore = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
+      updateBgScore(todayCount, streakAfter, true);
+      const scoreAfter = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
+      const lightMilestone = checkLightMilestone(scoreBefore, scoreAfter);
+
+      if (lightMilestone) {
+        showLightMilestoneOverlay(lightMilestone);
+      } else if (todayCount === 2) {
+        // Priority: Return State → Day Completion
         const lastStreak = parseInt(localStorage.getItem('dopa_last_streak') || '0', 10);
         if (streakAfter === 1 && lastStreak > 1) {
           showReturnStateOverlay();
@@ -3482,7 +3586,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       } else {
         showSaveCaught(momentsBefore.length);
       }
-      updateBgScore(todayCount, streakAfter, true);
       const saveBtn = document.getElementById('saveBtn');
 
       document.getElementById('momentInput').value = '';

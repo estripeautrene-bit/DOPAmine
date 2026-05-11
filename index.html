@@ -3117,6 +3117,90 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       { hero: "Challenge met. Day {N}, {name}.",       sub: "Three wins is the commitment. Everything after this is the reward." }
     ];
 
+    const RETURN_STATE_VARIANTS = [
+      { hero: "{name}. You came back.",          sub: "Coming back is harder than starting. You did both." },
+      { hero: "Three in. The work continues.",   sub: "{name}, what you built before is still the foundation." },
+      { hero: "The gap is behind you.",          sub: "{name}, nothing you built before was lost. Only paused." },
+      { hero: "{name}. Today counts.",           sub: "The practice waited. It's still yours." },
+      { hero: "Back in it, {name}.",             sub: "Not perfect. Present. That's what this practice actually is." }
+    ];
+
+    function showReturnStateOverlay() {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const idx = parseInt(localStorage.getItem('dopa_return_index') || '0', 10);
+      const variant = RETURN_STATE_VARIANTS[idx];
+      localStorage.setItem('dopa_return_index', String((idx + 1) % 5));
+
+      function fill(s) { return s.replace(/{name}/g, displayName); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+
     function showThreeWinOverlay(streakCount) {
       const raw = localStorage.getItem(NAME_KEY) || '';
       const displayName = raw ? (raw.split(' ')[0] || raw) : '';
@@ -3362,6 +3446,10 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       const momentsBefore = loadMoments();
       const streakBefore = calcStreak(momentsBefore);
+      // Preserve last meaningful streak before it can reset to 1
+      if (streakBefore > 1) {
+        localStorage.setItem('dopa_last_streak', String(streakBefore));
+      }
 
       const newMoment = {
         id: Date.now(),
@@ -3383,7 +3471,13 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       playSaveTone();
       triggerRipple();
       if (todayCount === 2) {
-        showThreeWinOverlay(streakAfter);
+        // Priority: Light Milestone (not yet built) → Return State → Day Completion
+        const lastStreak = parseInt(localStorage.getItem('dopa_last_streak') || '0', 10);
+        if (streakAfter === 1 && lastStreak > 1) {
+          showReturnStateOverlay();
+        } else {
+          showThreeWinOverlay(streakAfter);
+        }
       } else {
         showSaveCaught(momentsBefore.length);
       }

@@ -1764,6 +1764,8 @@
 </head>
 <body>
 
+  <div id="dopa-glow-layer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></div>
+
   <!-- BLANK MOMENT ONBOARDING -->
   <div id="blankMomentScreen" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;">
     <div style="font-size:1.75rem; font-weight:800; color:white; text-align:center; line-height:1.3; max-width:340px; margin-bottom:40px;">What was the best moment from last Tuesday?</div>
@@ -2544,11 +2546,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         );
       });
       document.getElementById('view-log').classList.toggle('active', tab === 'log');
-      document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
+      document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
+      document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
       if (tab === 'summary') { renderSummary(); sbSync(); }
-      
       if (tab === 'yesterday') renderYesterday();
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
+      applyBloom(parseInt(localStorage.getItem('dopa_bg_score') || '0', 10));
     }
 
     // ── Input / tag logic ────────────────────────────────────
@@ -3161,35 +3164,40 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     function applyBloom(score) {
-      let bl = document.getElementById('dopa-bloom-layer');
-      if (!bl) {
-        bl = document.createElement('div');
-        bl.id = 'dopa-bloom-layer';
-        bl.style.cssText = [
-          'position:fixed','top:0','left:0',
-          'width:100%','height:100%',
-          'pointer-events:none','z-index:50'
-        ].join(';');
-        document.body.insertBefore(bl, document.body.firstChild);
-      }
-      bl.style.zIndex = '50';
+      const bl = document.getElementById('dopa-glow-layer');
+      if (!bl) return;
 
       if (score <= 0) {
         bl.style.background = 'none';
         return;
       }
 
-      const t = Math.min(score, 30) / 30;
-      const W  = (80 + t * 70).toFixed(0);
-      const H  = (35 + t * 65).toFixed(0);
-      const o1 = (t * 0.72).toFixed(3);
-      const o2 = (t * 0.30).toFixed(3);
+      const t  = Math.pow(score / 30, 0.8);
+      const W  = (70 + t * 80).toFixed(1);
+      const H  = (40 + t * 60).toFixed(1);
+      const o1 = (t * 0.55).toFixed(3);
+      const o2 = (t * 0.22).toFixed(3);
+
+      let X = 50, Y = 58;
+      const activeView = document.querySelector('.view.active');
+      let protagonist = null;
+      if (activeView) {
+        const id = activeView.id;
+        if      (id === 'view-log')       protagonist = document.getElementById('momentInput');
+        else if (id === 'view-yesterday') protagonist = document.querySelector('.yesterday-headline');
+        else if (id === 'view-summary')   protagonist = document.querySelector('.streak-pill');
+      }
+      if (protagonist) {
+        const r = protagonist.getBoundingClientRect();
+        X = ((r.left + r.width  / 2) / window.innerWidth  * 100).toFixed(1);
+        Y = ((r.top  + r.height / 2) / window.innerHeight * 100).toFixed(1);
+      }
 
       bl.style.background =
-        `radial-gradient(ellipse ${W}% ${H}% at 50% 100%,` +
+        `radial-gradient(ellipse ${W}% ${H}% at ${X}% ${Y}%,` +
         `rgba(255,176,32,${o1}) 0%,` +
         `rgba(255,176,32,${o2}) 35%,` +
-        `rgba(14,11,26,0) 75%)`;
+        `rgba(255,176,32,0) 70%)`;
     }
 
     function updateBgScore(todayWins, streak, patch) {

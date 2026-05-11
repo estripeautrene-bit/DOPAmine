@@ -1953,6 +1953,7 @@
       <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
       <div id="stage3Error" class="s3-error"></div>
       <p style="font-size:0.8rem;color:var(--muted);margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:16px;text-align:center;">Already have an account? <button onclick="stage3SignIn()" style="background:none;border:none;color:var(--muted);font-size:0.8rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
     </div>
   </div>
 
@@ -4484,6 +4485,12 @@ function checkInstallPrompt() {
       }
       document.getElementById('stage3Screen').style.display = 'none';
       initApp();
+    }
+
+    function stage3SignIn() {
+      localStorage.setItem('dopa_onboarding_complete', '1');
+      document.getElementById('stage3Screen').style.display = 'none';
+      showAuthScreen();
     }
 
     function toggleS3Password() {

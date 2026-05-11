@@ -1826,14 +1826,19 @@
 .modal-title, .modal label, .modal textarea, .modal input, .btn-cancel { color: #1a0f30 !important; }.modal-tags .tag-chip, #editTagsRow .tag-chip { color: #1a0f30 !important; border-color: #cccccc !important; background: #f5f5f5 !important; }.modal .tag-chip { color: #1a0f30 !important; }
 
 /* ── Onboarding screens — always dark ── */
-#promiseScreen, #stage2aScreen, #stage2bScreen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+#promiseScreen, #stage2aScreen, #stage2bScreen, #stage3Screen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+#stage3Screen { justify-content:flex-start; overflow-y:auto; }
 .hs-card { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px 20px; color:var(--text); font-size:1rem; font-weight:400; font-family:inherit; text-align:left; cursor:pointer; transition:background 0.15s; }
 .hs-card:active { background:rgba(255,255,255,0.12); }
 .hs-ghost-btn { background:transparent; border:1px solid rgba(255,255,255,0.4); border-radius:50px; padding:16px 48px; font-size:1rem; font-weight:500; color:var(--text); cursor:pointer; font-family:inherit; transition:transform 150ms ease-out, border-color 150ms ease-out; }
 .hs-ghost-btn:active { transform:scale(0.96); border-color:rgba(255,255,255,0.8); transition:transform 80ms ease-in, border-color 80ms ease-in; }
+.hs-ghost-btn:focus { outline:none; }
 #goodDayInput::placeholder { color:rgba(255,255,255,0.3); }
 #goodDayInput:focus { outline:none; border-color:rgba(255,176,32,0.4); }
-.hs-ghost-btn:focus { outline:none; }
+.s3-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px 18px; font-size:1rem; font-family:inherit; color:var(--text); outline:none; box-sizing:border-box; transition:border-color 0.15s; }
+.s3-input::placeholder { color:rgba(255,255,255,0.3); }
+.s3-input:focus { border-color:rgba(255,176,32,0.4); }
+.s3-error { color:#ff6b8a; font-size:0.82rem; min-height:18px; text-align:center; margin-top:12px; }
 
 /* ── Auth screen — always dark, always white text regardless of theme ── */
 #authScreen { position:fixed; inset:0; background:#0E0B1A; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
@@ -1923,6 +1928,31 @@
         style="width:100%;max-width:340px;font-size:1rem;font-family:inherit;color:var(--text);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px 20px;resize:none;height:120px;outline:none;margin-bottom:32px;box-sizing:border-box;"></textarea>
       <div id="goodDayCharCount" style="font-size:0.75rem;color:var(--muted);margin-top:-24px;margin-bottom:28px;align-self:flex-end;max-width:340px;width:100%;text-align:right;">120 left</div>
       <button class="hs-ghost-btn" onclick="submitHandshake()">Continue</button>
+    </div>
+  </div>
+
+  <!-- STAGE 3: Create account -->
+  <div id="stage3Screen">
+    <div id="stage3-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
+      <h1 style="font-size:1.6rem;font-weight:800;color:#ffffff;text-align:center;line-height:1.2;margin:0 0 10px;">One last thing.</h1>
+      <p style="font-size:0.92rem;color:var(--muted);text-align:center;line-height:1.5;margin:0 0 36px;">Where should we send your Day 7 results?</p>
+      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;margin-bottom:24px;">
+        <input class="s3-input" id="s3FirstName" type="text" placeholder="First name" autocomplete="given-name" />
+        <input class="s3-input" id="s3Email" type="email" placeholder="Email address" autocomplete="email" />
+        <div style="position:relative;width:100%;">
+          <input class="s3-input" id="s3Password" type="password" placeholder="Password" autocomplete="new-password" style="padding-right:52px;" onkeydown="if(event.key==='Enter')submitStage3()" />
+          <button id="s3EyeBtn" onclick="toggleS3Password()" tabindex="-1"
+            style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;color:var(--muted);line-height:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
+      <div id="stage3Error" class="s3-error"></div>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
     </div>
   </div>
 
@@ -4416,15 +4446,54 @@ function checkInstallPrompt() {
       if (!text) return;
       localStorage.setItem('dopa_onboarding_good_day', text);
       document.getElementById('stage2bScreen').style.display = 'none';
-      // Stage 3: signup screen
+      document.getElementById('stage3Screen').style.display = 'flex';
+      document.getElementById('stage3-glow').style.background = _onboardingGlowBg;
+      setTimeout(() => document.getElementById('s3FirstName').focus(), 100);
+    }
+
+    async function submitStage3() {
+      const firstName = document.getElementById('s3FirstName').value.trim();
+      const email     = document.getElementById('s3Email').value.trim();
+      const password  = document.getElementById('s3Password').value;
+      const errEl     = document.getElementById('stage3Error');
+      const btn       = document.getElementById('stage3Btn');
+      errEl.textContent = '';
+      if (!firstName)          { errEl.textContent = 'Enter your first name.'; return; }
+      if (!email)              { errEl.textContent = 'Enter your email address.'; return; }
+      if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '…';
+      const { data, error } = await sbClient.auth.signUp({
+        email,
+        password,
+        options: { data: { first_name: firstName } }
+      });
+      btn.disabled = false;
+      btn.textContent = orig;
+      if (error) { errEl.textContent = error.message; return; }
+      if (data.user && !data.session) {
+        errEl.style.color = 'var(--muted)';
+        errEl.textContent = 'Check your email to confirm your account.';
+        return;
+      }
       localStorage.setItem('dopa_onboarding_complete', '1');
-      authMode = 'signup';
-      document.getElementById('authTitle').textContent = 'Create Account';
-      document.getElementById('authSubmitBtn').textContent = 'Create Account';
-      document.getElementById('authToggleText').textContent = 'Already have an account?';
-      document.getElementById('authToggleLink').textContent = 'Sign In';
-      document.getElementById('authLegal').style.display = '';
-      showAuthScreen();
+      if (data.user) {
+        currentUser = data.user;
+        localStorage.setItem('dopamine_uid', data.user.id);
+      }
+      document.getElementById('stage3Screen').style.display = 'none';
+      initApp();
+    }
+
+    function toggleS3Password() {
+      const input = document.getElementById('s3Password');
+      const btn   = document.getElementById('s3EyeBtn');
+      const show  = input.type === 'password';
+      input.type  = show ? 'text' : 'password';
+      btn.innerHTML = show
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
     }
 
     async function syncOnboardingAnswers() {

@@ -41,10 +41,7 @@
       margin: 0 auto;
     }
 
-    #dopa-glow-layer {
-      mask-image: linear-gradient(to bottom, transparent 0%, transparent 140px, black 200px, black 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 140px, black 200px, black 100%);
-    }
+    #dopa-glow-layer {}
 
     /* ── Header ── */
     header {
@@ -3557,6 +3554,9 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       if (score <= 0) {
         bl.style.background = 'none';
+        const resetMask = 'linear-gradient(to bottom, transparent 0%, transparent 140px, black 200px, black 100%)';
+        bl.style.maskImage = resetMask;
+        bl.style.webkitMaskImage = resetMask;
         return;
       }
 
@@ -3580,6 +3580,11 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         X = ((r.left + r.width  / 2) / window.innerWidth  * 100).toFixed(1);
         Y = Math.max(45, (r.top  + r.height / 2) / window.innerHeight * 100).toFixed(1);
       }
+
+      const maskTop = Math.max(80, 140 - (score / 30) * 60);
+      const maskGradient = `linear-gradient(to bottom, transparent 0%, transparent ${maskTop}px, black ${maskTop + 60}px, black 100%)`;
+      bl.style.maskImage = maskGradient;
+      bl.style.webkitMaskImage = maskGradient;
 
       bl.style.background =
         `radial-gradient(ellipse ${W}% ${H}% at ${X}% ${Y}%,` +

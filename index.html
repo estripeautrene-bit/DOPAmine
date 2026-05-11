@@ -612,6 +612,11 @@
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 6px;
+      background: #1A1530 !important;
+      border-radius: 12px;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
     }
 
     .dot-day {
@@ -662,11 +667,13 @@
     .day-detail-panel {
       display: none;
       margin-top: 12px;
-      background: rgba(255,255,255,0.04);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.25);
       border-radius: 14px;
       padding: 14px;
       animation: fadeQuote 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     .day-detail-panel.open { display: block; }
@@ -732,11 +739,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: rgba(123,47,190,0.15);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 14px;
       padding: 12px 16px;
       min-width: 70px;
+      position: relative;
+      z-index: 2;
     }
 
     .top-tag-emoji {
@@ -766,11 +775,13 @@
     }
 
     .quick-stat {
-      background: rgba(255,255,255,0.05);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.2);
       border-radius: 12px;
       padding: 14px 10px;
       text-align: center;
+      position: relative;
+      z-index: 2;
     }
 
     .quick-stat-num {
@@ -791,13 +802,15 @@
     .progress-motivator {
       margin-top: 20px;
       padding: 18px;
-      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.5));
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 14px;
       text-align: center;
       font-size: 0.85rem;
       color: rgba(255,255,255,0.7);
       line-height: 1.6;
+      position: relative;
+      z-index: 2;
     }
 
     .progress-motivator strong {
@@ -809,9 +822,14 @@
     }
 
     .progress-motivator.unlocked {
-      background: linear-gradient(135deg, rgba(123,47,190,0.35), rgba(181,123,247,0.1));
       border-color: #7B2FBE;
       border-width: 2px;
+    }
+
+    #notifSettingsRow {
+      background: #1A1530 !important;
+      position: relative;
+      z-index: 2;
     }
 
     .next-step-btn {

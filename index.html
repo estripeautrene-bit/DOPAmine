@@ -4490,6 +4490,12 @@ function checkInstallPrompt() {
     function stage3SignIn() {
       localStorage.setItem('dopa_onboarding_complete', '1');
       document.getElementById('stage3Screen').style.display = 'none';
+      authMode = 'signin';
+      document.getElementById('authTitle').textContent = 'Sign In';
+      document.getElementById('authSubmitBtn').textContent = 'Sign In';
+      document.getElementById('authToggleText').textContent = "Don't have an account?";
+      document.getElementById('authToggleLink').textContent = 'Sign Up';
+      document.getElementById('authLegal').style.display = 'none';
       showAuthScreen();
     }
 

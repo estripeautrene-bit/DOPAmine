@@ -1825,8 +1825,11 @@
   .modal { background: #ffffff !important; }
 .modal-title, .modal label, .modal textarea, .modal input, .btn-cancel { color: #1a0f30 !important; }.modal-tags .tag-chip, #editTagsRow .tag-chip { color: #1a0f30 !important; border-color: #cccccc !important; background: #f5f5f5 !important; }.modal .tag-chip { color: #1a0f30 !important; }
 
-/* ── Promise Screen (Stage 1 Onboarding) — always dark ── */
-#promiseScreen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+/* ── Onboarding screens — always dark ── */
+#promiseScreen, #stage2aScreen, #stage2bScreen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+.hs-card { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px 20px; color:white; font-size:17px; font-weight:400; font-family:inherit; text-align:left; cursor:pointer; transition:background 0.15s; }
+.hs-card:active { background:rgba(255,255,255,0.12); }
+.hs-ghost-btn { background:transparent; border:1px solid rgba(255,255,255,0.4); border-radius:50px; padding:16px 48px; font-size:16px; font-weight:500; color:white; cursor:pointer; font-family:inherit; }
 
 /* ── Auth screen — always dark, always white text regardless of theme ── */
 #authScreen { position:fixed; inset:0; background:#0E0B1A; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
@@ -1890,6 +1893,32 @@
     <div id="promise-content" style="position:absolute;left:0;right:0;top:52%;display:flex;flex-direction:column;align-items:center;padding:0 36px;opacity:0;transition:opacity 1s ease;">
       <p style="font-size:1.1rem;font-weight:500;color:white;text-align:center;line-height:1.65;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
       <button onclick="advanceToStage2()" style="background:transparent;border:1px solid rgba(255,255,255,0.4);border-radius:50px;padding:16px 48px;font-size:16px;font-weight:500;color:white;cursor:pointer;font-family:inherit;">Start my 7 days</button>
+    </div>
+  </div>
+
+  <!-- STAGE 2a: What brought you here? -->
+  <div id="stage2aScreen">
+    <div id="stage2a-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
+      <h1 style="font-size:1.9rem;font-weight:800;color:white;text-align:center;line-height:1.25;margin:0 0 48px;">What brought you here?</h1>
+      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;">
+        <button class="hs-card" onclick="selectReferral('friend')">A friend told me about it</button>
+        <button class="hs-card" onclick="selectReferral('search')">I was curious and looked it up</button>
+        <button class="hs-card" onclick="selectReferral('apps')">I've tried other apps like this</button>
+        <button class="hs-card" onclick="selectReferral('feel')">I just want to feel better about my days</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 2b: What does a good day look like? -->
+  <div id="stage2bScreen">
+    <div id="stage2b-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
+      <h1 style="font-size:1.9rem;font-weight:800;color:white;text-align:center;line-height:1.25;margin:0 0 40px;">What does a good day look like for you?</h1>
+      <textarea id="goodDayInput" maxlength="120" placeholder="Anything. There&#39;s no wrong answer."
+        style="width:100%;max-width:340px;font-size:18px;font-family:inherit;color:white;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px 20px;resize:none;height:120px;outline:none;margin-bottom:32px;box-sizing:border-box;"></textarea>
+      <div id="goodDayCharCount" style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:-24px;margin-bottom:28px;align-self:flex-end;max-width:340px;width:100%;text-align:right;">120 left</div>
+      <button class="hs-ghost-btn" onclick="submitHandshake()">Continue</button>
     </div>
   </div>
 
@@ -2600,8 +2629,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     function initApp() {
       if (appInitialized) return;
       appInitialized = true;
+      syncOnboardingAnswers();
 
-  
     // ── Blank Moment Onboarding ────────────────────────────────────────
     const BLANK_KEY = 'dopamine_blank_seen';
 
@@ -4356,8 +4385,62 @@ function checkInstallPrompt() {
       requestAnimationFrame(frame);
     }
 
+    let _onboardingGlowBg = '';
+
     function advanceToStage2() {
-      // Stage 2 (handshake) — coming soon
+      _onboardingGlowBg = document.getElementById('promise-glow').style.background;
+      document.getElementById('promiseScreen').style.display = 'none';
+      document.getElementById('stage2aScreen').style.display = 'flex';
+      document.getElementById('stage2a-glow').style.background = _onboardingGlowBg;
+    }
+
+    function selectReferral(value) {
+      localStorage.setItem('dopa_onboarding_referral', value);
+      document.getElementById('stage2aScreen').style.display = 'none';
+      document.getElementById('stage2bScreen').style.display = 'flex';
+      document.getElementById('stage2b-glow').style.background = _onboardingGlowBg;
+      const ta = document.getElementById('goodDayInput');
+      ta.addEventListener('input', () => {
+        const left = 120 - ta.value.length;
+        document.getElementById('goodDayCharCount').textContent = left + ' left';
+      });
+      setTimeout(() => ta.focus(), 100);
+    }
+
+    async function submitHandshake() {
+      const text = document.getElementById('goodDayInput').value.trim();
+      if (!text) return;
+      localStorage.setItem('dopa_onboarding_good_day', text);
+      document.getElementById('stage2bScreen').style.display = 'none';
+      // Stage 3: signup screen
+      localStorage.setItem('dopa_onboarding_complete', '1');
+      authMode = 'signup';
+      document.getElementById('authTitle').textContent = 'Create Account';
+      document.getElementById('authSubmitBtn').textContent = 'Create Account';
+      document.getElementById('authToggleText').textContent = 'Already have an account?';
+      document.getElementById('authToggleLink').textContent = 'Sign In';
+      document.getElementById('authLegal').style.display = '';
+      showAuthScreen();
+    }
+
+    async function syncOnboardingAnswers() {
+      const goodDay  = localStorage.getItem('dopa_onboarding_good_day');
+      const referral = localStorage.getItem('dopa_onboarding_referral');
+      if (!goodDay && !referral) return;
+      const uid = getUserId();
+      if (!uid) return;
+      const patch = {};
+      if (goodDay)  patch.good_day_description = goodDay;
+      if (referral) patch.onboarding_referral   = referral;
+      try {
+        await fetch(SB_URL + '/rest/v1/push_subscriptions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+          body: JSON.stringify({ user_id: uid, ...patch })
+        });
+        localStorage.removeItem('dopa_onboarding_good_day');
+        localStorage.removeItem('dopa_onboarding_referral');
+      } catch(e) {}
     }
 
     function showAuthScreen() {

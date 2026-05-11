@@ -552,18 +552,18 @@
     .progress-total-num {
       font-size: 4.5rem;
       font-weight: 900;
-      color: white;
       line-height: 1;
       letter-spacing: -2px;
-      background: linear-gradient(135deg, #ffffff, #B57BF7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #FFFFFF !important;
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: #FFFFFF !important;
+      background-clip: unset !important;
     }
 
     .progress-total-label {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.8) !important;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       margin-top: 6px;
@@ -576,7 +576,7 @@
       justify-content: center;
       gap: 8px;
       margin-top: 16px;
-      background: rgba(123,47,190,0.15);
+      background: rgba(0,0,0,0.3) !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 50px;
       padding: 10px 20px;
@@ -588,18 +588,18 @@
     .progress-streak-num {
       font-size: 1.4rem;
       font-weight: 900;
-      color: #B57BF7;
+      color: #FFFFFF !important;
     }
 
     .progress-streak-text {
       font-size: 0.82rem;
-      color: rgba(255,255,255,0.6);
+      color: #FFFFFF !important;
       font-weight: 600;
     }
 
     .progress-streak-meaning {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.8) !important;
       text-align: center;
       margin-top: 8px;
       font-style: italic;
@@ -611,7 +611,7 @@
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #B57BF7;
+      color: rgba(255,255,255,0.8) !important;
       margin: 24px 0 12px;
     }
 
@@ -1436,8 +1436,8 @@
     }
 
     .log-streak-pill {
-      background: rgba(123,47,190,0.25);
-      color: #B57BF7;
+      background: rgba(0,0,0,0.3) !important;
+      color: #FFFFFF !important;
       border-radius: 50px;
       padding: 5px 14px;
       font-size: 0.82rem;
@@ -1447,10 +1447,19 @@
 
     .log-streak-meaning {
       font-size: 0.8rem;
-      color: #7B2FBE;
+      color: rgba(255,255,255,0.8) !important;
       font-style: italic;
       text-align: center;
       opacity: 0.8;
+    }
+
+    .today-wins-label {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #FFFFFF !important;
+      margin-bottom: 12px;
     }
 
     /* ── Yesterday tab ── */
@@ -1713,7 +1722,7 @@
     }
     body:not(.light) .delete-modal-title { color: #1A1A2E !important; }
     body:not(.light) .delete-modal-sub { color: rgba(26, 26, 46, 0.55) !important; }
-    body:not(.light) .progress-section-label { color: rgba(255,255,255,0.4) !important; }
+    body:not(.light) .progress-section-label { color: rgba(255,255,255,0.8) !important; }
     body:not(.light) .legal-page-title { color: #F0EEFF !important; }
     body:not(.light) .legal-updated { color: rgba(255,255,255,0.4) !important; }
     body:not(.light) .legal-card-body { color: rgba(255,255,255,0.8) !important; }
@@ -2709,8 +2718,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         return;
       }
       section.innerHTML = `
-        <div style="font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(181,123,247,0.7);margin-bottom:12px;">
-          Today's wins · <span style="color:${todayMoments.length >= 3 ? '#FFB020' : 'inherit'}">${todayMoments.length}</span>
+        <div class="today-wins-label">
+          Today's wins · <span style="color:${todayMoments.length >= 3 ? '#FFB020' : '#FFFFFF'}">${todayMoments.length}</span>
         </div>
         ${todayMoments.map(m => `
           <div class="moment-card">

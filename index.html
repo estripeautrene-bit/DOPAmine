@@ -1710,8 +1710,8 @@
     .vsc-streak { display:inline-block; background:rgba(181,123,247,0.2); border:1px solid rgba(181,123,247,0.35); border-radius:100px; padding:6px 16px; font-size:0.78rem; font-weight:500; color:#B57BF7; margin-bottom:16px; }
     .vsc-tagline { font-size:0.72rem; color:rgba(255,255,255,0.35); font-weight:300; line-height:1.6; }
     .vsc-tagline strong { color:rgba(181,123,247,0.7); font-weight:600; }
-    .share-btn-top { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:linear-gradient(135deg,#7B2FBE,#B57BF7); color:white; border:none; border-radius:14px; padding:16px; font-size:1rem; font-weight:700; cursor:pointer; margin-bottom:24px; box-shadow:0 4px 20px rgba(123,47,190,0.45); font-family:inherit; }
-    .share-btn-top:active { transform:scale(0.97); }
+    .share-btn-top { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:linear-gradient(135deg,#7B2FBE,#B57BF7) !important; color:#FFFFFF !important; font-weight:800 !important; border:none; border-radius:14px; padding:16px; font-size:1rem; cursor:pointer; margin-bottom:24px; box-shadow:0 4px 20px rgba(123,47,190,0.45); font-family:inherit; opacity:1 !important; position:relative; z-index:2; }
+    .share-btn-top:active { transform:scale(0.97); transition:transform 0.1s; }
 
 
     /* Dark mode catch-all — ensure nothing shows dark text on dark bg */
@@ -2741,6 +2741,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     // ── Share progress (Canvas image) ────────────────────
     async function shareProgress() {
+      if (navigator.vibrate) navigator.vibrate(10);
       const moments = loadMoments();
       const streak  = calcStreak(moments);
       const total   = moments.length;

@@ -3529,11 +3529,11 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         return;
       }
 
-      const t  = Math.pow(score / 30, 0.4);
-      const W  = (70 + t * 80).toFixed(1);
-      const H  = (40 + t * 60).toFixed(1);
-      const o1 = (t * 0.75).toFixed(3);
-      const o2 = (t * 0.35).toFixed(3);
+      const t  = Math.pow(score / 30, 0.3);
+      const W  = (80 + t * 120).toFixed(1);
+      const H  = (50 + t * 100).toFixed(1);
+      const o1 = (t * 1.0).toFixed(3);
+      const o2 = (t * 0.5).toFixed(3);
 
       let X = 50, Y = 58;
       const activeView = document.querySelector('.view.active');

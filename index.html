@@ -1831,17 +1831,19 @@
 /* ── Onboarding screens — always dark ── */
 #promiseScreen, #stage2aScreen, #stage2bScreen, #stage3Screen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
 #stage3Screen { justify-content:flex-start; overflow-y:auto; }
-.hs-card { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px 20px; color:#FAFAF7; font-size:1rem; font-weight:500; font-family:'DM Sans',sans-serif; text-align:left; cursor:pointer; transition:background 0.15s; }
-.hs-card:active { background:rgba(255,255,255,0.12); }
-.hs-ghost-btn { background:transparent; border:1px solid rgba(255,255,255,0.4); border-radius:50px; padding:16px 48px; font-size:1rem; font-weight:500; color:#FAFAF7; cursor:pointer; font-family:'DM Sans',sans-serif; transition:transform 150ms ease-out, border-color 150ms ease-out; }
-.hs-ghost-btn:active { transform:scale(0.96); border-color:rgba(255,255,255,0.8); transition:transform 80ms ease-in, border-color 80ms ease-in; }
+.ob-eyebrow { font-family:'DM Sans',sans-serif; font-weight:600; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#B57BF7; margin-bottom:28px; text-align:center; }
+.hs-card { width:100%; background:#0E0B1A; border:1px solid rgba(168,85,247,0.25); border-radius:14px; padding:20px 24px; color:#E8D5FF; font-size:16px; font-weight:500; font-family:'DM Sans',sans-serif; text-align:left; cursor:pointer; transition:border-color 0.15s; }
+.hs-card:hover { border-color:rgba(168,85,247,0.6); }
+.hs-card:active { border-color:rgba(168,85,247,0.6); }
+.hs-ghost-btn { background:transparent; border:1px solid rgba(232,213,255,0.35); border-radius:50px; padding:16px 52px; font-size:15px; font-weight:500; color:#E8D5FF; cursor:pointer; font-family:'DM Sans',sans-serif; transition:transform 150ms ease-out, border-color 150ms ease-out; }
+.hs-ghost-btn:active { transform:scale(0.96); border-color:rgba(232,213,255,0.7); transition:transform 80ms ease-in, border-color 80ms ease-in; }
 .hs-ghost-btn:focus { outline:none; }
 #goodDayInput::placeholder { color:rgba(201,190,216,0.45); }
-#goodDayInput:focus { outline:none; border-color:rgba(255,176,32,0.4); }
+#goodDayInput:focus { outline:none; border-color:rgba(255,176,32,0.45); }
 #goodDayCharCount { font-family:'DM Sans',sans-serif; color:#C9BED8; }
-.s3-input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px 16px; font-size:1rem; font-family:'DM Sans',sans-serif; color:#FAFAF7; outline:none; box-sizing:border-box; transition:border-color 0.15s; }
+.s3-input { width:100%; background:#0E0B1A; border:1px solid rgba(168,85,247,0.2); border-radius:14px; padding:20px 24px; font-size:1rem; font-family:'DM Sans',sans-serif; color:#E8D5FF; outline:none; box-sizing:border-box; transition:border-color 0.15s; }
 .s3-input::placeholder { color:rgba(201,190,216,0.45); }
-.s3-input:focus { border-color:rgba(255,176,32,0.4); }
+.s3-input:focus { border-color:rgba(255,176,32,0.45); }
 .s3-error { font-family:'DM Sans',sans-serif; color:#ff6b8a; font-size:0.82rem; min-height:18px; text-align:center; margin-top:12px; }
 
 /* ── Auth screen — always dark, always white text regardless of theme ── */
@@ -1903,8 +1905,9 @@
   <!-- PROMISE SCREEN (Stage 1 Onboarding) -->
   <div id="promiseScreen">
     <div id="promise-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
-    <div id="promise-content" style="position:absolute;left:0;right:0;top:52%;display:flex;flex-direction:column;align-items:center;padding:0 36px;opacity:0;transition:opacity 1s ease;">
-      <p style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C9BED8;text-align:center;line-height:1.65;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
+    <div id="promise-content" style="position:absolute;left:0;right:0;top:44%;display:flex;flex-direction:column;align-items:center;padding:0 36px;opacity:0;transition:opacity 1s ease;">
+      <p class="ob-eyebrow">YOUR DOPAMINE. FROM THE INSIDE.</p>
+      <p style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
       <button class="hs-ghost-btn" onclick="advanceToStage2()">Start my 7 days</button>
     </div>
   </div>
@@ -1913,7 +1916,8 @@
   <div id="stage2aScreen">
     <div id="stage2a-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
     <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
-      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:700;color:#FAFAF7;text-align:center;line-height:1.2;margin:0 0 48px;">What brought you here?</h1>
+      <p class="ob-eyebrow">01 — 02</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 36px;">What brought you here?</h1>
       <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;">
         <button class="hs-card" onclick="selectReferral('friend')">A friend told me about it</button>
         <button class="hs-card" onclick="selectReferral('search')">I was curious and looked it up</button>
@@ -1927,10 +1931,11 @@
   <div id="stage2bScreen">
     <div id="stage2b-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
     <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
-      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:700;color:#FAFAF7;text-align:center;line-height:1.2;margin:0 0 40px;">What does a good day look like for you?</h1>
+      <p class="ob-eyebrow">02 — 02</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 36px;">What does a good day look like for you?</h1>
       <textarea id="goodDayInput" maxlength="120" placeholder="Anything. There&#39;s no wrong answer."
-        style="width:100%;max-width:340px;font-size:1rem;font-family:'DM Sans',sans-serif;color:#FAFAF7;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px 20px;resize:none;height:120px;outline:none;margin-bottom:32px;box-sizing:border-box;"></textarea>
-      <div id="goodDayCharCount" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;color:#C9BED8;margin-top:-24px;margin-bottom:28px;align-self:flex-end;max-width:340px;width:100%;text-align:right;">120 left</div>
+        style="width:100%;max-width:340px;font-size:1rem;font-family:'DM Sans',sans-serif;color:#E8D5FF;background:#0E0B1A;border:1px solid rgba(168,85,247,0.2);border-radius:14px;padding:20px 24px;resize:none;height:120px;outline:none;margin-bottom:8px;box-sizing:border-box;"></textarea>
+      <div id="goodDayCharCount" style="font-size:0.75rem;margin-bottom:40px;align-self:flex-end;max-width:340px;width:100%;text-align:right;">120 left</div>
       <button class="hs-ghost-btn" onclick="submitHandshake()">Continue</button>
     </div>
   </div>
@@ -1939,7 +1944,8 @@
   <div id="stage3Screen">
     <div id="stage3-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
     <div style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
-      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:700;color:#FAFAF7;text-align:center;line-height:1.2;margin:0 0 10px;">One last thing.</h1>
+      <p class="ob-eyebrow">ONE LAST THING</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 10px;">Create your account.</h1>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#C9BED8;text-align:center;line-height:1.5;margin:0 0 36px;">Where should we send your Day 7 results?</p>
       <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;margin-bottom:24px;">
         <input class="s3-input" id="s3FirstName" type="text" placeholder="First name" autocomplete="given-name" />

@@ -1784,7 +1784,7 @@
       background: #1A1530;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 20px;
-      padding: 20px 20px 16px;
+      padding: 22px 20px 18px;
       margin-bottom: 16px;
       position: relative;
       z-index: 2;
@@ -1827,6 +1827,7 @@
       padding: 14px;
       margin-bottom: 12px;
       min-height: 160px;
+      height: auto;
     }
     .tpc-textarea {
       width: 100%;
@@ -1837,6 +1838,7 @@
       color: white;
       resize: none;
       min-height: 160px;
+      height: auto;
       background: transparent;
       box-sizing: border-box;
     }
@@ -2624,6 +2626,11 @@
       </div>
     </div>
     <div class="tpc-entries-expanded" id="tpcExpanded" style="display:none;"></div>
+    <div class="ypc-closing-wrap" id="tpcClosingWrap" style="display:none;">
+      <div class="ypc-closing-pill">
+        Your dopa. Made by <span class="ypc-closing-you">you</span>. Every day.
+      </div>
+    </div>
     <div id="todayWhisperArea" style="padding-bottom:24px;"></div>
 
   </div>
@@ -3244,10 +3251,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const deck = document.getElementById('tpcDeck');
       const exp  = document.getElementById('tpcExpanded');
       const winsCount = document.getElementById('tpcWinsCount');
+      const closingWrap = document.getElementById('tpcClosingWrap');
       if (!entries || entries.length === 0) {
         if (deck) deck.style.display = 'none';
         if (exp)  exp.style.display  = 'none';
         if (winsCount) winsCount.textContent = '';
+        if (closingWrap) closingWrap.style.display = 'none';
         return;
       }
       if (deck) deck.style.display = 'block';
@@ -3282,6 +3291,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           if (deck) deck.style.display = 'block';
         });
       }
+
+      if (closingWrap) closingWrap.style.display = entries.length > 0 ? 'flex' : 'none';
     }
 
     function tpcExpandDeck() {

@@ -1487,9 +1487,20 @@
     }
 
     #yesterdayQuestion {
-      background: #1A1530 !important;
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.25);
+      border-radius: 16px;
+      padding: 20px;
       position: relative;
       z-index: 2;
+      transition: border-color 0.2s;
+    }
+    #yesterdayQuestion:focus-within {
+      border-color: rgba(255,176,32,0.5);
+    }
+    #yesterdayFeelInput::placeholder {
+      color: rgba(201,190,216,0.5);
+      font-size: 16px;
     }
 
     .yesterday-headline {
@@ -2230,21 +2241,16 @@
     </div>
 
     <!-- Reflection question -->
-    <div id="yesterdayQuestion" style="
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(181,123,247,0.2);
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 16px;
-    ">
-      <div style="font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#B57BF7;margin-bottom:8px;">How does yesterday make you feel today?</div>
-      <textarea id="yesterdayFeelInput" placeholder="Reading these moments, I feel…" maxlength="200"
-        style="width:100%;background:none;border:none;outline:none;font-family:inherit;font-size:0.9rem;font-weight:300;color:white;line-height:1.6;resize:none;min-height:52px;caret-color:#B57BF7;"
+    <div id="yesterdayQuestion" style="margin-bottom: 16px;">
+      <div style="font-size:24px;font-weight:500;color:#FAFAF7;margin-bottom:12px;">How does yesterday make you feel today?</div>
+      <textarea id="yesterdayFeelInput" placeholder="Just say what comes up. No wrong answer." maxlength="200"
+        style="width:100%;background:none;border:none;outline:none;font-family:inherit;font-size:18px;font-weight:300;color:white;line-height:1.6;resize:none;min-height:52px;caret-color:#FFB020;"
         oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
     </div>
 
     <div class="yesterday-list" id="yesterdayList"></div>
     <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today →</button>
+    <p style="font-size:15px;color:rgba(201,190,216,0.5);text-align:center;margin-top:24px;padding-bottom:8px;">Today is already being written.</p>
   </div>
 
   <!-- SUMMARY VIEW -->

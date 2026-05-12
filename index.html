@@ -1,342 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DOPAmine — Your dopamine. From the inside.</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --purple-core:   #7B2FBE;
-  --purple-bright: #A855F7;
-  --purple-deep:   #6D28D9;
-  --purple-mid:    #B57BF7;
-  --orange-energy: #FFB020;
-  --orange-fire:   #FF6B00;
-  --navy-deep:     #06000D;
-  --navy-panel:    #0E0B1A;
-  --navy-card:     #110d1f;
-  --white:         #FFFFFF;
-  --gray-muted:    #6B7280;
-  --gray-light:    #C9BED8;
-  --font-d: 'Playfair Display', Georgia, serif;
-  --font-b: 'DM Sans', -apple-system, sans-serif;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-b);
-  background: var(--navy-deep);
-  color: var(--white);
-  overflow-x: hidden;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DOPAmine" />
+  <meta name="theme-color" content="#06000D" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <title>DOPAmine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── NAV ─── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 48px;
-  backdrop-filter: blur(24px);
-  background: rgba(6,0,13,0.8);
-  border-bottom: 1px solid rgba(168,85,247,0.07);
-}
-.logo { font-family: var(--font-b); font-size: 20px; font-weight: 700; text-decoration: none; }
-.logo .d { color: var(--white); }
-.logo .m { color: var(--purple-bright); font-weight: 400; }
-.nav-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid rgba(168,85,247,0.4);
-  color: var(--purple-bright);
-  font-family: var(--font-b); font-size: 13px; font-weight: 500;
-  padding: 9px 20px; border-radius: 999px;
-  text-decoration: none; background: transparent;
-  transition: all 0.2s;
-}
-.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #06000D;
+      color: #E8D5FF;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
 
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 140px 24px 100px;
-  position: relative; overflow: hidden;
-}
-.hero-glow-bottom {
-  position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);
-  width: 900px; height: 600px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.13) 0%, rgba(255,107,0,0.08) 30%, rgba(123,47,190,0.05) 60%, transparent 75%);
-  animation: breathe 5s ease-in-out infinite; pointer-events: none;
-}
-.hero-glow-top {
-  position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 500px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(123,47,190,0.09) 0%, transparent 65%);
-  pointer-events: none;
-}
-@keyframes breathe { 0%,100% { opacity: 0.8; transform: translateX(-50%) scale(1); } 50% { opacity: 1; transform: translateX(-50%) scale(1.08); } }
+    #signInView, #forgotView {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 360px;
+    }
 
-.hero-tag {
-  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
-  color: var(--orange-energy); margin-bottom: 32px;
-  opacity: 0; animation: up 0.7s ease forwards 0.1s;
-}
-.hero-headline {
-  font-family: var(--font-d);
-  font-size: clamp(48px, 9vw, 114px);
-  font-weight: 900; line-height: 0.93; letter-spacing: -3px;
-  color: var(--white); margin-bottom: 32px;
-  opacity: 0; animation: up 0.8s ease forwards 0.25s;
-}
-.hero-headline em { font-style: italic; color: var(--purple-bright); display: block; }
-.hero-headline .amber { color: var(--orange-energy); }
+    .si-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .si-logo-d {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: white;
+      font-style: italic;
+      flex-shrink: 0;
+    }
+    .si-logo-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.3px;
+    }
+    .si-logo-name span { color: #B57BF7; font-weight: 400; }
 
-.hero-sub {
-  font-size: clamp(16px, 2vw, 20px); color: var(--gray-light);
-  font-weight: 300; max-width: 500px; margin: 0 auto 52px; line-height: 1.7;
-  opacity: 0; animation: up 0.8s ease forwards 0.4s;
-}
-.hero-sub strong { color: var(--white); font-weight: 500; }
+    .si-headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #E8D5FF;
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 36px;
+      width: 100%;
+    }
 
-.hero-actions {
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
-  opacity: 0; animation: up 0.8s ease forwards 0.55s;
-}
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
-  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
-  padding: 17px 40px; border-radius: 999px; text-decoration: none; border: none; cursor: pointer;
-  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
-.hero-fine { font-size: 13px; color: var(--gray-muted); }
+    .si-input {
+      width: 100%;
+      background: #0E0B1A;
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 14px;
+      padding: 20px 24px;
+      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      color: #E8D5FF;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 12px;
+    }
+    .si-input::placeholder { color: rgba(201,190,216,0.45); }
+    .si-input:focus { border-color: rgba(255,176,32,0.45); }
 
-/* ─── CHALLENGE ─── */
-.challenge {
-  background: var(--navy-panel);
-  padding: 100px 24px;
-  position: relative; overflow: hidden;
-}
-.challenge::before {
-  content: '';
-  position: absolute; top: -100px; right: -200px;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,176,32,0.05), transparent 65%);
-  pointer-events: none;
-}
-.challenge-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
+    .si-forgot {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      color: #B57BF7;
+      font-size: 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 28px;
+    }
+    .si-forgot:hover { text-decoration: underline; }
 
-.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 16px; }
-.challenge-title {
-  font-family: var(--font-d); font-size: clamp(34px, 5.5vw, 64px);
-  font-weight: 900; line-height: 1.05; margin-bottom: 20px;
-}
-.challenge-title .amber { color: var(--orange-energy); }
-.challenge-title .purple { color: var(--purple-bright); }
-.challenge-sub {
-  font-size: 17px; color: var(--gray-light); font-weight: 300;
-  max-width: 480px; margin: 0 auto 72px; line-height: 1.7;
-}
+    .si-error {
+      font-size: 0.82rem;
+      color: #ff6b8a;
+      min-height: 20px;
+      text-align: center;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .si-error.info { color: rgba(201,190,216,0.7); }
 
-/* Day arc */
-.days {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 64px;
-}
-.day {
-  background: var(--navy-card);
-  border: 1px solid rgba(123,47,190,0.15);
-  border-radius: 16px; padding: 20px 12px; text-align: center;
-  transition: transform 0.25s, border-color 0.25s;
-}
-.day:hover { transform: translateY(-4px); border-color: rgba(168,85,247,0.35); }
-.day.key { border-color: rgba(255,176,32,0.25); }
-.day-num { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 10px; }
-.orb { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 12px; }
-.orb-1 { background: radial-gradient(circle, rgba(123,47,190,0.5) 0%, rgba(123,47,190,0.08) 70%); border: 1px solid rgba(123,47,190,0.3); }
-.orb-2 { background: radial-gradient(circle, rgba(140,50,210,0.55) 0%, rgba(123,47,190,0.1) 70%); border: 1px solid rgba(140,50,210,0.35); }
-.orb-3 { background: radial-gradient(circle, rgba(160,60,220,0.55) 0%, rgba(140,50,200,0.1) 70%); border: 1px solid rgba(160,60,220,0.4); }
-.orb-4 { background: radial-gradient(circle, rgba(190,100,200,0.55) 0%, rgba(180,80,180,0.1) 70%); border: 1px solid rgba(190,100,220,0.4); }
-.orb-5 { background: radial-gradient(circle, rgba(210,120,140,0.55) 0%, rgba(200,100,120,0.1) 70%); border: 1px solid rgba(210,120,150,0.4); }
-.orb-6 { background: radial-gradient(circle, rgba(235,155,70,0.6) 0%, rgba(220,130,50,0.15) 70%); border: 1px solid rgba(240,155,80,0.45); }
-.orb-7 {
-  background: radial-gradient(circle, #fff5cc 0%, #FFB020 25%, #FF6B00 60%, transparent 80%);
-  box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35);
-  animation: orb-glow 3s ease-in-out infinite;
-}
-@keyframes orb-glow { 0%,100% { box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35); } 50% { box-shadow: 0 0 35px #FFB020, 0 0 80px rgba(255,107,0,0.55); } }
-.day-copy { font-size: 12px; color: var(--gray-light); line-height: 1.5; }
-.day-copy strong { color: var(--white); display: block; font-size: 13px; margin-bottom: 3px; font-weight: 500; }
+    .si-btn {
+      background: transparent;
+      border: 1px solid rgba(232,213,255,0.35);
+      border-radius: 50px;
+      padding: 16px 52px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #E8D5FF;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 150ms ease-out, border-color 150ms ease-out;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .si-btn:active { transform: scale(0.96); border-color: rgba(232,213,255,0.7); }
+    .si-btn:focus { outline: none; }
+    .si-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
 
-/* ─── FINAL CTA ─── */
-.final {
-  position: relative; padding: 140px 24px;
-  text-align: center; overflow: hidden;
-}
-.final-glow {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 900px; height: 700px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.1) 0%, rgba(123,47,190,0.08) 35%, transparent 65%);
-  animation: breathe 6s ease-in-out infinite; pointer-events: none;
-}
-.final-headline {
-  font-family: var(--font-d); font-size: clamp(40px, 7vw, 88px);
-  font-weight: 900; line-height: 1.0; margin-bottom: 24px;
-}
-.final-headline .italic { font-style: italic; color: var(--purple-bright); }
-.final-headline .amber { color: var(--orange-energy); }
-.final-sub { font-size: 18px; color: var(--gray-light); font-weight: 300; max-width: 400px; margin: 0 auto 52px; line-height: 1.65; }
-.final-cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.btn-final {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, var(--orange-fire), var(--orange-energy));
-  color: #1a0500; font-family: var(--font-b); font-size: 18px; font-weight: 700;
-  padding: 19px 48px; border-radius: 999px; text-decoration: none;
-  box-shadow: 0 0 60px rgba(255,176,32,0.3); transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-final:hover { transform: translateY(-2px); box-shadow: 0 0 100px rgba(255,176,32,0.55); }
-.final-fine { font-size: 13px; color: var(--gray-muted); max-width: 340px; line-height: 1.6; }
+    .si-new {
+      font-size: 0.88rem;
+      color: rgba(201,190,216,0.45);
+      text-align: center;
+      margin-top: 16px;
+    }
+    .si-new a { color: #B57BF7; text-decoration: none; font-weight: 600; }
+    .si-new a:hover { text-decoration: underline; }
 
-/* ─── FOOTER ─── */
-footer {
-  border-top: 1px solid rgba(123,47,190,0.1);
-  padding: 40px 48px 56px;
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
-}
-.footer-logo { font-family: var(--font-b); font-size: 18px; font-weight: 700; text-decoration: none; }
-.footer-logo .d { color: var(--white); }
-.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
-.footer-tag { font-family: var(--font-d); font-size: 14px; font-style: italic; color: var(--gray-muted); }
-.footer-url { font-size: 13px; color: var(--gray-muted); text-decoration: none; }
-.footer-url:hover { color: var(--purple-mid); }
-
-/* ─── ANIMATIONS ─── */
-@keyframes up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; } .d3 { transition-delay: 0.19s; }
-.d4 { transition-delay: 0.26s; } .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.4s; } .d7 { transition-delay: 0.47s; }
-
-@media (max-width: 768px) {
-  nav { padding: 16px 20px; }
-  .days { grid-template-columns: repeat(4, 1fr); }
-  footer { flex-direction: column; text-align: center; padding: 36px 24px 48px; }
-}
-</style>
+    .si-back {
+      background: none;
+      border: none;
+      color: rgba(201,190,216,0.5);
+      font-size: 0.85rem;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 32px;
+      align-self: flex-start;
+    }
+    .si-back:hover { color: #E8D5FF; }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <a href="app.html" class="nav-btn">Take the #3GoodThings dare →</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow-top"></div>
-  <div class="hero-glow-bottom"></div>
-
-  <p class="hero-tag">#3GoodThings · 7 Days · mydopa.app</p>
-
-  <h1 class="hero-headline">
-    I dare you to<br/>
-    <em>do this for 7 days</em><br/>
-    and tell me you don't<br/>
-    <span class="amber">feel different.</span>
-  </h1>
-
-  <p class="hero-sub">
-    DOPAmine is a <strong>2-minute daily practice</strong> that trains your brain to hold onto what's actually working in your life.
-  </p>
-
-  <div class="hero-actions">
-    <a href="app.html" class="btn-primary">Take the dare — free →</a>
-    <p class="hero-fine">Free for 7 days. No card needed.</p>
-  </div>
-</section>
-
-<!-- CHALLENGE ARC -->
-<section class="challenge">
-  <div class="challenge-inner">
-    <p class="eyebrow reveal">#3GoodThings · The 7-Day Challenge</p>
-    <h2 class="challenge-title reveal">
-      <span class="amber">Bet you can't name</span><br/>
-      3 good things<br/>
-      <span class="purple">before noon.</span>
-    </h2>
-    <p class="challenge-sub reveal">Find 3 good things today. Write them down. Do it for 7 days.</p>
-
-    <div class="days">
-      <div class="day reveal d1">
-        <p class="day-num">Day 1</p>
-        <div class="orb orb-1"></div>
-        <p class="day-copy"><strong>The bar is low.</strong>3 wins. You said you'd do it.</p>
-      </div>
-      <div class="day reveal d2">
-        <p class="day-num">Day 2</p>
-        <div class="orb orb-2"></div>
-        <p class="day-copy"><strong>Still building.</strong>3 wins is the whole practice.</p>
-      </div>
-      <div class="day reveal d3">
-        <p class="day-num">Day 3</p>
-        <div class="orb orb-3"></div>
-        <p class="day-copy"><strong>Your brain is starting to look for the good.</strong></p>
-      </div>
-      <div class="day key reveal d4">
-        <p class="day-num">Day 4</p>
-        <div class="orb orb-4"></div>
-        <p class="day-copy"><strong>Halfway.</strong>You're close to the finish line.</p>
-      </div>
-      <div class="day reveal d5">
-        <p class="day-num">Day 5</p>
-        <div class="orb orb-5"></div>
-        <p class="day-copy"><strong>3 is your floor.</strong>What's today's ceiling?</p>
-      </div>
-      <div class="day reveal d6">
-        <p class="day-num">Day 6</p>
-        <div class="orb orb-6"></div>
-        <p class="day-copy"><strong>One more.</strong>Don't close this day without 3 wins.</p>
-      </div>
-      <div class="day key reveal d7">
-        <p class="day-num">Day 7</p>
-        <div class="orb orb-7"></div>
-        <p class="day-copy"><strong>One week.</strong>You just proved the dare works.</p>
-      </div>
+  <div id="signInView">
+    <div class="si-logo">
+      <div class="si-logo-d">D</div>
+      <div class="si-logo-name">DOPA<span>mine</span></div>
     </div>
+    <h1 class="si-headline">Welcome back.</h1>
+    <input class="si-input" type="email" id="siEmail" placeholder="Email" autocomplete="email" />
+    <input class="si-input" type="password" id="siPassword" placeholder="Password" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter') signIn()" />
+    <button class="si-forgot" onclick="showForgot()">Forgot password?</button>
+    <div class="si-error" id="siError"></div>
+    <button class="si-btn" id="siBtn" onclick="signIn()">Open app</button>
+    <p class="si-new">New here? <a href="/app.html">Start your 7 days.</a></p>
+  </div>
 
-    <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-      <a href="app.html" class="btn-final" style="font-size:16px;padding:16px 40px;">Start my 7 days →</a>
-      <p class="hero-fine">Free for 7 days. No card needed.</p>
+  <div id="forgotView">
+    <div class="si-logo">
+      <div class="si-logo-d">D</div>
+      <div class="si-logo-name">DOPA<span>mine</span></div>
     </div>
+    <h1 class="si-headline">Reset password.</h1>
+    <button class="si-back" onclick="showSignIn()">← Back to sign in</button>
+    <input class="si-input" type="email" id="resetEmail" placeholder="Email address" autocomplete="email"
+      onkeydown="if(event.key==='Enter') sendReset()" />
+    <div class="si-error" id="resetError"></div>
+    <button class="si-btn" id="resetBtn" onclick="sendReset()">Send reset email</button>
   </div>
-</section>
 
-<!-- FINAL CTA -->
-<section class="final">
-  <div class="final-glow"></div>
-  <h2 class="final-headline reveal">
-    Your tomorrow is being<br/>written <span class="italic amber">right now.</span>
-  </h2>
-  <p class="final-sub reveal">One good moment at a time. One great life as a result.</p>
-  <div class="final-cta">
-    <a href="app.html" class="btn-final reveal">Take the #3GoodThings dare →</a>
-    <p class="final-fine reveal">Free for 7 days. No card. After Day 7, I'll reach out to you personally.</p>
-  </div>
-</section>
+  <script>
+    const SB_URL = 'https://qcfoykmmbjvduspunvsb.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjZm95a21tYmp2ZHVzcHVudnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MTc1OTAsImV4cCI6MjA5Mjk5MzU5MH0.9WwCW0pbbciBy3sUO9Y6qpQK6-LclMCRUuF9cr_NEOE';
+    const sbClient = supabase.createClient(SB_URL, SB_KEY);
 
-<footer>
-  <a href="#" class="footer-logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <p class="footer-tag">"Your dopamine. From the inside."</p>
-  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
-</footer>
+    // Session check — redirect authenticated users straight to the app before anything renders
+    (async () => {
+      // DEBUG — remove once confirmed working
+      const _dbg = document.createElement('p');
+      _dbg.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#E8D5FF;font-family:"DM Sans",sans-serif;font-size:13px;padding:8px 18px;border-radius:20px;z-index:9999;white-space:nowrap;pointer-events:none;';
+      document.body.appendChild(_dbg);
 
-<script>
-const els = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-els.forEach(el => io.observe(el));
-</script>
+      const { data: { session }, error: sessionError } = await sbClient.auth.getSession();
+
+      if (session) {
+        _dbg.textContent = 'session found — redirecting';
+        setTimeout(() => window.location.replace('/app.html'), 1500);
+        return;
+      }
+
+      _dbg.textContent = sessionError ? 'error: ' + sessionError.message : 'no session detected';
+      document.getElementById('signInView').style.display = 'flex';
+    })();
+
+    function showSignIn() {
+      document.getElementById('forgotView').style.display = 'none';
+      document.getElementById('signInView').style.display = 'flex';
+    }
+
+    function showForgot() {
+      document.getElementById('signInView').style.display = 'none';
+      document.getElementById('forgotView').style.display = 'flex';
+    }
+
+    async function signIn() {
+      const email = document.getElementById('siEmail').value.trim();
+      const password = document.getElementById('siPassword').value;
+      const errEl = document.getElementById('siError');
+      const btn = document.getElementById('siBtn');
+      errEl.className = 'si-error';
+      errEl.textContent = '';
+      if (!email || !password) { errEl.textContent = 'Enter your email and password.'; return; }
+      btn.disabled = true;
+      btn.textContent = '…';
+      const { error } = await sbClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        errEl.textContent = error.message;
+        btn.disabled = false;
+        btn.textContent = 'Open app';
+        return;
+      }
+      window.location.replace('/app.html');
+    }
+
+    async function sendReset() {
+      const email = document.getElementById('resetEmail').value.trim();
+      const errEl = document.getElementById('resetError');
+      const btn = document.getElementById('resetBtn');
+      errEl.className = 'si-error';
+      errEl.textContent = '';
+      if (!email) { errEl.textContent = 'Enter your email address.'; return; }
+      btn.disabled = true;
+      btn.textContent = '…';
+      const { error } = await sbClient.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://mydopa.app/app.html'
+      });
+      btn.disabled = false;
+      btn.textContent = 'Send reset email';
+      if (error) { errEl.textContent = error.message; return; }
+      errEl.className = 'si-error info';
+      errEl.textContent = 'Check your inbox for the reset link.';
+    }
+  </script>
 </body>
 </html>

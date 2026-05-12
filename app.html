@@ -4478,7 +4478,7 @@ function checkInstallPrompt() {
       const { data, error } = await sbClient.auth.signUp({
         email,
         password,
-        options: { data: { first_name: firstName } }
+        options: { data: { first_name: firstName }, emailRedirectTo: 'https://mydopa.app/app.html' }
       });
       btn.disabled = false;
       btn.textContent = orig;
@@ -4582,7 +4582,7 @@ function checkInstallPrompt() {
       btn.textContent = '...';
       const { error } = authMode === 'signin'
         ? await sbClient.auth.signInWithPassword({ email, password })
-        : await sbClient.auth.signUp({ email, password });
+        : await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: 'https://mydopa.app/app.html' } });
       btn.disabled = false;
       btn.textContent = origText;
       if (error) { errEl.textContent = error.message; }
@@ -4591,7 +4591,7 @@ function checkInstallPrompt() {
     async function signInWithGoogle() {
       const { error } = await sbClient.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: 'https://mydopa.app' }
+        options: { redirectTo: 'https://mydopa.app/app.html' }
       });
       if (error) showToast('Google sign-in failed. Try again.');
     }
@@ -4614,7 +4614,7 @@ function checkInstallPrompt() {
       if (!email) { errEl.textContent = 'Enter your email address.'; return; }
       const btn = document.getElementById('authResetBtn');
       btn.disabled = true;
-      const { error } = await sbClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://mydopa.app' });
+      const { error } = await sbClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://mydopa.app/app.html' });
       btn.disabled = false;
       if (error) { errEl.textContent = error.message; return; }
       hideForgotPassword();

@@ -1909,6 +1909,7 @@
       <p class="ob-eyebrow">YOUR DOPAMINE. FROM THE INSIDE.</p>
       <p style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
       <button class="hs-ghost-btn" onclick="advanceToStage2()">Start my 7 days</button>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(201,190,216,0.4);margin-top:24px;text-align:center;">Already have an account? <button onclick="showAuthScreen()" style="background:none;border:none;color:rgba(201,190,216,0.6);font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
     </div>
   </div>
 
@@ -4540,7 +4541,7 @@ function checkInstallPrompt() {
     }
 
     function showAuthScreen() {
-      window.location.replace('/');
+      document.getElementById('authScreen').style.display = 'flex';
     }
     function hideAuthScreen() {
       document.getElementById('authScreen').style.display = 'none';
@@ -4654,45 +4655,42 @@ function checkInstallPrompt() {
       document.getElementById('recoveryScreen').style.display = 'flex';
     }
 
-    // First-time visitor check: synchronous, before Supabase auth starts.
-    // If onboarding is not complete, go straight to the Promise Screen and
-    // skip the auth flow entirely — no session check, no auth events.
-    if (!recoveryMode && !localStorage.getItem('dopa_onboarding_complete')) {
-      showPromiseScreen();
-    } else {
-      (async () => {
-        let authShowTimer = null;
-
-        sbClient.auth.onAuthStateChange((event, session) => {
-          if (event === 'PASSWORD_RECOVERY') {
-            recoveryMode = true;
-            document.getElementById('recoveryScreen').style.display = 'flex';
-            return;
-          }
-          if (recoveryMode) return;
-          if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-            clearTimeout(authShowTimer);
-            currentUser = session ? session.user : null;
-            if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
-            hideAuthScreen();
-            initApp();
-          } else if (event === 'SIGNED_OUT') {
-            currentUser = null;
-            appInitialized = false;
-            showAuthScreen();
-          }
-        });
-
-        const { data: { session } } = await sbClient.auth.getSession();
-        if (session && !recoveryMode) {
-          currentUser = session.user;
-          if (session.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
-          initApp();
-        } else if (!recoveryMode) {
-          authShowTimer = setTimeout(showAuthScreen, 500);
+    (async () => {
+      sbClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          recoveryMode = true;
+          document.getElementById('recoveryScreen').style.display = 'flex';
+          return;
         }
-      })();
-    }
+        if (recoveryMode) return;
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          currentUser = session ? session.user : null;
+          if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+          hideAuthScreen();
+          if (!appInitialized) initApp();
+        } else if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          appInitialized = false;
+          showAuthScreen();
+        }
+      });
+
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (recoveryMode) return;
+
+      if (session) {
+        // State 1: valid session — load app directly
+        currentUser = session.user;
+        if (session.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+        if (!appInitialized) initApp();
+      } else if (localStorage.getItem('dopa_onboarding_complete')) {
+        // State 2: no session, returning user — show sign-in
+        showAuthScreen();
+      } else {
+        // State 3: no session, no flag — genuine new user, show onboarding
+        showPromiseScreen();
+      }
+    })();
   </script>
   <!-- NEXT STEP MODAL -->
   <div class="next-step-modal" id="nextStepModal">

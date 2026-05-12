@@ -2133,7 +2133,7 @@
       <p class="ob-eyebrow">YOUR DOPAMINE. FROM THE INSIDE.</p>
       <p style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
       <button class="hs-ghost-btn" onclick="advanceToStage2()">Start my 7 days</button>
-      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(201,190,216,0.4);margin-top:24px;text-align:center;">Already have an account? <button onclick="showAuthScreen()" style="background:none;border:none;color:rgba(201,190,216,0.6);font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(201,190,216,0.4);margin-top:24px;text-align:center;">Already have an account? <button onclick="promiseSignIn()" style="background:none;border:none;color:rgba(201,190,216,0.6);font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
     </div>
   </div>
 
@@ -2958,6 +2958,10 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         });
       setTimeout(sbSync, 3000);
       checkInstallPrompt();
+      if (window.location.hash === '#yesterday') {
+        switchTab('yesterday');
+        history.replaceState(null, '', location.pathname);
+      }
     }
 
     // ── Tabs ─────────────────────────────────────────────────
@@ -4102,6 +4106,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       updateLogStreak();
       renderTodayEntries();
+      maybeShowYesterdayWhisper(todayCount);
       setTimeout(() => showToast('Moment saved! 🌟'), 1600);
       checkStreakMilestone(streakBefore, streakAfter);
       if (momentsBefore.length === 1) {
@@ -4224,6 +4229,39 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       initYesterdayCard(moments.length);
       ypcRenderStack(yesterdayEntries);
+    }
+
+    // ── Yesterday whisper ────────────────────────────────────
+    function maybeShowYesterdayWhisper(count) {
+      if (count !== 3) return;
+      const today = todayKey();
+      if (localStorage.getItem('dopa_yesterday_whisper_date') === today) return;
+      localStorage.setItem('dopa_yesterday_whisper_date', today);
+
+      const existing = document.getElementById('yesterdayWhisper');
+      if (existing) existing.remove();
+
+      const el = document.createElement('div');
+      el.id = 'yesterdayWhisper';
+      el.style.cssText = 'font-size:13px;color:rgba(201,190,216,0.4);font-style:italic;text-align:center;margin-top:16px;opacity:0;transition:opacity 0.3s ease;';
+      el.textContent = 'Yesterday is already there. Takes 30 seconds to read it.';
+      document.getElementById('todayEntriesSection').appendChild(el);
+      requestAnimationFrame(() => { el.style.opacity = '1'; });
+
+      const dismiss = () => {
+        el.style.transition = 'opacity 0.5s ease';
+        el.style.opacity = '0';
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+        document.removeEventListener('click', tapDismiss);
+        document.removeEventListener('touchstart', tapDismiss);
+      };
+      const tapDismiss = () => { clearTimeout(autoTimer); dismiss(); };
+      const autoTimer = setTimeout(dismiss, 10000);
+      // Delay listener so the current save-button click doesn't fire it immediately
+      setTimeout(() => {
+        document.addEventListener('click', tapDismiss);
+        document.addEventListener('touchstart', tapDismiss);
+      }, 500);
     }
 
     // ── Yesterday protagonist card ────────────────────────────
@@ -4888,6 +4926,18 @@ function checkInstallPrompt() {
       }
       document.getElementById('stage3Screen').style.display = 'none';
       initApp();
+    }
+
+    function promiseSignIn() {
+      document.getElementById('promiseScreen').style.display = 'none';
+      authMode = 'signin';
+      document.getElementById('authTitle').textContent = 'Sign In';
+      document.getElementById('authSubmitBtn').textContent = 'Sign In';
+      document.getElementById('authToggleText').textContent = "Don't have an account?";
+      document.getElementById('authToggleLink').textContent = 'Sign Up';
+      document.getElementById('authLegal').style.display = 'none';
+      document.getElementById('authError').textContent = '';
+      showAuthScreen();
     }
 
     function stage3SignIn() {

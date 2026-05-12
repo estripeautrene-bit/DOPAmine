@@ -1567,6 +1567,210 @@
       text-align: center;
     }
 
+    /* ── Yesterday protagonist card ── */
+    .yesterday-protagonist-card {
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.26);
+      border-radius: 20px;
+      padding: 22px 20px 18px;
+      margin-bottom: 16px;
+    }
+    .ypc-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: rgba(183,123,247,0.48);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .ypc-eyebrow-dot {
+      width: 4px;
+      height: 4px;
+      background: rgba(183,123,247,0.3);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ypc-headline {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FAFAF7;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .ypc-feeling {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 18px;
+      min-height: 42px;
+    }
+    .ypc-divider {
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,176,32,0.22), rgba(255,176,32,0.04));
+      margin-bottom: 16px;
+    }
+    .ypc-question {
+      font-size: 22px;
+      font-weight: 600;
+      color: #C026D3;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+    .ypc-listen {
+      font-size: 10px;
+      color: rgba(201,190,216,0.26);
+      font-style: italic;
+      margin-bottom: 13px;
+    }
+    .ypc-input-wrap {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(192,38,211,0.16);
+      border-radius: 12px;
+      padding: 14px 15px;
+      min-height: 68px;
+      cursor: text;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      transition: border-color 0.2s ease;
+    }
+    .ypc-input-wrap.focused { border-color: rgba(192,38,211,0.45); }
+    .ypc-cursor {
+      width: 2px;
+      height: 17px;
+      background: rgba(192,38,211,0.55);
+      border-radius: 1px;
+      margin-top: 1px;
+      flex-shrink: 0;
+      animation: ypcBlink 1.05s step-end infinite;
+    }
+    @keyframes ypcBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .ypc-placeholder {
+      font-size: 13.5px;
+      color: rgba(201,190,216,0.33);
+      font-style: italic;
+      padding-left: 4px;
+      pointer-events: none;
+    }
+    .ypc-textarea {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #FAFAF7;
+      font-size: 18px;
+      font-family: -apple-system, sans-serif;
+      padding: 14px 15px;
+      resize: none;
+      box-sizing: border-box;
+      opacity: 0;
+    }
+    .ypc-textarea.active { opacity: 1; }
+    .ypc-send {
+      width: 100%;
+      margin-top: 11px;
+      background: rgba(192,38,211,0.1);
+      border: 1px solid rgba(192,38,211,0.3);
+      border-radius: 11px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #C026D3;
+      cursor: pointer;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ypc-scarcity {
+      font-size: 10px;
+      color: rgba(255,176,32,0.35);
+      margin-top: 11px;
+      text-align: center;
+    }
+    .ypc-stack-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7px;
+      padding: 0 2px;
+    }
+    .ypc-stack-label {
+      font-size: 9.5px;
+      letter-spacing: 0.13em;
+      color: rgba(183,123,247,0.35);
+    }
+    .ypc-stack {
+      position: relative;
+      height: 82px;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    .ypc-sh3 {
+      position: absolute; bottom: 0; left: 9px; right: 9px; height: 66px;
+      background: rgba(26,21,48,0.38);
+      border: 1px solid rgba(255,255,255,0.035);
+      border-radius: 10px;
+    }
+    .ypc-sh2 {
+      position: absolute; bottom: 5px; left: 4px; right: 4px; height: 66px;
+      background: rgba(26,21,48,0.60);
+      border: 1px solid rgba(255,255,255,0.048);
+      border-radius: 10px;
+    }
+    .ypc-sh1 {
+      position: absolute; bottom: 10px; left: 0; right: 0;
+      background: #1A1530;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ypc-sh1-cta {
+      font-size: 11px;
+      color: #C026D3;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .ypc-sh1-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .ypc-sh1-meta { display: flex; align-items: center; gap: 6px; }
+    .ypc-sh1-time { font-size: 10px; color: rgba(201,190,216,0.3); }
+    .ypc-sh1-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .ypc-entries-expanded { display: flex; flex-direction: column; gap: 5px; opacity: 0.74; }
+    .ypc-entry-card { background: #1A1530; border: 1px solid rgba(255,255,255,0.055); border-radius: 9px; padding: 10px 13px; }
+    .ypc-entry-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .ypc-entry-meta { display: flex; align-items: center; gap: 6px; }
+    .ypc-entry-time { font-size: 9.5px; color: rgba(201,190,216,0.3); }
+    .ypc-entry-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .ypc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
+    .ypc-closing-wrap { margin-top: 24px; display: flex; justify-content: center; }
+    .ypc-closing-pill {
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.15);
+      border-radius: 40px;
+      padding: 10px 22px;
+      font-size: 13px;
+      color: rgba(201,190,216,0.65);
+      text-align: center;
+    }
+    .ypc-closing-you { color: #C026D3; font-weight: 600; }
+    .ypc-acknowledgment {
+      background: #1A1530;
+      border: 1px solid rgba(192,38,211,0.22);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 15px;
+      color: rgba(201,190,216,0.85);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
     /* ── Auto time-of-day tag ── */
     .moment-tag-auto {
       font-size: 0.7rem;
@@ -2235,22 +2439,44 @@
 
   <!-- YESTERDAY VIEW -->
   <div class="view" id="view-yesterday">
-    <div class="yesterday-hero">
-      <div class="yesterday-headline">Yesterday Was Good.</div>
-      <div id="yesterdaySubtitle" class="yesterday-subtitle"></div>
+
+    <div class="yesterday-protagonist-card">
+      <div class="ypc-eyebrow">
+        <span class="ypc-eyebrow-dot"></span>
+        <span id="ypcDateLabel">MONDAY, MAY 11</span>
+      </div>
+      <div class="ypc-headline">Yesterday Was Good.</div>
+      <div class="ypc-feeling" id="ypcFeeling">Consistency beats talent. Every time.</div>
+      <div class="ypc-divider"></div>
+      <div class="ypc-question">How does it make you feel today?</div>
+      <div class="ypc-listen">This screen responds.</div>
+      <div class="ypc-input-wrap" id="ypcInputWrap">
+        <span class="ypc-cursor"></span>
+        <span class="ypc-placeholder" id="ypcPlaceholder">Just say what comes up.</span>
+        <textarea class="ypc-textarea" id="ypcTextarea"></textarea>
+      </div>
+      <button class="ypc-send" id="ypcSend" style="display:none;">Send it →</button>
+      <div class="ypc-scarcity">Today starts writing over this at midnight.</div>
     </div>
 
-    <!-- Reflection question -->
-    <div id="yesterdayQuestion" style="margin-bottom: 16px;">
-      <div style="font-size:24px;font-weight:500;color:#FAFAF7;margin-bottom:12px;">How does yesterday make you feel today?</div>
-      <textarea id="yesterdayFeelInput" placeholder="Just say what comes up. No wrong answer." maxlength="200"
-        style="width:100%;background:none;border:none;outline:none;font-family:inherit;font-size:18px;font-weight:300;color:white;line-height:1.6;resize:none;min-height:52px;caret-color:#FFB020;"
-        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <div class="ypc-stack-header">
+      <span class="ypc-stack-label">YOUR MOMENTS</span>
+    </div>
+    <div class="ypc-stack" id="ypcDeck">
+      <div class="ypc-sh3"></div>
+      <div class="ypc-sh2"></div>
+      <div class="ypc-sh1">
+        <div class="ypc-sh1-content" id="ypcStackTop"></div>
+        <div class="ypc-sh1-cta" id="ypcSeeAll">see all →</div>
+      </div>
+    </div>
+    <div class="ypc-entries-expanded" id="ypcExpanded" style="display:none;"></div>
+    <div class="ypc-closing-wrap">
+      <div class="ypc-closing-pill">
+        Your dopa. Made by <span class="ypc-closing-you">you</span>. Every day.
+      </div>
     </div>
 
-    <div class="yesterday-list" id="yesterdayList"></div>
-    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today →</button>
-    <p style="font-size:15px;color:rgba(201,190,216,0.5);text-align:center;margin-top:24px;padding-bottom:8px;">Today is already being written.</p>
   </div>
 
   <!-- SUMMARY VIEW -->
@@ -3661,7 +3887,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       if (activeView) {
         const id = activeView.id;
         if      (id === 'view-log')       protagonist = document.getElementById('momentInput');
-        else if (id === 'view-yesterday') protagonist = document.querySelector('.yesterday-headline');
+        else if (id === 'view-yesterday') protagonist = document.querySelector('.ypc-headline');
         else if (id === 'view-summary')   protagonist = document.querySelector('.streak-pill');
       }
       if (protagonist) {
@@ -3982,28 +4208,158 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const moments = loadMoments().filter(m => m.dateKey === yKey)
         .slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
-      const subtitle = document.getElementById('yesterdaySubtitle');
-      const list = document.getElementById('yesterdayList');
+      const yesterdayEntries = moments.map(m => ({
+        text: m.text,
+        time: formatTime(m.createdAt),
+        tag: m.tags && m.tags.length > 0 ? m.tags[0] : (m.autoTag || '')
+      }));
 
-      if (moments.length === 0) {
-        subtitle.innerHTML = '';
-        list.innerHTML = `<p class="yesterday-empty">Yesterday is a blank page.<br>Today doesn't have to be.</p>`;
-        return;
-      }
-
-      subtitle.textContent = `You captured ${moments.length} good moment${moments.length !== 1 ? 's' : ''}`;
-
-      list.innerHTML = moments.map(m => `
-        <div class="yesterday-card">
-          <div class="moment-text">${escapeHtml(m.text)}</div>
-          ${m.photo ? `<img class="card-photo" src="${m.photo}" alt="moment" />` : ''}
-          <div class="moment-meta">
-            <span class="moment-time">${formatTime(m.createdAt)}</span>
-            ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
-          </div>
-        </div>
-      `).join('');
+      initYesterdayCard(moments.length);
+      ypcRenderStack(yesterdayEntries);
     }
+
+    // ── Yesterday protagonist card ────────────────────────────
+
+    const YPC_LINES_ACTIVE = [
+      'Consistency beats talent. Every time.',
+      'You are making progress.',
+      'This is what accountability looks like.',
+      'Motivation at its best.',
+      'Better every day.',
+      'Collecting good. One moment at a time.',
+      'Done is better than perfect. You keep proving it.',
+      'You showed up. Again.'
+    ];
+
+    const YPC_LINES_SLIP = [
+      "Missing a day doesn't erase the days you showed up.",
+      'The practice is patient. It waits for you.',
+      "It doesn't have to be perfect. It just has to be today.",
+      "One thing. Just one. That's all today needs.",
+      "You're not behind. You're just paused.",
+      "The streak broke. That's okay. Today is a new one.",
+      "Good things happened. You just haven't said them yet.",
+      "Come back. That's the whole move."
+    ];
+
+    function initYesterdayCard(winsYesterday) {
+      const lines = (winsYesterday >= 1) ? YPC_LINES_ACTIVE : YPC_LINES_SLIP;
+      const dayOfYear = Math.floor(
+        (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
+      );
+      document.getElementById('ypcFeeling').textContent = lines[dayOfYear % lines.length];
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const dayName = yesterday.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+      const monthDay = yesterday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toUpperCase();
+      document.getElementById('ypcDateLabel').textContent = dayName + ', ' + monthDay;
+    }
+
+    function ypcRenderStack(entries) {
+      if (!entries || entries.length === 0) return;
+      const top = entries[0];
+      document.getElementById('ypcStackTop').innerHTML =
+        '<div class="ypc-sh1-text">' + escapeHtml(top.text) + '</div>' +
+        '<div class="ypc-sh1-meta">' +
+          '<span class="ypc-sh1-time">' + (top.time || '') + '</span>' +
+          (top.tag ? '<span class="ypc-sh1-tag">' + escapeHtml(top.tag) + '</span>' : '') +
+        '</div>';
+      document.getElementById('ypcSeeAll').textContent = 'see all ' + entries.length + ' →';
+
+      const exp = document.getElementById('ypcExpanded');
+      exp.innerHTML = entries.map(function(e) {
+        return '<div class="ypc-entry-card">' +
+          '<div class="ypc-entry-text">' + escapeHtml(e.text) + '</div>' +
+          '<div class="ypc-entry-meta">' +
+            '<span class="ypc-entry-time">' + (e.time || '') + '</span>' +
+            (e.tag ? '<span class="ypc-entry-tag">' + escapeHtml(e.tag) + '</span>' : '') +
+          '</div></div>';
+      }).join('') + '<button class="ypc-collapse-btn" id="ypcCollapseBtn">↑ collapse</button>';
+
+      document.getElementById('ypcCollapseBtn').addEventListener('click', function() {
+        exp.style.display = 'none';
+        document.getElementById('ypcDeck').style.display = 'block';
+      });
+    }
+
+    function ypcSaveFeel(text) {
+      const t = text.toLowerCase();
+      let response = "That's the practice. You noticed yesterday. That's already more than most.";
+      if (/grateful|thankful/.test(t))
+        response = 'That feeling is the point. It means the filter is working.';
+      else if (/happy|\bgood\b/.test(t))
+        response = "That's evidence. Not a feeling — evidence. Keep it.";
+      else if (/proud/.test(t))
+        response = 'You should be. You built that yesterday yourself.';
+      else if (/calm|peaceful/.test(t))
+        response = "Consistency does that. You're building it one day at a time.";
+      else if (/surprised/.test(t))
+        response = 'Most people are. The good was always there.';
+      else if (/sad|hard|difficult/.test(t))
+        response = "The practice doesn't promise perfect days. Just that you'll notice what's real in them.";
+      else if (/motivated|ready|energized/.test(t))
+        response = 'Then go. Today is already being written.';
+
+      const wrap = document.getElementById('ypcInputWrap');
+      const send = document.getElementById('ypcSend');
+      const ack = document.createElement('div');
+      ack.className = 'ypc-acknowledgment';
+      ack.textContent = response;
+      wrap.parentNode.insertBefore(ack, wrap);
+      wrap.style.display = 'none';
+      send.style.display = 'none';
+
+      setTimeout(function() {
+        ack.style.transition = 'opacity 0.5s ease';
+        ack.style.opacity = '0';
+        setTimeout(function() {
+          ack.remove();
+          document.getElementById('ypcTextarea').value = '';
+          document.getElementById('ypcTextarea').classList.remove('active');
+          document.getElementById('ypcPlaceholder').style.display = 'inline';
+          document.querySelector('.ypc-cursor').style.display = 'inline-block';
+          wrap.classList.remove('focused');
+          wrap.style.display = 'flex';
+        }, 500);
+      }, 4000);
+    }
+
+    (function ypcWire() {
+      const wrap   = document.getElementById('ypcInputWrap');
+      const ta     = document.getElementById('ypcTextarea');
+      const ph     = document.getElementById('ypcPlaceholder');
+      const send   = document.getElementById('ypcSend');
+      const deck   = document.getElementById('ypcDeck');
+      const exp    = document.getElementById('ypcExpanded');
+      const cursor = document.querySelector('.ypc-cursor');
+      if (!wrap) return;
+
+      wrap.addEventListener('click', function() {
+        ph.style.display = 'none';
+        cursor.style.display = 'none';
+        ta.classList.add('active');
+        wrap.classList.add('focused');
+        ta.focus();
+      });
+
+      ta.addEventListener('input', function() {
+        send.style.display = ta.value.trim().length > 0 ? 'block' : 'none';
+      });
+
+      send.addEventListener('click', function() {
+        const text = ta.value.trim();
+        if (!text) return;
+        ypcSaveFeel(text);
+      });
+
+      deck.addEventListener('click', function() {
+        deck.style.display = 'none';
+        exp.style.display = 'flex';
+        exp.style.flexDirection = 'column';
+        exp.style.gap = '5px';
+      });
+    })();
 
     // ── Summary ──────────────────────────────────────────────
     function renderSummary() {

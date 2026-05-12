@@ -31,37 +31,28 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── GRAIN ─── */
-body::after {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 999;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.35;
-}
-
 /* ─── NAV ─── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 48px;
   backdrop-filter: blur(24px);
-  background: rgba(6,0,13,0.75);
+  background: rgba(6,0,13,0.8);
   border-bottom: 1px solid rgba(168,85,247,0.07);
 }
-.logo { font-family: var(--font-b); font-size: 20px; font-weight: 700; text-decoration: none; letter-spacing: 0.3px; }
+.logo { font-family: var(--font-b); font-size: 20px; font-weight: 700; text-decoration: none; }
 .logo .d { color: var(--white); }
 .logo .m { color: var(--purple-bright); font-weight: 400; }
-.nav-dare {
+.nav-btn {
   display: inline-flex; align-items: center; gap: 8px;
-  background: transparent;
   border: 1px solid rgba(168,85,247,0.4);
   color: var(--purple-bright);
   font-family: var(--font-b); font-size: 13px; font-weight: 500;
   padding: 9px 20px; border-radius: 999px;
-  text-decoration: none; cursor: pointer;
+  text-decoration: none; background: transparent;
   transition: all 0.2s;
 }
-.nav-dare:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
 
 /* ─── HERO ─── */
 .hero {
@@ -69,596 +60,281 @@ nav {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 120px 24px 100px;
+  padding: 140px 24px 100px;
   position: relative; overflow: hidden;
 }
-
-/* Amber glow from the bottom — the dopamine reward */
-.hero::before {
-  content: '';
-  position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+.hero-glow-bottom {
+  position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);
   width: 900px; height: 600px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.14) 0%, rgba(255,107,0,0.09) 30%, rgba(123,47,190,0.06) 60%, transparent 75%);
-  animation: breathe 5s ease-in-out infinite;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.13) 0%, rgba(255,107,0,0.08) 30%, rgba(123,47,190,0.05) 60%, transparent 75%);
+  animation: breathe 5s ease-in-out infinite; pointer-events: none;
 }
-/* Purple glow top */
-.hero::after {
-  content: '';
+.hero-glow-top {
   position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
   width: 600px; height: 500px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(123,47,190,0.1) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(123,47,190,0.09) 0%, transparent 65%);
   pointer-events: none;
 }
-@keyframes breathe {
-  0%,100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
-}
+@keyframes breathe { 0%,100% { opacity: 0.8; transform: translateX(-50%) scale(1); } 50% { opacity: 1; transform: translateX(-50%) scale(1.08); } }
 
 .hero-tag {
-  display: inline-block;
   font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
-  color: var(--orange-energy);
-  margin-bottom: 32px;
+  color: var(--orange-energy); margin-bottom: 32px;
   opacity: 0; animation: up 0.7s ease forwards 0.1s;
 }
-
-/* THE DARE — giant, confident, the whole strategy in one headline */
-.hero-dare {
+.hero-headline {
   font-family: var(--font-d);
-  font-size: clamp(44px, 8.5vw, 110px);
-  font-weight: 900;
-  line-height: 0.93;
-  letter-spacing: -3px;
-  color: var(--white);
-  margin-bottom: 28px;
+  font-size: clamp(48px, 9vw, 114px);
+  font-weight: 900; line-height: 0.93; letter-spacing: -3px;
+  color: var(--white); margin-bottom: 32px;
   opacity: 0; animation: up 0.8s ease forwards 0.25s;
 }
-.hero-dare em {
-  font-style: italic;
-  color: var(--purple-bright);
-  display: block;
-}
-.hero-dare .amber { color: var(--orange-energy); }
+.hero-headline em { font-style: italic; color: var(--purple-bright); display: block; }
+.hero-headline .amber { color: var(--orange-energy); }
 
-.hero-sentence {
-  font-size: clamp(15px, 2vw, 19px);
-  color: var(--gray-light);
-  font-weight: 300;
-  max-width: 540px;
-  margin: 0 auto 48px;
-  line-height: 1.7;
-  opacity: 0; animation: up 0.8s ease forwards 0.45s;
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px); color: var(--gray-light);
+  font-weight: 300; max-width: 500px; margin: 0 auto 52px; line-height: 1.7;
+  opacity: 0; animation: up 0.8s ease forwards 0.4s;
 }
-.hero-sentence strong { color: var(--white); font-weight: 500; }
+.hero-sub strong { color: var(--white); font-weight: 500; }
 
 .hero-actions {
   display: flex; flex-direction: column; align-items: center; gap: 14px;
-  opacity: 0; animation: up 0.8s ease forwards 0.6s;
+  opacity: 0; animation: up 0.8s ease forwards 0.55s;
 }
-.btn-dare {
+.btn-primary {
   display: inline-flex; align-items: center; gap: 10px;
   background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
-  color: var(--white);
-  font-family: var(--font-b); font-size: 17px; font-weight: 600;
+  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
   padding: 17px 40px; border-radius: 999px; text-decoration: none; border: none; cursor: pointer;
-  box-shadow: 0 0 50px rgba(123,47,190,0.45);
-  transition: transform 0.2s, box-shadow 0.2s;
-  letter-spacing: 0.2px;
+  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
 }
-.btn-dare:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
 .hero-fine { font-size: 13px; color: var(--gray-muted); }
 
-.scroll-indicator {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  opacity: 0; animation: fade 1s ease forwards 1.4s;
-}
-.scroll-line {
-  width: 1px; height: 44px;
-  background: linear-gradient(to bottom, rgba(168,85,247,0.6), transparent);
-  animation: pulse-line 2.2s ease-in-out infinite;
-}
-@keyframes pulse-line { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
-
-/* ─── THE ONE SENTENCE ─── */
-.sentence-section {
-  padding: 80px 24px 80px;
-  max-width: 860px; margin: 0 auto;
-  text-align: center;
-  position: relative;
-}
-.sentence-section::before {
-  content: '';
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 500px; height: 300px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(123,47,190,0.1), transparent 70%);
-}
-.sentence-eyebrow {
-  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
-  color: var(--purple-mid); margin-bottom: 24px;
-}
-.sentence-text {
-  font-family: var(--font-d);
-  font-size: clamp(24px, 4vw, 44px);
-  font-weight: 700; font-style: italic;
-  line-height: 1.25; color: var(--white);
-  margin-bottom: 20px;
-}
-.sentence-sub {
-  font-size: 16px; color: var(--gray-light); font-weight: 300; line-height: 1.65;
-}
-
-/* ─── CHALLENGE SECTION ─── */
-.challenge-section {
+/* ─── CHALLENGE ─── */
+.challenge {
   background: var(--navy-panel);
   padding: 100px 24px;
   position: relative; overflow: hidden;
 }
-.challenge-section::before {
+.challenge::before {
   content: '';
   position: absolute; top: -100px; right: -200px;
   width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,176,32,0.06), transparent 65%);
+  background: radial-gradient(circle, rgba(255,176,32,0.05), transparent 65%);
   pointer-events: none;
 }
-.challenge-inner { max-width: 1080px; margin: 0 auto; }
-.section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 16px; text-align: center; }
-.section-title {
-  font-family: var(--font-d); font-size: clamp(32px, 5vw, 60px);
-  font-weight: 900; text-align: center; line-height: 1.05; margin-bottom: 20px;
+.challenge-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
+
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 16px; }
+.challenge-title {
+  font-family: var(--font-d); font-size: clamp(34px, 5.5vw, 64px);
+  font-weight: 900; line-height: 1.05; margin-bottom: 20px;
 }
-.section-title .amber { color: var(--orange-energy); }
-.section-title .purple { color: var(--purple-bright); }
+.challenge-title .amber { color: var(--orange-energy); }
+.challenge-title .purple { color: var(--purple-bright); }
 .challenge-sub {
   font-size: 17px; color: var(--gray-light); font-weight: 300;
-  max-width: 560px; margin: 0 auto 72px; text-align: center; line-height: 1.7;
+  max-width: 480px; margin: 0 auto 72px; line-height: 1.7;
 }
 
-/* Day-by-day arc */
-.days-track {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-  margin-bottom: 48px;
+/* Day arc */
+.days {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 64px;
 }
-.day-node {
+.day {
   background: var(--navy-card);
   border: 1px solid rgba(123,47,190,0.15);
-  border-radius: 16px;
-  padding: 20px 12px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  border-radius: 16px; padding: 20px 12px; text-align: center;
   transition: transform 0.25s, border-color 0.25s;
 }
-.day-node:hover { transform: translateY(-4px); border-color: rgba(168,85,247,0.35); }
-.day-node.key { border-color: rgba(255,176,32,0.3); }
-.day-node.key::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 120%, rgba(255,176,32,0.07), transparent 70%);
-}
-.day-number { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 10px; }
-.day-orb {
-  width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 12px;
-  position: relative; z-index: 1;
-}
-.day-copy { font-size: 12px; color: var(--gray-light); line-height: 1.5; position: relative; z-index: 1; }
-.day-copy strong { color: var(--white); display: block; font-size: 13px; margin-bottom: 3px; font-weight: 500; }
-
-/* Day orb gradients — building amber */
-.orb-1  { background: radial-gradient(circle, rgba(123,47,190,0.5) 0%, rgba(123,47,190,0.1) 60%, transparent 75%); border: 1px solid rgba(123,47,190,0.3); }
-.orb-2  { background: radial-gradient(circle, rgba(140,50,210,0.55) 0%, rgba(123,47,190,0.15) 60%, transparent 75%); border: 1px solid rgba(140,50,210,0.35); }
-.orb-3  { background: radial-gradient(circle, rgba(160,60,220,0.55) 0%, rgba(140,50,200,0.2) 60%, transparent 75%); border: 1px solid rgba(160,60,220,0.4); }
-.orb-4  { background: radial-gradient(circle, rgba(180,100,200,0.55) 0%, rgba(180,80,200,0.2) 60%, transparent 75%); border: 1px solid rgba(190,100,220,0.4); }
-.orb-5  { background: radial-gradient(circle, rgba(200,120,140,0.55) 0%, rgba(200,100,140,0.2) 60%, transparent 75%); border: 1px solid rgba(210,120,150,0.4); }
-.orb-6  { background: radial-gradient(circle, rgba(230,150,80,0.6) 0%, rgba(220,130,60,0.25) 60%, transparent 75%); border: 1px solid rgba(240,150,80,0.45); }
-.orb-7  {
+.day:hover { transform: translateY(-4px); border-color: rgba(168,85,247,0.35); }
+.day.key { border-color: rgba(255,176,32,0.25); }
+.day-num { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 10px; }
+.orb { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 12px; }
+.orb-1 { background: radial-gradient(circle, rgba(123,47,190,0.5) 0%, rgba(123,47,190,0.08) 70%); border: 1px solid rgba(123,47,190,0.3); }
+.orb-2 { background: radial-gradient(circle, rgba(140,50,210,0.55) 0%, rgba(123,47,190,0.1) 70%); border: 1px solid rgba(140,50,210,0.35); }
+.orb-3 { background: radial-gradient(circle, rgba(160,60,220,0.55) 0%, rgba(140,50,200,0.1) 70%); border: 1px solid rgba(160,60,220,0.4); }
+.orb-4 { background: radial-gradient(circle, rgba(190,100,200,0.55) 0%, rgba(180,80,180,0.1) 70%); border: 1px solid rgba(190,100,220,0.4); }
+.orb-5 { background: radial-gradient(circle, rgba(210,120,140,0.55) 0%, rgba(200,100,120,0.1) 70%); border: 1px solid rgba(210,120,150,0.4); }
+.orb-6 { background: radial-gradient(circle, rgba(235,155,70,0.6) 0%, rgba(220,130,50,0.15) 70%); border: 1px solid rgba(240,155,80,0.45); }
+.orb-7 {
   background: radial-gradient(circle, #fff5cc 0%, #FFB020 25%, #FF6B00 60%, transparent 80%);
   box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35);
-  animation: glow-orb 3s ease-in-out infinite;
+  animation: orb-glow 3s ease-in-out infinite;
 }
-@keyframes glow-orb { 0%,100% { box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35); } 50% { box-shadow: 0 0 35px #FFB020, 0 0 80px rgba(255,107,0,0.55); } }
+@keyframes orb-glow { 0%,100% { box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35); } 50% { box-shadow: 0 0 35px #FFB020, 0 0 80px rgba(255,107,0,0.55); } }
+.day-copy { font-size: 12px; color: var(--gray-light); line-height: 1.5; }
+.day-copy strong { color: var(--white); display: block; font-size: 13px; margin-bottom: 3px; font-weight: 500; }
 
-.challenge-cta {
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  margin-top: 60px;
-}
-.btn-challenge {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, var(--orange-fire), var(--orange-energy));
-  color: #1a0500;
-  font-family: var(--font-b); font-size: 16px; font-weight: 700;
-  padding: 16px 40px; border-radius: 999px; text-decoration: none;
-  box-shadow: 0 0 50px rgba(255,176,32,0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-challenge:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(255,176,32,0.5); }
-.challenge-fine { font-size: 13px; color: var(--gray-muted); }
-
-/* ─── FOUNDER STORY ─── */
-.founder-section {
-  padding: 120px 24px;
-  max-width: 800px; margin: 0 auto;
-}
-.founder-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 32px; }
-.founder-beats { display: grid; gap: 0; }
-.founder-beat {
-  display: flex; gap: 24px; align-items: flex-start;
-  padding: 32px 0;
-  border-bottom: 1px solid rgba(123,47,190,0.12);
-}
-.founder-beat:last-child { border-bottom: none; }
-.beat-num {
-  font-family: var(--font-d); font-size: 48px; font-weight: 900;
-  color: rgba(168,85,247,0.12); line-height: 1; flex-shrink: 0; width: 56px;
-}
-.beat-content {}
-.beat-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 8px; }
-.beat-text { font-family: var(--font-d); font-size: clamp(18px, 2.5vw, 24px); font-weight: 700; color: var(--white); line-height: 1.35; margin-bottom: 8px; }
-.beat-sub { font-size: 15px; color: var(--gray-light); font-weight: 300; line-height: 1.65; }
-
-.founder-dare-close {
-  margin-top: 56px;
-  padding: 40px 44px;
-  background: rgba(123,47,190,0.07);
-  border: 1px solid rgba(123,47,190,0.25);
-  border-radius: 24px;
-}
-.founder-dare-close blockquote {
-  font-family: var(--font-d); font-size: clamp(20px, 3vw, 32px);
-  font-style: italic; font-weight: 700;
-  color: var(--white); line-height: 1.3; margin-bottom: 16px;
-}
-.founder-dare-close p { font-size: 14px; color: var(--gray-muted); }
-
-/* ─── LANGUAGE SWAP ─── */
-.swap-section {
-  background: var(--navy-panel);
-  padding: 100px 24px;
-}
-.swap-inner { max-width: 900px; margin: 0 auto; }
-.swap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 56px; border: 1px solid rgba(123,47,190,0.15); border-radius: 20px; overflow: hidden; }
-.swap-row { display: contents; }
-.swap-cell {
-  padding: 24px 28px;
-  border-bottom: 1px solid rgba(123,47,190,0.12);
-  font-size: 15px; line-height: 1.6;
-}
-.swap-cell:nth-child(odd) { border-right: 1px solid rgba(123,47,190,0.12); }
-.swap-cell.header {
-  font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
-  padding: 16px 28px;
-  background: rgba(123,47,190,0.07);
-}
-.swap-cell.header.no { color: #ef4444; }
-.swap-cell.header.yes { color: #22c55e; }
-.swap-cell.no-text { color: var(--gray-muted); text-decoration: line-through; text-decoration-color: rgba(239,68,68,0.4); }
-.swap-cell.yes-text { color: var(--white); font-weight: 400; }
-.swap-last { border-bottom: none; }
-
-/* ─── NOTIFICATION PEEK ─── */
-.notif-section {
-  padding: 100px 24px;
-  max-width: 960px; margin: 0 auto;
-}
-.notif-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  margin-top: 56px;
-}
-.notif-card {
-  background: var(--navy-panel);
-  border: 1px solid rgba(123,47,190,0.15);
-  border-radius: 20px;
-  padding: 28px;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.notif-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-3px); }
-.notif-slot {
-  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--purple-mid); font-weight: 600; margin-bottom: 14px;
-}
-.notif-msg {
-  font-family: var(--font-d); font-size: 17px; font-weight: 700;
-  color: var(--white); line-height: 1.4; margin-bottom: 10px;
-}
-.notif-pair { font-size: 12px; color: var(--gray-muted); }
-
-/* ─── FINAL DARE ─── */
-.final-section {
-  position: relative; padding: 160px 24px;
+/* ─── FINAL CTA ─── */
+.final {
+  position: relative; padding: 140px 24px;
   text-align: center; overflow: hidden;
 }
 .final-glow {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   width: 900px; height: 700px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.11) 0%, rgba(123,47,190,0.09) 35%, transparent 65%);
-  animation: breathe 6s ease-in-out infinite;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.1) 0%, rgba(123,47,190,0.08) 35%, transparent 65%);
+  animation: breathe 6s ease-in-out infinite; pointer-events: none;
 }
-.final-pre { font-size: 14px; color: var(--gray-muted); margin-bottom: 20px; letter-spacing: 0.3px; }
-.final-h {
-  font-family: var(--font-d); font-size: clamp(40px, 7vw, 84px);
+.final-headline {
+  font-family: var(--font-d); font-size: clamp(40px, 7vw, 88px);
   font-weight: 900; line-height: 1.0; margin-bottom: 24px;
 }
-.final-h .italic { font-style: italic; color: var(--purple-bright); }
-.final-h .amber { color: var(--orange-energy); }
-.final-sub { font-size: 18px; color: var(--gray-light); font-weight: 300; max-width: 440px; margin: 0 auto 48px; line-height: 1.65; }
+.final-headline .italic { font-style: italic; color: var(--purple-bright); }
+.final-headline .amber { color: var(--orange-energy); }
+.final-sub { font-size: 18px; color: var(--gray-light); font-weight: 300; max-width: 400px; margin: 0 auto 52px; line-height: 1.65; }
 .final-cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .btn-final {
   display: inline-flex; align-items: center; gap: 12px;
   background: linear-gradient(135deg, var(--orange-fire), var(--orange-energy));
   color: #1a0500; font-family: var(--font-b); font-size: 18px; font-weight: 700;
   padding: 19px 48px; border-radius: 999px; text-decoration: none;
-  box-shadow: 0 0 60px rgba(255,176,32,0.35); transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 60px rgba(255,176,32,0.3); transition: transform 0.2s, box-shadow 0.2s;
 }
 .btn-final:hover { transform: translateY(-2px); box-shadow: 0 0 100px rgba(255,176,32,0.55); }
-.final-fine { font-size: 13px; color: var(--gray-muted); max-width: 320px; text-align: center; line-height: 1.6; }
+.final-fine { font-size: 13px; color: var(--gray-muted); max-width: 340px; line-height: 1.6; }
 
 /* ─── FOOTER ─── */
 footer {
   border-top: 1px solid rgba(123,47,190,0.1);
-  padding: 48px 48px 64px;
+  padding: 40px 48px 56px;
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
 }
 .footer-logo { font-family: var(--font-b); font-size: 18px; font-weight: 700; text-decoration: none; }
 .footer-logo .d { color: var(--white); }
 .footer-logo .m { color: var(--purple-bright); font-weight: 400; }
-.footer-tagline { font-family: var(--font-d); font-size: 14px; font-style: italic; color: var(--gray-muted); }
+.footer-tag { font-family: var(--font-d); font-size: 14px; font-style: italic; color: var(--gray-muted); }
 .footer-url { font-size: 13px; color: var(--gray-muted); text-decoration: none; }
 .footer-url:hover { color: var(--purple-mid); }
 
-/* ─── REVEAL ─── */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-
 /* ─── ANIMATIONS ─── */
 @keyframes up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; } .d3 { transition-delay: 0.19s; }
+.d4 { transition-delay: 0.26s; } .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.4s; } .d7 { transition-delay: 0.47s; }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
   nav { padding: 16px 20px; }
-  .days-track { grid-template-columns: repeat(4, 1fr); }
-  .days-track .day-node:nth-child(5), .days-track .day-node:nth-child(6), .days-track .day-node:nth-child(7) { grid-column: auto; }
-  .notif-grid { grid-template-columns: 1fr; }
-  .swap-grid { grid-template-columns: 1fr; }
-  .swap-cell:nth-child(odd) { border-right: none; }
-  footer { flex-direction: column; text-align: center; padding: 40px 24px 52px; }
-  .founder-beat { flex-direction: column; gap: 12px; }
+  .days { grid-template-columns: repeat(4, 1fr); }
+  footer { flex-direction: column; text-align: center; padding: 36px 24px 48px; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <a href="#challenge" class="nav-dare">Take the #3GoodThings dare →</a>
+  <a href="app.html" class="nav-btn">Take the #3GoodThings dare →</a>
 </nav>
 
-<!-- ─── HERO — THE DARE IS THE WHOLE STRATEGY ─── -->
+<!-- HERO -->
 <section class="hero">
+  <div class="hero-glow-top"></div>
+  <div class="hero-glow-bottom"></div>
+
   <p class="hero-tag">#3GoodThings · 7 Days · mydopa.app</p>
 
-  <h1 class="hero-dare">
+  <h1 class="hero-headline">
     I dare you to<br/>
     <em>do this for 7 days</em><br/>
     and tell me you don't<br/>
     <span class="amber">feel different.</span>
   </h1>
 
-  <p class="hero-sentence">
-    DOPAmine is a <strong>2-minute daily practice</strong> that trains your brain<br/>
-    to hold onto what's actually working in your life.<br/>
-    Most people didn't know they needed it until they tried it.
+  <p class="hero-sub">
+    DOPAmine is a <strong>2-minute daily practice</strong> that trains your brain to hold onto what's actually working in your life.
   </p>
 
   <div class="hero-actions">
-    <a href="#challenge" class="btn-dare">Take the dare — free →</a>
-    <p class="hero-fine">No card needed. The first 7 days are free. After that, I'll reach out to you personally.</p>
-  </div>
-
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
+    <a href="app.html" class="btn-primary">Take the dare — free →</a>
+    <p class="hero-fine">Free for 7 days. No card needed.</p>
   </div>
 </section>
 
-<!-- ─── THE ONE SENTENCE ─── -->
-<section class="sentence-section">
-  <p class="sentence-eyebrow reveal">The only claim we make</p>
-  <p class="sentence-text reveal">"Try it for 7 days and tell me if you feel different. That's the only claim I make."</p>
-  <p class="sentence-sub reveal">Not 'it will change your life.' Not 'it uses neuroscience to rewire your brain.' Just — try it. Generate your own proof.</p>
-</section>
-
-<!-- ─── THE #3GOODTHINGS CHALLENGE ─── -->
-<section class="challenge-section" id="challenge">
+<!-- CHALLENGE ARC -->
+<section class="challenge">
   <div class="challenge-inner">
-    <p class="section-eyebrow reveal">#3GoodThings · The 7-Day Challenge</p>
-    <h2 class="section-title reveal">
+    <p class="eyebrow reveal">#3GoodThings · The 7-Day Challenge</p>
+    <h2 class="challenge-title reveal">
       <span class="amber">Bet you can't name</span><br/>
       3 good things<br/>
       <span class="purple">before noon.</span>
     </h2>
-    <p class="challenge-sub reveal">
-      Find 3 good things today. Write them down. Do it for 7 days.<br/>No app required to start. But the app makes it stick.
-    </p>
+    <p class="challenge-sub reveal">Find 3 good things today. Write them down. Do it for 7 days.</p>
 
-    <!-- Day-by-day arc — what happens inside the challenge -->
-    <div class="days-track reveal">
-      <div class="day-node">
-        <p class="day-number">Day 1</p>
-        <div class="day-orb orb-1"></div>
-        <p class="day-copy"><strong>The bar is low.</strong>3 wins. Go. You said you'd do it.</p>
+    <div class="days">
+      <div class="day reveal d1">
+        <p class="day-num">Day 1</p>
+        <div class="orb orb-1"></div>
+        <p class="day-copy"><strong>The bar is low.</strong>3 wins. You said you'd do it.</p>
       </div>
-      <div class="day-node">
-        <p class="day-number">Day 2</p>
-        <div class="day-orb orb-2"></div>
-        <p class="day-copy"><strong>Still building.</strong>3 wins is the whole practice. Nothing more.</p>
+      <div class="day reveal d2">
+        <p class="day-num">Day 2</p>
+        <div class="orb orb-2"></div>
+        <p class="day-copy"><strong>Still building.</strong>3 wins is the whole practice.</p>
       </div>
-      <div class="day-node">
-        <p class="day-number">Day 3</p>
-        <div class="day-orb orb-3"></div>
+      <div class="day reveal d3">
+        <p class="day-num">Day 3</p>
+        <div class="orb orb-3"></div>
         <p class="day-copy"><strong>Your brain is starting to look for the good.</strong></p>
       </div>
-      <div class="day-node key">
-        <p class="day-number">Day 4</p>
-        <div class="day-orb orb-4"></div>
-        <p class="day-copy"><strong>Halfway.</strong>You're close to the finish line. Find your 3.</p>
+      <div class="day key reveal d4">
+        <p class="day-num">Day 4</p>
+        <div class="orb orb-4"></div>
+        <p class="day-copy"><strong>Halfway.</strong>You're close to the finish line.</p>
       </div>
-      <div class="day-node">
-        <p class="day-number">Day 5</p>
-        <div class="day-orb orb-5"></div>
+      <div class="day reveal d5">
+        <p class="day-num">Day 5</p>
+        <div class="orb orb-5"></div>
         <p class="day-copy"><strong>3 is your floor.</strong>What's today's ceiling?</p>
       </div>
-      <div class="day-node">
-        <p class="day-number">Day 6</p>
-        <div class="day-orb orb-6"></div>
-        <p class="day-copy"><strong>One more.</strong>Don't you dare close this day without 3 wins.</p>
+      <div class="day reveal d6">
+        <p class="day-num">Day 6</p>
+        <div class="orb orb-6"></div>
+        <p class="day-copy"><strong>One more.</strong>Don't close this day without 3 wins.</p>
       </div>
-      <div class="day-node key">
-        <p class="day-number">Day 7</p>
-        <div class="day-orb orb-7"></div>
-        <p class="day-copy"><strong>One week.</strong>You just proved the dare works. Tell me I'm wrong.</p>
+      <div class="day key reveal d7">
+        <p class="day-num">Day 7</p>
+        <div class="orb orb-7"></div>
+        <p class="day-copy"><strong>One week.</strong>You just proved the dare works.</p>
       </div>
     </div>
 
-    <div class="challenge-cta reveal">
-      <a href="https://mydopa.app" class="btn-challenge">Start my 7 days →</a>
-      <p class="challenge-fine">Free for 7 days. No card needed. One dare. Three things a day.</p>
+    <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <a href="app.html" class="btn-final" style="font-size:16px;padding:16px 40px;">Start my 7 days →</a>
+      <p class="hero-fine">Free for 7 days. No card needed.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── FOUNDER STORY — 4 BEATS ─── -->
-<section class="founder-section">
-  <p class="founder-eyebrow reveal">Why this exists</p>
-
-  <div class="founder-beats">
-    <div class="founder-beat reveal">
-      <div class="beat-num">1</div>
-      <div class="beat-content">
-        <p class="beat-label">The feeling</p>
-        <p class="beat-text">I was functioning fine — exercising, working, moving — and still dissatisfied in a way I couldn't name.</p>
-        <p class="beat-sub">Not depressed. Not burned out. Just aware that something was off with how I was reading my own life.</p>
-      </div>
-    </div>
-    <div class="founder-beat reveal reveal-delay-1">
-      <div class="beat-num">2</div>
-      <div class="beat-content">
-        <p class="beat-label">The search</p>
-        <p class="beat-text">A friend mentioned a coach he was working with. I was curious, not desperate. I paid $7,500 for 8 months.</p>
-        <p class="beat-sub">And I found what I was looking for. A simple daily practice with real science behind it. I had discovered it before I knew what it was.</p>
-      </div>
-    </div>
-    <div class="founder-beat reveal reveal-delay-2">
-      <div class="beat-num">3</div>
-      <div class="beat-content">
-        <p class="beat-label">What I found on a treadmill</p>
-        <p class="beat-text">Our brains automatically store bad experiences. But good ones need 12–20 seconds of conscious attention to even register in long-term memory.</p>
-        <p class="beat-sub">We are literally wired to forget the good things. Rick Hanson at UC Berkeley spent decades studying exactly what I stumbled onto on a treadmill.</p>
-      </div>
-    </div>
-    <div class="founder-beat reveal reveal-delay-3">
-      <div class="beat-num">4</div>
-      <div class="beat-content">
-        <p class="beat-label">The build</p>
-        <p class="beat-text">DOPAmine is what I wish had existed before I spent $7,500 finding it.</p>
-        <p class="beat-sub">Nine months of personal proof. Turned into a 2-minute daily practice. Built for people who are functioning fine and still feel like something is missing.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="founder-dare-close reveal">
-    <blockquote>"I dare you to do this for 7 days and tell me you don't feel different."</blockquote>
-    <p>This is not a sales pitch. It is a personal challenge from someone who has done it.</p>
-  </div>
-</section>
-
-<!-- ─── LANGUAGE SWAPS — WHAT IT IS & ISN'T ─── -->
-<section class="swap-section">
-  <div class="swap-inner">
-    <p class="section-eyebrow reveal">Be honest about what this is</p>
-    <h2 class="section-title reveal" style="margin-bottom:8px;">It's not what<br/><span class="purple">you're thinking.</span></h2>
-    <p class="challenge-sub reveal" style="margin-bottom:0;">The words matter. These are the ones we never use.</p>
-
-    <div class="swap-grid reveal">
-      <div class="swap-cell header no">✗ Never say</div>
-      <div class="swap-cell header yes">✓ What it actually is</div>
-
-      <div class="swap-cell no-text">It's like a gratitude journal.</div>
-      <div class="swap-cell yes-text">It's a daily practice that trains your brain to notice what's already working.</div>
-
-      <div class="swap-cell no-text">It will change your life.</div>
-      <div class="swap-cell yes-text">Try it for 7 days and tell me if you feel different. That's the only claim we make.</div>
-
-      <div class="swap-cell no-text">It's great for mental health / burnout.</div>
-      <div class="swap-cell yes-text">It's for people who are functioning fine and still feel like something is missing.</div>
-
-      <div class="swap-cell no-text">It's a journaling app.</div>
-      <div class="swap-cell yes-text">It's not a journal. A journal never responds. This one does.</div>
-
-      <div class="swap-cell no-text swap-last">It uses neuroscience to rewire your brain.</div>
-      <div class="swap-cell yes-text swap-last">I stumbled onto something on a treadmill. Turns out there's 40 years of research behind it. Try it first.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── NOTIFICATION PEEK — THE DARE IN ACTION ─── -->
-<section class="notif-section">
-  <p class="section-eyebrow reveal">Inside the challenge</p>
-  <h2 class="section-title reveal">The app talks back.<br/><span class="purple">Like a friend who dares you.</span></h2>
-  <p class="challenge-sub reveal" style="margin-bottom:0;">Three times a day, DOPAmine shows up. Not to check on you. To bet against you.</p>
-
-  <div class="notif-grid">
-    <div class="notif-card reveal">
-      <p class="notif-slot">Morning</p>
-      <p class="notif-msg">"Bet you can't name 3 good things before noon."</p>
-      <p class="notif-pair">The Dare — B pair</p>
-    </div>
-    <div class="notif-card reveal reveal-delay-1">
-      <p class="notif-slot">Afternoon</p>
-      <p class="notif-msg">"Still taking that bet. How many have you logged?"</p>
-      <p class="notif-pair">The Dare — B pair</p>
-    </div>
-    <div class="notif-card reveal reveal-delay-2">
-      <p class="notif-slot">Evening</p>
-      <p class="notif-msg">"Don't you dare close this day without 3 wins logged."</p>
-      <p class="notif-pair">The Dare — B pair</p>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FINAL DARE ─── -->
-<section class="final-section">
+<!-- FINAL CTA -->
+<section class="final">
   <div class="final-glow"></div>
-  <p class="final-pre reveal">Day 7 ends tonight. What's your excuse?</p>
-  <h2 class="final-h reveal">
-    Your tomorrow is being<br/>
-    written <span class="italic amber">right now.</span>
+  <h2 class="final-headline reveal">
+    Your tomorrow is being<br/>written <span class="italic amber">right now.</span>
   </h2>
-  <p class="final-sub reveal">One good moment at a time. One great life as a result. The dare is open.</p>
+  <p class="final-sub reveal">One good moment at a time. One great life as a result.</p>
   <div class="final-cta">
-    <a href="https://mydopa.app" class="btn-final reveal">Take the #3GoodThings dare →</a>
-    <p class="final-fine reveal">Free for 7 days. No card. After Day 7, I'll reach out to you personally. Not an email sequence. Me.</p>
+    <a href="app.html" class="btn-final reveal">Take the #3GoodThings dare →</a>
+    <p class="final-fine reveal">Free for 7 days. No card. After Day 7, I'll reach out to you personally.</p>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <a href="#" class="footer-logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <p class="footer-tagline">"Your dopamine. From the inside."</p>
+  <p class="footer-tag">"Your dopamine. From the inside."</p>
   <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
 </footer>
 
 <script>
 const els = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  });
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 els.forEach(el => io.observe(el));
 </script>

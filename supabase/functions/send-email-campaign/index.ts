@@ -5,33 +5,63 @@ const PAYPAL_URL = Deno.env.get('PAYPAL_ME_URL') ?? 'PAYPAL_ME_URL_PLACEHOLDER'
 
 // ─── Design tokens ────────────────────────────────────────────
 
-const FONT = `font-family:'DM Sans',Arial,sans-serif`
+const FONT = `font-family:-apple-system,Arial,sans-serif`
 
 // ─── Base template ────────────────────────────────────────────
 
-function wrap(inner: string): string {
+function wrap(opts: {
+  eyebrow: string
+  name: string
+  headline: string
+  body: string
+  sig: string
+  ctaLabel: string
+  ctaUrl: string
+  ctaBorder?: string
+  ctaColor?: string
+}): string {
+  const border = opts.ctaBorder ?? 'rgba(255,255,255,0.45)'
+  const color  = opts.ctaColor  ?? 'white'
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 </head>
-<body style="margin:0;padding:0;background:#06000D;${FONT};">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#06000D;">
+<body style="margin:0;padding:0;background:#0E0B1A;${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;">
 <tr><td align="center" style="padding:40px 24px;">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="padding:0 0 32px 0;">
-  <span style="font-size:22px;font-weight:700;color:#F5F5F0;letter-spacing:-0.5px;">DOPA</span><span style="font-size:22px;font-weight:400;color:#A855F7;">mine</span><br/>
-  <span style="font-size:13px;color:#888888;">Your dopamine. From the inside.</span>
-</td></tr>
-<tr><td style="padding:0;">${inner}</td></tr>
-<tr><td style="height:40px;"></td></tr>
-<tr><td style="padding:24px 0 0 0;border-top:1px solid #1A1530;">
-  <span style="font-size:12px;color:#444444;${FONT};">
-    <a href="https://mydopa.app" style="color:#444444;text-decoration:none;">mydopa.app</a>
-    &nbsp;·&nbsp;
-    <a href="mailto:hello@mydopa.app?subject=unsubscribe" style="color:#444444;text-decoration:none;">Unsubscribe</a>
-  </span>
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+<tr><td style="position:relative;padding:48px 48px 56px;background:#0E0B1A;border-radius:16px;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 80% at 50% 85%,rgba(255,176,32,0.85) 0%,rgba(200,110,0,0.55) 28%,rgba(120,60,0,0.35) 50%,rgba(60,25,0,0.15) 68%,transparent 82%);pointer-events:none;"></div>
+  <div style="position:relative;">
+    <table cellpadding="0" cellspacing="0" style="margin-bottom:40px;"><tr>
+      <td style="padding-right:12px;vertical-align:middle;">
+        <div style="width:48px;height:48px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:11px;text-align:center;line-height:48px;font-size:26px;font-weight:900;color:white;font-style:italic;font-family:Georgia,serif;">D</div>
+      </td>
+      <td style="vertical-align:middle;">
+        <div style="font-size:1.1rem;font-weight:900;color:white;letter-spacing:-0.3px;line-height:1.1;${FONT};">DOPA<span style="font-weight:400;color:#B57BF7;">mine</span></div>
+        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;${FONT};">GREAT YESTERDAY. BETTER TOMORROW.</div>
+      </td>
+    </tr></table>
+    <div style="font-size:0.65rem;font-weight:700;color:rgba(255,176,32,0.7);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;${FONT};">${opts.eyebrow}</div>
+    <div style="font-size:3rem;font-weight:900;color:#B57BF7;font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:8px;">${opts.name}.</div>
+    <div style="font-size:1.9rem;font-weight:800;color:white;font-family:Georgia,'Times New Roman',serif;line-height:1.25;margin-bottom:28px;">${opts.headline}</div>
+    <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:24px;${FONT};">${opts.body}</div>
+    <p style="margin:0 0 32px;font-size:0.95rem;color:rgba(255,255,255,0.65);${FONT};">${opts.sig}</p>
+    <table cellpadding="0" cellspacing="0"><tr>
+      <td style="border:1.5px solid ${border};border-radius:50px;">
+        <a href="${opts.ctaUrl}" style="display:inline-block;padding:16px 40px;font-size:15px;font-weight:600;color:${color};text-decoration:none;${FONT};">${opts.ctaLabel}</a>
+      </td>
+    </tr></table>
+    <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);">
+      <span style="font-size:12px;${FONT};">
+        <a href="https://mydopa.app" style="color:rgba(255,176,32,0.4);text-decoration:none;">mydopa.app</a>
+        <span style="color:rgba(255,176,32,0.4);"> &nbsp;·&nbsp; </span>
+        <a href="mailto:hello@mydopa.app?subject=unsubscribe" style="color:rgba(255,176,32,0.4);text-decoration:none;">Unsubscribe</a>
+      </span>
+    </div>
+  </div>
 </td></tr>
 </table>
 </td></tr>
@@ -40,74 +70,94 @@ function wrap(inner: string): string {
 </html>`
 }
 
-function p(text: string): string {
-  return `<p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#F5F5F0;${FONT};">${text}</p>`
+function bp(text: string): string {
+  return `<p style="margin:0 0 16px;">${text}</p>`
 }
 
-function btn(label: string, url: string, bg = '#7B2FBE', fg = '#ffffff'): string {
-  return `<table cellpadding="0" cellspacing="0" style="margin-top:32px;"><tr>
-<td style="background:${bg};border-radius:8px;">
-  <a href="${url}" style="display:inline-block;padding:14px 28px;font-size:15px;font-weight:700;color:${fg};text-decoration:none;${FONT};">${label}</a>
-</td></tr></table>`
+function bpLast(text: string): string {
+  return `<p style="margin:0;">${text}</p>`
+}
+
+function bpBreak(): string {
+  return `<p style="margin:0 0 20px;">&nbsp;</p>`
 }
 
 // ─── Email 1: Welcome ─────────────────────────────────────────
 
 function tmplWelcome(name: string): string {
-  return wrap(
-    p(`${name},`) +
-    p('The dare is live. 7 days. 3 good things.') +
-    p('The bar is low. You just have to show up.') +
-    p('On Day 7, something lands in your inbox.') +
-    p('Until then — go find your first one.') +
-    p('— DOPAmine') +
-    btn('Open the app →', 'https://mydopa.app/app.html')
-  )
+  return wrap({
+    eyebrow:  'YOUR DOPAMINE. FROM THE INSIDE.',
+    name,
+    headline: 'You said<br/>you\'d do it.',
+    body:     bp('The dare is live. 7 days. 3 good things.') +
+              bp('The bar is low. You just have to show up.') +
+              bpBreak() +
+              bp('On Day 7, something lands in your inbox.') +
+              bpLast('Until then — go find your first one.'),
+    sig:      '— DOPAmine',
+    ctaLabel: 'Open the app →',
+    ctaUrl:   'https://mydopa.app/app.html'
+  })
 }
 
 // ─── Email 2A: Day 3 Active ───────────────────────────────────
 
 function tmplDay3Active(name: string): string {
-  return wrap(
-    p(`${name},`) +
-    p('Most people quit before this.') +
-    p("You didn't. Something's forming.") +
-    p('Keep going.') +
-    p('— DOPAmine') +
-    btn('See your streak →', 'https://mydopa.app/app.html')
-  )
+  return wrap({
+    eyebrow:  'DAY 3',
+    name,
+    headline: 'Most people<br/>quit before this.',
+    body:     bp('You didn\'t.') +
+              bp('Something\'s forming.') +
+              bpBreak() +
+              bpLast('Keep going.'),
+    sig:      '— DOPAmine',
+    ctaLabel: 'See your streak →',
+    ctaUrl:   'https://mydopa.app/app.html'
+  })
 }
 
 // ─── Email 2B: Day 3 Dormant ──────────────────────────────────
 
 function tmplDay3Dormant(name: string): string {
-  return wrap(
-    p(`${name},`) +
-    p("3 good things. That's it. The whole practice.") +
-    p("You've still got 4 days to feel the difference.") +
-    p('The dare is still open. So is the app.') +
-    p('— DOPAmine') +
-    btn('Find my 3 →', 'https://mydopa.app/app.html', '#FFB020', '#1A0030')
-  )
+  return wrap({
+    eyebrow:   'DAY 3',
+    name,
+    headline:  'The bar<br/>is low.',
+    body:      bp('3 good things. That\'s it. The whole practice.') +
+               bpBreak() +
+               bp('You\'ve still got 4 days to feel the difference.') +
+               bpLast('The dare is still open. So is the app.'),
+    sig:       '— DOPAmine',
+    ctaLabel:  'Find my 3 →',
+    ctaUrl:    'https://mydopa.app/app.html',
+    ctaBorder: 'rgba(255,176,32,0.6)',
+    ctaColor:  '#FFB020'
+  })
 }
 
 // ─── Email 3: Day 7 Completion ────────────────────────────────
 
 function tmplDay7(name: string): string {
-  return wrap(
-    p(`${name},`) +
-    p('Seven days ago, this was a bet.') +
-    p("Now it's something else.") +
-    p("Your brain has been doing this quietly the whole time — looking for the good, holding onto it, building on it. You gave it 7 days and something is different. That's not a claim. That's what you built.") +
-    p("Tomorrow morning, a note lands in your inbox. From the person who built this.") +
-    p("Don't miss it.") +
-    p('— DOPAmine') +
-    btn('See your week →', 'https://mydopa.app/app.html')
-  )
+  return wrap({
+    eyebrow:  'DAY 7',
+    name,
+    headline: 'One week.<br/>You proved it.',
+    body:     bp('Seven days ago, this was a bet. Now it\'s something else.') +
+              bpBreak() +
+              bp('Your brain has been doing this quietly the whole time — looking for the good, holding onto it, building on it.') +
+              bpBreak() +
+              bp('That\'s not a claim. That\'s what you built.') +
+              bpBreak() +
+              bpLast('Tomorrow morning, a note lands in your inbox. Don\'t miss it.'),
+    sig:      '— DOPAmine',
+    ctaLabel: 'See your week →',
+    ctaUrl:   'https://mydopa.app/app.html'
+  })
 }
 
 // ─── Email 4: Day 8 Founding Member ──────────────────────────
-// SEND CALL COMMENTED OUT — re@mydopa.app not yet active in Resend.
+// SEND COMMENTED OUT — re@mydopa.app not yet active in Resend.
 // Activate: uncomment the sendEmail call in runDailyJob and the
 // cron.unschedule line is unnecessary since this runs in the daily job.
 
@@ -140,17 +190,22 @@ ${pp('Rene<br/>Founder, DOPAmine')}
 // ─── Email 5: Day 14 Transformation ──────────────────────────
 
 function tmplDay14(name: string): string {
-  return wrap(
-    p(`${name},`) +
-    p("It can't anymore.") +
-    p("That's not a claim. That's what consistent attention to the good things actually does. Fourteen days ago you were walking past the same moments you're now holding onto. The moments didn't change. Your brain did.") +
-    p('The founding member offer is still open. Not forever — but still open. $17.95/year. Locked for life.') +
-    p("If you've felt something shift in the last two weeks, this is how you keep it.") +
-    p("If you're not ready, no pressure.") +
-    p('Thank you for the 14 days.') +
-    p('Rene<br/>Founder, DOPAmine') +
-    btn('Become a founding member →', PAYPAL_URL)
-  )
+  return wrap({
+    eyebrow:  'DAY 14',
+    name,
+    headline: '14 days ago your<br/>brain filtered this out.',
+    body:     bp('It can\'t anymore.') +
+              bpBreak() +
+              bp('The moments didn\'t change. Your brain did.') +
+              bpBreak() +
+              bp('The founding member offer is still open. Not forever — but still open.') +
+              bpBreak() +
+              bp('$17.95/year. Locked for life.') +
+              bpLast('If you\'ve felt something shift — this is how you keep it.'),
+    sig:      '— Rene, Founder',
+    ctaLabel: 'Become a founding member →',
+    ctaUrl:   PAYPAL_URL
+  })
 }
 
 // ─── Resend sender ────────────────────────────────────────────

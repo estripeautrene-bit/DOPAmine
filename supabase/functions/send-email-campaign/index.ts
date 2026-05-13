@@ -176,7 +176,9 @@ async function sendEmail(opts: {
 }
 
 function displayName(raw: string): string {
-  return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : raw
+  if (!raw) return raw
+  const first = raw.split(/[\s.]/)[0]
+  return first.charAt(0).toUpperCase() + first.slice(1)
 }
 
 // ─── Action: process_queue ────────────────────────────────────
@@ -226,6 +228,8 @@ async function processQueue(supabase: ReturnType<typeof createClient>): Promise<
 
     const rawName = sub?.first_name
       || user.raw_user_meta_data?.first_name
+      || user.raw_user_meta_data?.full_name
+      || user.raw_user_meta_data?.name
       || user.email.split('@')[0]
     const name = displayName(rawName)
 
@@ -301,7 +305,11 @@ async function runDailyJob(supabase: ReturnType<typeof createClient>): Promise<R
 
     const ageDays   = Math.floor((now - new Date(authUser.created_at).getTime()) / 86400000)
     const winsTotal = winsByUser[sub.user_id] ?? 0
-    const rawName   = sub.first_name || authUser.raw_user_meta_data?.first_name || authUser.email.split('@')[0]
+    const rawName   = sub.first_name
+      || authUser.raw_user_meta_data?.first_name
+      || authUser.raw_user_meta_data?.full_name
+      || authUser.raw_user_meta_data?.name
+      || authUser.email.split('@')[0]
     const name      = displayName(rawName)
     const email     = authUser.email as string
 

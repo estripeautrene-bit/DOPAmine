@@ -1,7 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const RESEND_KEY = Deno.env.get('RESEND_API_KEY')!
-const PAYPAL_URL = Deno.env.get('PAYPAL_ME_URL') ?? 'PAYPAL_ME_URL_PLACEHOLDER'
+const GUMROAD_URL = Deno.env.get('GUMROAD_URL') ?? 'https://estripeautre.gumroad.com/l/kesret'
 
 // ─── Design tokens ────────────────────────────────────────────
 
@@ -175,7 +175,7 @@ ${pp('Seven days. You showed up.')}
 ${pp("I've been watching the numbers on my end and I want you to know that most people don't make it here. Something caught your attention and you kept going with it. That is not nothing.")}
 ${pp("I built this because I believe most people can find what you found — in 7 days — if they have the right tool. You've had 7 days. You tell me if I'm wrong.")}
 ${pp("Here's what I want to offer you.")}
-${pp("As one of the first people who has actually used this product, I want to give you founding member access at a price that will never exist again. $17.95 for the full year — locked at that rate for as long as you stay. When DOPAmine goes public, the annual plan will be $69.99. You get it at $17.95, forever, because you were here first.")}
+${pp("$17.95/year — your rate, locked forever. When DOPAmine goes public the annual plan is $69.99. You keep $17.95 for as long as you stay.")}
 ${pp("If you're in, reply to this email and I'll send you a link directly.")}
 ${pp("If you're not ready, no pressure. The app stays free through Day 14 and I'll be in touch again then.")}
 ${pp('Either way — thank you for being here early.')}
@@ -200,11 +200,11 @@ function tmplDay14(name: string): string {
               bpBreak() +
               bp('The founding member offer is still open. Not forever — but still open.') +
               bpBreak() +
-              bp('$17.95/year. Locked for life.') +
+              bp('$17.95/year — your rate, locked forever. When DOPAmine goes public the annual plan is $69.99. You keep $17.95 for as long as you stay.') +
               bpLast('If you\'ve felt something shift — this is how you keep it.'),
     sig:      '— Rene, Founder',
     ctaLabel: 'Become a founding member →',
-    ctaUrl:   PAYPAL_URL
+    ctaUrl:   GUMROAD_URL
   })
 }
 

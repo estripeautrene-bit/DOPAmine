@@ -419,19 +419,17 @@ async function runDailyJob(supabase: ReturnType<typeof createClient>): Promise<R
     }
 
     // ── Email 4 — Day 8 Founding Member ──────────────────────
-    // SEND COMMENTED OUT — re@mydopa.app not yet active in Resend.
-    // To activate: uncomment the sendEmail block below.
     if (ageDays >= 8 && ageDays <= 9 && !sub.paid && !sub.email_day8_sent) {
       counts.day8_pending++
-      // const ok = await sendEmail({
-      //   from: 'Rene <re@mydopa.app>',
-      //   to: email,
-      //   subject: 'You actually did it.',
-      //   html: tmplDay8(name)
-      // })
-      // if (ok) {
-      //   await supabase.from('push_subscriptions').update({ email_day8_sent: true }).eq('id', sub.id)
-      // }
+      const ok = await sendEmail({
+        from: 'Rene <re@mydopa.app>',
+        to: email,
+        subject: 'You actually did it.',
+        html: tmplDay8(name)
+      })
+      if (ok) {
+        await supabase.from('push_subscriptions').update({ email_day8_sent: true }).eq('id', sub.id)
+      }
     }
 
     // ── Email 5 — Day 14 Transformation ──────────────────────

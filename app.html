@@ -72,11 +72,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      font-weight: 900;
-      color: white;
-      font-style: italic;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
     .header-logo-text {
@@ -2128,6 +2125,9 @@
     .vsc-tagline strong { color:rgba(181,123,247,0.7); font-weight:600; }
     .share-btn-top { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:linear-gradient(135deg,#7B2FBE,#B57BF7) !important; color:#FFFFFF !important; font-weight:800 !important; border:none; border-radius:14px; padding:16px; font-size:1rem; cursor:pointer; margin-bottom:24px; box-shadow:0 4px 20px rgba(123,47,190,0.45); font-family:inherit; opacity:1 !important; position:relative; z-index:2; }
     .share-btn-top:active { transform:scale(0.97); transition:transform 0.1s; }
+    .share-actions { display:flex; flex-direction:column; gap:12px; padding:20px 0 8px; }
+    .share-btn { display:flex; align-items:center; gap:12px; background:rgba(123,47,190,0.12); border:1.5px solid rgba(123,47,190,0.35); border-radius:50px; padding:12px 20px; color:white; font-size:0.88rem; font-weight:600; cursor:pointer; width:100%; text-align:left; }
+    .share-btn:active { opacity:0.75; }
 
 
     /* Dark mode catch-all — ensure nothing shows dark text on dark bg */
@@ -2519,7 +2519,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
 
     <button onclick="signOutUser()" title="Sign out" style="position:absolute;top:22px;right:62px;border:none;background:none;color:rgba(255,255,255,0.35);font-size:0.7rem;cursor:pointer;font-family:inherit;padding:0;letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Sign out</button>
     <div class="header-logo">
-      <div class="header-logo-d">D</div>
+      <div class="header-logo-d"><img src="https://mydopa.app/images/dopa-03-winking.png" alt="DOPA" width="32" height="32" style="object-fit:contain;display:block;" /></div>
       <div class="header-logo-text">
         <div class="header-logo-name">DOPA<span>mine</span></div>
         <div class="header-logo-tagline">Great Yesterday. Better Tomorrow.</div>
@@ -2712,6 +2712,17 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
     <button class="share-btn-top" onclick="shareProgress()">
       🚀 Share my progress
     </button>
+
+    <div class="share-actions">
+      <button class="share-btn share-invite" onclick="shareInvite()">
+        <img src="https://mydopa.app/images/dopa-04-excited.png" alt="DOPA" width="32" height="32" style="object-fit:contain;" />
+        <span>Send the dare to a friend</span>
+      </button>
+      <button class="share-btn share-number" onclick="sharePersonalNumber()">
+        <img src="https://mydopa.app/images/dopa-07-flexing.png" alt="DOPA" width="32" height="32" style="object-fit:contain;" />
+        <span>Share my progress</span>
+      </button>
+    </div>
 
     <div id="summaryContent"></div>
 
@@ -4838,7 +4849,36 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }
     }
 
-    function calcStreak(moments) {
+    // ── Controlled share — A/B test ────────────────────────────────
+    function shareInvite() {
+      const count = parseInt(localStorage.getItem('dopa_ab_share_count') || '0');
+      const variant = (count % 2 === 0) ? 'a' : 'b';
+      localStorage.setItem('dopa_ab_share_count', count + 1);
+      const msgA = "Best thing I\u2019ve done for myself in a while. 7 days, 3 good things a day.\nmydopa.app?ref=share_a";
+      const msgB = "7 days. Most people quit on day 3.\nmydopa.app?ref=share_b";
+      const msg  = variant === 'a' ? msgA : msgB;
+      const url  = 'https://mydopa.app?ref=share_' + variant;
+      if (typeof mixpanel !== 'undefined') mixpanel.track('Share Sent', { variant: variant, surface: 'progress_tab' });
+      if (navigator.share) {
+        navigator.share({ text: msg, url: url }).catch(() => {});
+      } else {
+        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      }
+    }
+
+    function sharePersonalNumber() {
+      const moments = loadMoments();
+      const streak = calcStreak(moments);
+      const msg = streak + ' days of good things I didn\u2019t let go. My brain feels different.\nmydopa.app';
+      if (navigator.share) {
+        navigator.share({ text: msg, url: 'https://mydopa.app' }).catch(() => {});
+      } else {
+        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      }
+      if (typeof mixpanel !== 'undefined') mixpanel.track('Share Sent', { variant: 'personal_number', surface: 'progress_tab' });
+    }
+
+        function calcStreak(moments) {
       if (moments.length === 0) return 0;
       const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
 

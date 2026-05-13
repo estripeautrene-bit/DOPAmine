@@ -1,342 +1,1316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DOPAmine — Your dopamine. From the inside.</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --purple-core:   #7B2FBE;
-  --purple-bright: #A855F7;
-  --purple-deep:   #6D28D9;
-  --purple-mid:    #B57BF7;
-  --orange-energy: #FFB020;
-  --orange-fire:   #FF6B00;
-  --navy-deep:     #06000D;
-  --navy-panel:    #0E0B1A;
-  --navy-card:     #110d1f;
-  --white:         #FFFFFF;
-  --gray-muted:    #6B7280;
-  --gray-light:    #C9BED8;
-  --font-d: 'Playfair Display', Georgia, serif;
-  --font-b: 'DM Sans', -apple-system, sans-serif;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-b);
-  background: var(--navy-deep);
-  color: var(--white);
-  overflow-x: hidden;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DOPAmine" />
+  <meta name="theme-color" content="#1a1a2e" />
 
-/* ─── NAV ─── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 48px;
-  backdrop-filter: blur(24px);
-  background: rgba(6,0,13,0.8);
-  border-bottom: 1px solid rgba(168,85,247,0.07);
-}
-.logo { font-family: var(--font-b); font-size: 20px; font-weight: 700; text-decoration: none; }
-.logo .d { color: var(--white); }
-.logo .m { color: var(--purple-bright); font-weight: 400; }
-.nav-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid rgba(168,85,247,0.4);
-  color: var(--purple-bright);
-  font-family: var(--font-b); font-size: 13px; font-weight: 500;
-  padding: 9px 20px; border-radius: 999px;
-  text-decoration: none; background: transparent;
-  transition: all 0.2s;
-}
-.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+  <!-- Open Graph — WhatsApp / iMessage / Social share card -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://mydopa.app" />
+  <meta property="og:site_name"   content="DOPAmine" />
+  <meta property="og:title"       content="7 days. You won't last." />
+  <meta property="og:description" content="Train your brain to find the good. 3 things a day. mydopa.app" />
+  <meta property="og:image"       content="https://mydopa.app/images/dopa-share-og.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
 
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 140px 24px 100px;
-  position: relative; overflow: hidden;
-}
-.hero-glow-bottom {
-  position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);
-  width: 900px; height: 600px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.13) 0%, rgba(255,107,0,0.08) 30%, rgba(123,47,190,0.05) 60%, transparent 75%);
-  animation: breathe 5s ease-in-out infinite; pointer-events: none;
-}
-.hero-glow-top {
-  position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 500px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(123,47,190,0.09) 0%, transparent 65%);
-  pointer-events: none;
-}
-@keyframes breathe { 0%,100% { opacity: 0.8; transform: translateX(-50%) scale(1); } 50% { opacity: 1; transform: translateX(-50%) scale(1.08); } }
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="7 days. You won't last." />
+  <meta name="twitter:description" content="Train your brain to find the good. 3 things a day. mydopa.app" />
+  <meta name="twitter:image"       content="https://mydopa.app/images/dopa-share-og.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <title>DOPAmine</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.hero-tag {
-  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
-  color: var(--orange-energy); margin-bottom: 32px;
-  opacity: 0; animation: up 0.7s ease forwards 0.1s;
-}
-.hero-headline {
-  font-family: var(--font-d);
-  font-size: clamp(48px, 9vw, 114px);
-  font-weight: 900; line-height: 0.93; letter-spacing: -3px;
-  color: var(--white); margin-bottom: 32px;
-  opacity: 0; animation: up 0.8s ease forwards 0.25s;
-}
-.hero-headline em { font-style: italic; color: var(--purple-bright); display: block; }
-.hero-headline .amber { color: var(--orange-energy); }
+    :root {
+      --gold: #7B2FBE;
+      --gold-light: #F4F0FA;
+      --dark: #1a1a2e;
+      --text: #2d2d2d;
+      --muted: #888;
+      --bg: #fafaf7;
+      --card: #ffffff;
+      --radius: 16px;
+    }
 
-.hero-sub {
-  font-size: clamp(16px, 2vw, 20px); color: var(--gray-light);
-  font-weight: 300; max-width: 500px; margin: 0 auto 52px; line-height: 1.7;
-  opacity: 0; animation: up 0.8s ease forwards 0.4s;
-}
-.hero-sub strong { color: var(--white); font-weight: 500; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+    }
 
-.hero-actions {
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
-  opacity: 0; animation: up 0.8s ease forwards 0.55s;
-}
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
-  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
-  padding: 17px 40px; border-radius: 999px; text-decoration: none; border: none; cursor: pointer;
-  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
-.hero-fine { font-size: 13px; color: var(--gray-muted); }
+    /* ── Header ── */
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 20px 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-/* ─── CHALLENGE ─── */
-.challenge {
-  background: var(--navy-panel);
-  padding: 100px 24px;
-  position: relative; overflow: hidden;
-}
-.challenge::before {
-  content: '';
-  position: absolute; top: -100px; right: -200px;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,176,32,0.05), transparent 65%);
-  pointer-events: none;
-}
-.challenge-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
 
-.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--purple-mid); margin-bottom: 16px; }
-.challenge-title {
-  font-family: var(--font-d); font-size: clamp(34px, 5.5vw, 64px);
-  font-weight: 900; line-height: 1.05; margin-bottom: 20px;
-}
-.challenge-title .amber { color: var(--orange-energy); }
-.challenge-title .purple { color: var(--purple-bright); }
-.challenge-sub {
-  font-size: 17px; color: var(--gray-light); font-weight: 300;
-  max-width: 480px; margin: 0 auto 72px; line-height: 1.7;
-}
+    header p.date {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
 
-/* Day arc */
-.days {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 64px;
-}
-.day {
-  background: var(--navy-card);
-  border: 1px solid rgba(123,47,190,0.15);
-  border-radius: 16px; padding: 20px 12px; text-align: center;
-  transition: transform 0.25s, border-color 0.25s;
-}
-.day:hover { transform: translateY(-4px); border-color: rgba(168,85,247,0.35); }
-.day.key { border-color: rgba(255,176,32,0.25); }
-.day-num { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-muted); margin-bottom: 10px; }
-.orb { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 12px; }
-.orb-1 { background: radial-gradient(circle, rgba(123,47,190,0.5) 0%, rgba(123,47,190,0.08) 70%); border: 1px solid rgba(123,47,190,0.3); }
-.orb-2 { background: radial-gradient(circle, rgba(140,50,210,0.55) 0%, rgba(123,47,190,0.1) 70%); border: 1px solid rgba(140,50,210,0.35); }
-.orb-3 { background: radial-gradient(circle, rgba(160,60,220,0.55) 0%, rgba(140,50,200,0.1) 70%); border: 1px solid rgba(160,60,220,0.4); }
-.orb-4 { background: radial-gradient(circle, rgba(190,100,200,0.55) 0%, rgba(180,80,180,0.1) 70%); border: 1px solid rgba(190,100,220,0.4); }
-.orb-5 { background: radial-gradient(circle, rgba(210,120,140,0.55) 0%, rgba(200,100,120,0.1) 70%); border: 1px solid rgba(210,120,150,0.4); }
-.orb-6 { background: radial-gradient(circle, rgba(235,155,70,0.6) 0%, rgba(220,130,50,0.15) 70%); border: 1px solid rgba(240,155,80,0.45); }
-.orb-7 {
-  background: radial-gradient(circle, #fff5cc 0%, #FFB020 25%, #FF6B00 60%, transparent 80%);
-  box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35);
-  animation: orb-glow 3s ease-in-out infinite;
-}
-@keyframes orb-glow { 0%,100% { box-shadow: 0 0 20px #FFB020, 0 0 50px rgba(255,107,0,0.35); } 50% { box-shadow: 0 0 35px #FFB020, 0 0 80px rgba(255,107,0,0.55); } }
-.day-copy { font-size: 12px; color: var(--gray-light); line-height: 1.5; }
-.day-copy strong { color: var(--white); display: block; font-size: 13px; margin-bottom: 3px; font-weight: 500; }
+    /* ── Tab bar ── */
+    .tabs {
+      display: flex;
+      background: var(--dark);
+      padding: 0 20px 12px;
+    }
 
-/* ─── FINAL CTA ─── */
-.final {
-  position: relative; padding: 140px 24px;
-  text-align: center; overflow: hidden;
-}
-.final-glow {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 900px; height: 700px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,176,32,0.1) 0%, rgba(123,47,190,0.08) 35%, transparent 65%);
-  animation: breathe 6s ease-in-out infinite; pointer-events: none;
-}
-.final-headline {
-  font-family: var(--font-d); font-size: clamp(40px, 7vw, 88px);
-  font-weight: 900; line-height: 1.0; margin-bottom: 24px;
-}
-.final-headline .italic { font-style: italic; color: var(--purple-bright); }
-.final-headline .amber { color: var(--orange-energy); }
-.final-sub { font-size: 18px; color: var(--gray-light); font-weight: 300; max-width: 400px; margin: 0 auto 52px; line-height: 1.65; }
-.final-cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.btn-final {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, var(--orange-fire), var(--orange-energy));
-  color: #1a0500; font-family: var(--font-b); font-size: 18px; font-weight: 700;
-  padding: 19px 48px; border-radius: 999px; text-decoration: none;
-  box-shadow: 0 0 60px rgba(255,176,32,0.3); transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-final:hover { transform: translateY(-2px); box-shadow: 0 0 100px rgba(255,176,32,0.55); }
-.final-fine { font-size: 13px; color: var(--gray-muted); max-width: 340px; line-height: 1.6; }
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 0;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
 
-/* ─── FOOTER ─── */
-footer {
-  border-top: 1px solid rgba(123,47,190,0.1);
-  padding: 40px 48px 56px;
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
-}
-.footer-logo { font-family: var(--font-b); font-size: 18px; font-weight: 700; text-decoration: none; }
-.footer-logo .d { color: var(--white); }
-.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
-.footer-tag { font-family: var(--font-d); font-size: 14px; font-style: italic; color: var(--gray-muted); }
-.footer-url { font-size: 13px; color: var(--gray-muted); text-decoration: none; }
-.footer-url:hover { color: var(--purple-mid); }
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
 
-/* ─── ANIMATIONS ─── */
-@keyframes up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; } .d3 { transition-delay: 0.19s; }
-.d4 { transition-delay: 0.26s; } .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.4s; } .d7 { transition-delay: 0.47s; }
+    /* ── Views ── */
+    .view {
+      display: none;
+      padding: 20px;
+    }
 
-@media (max-width: 768px) {
-  nav { padding: 16px 20px; }
-  .days { grid-template-columns: repeat(4, 1fr); }
-  footer { flex-direction: column; text-align: center; padding: 36px 24px 48px; }
-}
-</style>
+    .view.active {
+      display: block;
+    }
+
+    /* ── Log view ── */
+    .prompt-card {
+      background: var(--gold-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .prompt-card .emoji {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .prompt-card p {
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .input-area {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .input-area textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      resize: none;
+      min-height: 80px;
+      background: transparent;
+    }
+
+    .input-area textarea::placeholder {
+      color: #bbb;
+    }
+
+    .input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .save-btn {
+      background: var(--gold);
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .save-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
+
+    .save-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    /* Tag chips */
+    .tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag-chip {
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      background: white;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .tag-chip.selected {
+      border-color: var(--gold);
+      background: var(--gold-light);
+      color: #7B2FBE;
+    }
+
+    .tags-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Summary view ── */
+    .day-section {
+      margin-bottom: 28px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .day-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+    }
+
+    .day-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .moment-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .moment-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .moment-body {
+      flex: 1;
+    }
+
+    .moment-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .moment-time {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .moment-tag {
+      font-size: 0.7rem;
+      background: var(--gold-light);
+      color: #7B2FBE;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-weight: 600;
+    }
+
+    .moment-delete {
+      border: none;
+      background: none;
+      color: #ddd;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .moment-delete:hover {
+      color: #e57373;
+    }
+
+    .moment-edit {
+      border: none;
+      background: none;
+      color: #ccc;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .moment-edit:hover {
+      color: var(--gold);
+    }
+
+    /* ── Edit modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg);
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 40px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    .modal label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    .modal textarea {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      resize: none;
+      min-height: 80px;
+      outline: none;
+    }
+
+    .modal textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .modal input[type="date"] {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      background: white;
+    }
+
+    .modal input[type="date"]:focus {
+      border-color: var(--gold);
+    }
+
+    .modal-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: white;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .btn-save-edit {
+      flex: 2;
+      border: none;
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: var(--gold);
+      color: white;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .big {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* ── Stats banner ── */
+    .stats-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Streak flame */
+    .streak-flame {
+      color: #7B2FBE;
+    }
+
+    /* ── Log tab streak pill ── */
+    .log-streak {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .log-streak.visible {
+      display: flex;
+    }
+
+    .log-streak-pill {
+      background: var(--gold-light);
+      color: #7B2FBE;
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .log-streak-meaning {
+      font-size: 0.8rem;
+      color: #7B2FBE;
+      font-style: italic;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* ── Yesterday tab ── */
+    .yesterday-hero {
+      text-align: center;
+      padding: 28px 0 20px;
+    }
+
+    .yesterday-headline {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .yesterday-subtitle {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .yesterday-empty {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .yesterday-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      border-left: 3px solid #7B2FBE;
+    }
+
+    .yesterday-card .moment-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .yesterday-card .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .yesterday-list {
+      margin-top: 20px;
+    }
+
+    .yesterday-start-btn {
+      display: block;
+      width: 100%;
+      margin-top: 28px;
+      background: #7B2FBE;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    /* ── Auto time-of-day tag ── */
+    .moment-tag-auto {
+      font-size: 0.7rem;
+      background: #ede8f5;
+      color: #9b59c0;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    /* ── Save ripple animation ── */
+    @keyframes ripple-out {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.4;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(6);
+        opacity: 0;
+      }
+    }
+
+    .save-ripple {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(123, 47, 190, 0.4);
+      pointer-events: none;
+      animation: ripple-out 0.4s ease-out forwards;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    .save-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Delete confirmation modal ── */
+    .delete-modal-body {
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    .delete-modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .delete-modal-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .delete-modal-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-keep {
+      flex: 2;
+      border: none;
+      border-radius: 50px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #7B2FBE;
+      color: white;
+      cursor: pointer;
+    }
+
+    .btn-delete-confirm {
+      flex: 1;
+      border: none;
+      border-radius: 50px;
+      padding: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: #f5f5f5;
+      color: #DC2626;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <a href="app.html" class="nav-btn">Take the #3GoodThings dare →</a>
-</nav>
+  <header>
+    <h1 id="headerGreeting">DOPAmine ✨</h1>
+    <p class="date" id="headerDate"></p>
+  </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow-top"></div>
-  <div class="hero-glow-bottom"></div>
-
-  <p class="hero-tag">#3GoodThings · 7 Days · mydopa.app</p>
-
-  <h1 class="hero-headline">
-    I dare you to<br/>
-    <em>do this for 7 days</em><br/>
-    and tell me you don't<br/>
-    <span class="amber">feel different.</span>
-  </h1>
-
-  <p class="hero-sub">
-    DOPAmine is a <strong>2-minute daily practice</strong> that trains your brain to hold onto what's actually working in your life.
-  </p>
-
-  <div class="hero-actions">
-    <a href="app.html" class="btn-primary">Take the dare — free →</a>
-    <p class="hero-fine">Free for 7 days. No card needed.</p>
+  <!-- NAME MODAL -->
+  <div class="modal-overlay" id="nameModal">
+    <div class="modal">
+      <div class="modal-title">Welcome! 👋</div>
+      <p style="font-size:0.95rem;color:var(--muted);margin-bottom:16px;">What's your first name? We'll personalize the app for you.</p>
+      <input type="text" id="nameInput" placeholder="Your first name" maxlength="30"
+        style="width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:12px;font-size:1rem;font-family:inherit;outline:none;"
+        oninput="document.getElementById('nameSubmitBtn').disabled = this.value.trim().length === 0"
+        onkeydown="if(event.key==='Enter' && this.value.trim()) saveName()"
+      />
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn-save-edit" id="nameSubmitBtn" onclick="saveName()" disabled style="flex:1;">Let's go ✓</button>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- CHALLENGE ARC -->
-<section class="challenge">
-  <div class="challenge-inner">
-    <p class="eyebrow reveal">#3GoodThings · The 7-Day Challenge</p>
-    <h2 class="challenge-title reveal">
-      <span class="amber">Bet you can't name</span><br/>
-      3 good things<br/>
-      <span class="purple">before noon.</span>
-    </h2>
-    <p class="challenge-sub reveal">Find 3 good things today. Write them down. Do it for 7 days.</p>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('log')">+ Log a Moment</button>
+    <button class="tab-btn" onclick="switchTab('yesterday')">Yesterday</button>
+    <button class="tab-btn" onclick="switchTab('summary')">My Good Days</button>
+  </div>
 
-    <div class="days">
-      <div class="day reveal d1">
-        <p class="day-num">Day 1</p>
-        <div class="orb orb-1"></div>
-        <p class="day-copy"><strong>The bar is low.</strong>3 wins. You said you'd do it.</p>
-      </div>
-      <div class="day reveal d2">
-        <p class="day-num">Day 2</p>
-        <div class="orb orb-2"></div>
-        <p class="day-copy"><strong>Still building.</strong>3 wins is the whole practice.</p>
-      </div>
-      <div class="day reveal d3">
-        <p class="day-num">Day 3</p>
-        <div class="orb orb-3"></div>
-        <p class="day-copy"><strong>Your brain is starting to look for the good.</strong></p>
-      </div>
-      <div class="day key reveal d4">
-        <p class="day-num">Day 4</p>
-        <div class="orb orb-4"></div>
-        <p class="day-copy"><strong>Halfway.</strong>You're close to the finish line.</p>
-      </div>
-      <div class="day reveal d5">
-        <p class="day-num">Day 5</p>
-        <div class="orb orb-5"></div>
-        <p class="day-copy"><strong>3 is your floor.</strong>What's today's ceiling?</p>
-      </div>
-      <div class="day reveal d6">
-        <p class="day-num">Day 6</p>
-        <div class="orb orb-6"></div>
-        <p class="day-copy"><strong>One more.</strong>Don't close this day without 3 wins.</p>
-      </div>
-      <div class="day key reveal d7">
-        <p class="day-num">Day 7</p>
-        <div class="orb orb-7"></div>
-        <p class="day-copy"><strong>One week.</strong>You just proved the dare works.</p>
+  <!-- LOG VIEW -->
+  <div class="view active" id="view-log">
+    <div class="prompt-card">
+      <div class="emoji">🌟</div>
+      <p>What just made you smile?</p>
+    </div>
+
+    <div class="log-streak" id="logStreak">
+      <span class="log-streak-pill" id="logStreakPill"></span>
+      <div class="log-streak-meaning" id="logStreakMeaning"></div>
+    </div>
+
+    <div class="input-area">
+      <textarea
+        id="momentInput"
+        placeholder="What just made you smile?"
+        maxlength="280"
+        oninput="updateCharCount()"
+      ></textarea>
+      <div class="input-footer">
+        <span class="char-count"><span id="charCount">0</span>/280</span>
+        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
     </div>
 
-    <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-      <a href="app.html" class="btn-final" style="font-size:16px;padding:16px 40px;">Start my 7 days →</a>
-      <p class="hero-fine">Free for 7 days. No card needed.</p>
+    <div class="tags-label">Tag it (optional)</div>
+    <div class="tags-row" id="tagsRow">
+      <div class="tag-chip" onclick="toggleTag(this)">😄 Joy</div>
+      <div class="tag-chip" onclick="toggleTag(this)">💪 Win</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🤝 Connection</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🧠 Growth</div>
+      <div class="tag-chip" onclick="toggleTag(this)">❤️ Gratitude</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🎯 Focus</div>
+      <div class="tag-chip" onclick="toggleTag(this)">🌿 Calm</div>
     </div>
   </div>
-</section>
 
-<!-- FINAL CTA -->
-<section class="final">
-  <div class="final-glow"></div>
-  <h2 class="final-headline reveal">
-    Your tomorrow is being<br/>written <span class="italic amber">right now.</span>
-  </h2>
-  <p class="final-sub reveal">One good moment at a time. One great life as a result.</p>
-  <div class="final-cta">
-    <a href="app.html" class="btn-final reveal">Take the #3GoodThings dare →</a>
-    <p class="final-fine reveal">Free for 7 days. No card. After Day 7, I'll reach out to you personally.</p>
+  <!-- YESTERDAY VIEW -->
+  <div class="view" id="view-yesterday">
+    <div class="yesterday-hero">
+      <div class="yesterday-headline">Yesterday Was Good.</div>
+      <div id="yesterdaySubtitle" class="yesterday-subtitle"></div>
+    </div>
+    <div class="yesterday-list" id="yesterdayList"></div>
+    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today</button>
   </div>
-</section>
 
-<footer>
-  <a href="#" class="footer-logo"><span class="d">DOPA</span><span class="m">mine</span></a>
-  <p class="footer-tag">"Your dopamine. From the inside."</p>
-  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
-</footer>
+  <!-- SUMMARY VIEW -->
+  <div class="view" id="view-summary">
+    <div class="stats-bar" id="statsBar"></div>
+    <div id="summaryContent"></div>
+  </div>
 
-<script>
-const els = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-els.forEach(el => io.observe(el));
-</script>
+  <!-- EDIT MODAL -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-title">Edit Moment</div>
+      <label>What happened</label>
+      <textarea id="editText" maxlength="280" oninput="updateEditCount()"></textarea>
+      <label>Date</label>
+      <input type="date" id="editDate" />
+      <label>Tag (optional)</label>
+      <div class="modal-tags" id="editTagsRow">
+        <div class="tag-chip" onclick="toggleTag(this)">😄 Joy</div>
+        <div class="tag-chip" onclick="toggleTag(this)">💪 Win</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🤝 Connection</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🧠 Growth</div>
+        <div class="tag-chip" onclick="toggleTag(this)">❤️ Gratitude</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🎯 Focus</div>
+        <div class="tag-chip" onclick="toggleTag(this)">🌿 Calm</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-save-edit" onclick="saveEdit()">Save Changes ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="delete-modal-body">
+        <div class="delete-modal-title">Delete this moment?</div>
+        <div class="delete-modal-sub">This can't be undone.</div>
+        <div class="delete-modal-actions">
+          <button class="btn-keep" onclick="closeDeleteModal()">Keep It</button>
+          <button class="btn-delete-confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Helpers ──────────────────────────────────────────────
+    const STORAGE_KEY = 'greatYesterday_moments';
+    const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    function loadMoments() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch { return []; }
+    }
+
+    function saveMoments(moments) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(moments));
+    }
+
+    function formatDate(dateStr) {
+      const today = todayKey();
+      const d = new Date(today + 'T00:00:00');
+      d.setDate(d.getDate() - 1);
+      const yesterday = d.toLocaleDateString('en-CA', { timeZone: TZ });
+
+      if (dateStr === today) return 'Today';
+      if (dateStr === yesterday) return 'Yesterday';
+
+      return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+      });
+    }
+
+    function formatTime(isoString) {
+      return new Date(isoString).toLocaleTimeString('en-US', {
+        hour: 'numeric', minute: '2-digit', timeZone: TZ
+      });
+    }
+
+    function todayKey() {
+      return new Date().toLocaleDateString('en-CA', { timeZone: TZ });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ── Name & greeting ──────────────────────────────────────
+    const NAME_KEY = 'greatYesterday_name';
+
+    function saveName() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+      localStorage.setItem(NAME_KEY, name);
+      document.getElementById('nameModal').classList.remove('open');
+      applyGreeting(name);
+    }
+
+    function applyGreeting(name) {
+      document.getElementById('headerGreeting').textContent = name + ', what just made you smile? ✨';
+    }
+
+    function initName() {
+      const name = localStorage.getItem(NAME_KEY);
+      if (name) {
+        applyGreeting(name);
+      } else {
+        document.getElementById('nameModal').classList.add('open');
+        setTimeout(() => document.getElementById('nameInput').focus(), 100);
+      }
+    }
+
+    // ── Re-engagement tiers ──────────────────────────────────
+    const LAST_OPEN_KEY = 'dopamine_lastOpen';
+
+    function checkReEngagement() {
+      const lastOpen = localStorage.getItem(LAST_OPEN_KEY);
+      const today = todayKey();
+
+      if (lastOpen && lastOpen !== today) {
+        const lastDate = new Date(lastOpen + 'T12:00:00');
+        const todayDate = new Date(today + 'T12:00:00');
+        const daysDiff = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+        if (daysDiff === 1) {
+          // Came back after exactly one day — streak preserved via grace
+          // No message needed — the streak number says it all
+        } else if (daysDiff === 2) {
+          setTimeout(() => showToast("You built something real. It's still here. 💜"), 600);
+        } else if (daysDiff >= 3 && daysDiff <= 5) {
+          const total = loadMoments().length;
+          setTimeout(() => showToast(`Welcome back. All ${total} good moments waited for you. ✨`), 600);
+        } else if (daysDiff >= 6 && daysDiff <= 14) {
+          setTimeout(() => showToast("Life got full. That's okay. What's good right now? 💜"), 600);
+        } else if (daysDiff > 14) {
+          setTimeout(() => showToast("The practice doesn't judge time away. It just welcomes you back. ✨"), 600);
+        }
+      }
+
+      localStorage.setItem(LAST_OPEN_KEY, today);
+    }
+
+    initName();
+    checkReEngagement();
+
+    // Auto-focus textarea on load if no name modal is shown
+    if (localStorage.getItem(NAME_KEY)) {
+      setTimeout(() => document.getElementById('momentInput').focus(), 100);
+    }
+
+    updateLogStreak();
+
+    // ── Header date ──────────────────────────────────────────
+    document.getElementById('headerDate').textContent =
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric',
+        timeZone: TZ
+      });
+
+    // ── Tabs ─────────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active',
+          (i === 0 && tab === 'log') ||
+          (i === 1 && tab === 'yesterday') ||
+          (i === 2 && tab === 'summary')
+        );
+      });
+      document.getElementById('view-log').classList.toggle('active', tab === 'log');
+      document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
+      document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
+      if (tab === 'summary') renderSummary();
+      if (tab === 'yesterday') renderYesterday();
+      if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
+    }
+
+    // ── Input / tag logic ────────────────────────────────────
+    function updateCharCount() {
+      const val = document.getElementById('momentInput').value;
+      document.getElementById('charCount').textContent = val.length;
+      document.getElementById('saveBtn').disabled = val.trim().length === 0;
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    function getSelectedTags() {
+      return [...document.querySelectorAll('.tag-chip.selected')]
+        .map(el => el.textContent.trim());
+    }
+
+    // ── Streak pill (Log tab) ────────────────────────────────
+    const STREAK_MILESTONES = {
+      3:   "You're building something real.",
+      7:   "One week. Your brain is changing.",
+      14:  "Two weeks of good moments.",
+      30:  "30 days. You have proof your life is good.",
+      50:  "50 days of dopamine. From the inside.",
+      100: "100 days. You are not the same person who started this."
+    };
+
+    // ── Streak meaning messages ──────────────────────────────
+    function getStreakMeaning(streak) {
+      if (streak >= 100) return "You see the world differently than most people.";
+      if (streak >= 50)  return "This is who you are now.";
+      if (streak >= 30)  return "You have proof. Real proof.";
+      if (streak >= 14)  return "Your brain is filing things differently now.";
+      if (streak >= 7)   return "One week of choosing to notice.";
+      if (streak >= 4)   return "You're building new eyes.";
+      return "You started. That's everything.";
+    }
+
+    function updateLogStreak() {
+      const moments = loadMoments();
+      const streak = calcStreak(moments);
+      const el = document.getElementById('logStreak');
+      const pill = document.getElementById('logStreakPill');
+      const meaning = document.getElementById('logStreakMeaning');
+      if (streak > 0) {
+        pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
+        meaning.textContent = getStreakMeaning(streak);
+        el.classList.add('visible');
+      } else {
+        el.classList.remove('visible');
+      }
+    }
+
+    function checkStreakMilestone(streakBefore, streakAfter) {
+      if (STREAK_MILESTONES[streakAfter] && streakAfter !== streakBefore) {
+        setTimeout(() => showToast(STREAK_MILESTONES[streakAfter]), 400);
+      }
+    }
+
+    // ── Auto time-of-day tag ─────────────────────────────────
+    function getTimeOfDayTag() {
+      const hour = new Date().toLocaleString('en-US', {
+        hour: 'numeric', hour12: false, timeZone: TZ
+      });
+      const h = parseInt(hour, 10);
+      if (h >= 5  && h <= 11) return 'Morning';
+      if (h >= 12 && h <= 17) return 'Afternoon';
+      if (h >= 18 && h <= 22) return 'Evening';
+      return 'Night';
+    }
+
+    // ── Save ripple ──────────────────────────────────────────
+    function triggerRipple() {
+      const btn = document.getElementById('saveBtn');
+      const ripple = document.createElement('div');
+      ripple.className = 'save-ripple';
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 400);
+    }
+
+    // ── Save ─────────────────────────────────────────────────
+    function saveMoment() {
+      const text = document.getElementById('momentInput').value.trim();
+      if (!text) return;
+
+      const momentsBefore = loadMoments();
+      const streakBefore = calcStreak(momentsBefore);
+
+      momentsBefore.unshift({
+        id: Date.now(),
+        text,
+        tags: getSelectedTags(),
+        autoTag: getTimeOfDayTag(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey()
+      });
+      saveMoments(momentsBefore);
+
+      const streakAfter = calcStreak(momentsBefore);
+
+      triggerRipple();
+
+      // Reset form
+      document.getElementById('momentInput').value = '';
+      document.getElementById('charCount').textContent = '0';
+      document.getElementById('saveBtn').disabled = true;
+      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+
+      showToast('Moment saved! 🌟');
+      updateLogStreak();
+      checkStreakMilestone(streakBefore, streakAfter);
+    }
+
+    // ── Edit ─────────────────────────────────────────────────
+    let editingId = null;
+
+    function openEditModal(id) {
+      const moments = loadMoments();
+      const m = moments.find(m => m.id === id);
+      if (!m) return;
+      editingId = id;
+
+      document.getElementById('editText').value = m.text;
+      document.getElementById('editDate').value = m.dateKey;
+
+      // Reset and pre-select tags
+      document.querySelectorAll('#editTagsRow .tag-chip').forEach(chip => {
+        chip.classList.toggle('selected', m.tags.includes(chip.textContent.trim()));
+      });
+
+      document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('open');
+      editingId = null;
+    }
+
+    function updateEditCount() {}
+
+    function saveEdit() {
+      const text = document.getElementById('editText').value.trim();
+      if (!text) return;
+
+      const newDate = document.getElementById('editDate').value;
+      const newTags = [...document.querySelectorAll('#editTagsRow .tag-chip.selected')]
+        .map(el => el.textContent.trim());
+
+      const moments = loadMoments();
+      const idx = moments.findIndex(m => m.id === editingId);
+      if (idx === -1) return;
+
+      moments[idx].text = text;
+      moments[idx].dateKey = newDate;
+      moments[idx].tags = newTags;
+
+      saveMoments(moments);
+      closeEditModal();
+      renderSummary();
+      showToast('Updated! ✓');
+    }
+
+    // ── Delete ───────────────────────────────────────────────
+    let pendingDeleteId = null;
+
+    function deleteMoment(id) {
+      pendingDeleteId = id;
+      document.getElementById('deleteModal').classList.add('open');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('open');
+      pendingDeleteId = null;
+    }
+
+    function confirmDelete() {
+      if (pendingDeleteId === null) return;
+      const moments = loadMoments().filter(m => m.id !== pendingDeleteId);
+      saveMoments(moments);
+      closeDeleteModal();
+      renderSummary();
+      showToast('Removed');
+    }
+
+    // ── Yesterday ────────────────────────────────────────────
+    function yesterdayKey() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return d.toLocaleDateString('en-CA', { timeZone: TZ });
+    }
+
+    function renderYesterday() {
+      const yKey = yesterdayKey();
+      const moments = loadMoments().filter(m => m.dateKey === yKey)
+        .slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+      const subtitle = document.getElementById('yesterdaySubtitle');
+      const list = document.getElementById('yesterdayList');
+
+      if (moments.length === 0) {
+        subtitle.innerHTML = '';
+        list.innerHTML = `<p class="yesterday-empty">Yesterday is a blank page.<br>Today doesn't have to be.</p>`;
+        return;
+      }
+
+      subtitle.textContent = `You captured ${moments.length} good moment${moments.length !== 1 ? 's' : ''}`;
+
+      list.innerHTML = moments.map(m => `
+        <div class="yesterday-card">
+          <div class="moment-text">${escapeHtml(m.text)}</div>
+          <div class="moment-meta">
+            <span class="moment-time">${formatTime(m.createdAt)}</span>
+            ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Summary ──────────────────────────────────────────────
+    function renderSummary() {
+      const moments = loadMoments();
+      const container = document.getElementById('summaryContent');
+      const statsBar = document.getElementById('statsBar');
+
+      // Stats
+      const today = moments.filter(m => m.dateKey === todayKey()).length;
+      const totalDays = new Set(moments.map(m => m.dateKey)).size;
+      const streak = calcStreak(moments);
+
+      statsBar.innerHTML = `
+        <div class="stat-box">
+          <div class="stat-num">${today}</div>
+          <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">${moments.length}</div>
+          <div class="stat-label">All Time</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num streak-flame">${streak}🔥</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+      `;
+
+      if (moments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="big">✨</div>
+            <p style="font-weight:600;color:var(--dark);margin-bottom:6px;">Your first good moment is waiting.</p>
+            <p>What just made you smile?</p>
+          </div>`;
+        return;
+      }
+
+      // Group by date
+      const groups = {};
+      moments.forEach(m => {
+        if (!groups[m.dateKey]) groups[m.dateKey] = [];
+        groups[m.dateKey].push(m);
+      });
+
+      const sorted = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+      container.innerHTML = sorted.map(dateKey => {
+        const items = groups[dateKey];
+        const label = formatDate(dateKey);
+        const cards = items.map(m => `
+          <div class="moment-card" id="mc-${m.id}">
+            <div class="moment-dot"></div>
+            <div class="moment-body">
+              <div class="moment-text">${escapeHtml(m.text)}</div>
+              <div class="moment-meta">
+                <span class="moment-time">${formatTime(m.createdAt)}</span>
+                ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
+              </div>
+            </div>
+            <button class="moment-edit" onclick="openEditModal(${m.id})" title="Edit">✏️</button>
+            <button class="moment-delete" onclick="deleteMoment(${m.id})" title="Remove">✕</button>
+          </div>
+        `).join('');
+
+        return `
+          <div class="day-section">
+            <div class="day-header">
+              <span class="day-label">${label}</span>
+              <span class="day-count">${items.length} moment${items.length !== 1 ? 's' : ''}</span>
+            </div>
+            ${cards}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function calcStreak(moments) {
+      if (moments.length === 0) return 0;
+      const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
+
+      const today = todayKey();
+      const yDate = new Date();
+      yDate.setDate(yDate.getDate() - 1);
+      const yKey = yDate.toLocaleDateString('en-CA', { timeZone: TZ });
+
+      // Must start from today or yesterday
+      if (days[0] !== today && days[0] !== yKey) return 0;
+
+      let streak = 0;
+      let expected = days[0] === today ? today : yKey;
+      let graceUsed = false;  // One grace day allowed per streak
+
+      for (const day of days) {
+        if (day === expected) {
+          streak++;
+          const d = new Date(expected + 'T12:00:00');
+          d.setDate(d.getDate() - 1);
+          expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+        } else if (!graceUsed) {
+          // Check if exactly one day was skipped
+          const expectedDate = new Date(expected + 'T12:00:00');
+          const dayDate = new Date(day + 'T12:00:00');
+          const diffDays = Math.round((expectedDate - dayDate) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) {
+            // One day gap — apply grace, count this day, continue
+            graceUsed = true;
+            streak++;
+            const d = new Date(day + 'T12:00:00');
+            d.setDate(d.getDate() - 1);
+            expected = d.toLocaleDateString('en-CA', { timeZone: TZ });
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  </script>
 </body>
 </html>

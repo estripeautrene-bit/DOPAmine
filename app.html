@@ -2353,10 +2353,10 @@
     }
     .share-btn-title {
       font-size:13px; font-weight:800;
-      color:white; text-align:center;
+      color:#B57BF7; text-align:center;
     }
     .share-btn-sub {
-      font-size:11px; color:rgba(255,255,255,0.45);
+      font-size:11px; color:rgba(181,123,247,0.6);
       text-align:center; line-height:1.4; margin-top:2px;
     }
 
@@ -2795,7 +2795,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
             <div class="share-btn-pulse1"></div>
             <div class="share-btn-pulse2"></div>
             <div class="share-btn-circle">
-              <div class="share-btn-emoji">🎯</div>
+              <div class="share-btn-emoji">🧠</div>
               <div class="share-btn-circle-label">Dare<br>a friend</div>
             </div>
           </div>
@@ -2811,7 +2811,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
             <div class="share-btn-pulse1" style="animation-delay:1.4s;"></div>
             <div class="share-btn-pulse2" style="animation-delay:2.1s;"></div>
             <div class="share-btn-circle">
-              <div class="share-btn-emoji">📈</div>
+              <div class="share-btn-emoji">🫀</div>
               <div class="share-btn-circle-label">Show off your<br>progress</div>
             </div>
           </div>
@@ -4969,9 +4969,15 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     function sharePersonalNumber() {
       const moments = loadMoments();
       const streak = calcStreak(moments);
-      const msg = streak + ' days of good things I didn\u2019t let go. My brain feels different.\nmydopa.app';
+      const total  = moments.length;
+      const msg = streak + ' days. ' + total + ' good moments I almost didn\u2019t keep.\nMy brain feels different.\nmydopa.app';
+      if (typeof mixpanel !== 'undefined') mixpanel.track('Share Sent', { variant: 'personal_number', surface: 'progress_tab' });
       if (navigator.share) {
         navigator.share({ text: msg, url: 'https://mydopa.app' }).catch(() => {});
+      } else {
+        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      }
+    }).catch(() => {});
       } else {
         window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
       }

@@ -5358,7 +5358,17 @@ function checkInstallPrompt() {
           if (session) localStorage.setItem('dopa_onboarding_complete', '1');
           currentUser = session ? session.user : null;
           if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
-          if (event === 'SIGNED_IN') mixpanel.track('Signed Up');
+          if (event === 'SIGNED_IN') {
+            mixpanel.track('Signed Up');
+            if (session?.user) {
+              const u = session.user;
+              mixpanel.identify(u.id);
+              mixpanel.people.set({
+                '$email': u.email,
+                '$name': u.user_metadata?.first_name || u.email
+              });
+            }
+          }
           hideAuthScreen();
           if (!appInitialized) initApp();
         } else if (event === 'SIGNED_OUT') {

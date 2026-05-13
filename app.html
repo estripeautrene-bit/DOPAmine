@@ -6,11 +6,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DOPAmine" />
-  <meta name="theme-color" content="#1a1a2e" />
+  <meta name="theme-color" content="#0E0B1A" />
   <link rel="apple-touch-icon" href="icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon.png" />
   <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <title>DOPAmine</title>
   <style>
     * {
@@ -18,7 +22,6 @@
       margin: 0;
       padding: 0;
     }
-
     :root {
       --gold: #7B2FBE;
       --gold-light: rgba(123,47,190,0.15);
@@ -40,6 +43,8 @@
       max-width: 480px;
       margin: 0 auto;
     }
+
+    #dopa-glow-layer {}
 
     /* ── Header ── */
     header {
@@ -67,15 +72,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: white;
+      font-style: italic;
       flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .header-logo-d img {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      display: block;
     }
 
     .header-logo-text {
@@ -129,6 +130,8 @@
       background: #0E0B1A;
       padding: 0 20px 14px;
       border-bottom: 1px solid rgba(123,47,190,0.15);
+      position: relative;
+      z-index: 10;
     }
 
     .tab-btn {
@@ -153,7 +156,7 @@
     .view {
       display: none;
       padding: 20px;
-      background: var(--bg);
+      background: transparent;
       min-height: calc(100vh - 140px);
     }
 
@@ -163,32 +166,43 @@
 
     /* ── Log view ── */
     .prompt-card {
-      background: linear-gradient(135deg, rgba(123,47,190,0.25), rgba(181,123,247,0.1));
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.35);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 22px 20px 16px;
       margin-bottom: 20px;
       text-align: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      z-index: 2;
     }
 
-    .prompt-card .emoji {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-
-    .prompt-card p {
+    .prompt-text {
       font-size: 1.1rem;
       font-weight: 900;
       color: white;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      transition: opacity 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .prompt-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      min-height: 8px;
     }
 
     .input-area {
-      background: rgba(255,255,255,0.06);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.25);
       border-radius: var(--radius);
       padding: 16px;
+      position: relative;
+      z-index: 2;
     }
 
     .input-area textarea {
@@ -243,6 +257,16 @@
       cursor: default;
     }
 
+    @keyframes save-overlay-glow {
+      0%   { opacity: 0; transform: scale(0.3); }
+      60%  { opacity: 1; transform: scale(1);   }
+      100% { opacity: 0; transform: scale(1.3); }
+    }
+    @keyframes textArrive {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1);    }
+    }
+
     /* ── Media attachments (photo + song) ── */
     .media-row {
       display: flex;
@@ -258,15 +282,15 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      border: 1.5px solid rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(181,123,247,0.45);
       border-radius: 50px;
       padding: 6px 14px;
       font-size: 0.8rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.5);
-      background: transparent;
+      color: rgba(255,255,255,0.75);
+      background: rgba(123,47,190,0.1);
       cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
 
     .media-btn:hover {
@@ -450,140 +474,6 @@
       display: none;
     }
 
-    /* ── Science visual cards ── */
-    .science-card {
-      margin-top: 16px;
-      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.8));
-      border: 1px solid rgba(123,47,190,0.4);
-      border-radius: 16px;
-      padding: 18px;
-      animation: fadeQuote 0.8s ease;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .science-card::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(123,47,190,0.3), transparent 70%);
-    }
-
-    .science-card-label {
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #B57BF7;
-      margin-bottom: 10px;
-    }
-
-    .science-card-headline {
-      font-size: 1rem;
-      font-weight: 900;
-      color: white;
-      line-height: 1.2;
-      margin-bottom: 12px;
-      letter-spacing: -0.3px;
-    }
-
-    .science-card-headline span {
-      color: #B57BF7;
-    }
-
-    .science-card-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .science-card-step {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .science-step-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(123,47,190,0.3);
-      border: 1px solid rgba(123,47,190,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      flex-shrink: 0;
-    }
-
-    .science-step-text {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.3;
-    }
-
-    .science-step-text strong {
-      color: white;
-      font-weight: 700;
-    }
-
-    .science-card-divider {
-      height: 1px;
-      background: rgba(123,47,190,0.3);
-      margin: 12px 0;
-    }
-
-    .science-card-bottom {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.5);
-      font-style: italic;
-      text-align: center;
-      line-height: 1.4;
-    }
-
-    .science-card-bottom strong {
-      color: #B57BF7;
-      font-style: normal;
-    }
-
-    .science-card-stats {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .science-stat {
-      flex: 1;
-      background: rgba(123,47,190,0.15);
-      border: 1px solid rgba(123,47,190,0.25);
-      border-radius: 10px;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .science-stat-num {
-      font-size: 1.1rem;
-      font-weight: 900;
-      color: #B57BF7;
-      line-height: 1;
-    }
-
-    .science-stat-label {
-      font-size: 0.62rem;
-      color: rgba(255,255,255,0.4);
-      margin-top: 3px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    @keyframes fadeQuote {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
     .mood-picker {
       display: none;
       margin-top: 10px;
@@ -625,22 +515,32 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: var(--dark);
-      color: white;
-      padding: 12px 24px;
+      background: #1a1a2e !important;
+      color: #ffffff !important;
+      padding: 20px 32px;
       border-radius: 50px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s, transform 0.25s;
       z-index: 100;
       white-space: nowrap;
+      max-width: 340px;
+      text-align: center;
     }
+
 
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-milestone {
+      color: #FFB020 !important;
+      font-weight: 800 !important;
+      background: rgba(0, 0, 0, 0.95) !important;
+      border: 1px solid rgba(255, 176, 32, 0.3) !important;
     }
 
     /* ── Progress dashboard ── */
@@ -652,22 +552,24 @@
     .progress-total-num {
       font-size: 4.5rem;
       font-weight: 900;
-      color: white;
       line-height: 1;
       letter-spacing: -2px;
-      background: linear-gradient(135deg, #ffffff, #B57BF7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #FFFFFF !important;
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: #FFFFFF !important;
+      background-clip: unset !important;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-total-label {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.4);
+      color: #FFFFFF !important;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       margin-top: 6px;
       font-weight: 600;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-streak-row {
@@ -676,7 +578,7 @@
       justify-content: center;
       gap: 8px;
       margin-top: 16px;
-      background: rgba(123,47,190,0.15);
+      background: rgba(0,0,0,0.3) !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 50px;
       padding: 10px 20px;
@@ -688,21 +590,24 @@
     .progress-streak-num {
       font-size: 1.4rem;
       font-weight: 900;
-      color: #B57BF7;
+      color: #FFFFFF !important;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-streak-text {
       font-size: 0.82rem;
-      color: rgba(255,255,255,0.6);
+      color: #FFFFFF !important;
       font-weight: 600;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-streak-meaning {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.35);
+      color: #FFFFFF !important;
       text-align: center;
       margin-top: 8px;
       font-style: italic;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     /* Dot calendar */
@@ -711,14 +616,20 @@
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #B57BF7;
+      color: #FFFFFF !important;
       margin: 24px 0 12px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .dot-calendar {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 6px;
+      background: #1A1530 !important;
+      border-radius: 12px;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
     }
 
     .dot-day {
@@ -769,11 +680,13 @@
     .day-detail-panel {
       display: none;
       margin-top: 12px;
-      background: rgba(255,255,255,0.04);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.25);
       border-radius: 14px;
       padding: 14px;
       animation: fadeQuote 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     .day-detail-panel.open { display: block; }
@@ -788,11 +701,13 @@
     }
 
     .day-detail-card {
-      background: rgba(255,255,255,0.05);
+      background: #1A1530 !important;
       border-radius: 10px;
       padding: 10px 12px;
       margin-bottom: 8px;
       border-left: 2px solid #7B2FBE;
+      position: relative;
+      z-index: 2;
     }
 
     .day-detail-text {
@@ -837,11 +752,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: rgba(123,47,190,0.15);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 14px;
       padding: 12px 16px;
       min-width: 70px;
+      position: relative;
+      z-index: 2;
     }
 
     .top-tag-emoji {
@@ -871,11 +788,13 @@
     }
 
     .quick-stat {
-      background: rgba(255,255,255,0.05);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.2);
       border-radius: 12px;
       padding: 14px 10px;
       text-align: center;
+      position: relative;
+      z-index: 2;
     }
 
     .quick-stat-num {
@@ -896,13 +815,15 @@
     .progress-motivator {
       margin-top: 20px;
       padding: 18px;
-      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(14,11,26,0.5));
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.3);
       border-radius: 14px;
       text-align: center;
       font-size: 0.85rem;
       color: rgba(255,255,255,0.7);
       line-height: 1.6;
+      position: relative;
+      z-index: 2;
     }
 
     .progress-motivator strong {
@@ -914,9 +835,49 @@
     }
 
     .progress-motivator.unlocked {
-      background: linear-gradient(135deg, rgba(123,47,190,0.35), rgba(181,123,247,0.1));
       border-color: #7B2FBE;
       border-width: 2px;
+    }
+
+    #notifSettingsRow {
+      background: #1A1530 !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    .personal-number-card {
+      text-align: center;
+      padding: 24px 20px;
+      background: #1A1530 !important;
+      border: 1px solid rgba(123,47,190,0.25);
+      border-radius: 14px;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+    }
+    .personal-number-total {
+      font-size: 4.5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: #FFFFFF !important;
+      -webkit-text-fill-color: #FFFFFF !important;
+      margin-bottom: 6px;
+    }
+    .personal-number-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .personal-number-label2 {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
     }
 
     .next-step-btn {
@@ -938,32 +899,6 @@
     .next-step-btn:active {
       transform: scale(0.97);
     }
-
-    /* ── Share actions — My Progress tab ── */
-    .share-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 20px 0 8px;
-    }
-
-    .share-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(123,47,190,0.12);
-      border: 1.5px solid rgba(123,47,190,0.35);
-      border-radius: 50px;
-      padding: 12px 20px;
-      color: white;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
-    }
-
-    .share-btn:active { opacity: 0.75; }
 
     /* Next step modal */
     .next-step-modal {
@@ -1102,7 +1037,7 @@
     }
 
     .moment-card {
-      background: rgba(255,255,255,0.06);
+      background: #1A1530 !important;
       border: 1px solid rgba(123,47,190,0.2);
       border-radius: 12px;
       padding: 14px 16px;
@@ -1110,6 +1045,8 @@
       display: flex;
       gap: 12px;
       align-items: flex-start;
+      position: relative;
+      z-index: 2;
     }
 
     .moment-dot {
@@ -1197,8 +1134,151 @@
       display: flex;
     }
 
+    /* ── Re-entry overlay ── */
+    #reentryOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0E0B1A;
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 28px;
+    }
+    #reentryOverlay.open { display: flex; }
+    .reentry-prompt {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.55;
+      text-align: center;
+      max-width: 320px;
+      margin-bottom: 28px;
+    }
+    .reentry-textarea {
+      width: 100%;
+      max-width: 400px;
+      min-height: 110px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.35);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      padding: 14px 16px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+    .reentry-textarea:focus { border-color: rgba(123,47,190,0.7); }
+    .reentry-save-btn {
+      width: 100%;
+      max-width: 400px;
+      background: #7B2FBE;
+      border: none;
+      border-radius: 50px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: opacity 0.2s;
+    }
+    .reentry-save-btn:disabled { opacity: 0.35; cursor: default; }
+    .reentry-skip-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    /* ── Ritual Anchoring overlay (Item 16) ── */
+    #ritualOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0E0B1A;
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 28px;
+    }
+    #ritualOverlay.open { display: flex; }
+    .ritual-prompt {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.55;
+      text-align: center;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+    .ritual-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    .ritual-chip {
+      background: none;
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 50px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .ritual-chip:hover { border-color: rgba(123,47,190,0.8); color: var(--text); }
+    .ritual-textarea {
+      width: 100%;
+      max-width: 400px;
+      min-height: 110px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(123,47,190,0.35);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      padding: 14px 16px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+    .ritual-textarea:focus { border-color: rgba(123,47,190,0.7); }
+    .ritual-save-btn {
+      width: 100%;
+      max-width: 400px;
+      background: #7B2FBE;
+      border: none;
+      border-radius: 50px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: opacity 0.2s;
+    }
+    .ritual-save-btn:disabled { opacity: 0.35; cursor: default; }
+    .ritual-skip-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
     .modal {
-      background: var(--bg);
+      background: #ffffff;
       border-radius: 24px 24px 0 0;
       padding: 24px 20px 40px;
       width: 100%;
@@ -1209,14 +1289,14 @@
       font-size: 1.05rem;
       font-weight: 700;
       margin-bottom: 16px;
-      color: var(--dark);
+      color: #1a0f30 !important;
     }
 
     .modal label {
       display: block;
       font-size: 0.78rem;
       font-weight: 600;
-      color: var(--muted);
+      color: #1a0f30;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 6px;
@@ -1230,10 +1310,10 @@
       padding: 10px 12px;
       font-size: 0.95rem;
       font-family: inherit;
-      color: var(--text);
+      color: #1a0f30;
       resize: none;
       min-height: 80px;
-      outline: none;
+      outline: none;background: #ffffff;
     }
 
     .modal textarea:focus {
@@ -1247,7 +1327,7 @@
       padding: 10px 12px;
       font-size: 0.95rem;
       font-family: inherit;
-      color: var(--text);
+      color: #1a0f30;
       outline: none;
       background: white;
     }
@@ -1277,7 +1357,7 @@
       font-size: 0.9rem;
       font-weight: 600;
       background: white;
-      color: var(--muted);
+      color: #666666;
       cursor: pointer;
     }
 
@@ -1318,7 +1398,7 @@
 
     .stat-box {
       flex: 1;
-      background: rgba(255,255,255,0.06);
+      background: #1A1530;
       border: 1px solid rgba(123,47,190,0.2);
       border-radius: 12px;
       padding: 14px 12px;
@@ -1352,48 +1432,89 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      margin-bottom: 14px;
+      background: #1A1530;
+      border-radius: 999px;
+      padding: 10px 24px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
     }
 
     .log-streak.visible {
-      display: flex;
+      display: inline-flex;
     }
 
     .log-streak-pill {
-      background: rgba(123,47,190,0.25);
-      color: #B57BF7;
+      background: rgba(0,0,0,0.3) !important;
+      color: #FFFFFF !important;
       border-radius: 50px;
       padding: 5px 14px;
       font-size: 0.82rem;
       font-weight: 700;
       letter-spacing: 0.2px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .log-streak-meaning {
       font-size: 0.8rem;
-      color: #7B2FBE;
+      color: #FFFFFF !important;
       font-style: italic;
       text-align: center;
       opacity: 0.8;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
+    }
+
+    .today-wins-label {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #FFFFFF !important;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     /* ── Yesterday tab ── */
     .yesterday-hero {
       text-align: center;
-      padding: 28px 0 20px;
+      padding: 32px 20px 24px;
+      background: #1A1530 !important;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(181,123,247,0.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    #yesterdayQuestion {
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.25);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.2s;
+    }
+    #yesterdayQuestion:focus-within {
+      border-color: rgba(255,176,32,0.5);
+    }
+    #yesterdayFeelInput::placeholder {
+      color: rgba(201,190,216,0.5);
+      font-size: 16px;
     }
 
     .yesterday-headline {
       font-size: 1.6rem;
       font-weight: 800;
-      color: var(--dark);
+      color: #ffffff;
       line-height: 1.2;
       margin-bottom: 8px;
+      text-shadow: 0 2px 16px rgba(123,47,190,0.5);
     }
 
     .yesterday-subtitle {
       font-size: 0.92rem;
-      color: var(--muted);
+      color: rgba(255,255,255,0.7);
     }
 
     .yesterday-empty {
@@ -1404,11 +1525,13 @@
     }
 
     .yesterday-card {
-      background: rgba(255,255,255,0.06);
+      background: #1A1530 !important;
       border-radius: 12px;
       padding: 14px 16px;
       margin-bottom: 10px;
       border-left: 3px solid #7B2FBE;
+      position: relative;
+      z-index: 2;
     }
 
     .yesterday-card .moment-text {
@@ -1444,6 +1567,397 @@
       text-align: center;
     }
 
+    /* ── Yesterday protagonist card ── */
+    .yesterday-protagonist-card {
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.26);
+      border-radius: 20px;
+      padding: 22px 20px 18px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    .ypc-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: rgba(183,123,247,0.48);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .ypc-eyebrow-dot {
+      width: 4px;
+      height: 4px;
+      background: rgba(183,123,247,0.3);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ypc-headline {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FAFAF7;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .ypc-feeling {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 18px;
+      min-height: 42px;
+    }
+    .ypc-divider {
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,176,32,0.22), rgba(255,176,32,0.04));
+      margin-bottom: 16px;
+    }
+    .ypc-question {
+      font-size: 22px;
+      font-weight: 600;
+      color: #C026D3;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+    .ypc-listen {
+      font-size: 10px;
+      color: rgba(201,190,216,0.26);
+      font-style: italic;
+      margin-bottom: 13px;
+    }
+    .ypc-input-wrap {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(192,38,211,0.16);
+      border-radius: 12px;
+      padding: 14px 15px;
+      min-height: 160px;
+      height: 160px;
+      cursor: text;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      transition: border-color 0.2s ease;
+    }
+    .ypc-input-wrap.focused { border-color: rgba(192,38,211,0.45); }
+    .ypc-cursor {
+      width: 2px;
+      height: 17px;
+      background: rgba(192,38,211,0.55);
+      border-radius: 1px;
+      margin-top: 1px;
+      flex-shrink: 0;
+      animation: ypcBlink 1.05s step-end infinite;
+    }
+    @keyframes ypcBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .ypc-placeholder {
+      font-size: 13.5px;
+      color: rgba(201,190,216,0.33);
+      font-style: italic;
+      padding-left: 4px;
+      pointer-events: none;
+    }
+    .ypc-textarea {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      min-height: 160px;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #FAFAF7;
+      font-size: 22px;
+      font-family: -apple-system, sans-serif;
+      padding: 14px 15px;
+      resize: none;
+      box-sizing: border-box;
+      opacity: 0;
+    }
+    .ypc-textarea.active { opacity: 1; }
+    .ypc-send {
+      width: 100%;
+      margin-top: 11px;
+      background: rgba(192,38,211,0.1);
+      border: 1px solid rgba(192,38,211,0.3);
+      border-radius: 11px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #C026D3;
+      cursor: pointer;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ypc-scarcity {
+      font-size: 10px;
+      color: rgba(255,176,32,0.35);
+      margin-top: 11px;
+      text-align: center;
+    }
+    .ypc-stack-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7px;
+      padding: 0 2px;
+      position: relative;
+      z-index: 2;
+    }
+    .ypc-stack-label {
+      font-size: 9.5px;
+      letter-spacing: 0.13em;
+      color: rgba(183,123,247,0.35);
+    }
+    .ypc-stack {
+      position: relative;
+      z-index: 2;
+      height: 82px;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    .ypc-sh3 {
+      position: absolute; bottom: 0; left: 9px; right: 9px; height: 66px;
+      background: rgba(26,21,48,0.38);
+      border: 1px solid rgba(255,255,255,0.035);
+      border-radius: 10px;
+    }
+    .ypc-sh2 {
+      position: absolute; bottom: 5px; left: 4px; right: 4px; height: 66px;
+      background: rgba(26,21,48,0.60);
+      border: 1px solid rgba(255,255,255,0.048);
+      border-radius: 10px;
+    }
+    .ypc-sh1 {
+      position: absolute; bottom: 10px; left: 0; right: 0;
+      background: #1A1530;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ypc-sh1-cta {
+      font-size: 11px;
+      color: #C026D3;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .ypc-sh1-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .ypc-sh1-meta { display: flex; align-items: center; gap: 6px; }
+    .ypc-sh1-time { font-size: 10px; color: rgba(201,190,216,0.3); }
+    .ypc-sh1-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .ypc-entries-expanded { display: flex; flex-direction: column; gap: 5px; opacity: 0.74; position: relative; z-index: 2; }
+    .ypc-entry-card { background: #1A1530; border: 1px solid rgba(255,255,255,0.055); border-radius: 9px; padding: 10px 13px; }
+    .ypc-entry-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .ypc-entry-meta { display: flex; align-items: center; gap: 6px; }
+    .ypc-entry-time { font-size: 9.5px; color: rgba(201,190,216,0.3); }
+    .ypc-entry-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .ypc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
+    .ypc-closing-wrap { margin-top: 24px; display: flex; justify-content: center; position: relative; z-index: 2; }
+    .ypc-closing-pill {
+      background: #1A1530;
+      border: 1px solid rgba(255,176,32,0.15);
+      border-radius: 40px;
+      padding: 10px 22px;
+      font-size: 13px;
+      color: rgba(201,190,216,0.65);
+      text-align: center;
+    }
+    .ypc-closing-you { color: #C026D3; font-weight: 600; }
+    .ypc-acknowledgment {
+      background: #1A1530;
+      border: 1px solid rgba(192,38,211,0.22);
+      border-radius: 12px;
+      padding: 20px 18px;
+      font-size: 22px;
+      font-weight: 700;
+      font-style: normal;
+      line-height: 1.4;
+      color: #FAFAF7;
+    }
+
+    /* ── Today protagonist card ── */
+    .today-protagonist-card {
+      background: #1A1530;
+      border: 1px solid rgba(123,47,190,0.3);
+      border-radius: 20px;
+      padding: 22px 20px 18px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+      min-height: 420px;
+    }
+    .tpc-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .tpc-streak-pill {
+      background: rgba(123,47,190,0.15);
+      border: 1px solid rgba(123,47,190,0.35);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFB020;
+    }
+    .tpc-date {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(183,123,247,0.45);
+      text-transform: uppercase;
+    }
+    .tpc-prompt {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .tpc-input-area {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(123,47,190,0.2);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      min-height: 200px;
+      height: auto;
+    }
+    .tpc-textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-family: inherit;
+      color: white;
+      resize: none;
+      min-height: 200px;
+      height: auto;
+      background: transparent;
+      box-sizing: border-box;
+    }
+    .tpc-textarea::placeholder {
+      color: rgba(255,255,255,0.25);
+      font-style: italic;
+    }
+    .tpc-bottom-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tpc-media-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      background: transparent;
+      cursor: pointer;
+    }
+    .tpc-char-count {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      margin-left: auto;
+    }
+    .tpc-save-btn {
+      background: #7B2FBE;
+      border: none;
+      border-radius: 50px;
+      padding: 9px 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .tpc-save-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .tpc-save-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
+
+    /* ── Today entries stack ── */
+    .tpc-stack-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      padding: 0 2px;
+      position: relative;
+      z-index: 2;
+    }
+    .tpc-stack-label {
+      font-size: 9.5px;
+      letter-spacing: 0.13em;
+      color: rgba(183,123,247,0.35);
+    }
+    .tpc-wins-count {
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      color: rgba(255,176,32,0.5);
+    }
+    .tpc-deck {
+      position: relative;
+      z-index: 2;
+      height: 82px;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    .tpc-sh3 {
+      position: absolute; bottom: 0; left: 9px; right: 9px; height: 66px;
+      background: rgba(26,21,48,0.38);
+      border: 1px solid rgba(255,255,255,0.035);
+      border-radius: 10px;
+    }
+    .tpc-sh2 {
+      position: absolute; bottom: 5px; left: 4px; right: 4px; height: 66px;
+      background: rgba(26,21,48,0.60);
+      border: 1px solid rgba(255,255,255,0.048);
+      border-radius: 10px;
+    }
+    .tpc-sh1 {
+      position: absolute; bottom: 10px; left: 0; right: 0;
+      background: #1A1530;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tpc-sh1-cta {
+      font-size: 11px;
+      color: #B57BF7;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tpc-sh1-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .tpc-sh1-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tpc-sh1-time { font-size: 10px; color: rgba(201,190,216,0.3); }
+    .tpc-sh1-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .tpc-entries-expanded { display: flex; flex-direction: column; gap: 5px; opacity: 0.85; position: relative; z-index: 2; }
+    .tpc-entry-card { background: #1A1530; border: 1px solid rgba(255,255,255,0.055); border-radius: 9px; padding: 10px 13px; }
+    .tpc-entry-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .tpc-entry-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tpc-entry-time { font-size: 9.5px; color: rgba(201,190,216,0.3); }
+    .tpc-entry-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .tpc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
+
     /* ── Auto time-of-day tag ── */
     .moment-tag-auto {
       font-size: 0.7rem;
@@ -1455,35 +1969,22 @@
       font-style: italic;
     }
 
-    /* ── Save ripple animation ── */
+    /* ── Save button ripple ── */
     @keyframes ripple-out {
-      0% {
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 0.4;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(6);
-        opacity: 0;
-      }
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+      100% { transform: translate(-50%, -50%) scale(6); opacity: 0; }
     }
-
     .save-ripple {
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 60px; height: 60px;
       border-radius: 50%;
       background: rgba(123, 47, 190, 0.4);
       pointer-events: none;
       animation: ripple-out 0.4s ease-out forwards;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(0);
     }
-
-    .save-btn {
-      position: relative;
-      overflow: hidden;
-    }
+    .save-btn { position: relative; overflow: hidden; }
 
     /* ── Delete confirmation modal ── */
     .delete-modal-body {
@@ -1494,13 +1995,13 @@
     .delete-modal-title {
       font-size: 1.15rem;
       font-weight: 700;
-      color: var(--dark);
+      color: #1A1A2E;
       margin-bottom: 6px;
     }
 
     .delete-modal-sub {
       font-size: 0.88rem;
-      color: var(--muted);
+      color: rgba(26, 26, 46, 0.55);
       margin-bottom: 24px;
     }
 
@@ -1533,16 +2034,492 @@
       color: #DC2626;
       cursor: pointer;
     }
-  </style>
+
+    /* ── Legal screens (Terms / Privacy) ── */
+    .legal-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--dark);
+      z-index: 2100;
+      overflow-y: auto;
+    }
+    .legal-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 24px 60px;
+    }
+    .legal-back-btn {
+      border: none;
+      background: none;
+      color: #B57BF7;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .legal-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .legal-page-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--dark);
+    }
+    .legal-updated {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .legal-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .legal-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .legal-card-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #B57BF7;
+      margin-bottom: 8px;
+    }
+    .legal-card-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .visual-share-card {
+      background: #1A1530 !important;
+      border-radius: 20px; padding: 28px 24px;
+      border: 2px solid rgba(181,123,247,0.6);
+      margin-bottom: 16px; position: fixed;
+      left: -9999px; top: -9999px; visibility: hidden;
+      overflow: hidden; text-align: center;
+      box-shadow: 0 0 40px rgba(123,47,190,0.4), 0 8px 32px rgba(0,0,0,0.4);
+      z-index: 2;
+    }
+    .visual-share-card::before {
+      content: ''; position: absolute;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.4) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .vsc-brand { font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(181,123,247,0.7); margin-bottom:16px; }
+    .vsc-number { font-size:3.5rem; font-weight:800; color:white; line-height:1; margin-bottom:4px; text-shadow:0 0 30px rgba(181,123,247,0.5); }
+    .vsc-label { font-size:0.85rem; font-weight:300; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .vsc-streak { display:inline-block; background:rgba(181,123,247,0.2); border:1px solid rgba(181,123,247,0.35); border-radius:100px; padding:6px 16px; font-size:0.78rem; font-weight:500; color:#B57BF7; margin-bottom:16px; }
+    .vsc-tagline { font-size:0.72rem; color:rgba(255,255,255,0.35); font-weight:300; line-height:1.6; }
+    .vsc-tagline strong { color:rgba(181,123,247,0.7); font-weight:600; }
+    .share-btn-top { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:linear-gradient(135deg,#7B2FBE,#B57BF7) !important; color:#FFFFFF !important; font-weight:800 !important; border:none; border-radius:14px; padding:16px; font-size:1rem; cursor:pointer; margin-bottom:24px; box-shadow:0 4px 20px rgba(123,47,190,0.45); font-family:inherit; opacity:1 !important; position:relative; z-index:2; }
+    .share-btn-top:active { transform:scale(0.97); transition:transform 0.1s; }
+
+
+    /* Dark mode catch-all — ensure nothing shows dark text on dark bg */
+    body:not(.light) p, body:not(.light) div, body:not(.light) span {
+      /* inherit from parent — don't override intentional colors */
+    }
+    body:not(.light) .delete-modal-title { color: #1A1A2E !important; }
+    body:not(.light) .delete-modal-sub { color: rgba(26, 26, 46, 0.55) !important; }
+    body:not(.light) .progress-section-label { color: #FFFFFF !important; }
+    body:not(.light) .legal-page-title { color: #F0EEFF !important; }
+    body:not(.light) .legal-updated { color: rgba(255,255,255,0.4) !important; }
+    body:not(.light) .legal-card-body { color: rgba(255,255,255,0.8) !important; }
+    body:not(.light) .legal-screen { background: #0E0B1A !important; }
+    body:not(.light) .legal-card { background: #1A1530 !important; border-color: rgba(123,47,190,0.3) !important; }
+    body:not(.light) .legal-card-label { color: #B57BF7 !important; }
+
+    /* Visual share card — always white text regardless of theme */
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
+    /* Remove duplicate number below card */
+    #vscNumber:not(.vsc-number) { display: none !important; }
+
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
+
+    .visual-share-card,
+    .visual-share-card .vsc-brand,
+    .visual-share-card .vsc-number,
+    .visual-share-card .vsc-label,
+    .visual-share-card .vsc-tagline,
+    .visual-share-card .vsc-tagline strong {
+      color: white !important;
+    }
+    .visual-share-card .vsc-number {
+      text-shadow: 0 0 30px rgba(255,255,255,0.4) !important;
+    }
+    .visual-share-card .vsc-streak {
+      color: #e0b8ff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+      background: rgba(255,255,255,0.15) !important;
+    }
+
+    /* Notification Permission Modal */
+    .notif-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:flex-end;justify-content:center;}
+    .notif-overlay.open{display:flex;}
+    .notif-sheet{background:#1A1A2E;border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:480px;border-top:1px solid rgba(123,47,190,0.4);}
+    .notif-handle{width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 20px;}
+    .notif-headline{font-size:1.2rem;font-weight:800;color:white;margin-bottom:6px;}
+    .notif-sub{font-size:0.88rem;color:rgba(255,255,255,0.5);margin-bottom:20px;}
+    .notif-times{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+    .notif-time-btn{background:rgba(123,47,190,0.15);border:1.5px solid rgba(123,47,190,0.3);border-radius:14px;padding:13px 16px;color:white;font-size:0.92rem;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+    .notif-time-btn.selected{background:rgba(123,47,190,0.4);border-color:#7B2FBE;}
+    .notif-time-label{font-size:0.76rem;color:rgba(255,255,255,0.45);font-weight:400;}
+    .notif-custom{display:none;margin-bottom:14px;}
+    .notif-custom input[type=time]{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(123,47,190,0.4);background:rgba(123,47,190,0.1);color:white;font-size:1rem;font-family:inherit;outline:none;}
+    .notif-cta{width:100%;padding:16px;border-radius:50px;border:none;background:#7B2FBE;color:white;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:12px;}
+    .notif-skip{width:100%;padding:10px;border:none;background:transparent;color:rgba(255,255,255,0.4);font-size:0.88rem;cursor:pointer;}
+#installBanner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:3001;background:#0E0B1A;border-top:1px solid rgba(168,85,247,0.2);padding:24px 24px 40px;box-shadow:0 -8px 32px rgba(0,0,0,0.4);}
+.install-overlay{display:none;position:fixed;inset:0;background:#0E0B1A !important;z-index:999;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;}
+.install-overlay *{color:#FFFFFF !important;}
+.install-overlay.open{display:flex;}
+.install-logo{width:72px;height:72px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:white;font-style:italic;margin-bottom:24px;}
+.install-title{font-size:1.6rem;font-weight:900;color:#FFFFFF !important;margin-bottom:12px;line-height:1.2;}
+.install-sub{font-size:1rem;color:#FFFFFF !important;;margin-bottom:32px;line-height:1.5;}
+.install-steps{width:100%;display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+.install-step{background:rgba(123,47,190,0.5);border:1px solid rgba(123,47,190,0.3);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;}
+.install-step-num{width:32px;height:32px;background:#7B2FBE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#FFFFFF !important;flex-shrink:0;}
+.install-step-text{font-size:0.95rem;color:#F0EEFF;line-height:1.4;}
+.install-step-text span{color:#B57BF7;font-weight:700;}
+.install-btn{width:100%;padding:18px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border:none;border-radius:14px;color:white;font-size:1.1rem;font-weight:700;cursor:pointer;margin-bottom:12px;}
+.install-skip{font-size:0.85rem;color:rgba(255,255,255,0.35);cursor:pointer;padding:8px;}#installOverlay, #installOverlay div, #installOverlay span, #installOverlay strong { color: #FFFFFF !important; }
+#installOverlay { background: #0E0B1A !important; }
+  .modal { background: #ffffff !important; }
+.modal-title, .modal label, .modal textarea, .modal input, .btn-cancel { color: #1a0f30 !important; }.modal-tags .tag-chip, #editTagsRow .tag-chip { color: #1a0f30 !important; border-color: #cccccc !important; background: #f5f5f5 !important; }.modal .tag-chip { color: #1a0f30 !important; }
+
+/* ── Onboarding screens — always dark ── */
+#promiseScreen, #stage2aScreen, #stage2bScreen, #stage3Screen { position:fixed; inset:0; background:#06000D; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+#stage3Screen { justify-content:flex-start; overflow-y:auto; }
+.ob-eyebrow { font-family:'DM Sans',sans-serif; font-weight:600; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#B57BF7; margin-bottom:28px; text-align:center; }
+.hs-card { width:100%; background:#0E0B1A; border:1px solid rgba(168,85,247,0.25); border-radius:14px; padding:20px 24px; color:#E8D5FF; font-size:16px; font-weight:500; font-family:'DM Sans',sans-serif; text-align:left; cursor:pointer; transition:border-color 0.15s; }
+.hs-card:hover { border-color:rgba(168,85,247,0.6); }
+.hs-card:active { border-color:rgba(168,85,247,0.6); }
+.hs-ghost-btn { background:transparent; border:1px solid rgba(232,213,255,0.35); border-radius:50px; padding:16px 52px; font-size:15px; font-weight:500; color:#E8D5FF; cursor:pointer; font-family:'DM Sans',sans-serif; transition:transform 150ms ease-out, border-color 150ms ease-out; }
+.hs-ghost-btn:active { transform:scale(0.96); border-color:rgba(232,213,255,0.7); transition:transform 80ms ease-in, border-color 80ms ease-in; }
+.hs-ghost-btn:focus { outline:none; }
+#goodDayInput::placeholder { color:rgba(201,190,216,0.45); }
+#goodDayInput:focus { outline:none; border-color:rgba(255,176,32,0.45); }
+#goodDayCharCount { font-family:'DM Sans',sans-serif; color:#C9BED8; }
+.s3-input { width:100%; background:#0E0B1A; border:1px solid rgba(168,85,247,0.2); border-radius:14px; padding:20px 24px; font-size:1rem; font-family:'DM Sans',sans-serif; color:#E8D5FF; outline:none; box-sizing:border-box; transition:border-color 0.15s; }
+.s3-input::placeholder { color:rgba(201,190,216,0.45); }
+.s3-input:focus { border-color:rgba(255,176,32,0.45); }
+.s3-error { font-family:'DM Sans',sans-serif; color:#ff6b8a; font-size:0.82rem; min-height:18px; text-align:center; margin-top:12px; }
+
+/* ── Auth screen — always dark, always white text regardless of theme ── */
+#authScreen { position:fixed; inset:0; background:#06000D; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
+.auth-card { width:100%; max-width:400px; background:transparent; border:none; padding:0; }
+.auth-logo { display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:40px; }
+.auth-logo-d { width:40px; height:40px; background:linear-gradient(135deg,#7B2FBE,#B57BF7); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:900; color:white; font-style:italic; flex-shrink:0; }
+.auth-logo-name { font-size:1.3rem; font-weight:700; color:white; letter-spacing:-0.3px; }
+.auth-logo-name span { color:#B57BF7; font-weight:400; }
+.auth-title { font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:700; color:#E8D5FF; margin-bottom:28px; text-align:center; }
+.auth-input { width:100%; background:#0E0B1A; border:1px solid rgba(168,85,247,0.2); border-radius:14px; padding:20px 24px; font-size:1rem; font-family:'DM Sans',sans-serif; color:#E8D5FF; outline:none; transition:border-color 0.15s; display:block; margin-bottom:12px; box-sizing:border-box; }
+.auth-input:focus { border-color:rgba(255,176,32,0.45); }
+.auth-input::placeholder { color:rgba(201,190,216,0.45); }
+.auth-btn { width:100%; padding:16px; background:transparent; border:1px solid rgba(232,213,255,0.35); border-radius:50px; color:#E8D5FF; font-size:15px; font-weight:500; cursor:pointer; margin-top:8px; transition:transform 150ms ease-out,border-color 150ms ease-out; font-family:'DM Sans',sans-serif; }
+.auth-btn:active { transform:scale(0.96); border-color:rgba(232,213,255,0.7); }
+.auth-btn:disabled { opacity:0.5; cursor:default; transform:none; }
+.auth-error { color:#ff6b8a; font-size:0.82rem; margin-top:10px; min-height:18px; text-align:center; font-family:'DM Sans',sans-serif; }
+.auth-toggle { margin-top:20px; text-align:center; font-size:0.85rem; color:rgba(201,190,216,0.4); font-family:'DM Sans',sans-serif; }
+.auth-toggle-link { color:#B57BF7; font-weight:600; cursor:pointer; border:none; background:none; font-size:0.85rem; font-family:'DM Sans',sans-serif; padding:0; margin-left:4px; text-decoration:underline; }
+.auth-or-divider { display:flex; align-items:center; gap:12px; margin:16px 0 12px; color:rgba(201,190,216,0.3); font-size:0.8rem; font-family:'DM Sans',sans-serif; }
+.auth-or-divider::before, .auth-or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
+.auth-google-btn { width:100%; height:48px; background:rgba(255,255,255,0.06); color:#E8D5FF; border:1px solid rgba(232,213,255,0.2); border-radius:14px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.95rem; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
+.auth-google-btn:active { opacity:0.85; }
+.auth-forgot { display:block; text-align:right; background:none; border:none; color:rgba(201,190,216,0.5); font-size:0.78rem; font-family:'DM Sans',sans-serif; cursor:pointer; padding:0; margin-top:-6px; margin-bottom:8px; }
+#recoveryScreen { position:fixed; inset:0; background:#0E0B1A; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
+    .blank-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px; }
+    .blank-overlay.visible { display:flex; }
+    .blank-question { font-size:1.75rem; font-weight:800; color:white; text-align:center; line-height:1.3; max-width:340px; margin-bottom:40px; }
+    .blank-timer-wrap { width:100%; max-width:340px; height:3px; background:rgba(255,255,255,0.12); border-radius:3px; overflow:hidden; margin-bottom:48px; }
+    .blank-timer-fill { height:100%; width:0%; background:#7B2FBE; border-radius:3px; }
+    .blank-choices { display:none; flex-direction:column; gap:14px; width:100%; max-width:340px; }
+    .blank-choice-btn { width:100%; padding:16px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:1rem; font-weight:600; cursor:pointer; }
+    .blank-reveal { display:none; flex-direction:column; align-items:center; max-width:340px; animation:blankFadeIn 0.4s ease; }
+    @keyframes blankFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .blank-reveal-text { font-size:1rem; color:rgba(255,255,255,0.85); line-height:1.65; text-align:center; margin-bottom:36px; }
+    .blank-cta-btn { background:#7B2FBE; border:none; border-radius:50px; padding:16px 32px; font-size:1rem; font-weight:700; color:white; cursor:pointer; width:100%; }
+</style>
+<script type="text/javascript">
+(function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?
+"https:":"http:")+"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d);
+a._i=[];a.init=function(b,c,f){function d(a,b){var c=b.split(".");
+2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==
+typeof f?g=a[f]=[]:f="mixpanel";g.people=g.people||[];h="disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.set people.increment".split(" ");
+for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.1}
+)(document,window.mixpanel||[]);
+mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
+  autocapture: true,
+  record_sessions_percent: 100
+});
+</script>
+<script src="https://tally.so/widgets/embed.js"></script>
 </head>
 <body>
 
-  <header>
-    <div class="header-logo">
-      <div class="header-logo-d">
-        <img src="https://mydopa.app/images/dopa-03-winking.png"
-             alt="DOPA" width="32" height="32" />
+  <div id="dopa-glow-layer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></div>
+
+  <!-- BLANK MOMENT ONBOARDING -->
+  <div id="blankMomentScreen" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;">
+    <div style="font-size:1.75rem; font-weight:800; color:white; text-align:center; line-height:1.3; max-width:340px; margin-bottom:40px;">What was the best moment from last Tuesday?</div>
+    <div style="width:100%; max-width:340px; height:3px; background:rgba(255,255,255,0.12); border-radius:3px; overflow:hidden; margin-bottom:48px;">
+      <div id="blankTimerFill" style="height:100%; width:0%; background:#7B2FBE; border-radius:3px;"></div>
+    </div>
+    <div id="blankChoices" style="display:none; flex-direction:column; gap:14px; width:100%; max-width:340px;">
+      <button onclick="blankChoose('A')" style="width:100%; padding:16px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:1rem; font-weight:600; cursor:pointer;">I can't remember</button>
+      <button onclick="blankChoose('B')" style="width:100%; padding:16px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:1rem; font-weight:600; cursor:pointer;">I remember it clearly</button>
+    </div>
+    <div id="blankReveal" style="display:none; flex-direction:column; align-items:center; max-width:340px; width:100%; overflow-y:auto; max-height:60vh;">
+      <p id="blankRevealText" style="font-size:1rem; color:rgba(255,255,255,0.85); line-height:1.65; text-align:center; margin-bottom:36px;"></p>
+      <button id="blankCTA" onclick="dismissBlankScreen()" style="background:#7B2FBE; border:none; border-radius:50px; padding:16px 32px; font-size:1rem; font-weight:700; color:white; cursor:pointer; width:100%;"></button>
+    </div>
+  </div>
+
+  <!-- PROMISE SCREEN (Stage 1 Onboarding) -->
+  <div id="promiseScreen">
+    <div id="promise-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div id="promise-content" style="position:absolute;left:0;right:0;top:22%;display:flex;flex-direction:column;align-items:center;padding:0 36px;opacity:0;transition:opacity 1s ease;">
+      <p class="ob-eyebrow">YOUR DOPAMINE. FROM THE INSIDE.</p>
+      <p style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;max-width:340px;margin:0 0 36px;">This is what consistent attention to the good things does to a brain over 14 days.</p>
+      <button class="hs-ghost-btn" onclick="advanceToStage2()">Start my 7 days</button>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(201,190,216,0.4);margin-top:24px;text-align:center;">Already have an account? <button onclick="promiseSignIn()" style="background:none;border:none;color:rgba(201,190,216,0.6);font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
+    </div>
+  </div>
+
+  <!-- STAGE 2a: What brought you here? -->
+  <div id="stage2aScreen">
+    <div id="stage2a-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
+      <p class="ob-eyebrow">THE HANDSHAKE</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 36px;">What brought you here?</h1>
+      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;">
+        <button class="hs-card" onclick="selectReferral('friend')">A friend told me about it</button>
+        <button class="hs-card" onclick="selectReferral('search')">I was curious and looked it up</button>
+        <button class="hs-card" onclick="selectReferral('apps')">I've tried other apps like this</button>
+        <button class="hs-card" onclick="selectReferral('feel')">I just want to feel better about my days</button>
       </div>
+    </div>
+  </div>
+
+  <!-- STAGE 2b: What does a good day look like? -->
+  <div id="stage2bScreen">
+    <div id="stage2b-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:72px 32px 40px;display:flex;flex-direction:column;align-items:center;">
+      <p class="ob-eyebrow">THE HANDSHAKE</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 36px;">What does a good day look like for you?</h1>
+      <textarea id="goodDayInput" maxlength="120" placeholder="Anything. There&#39;s no wrong answer."
+        style="width:100%;max-width:340px;font-size:1rem;font-family:'DM Sans',sans-serif;color:#E8D5FF;background:#0E0B1A;border:1px solid rgba(168,85,247,0.2);border-radius:14px;padding:20px 24px;resize:none;height:120px;outline:none;margin-bottom:8px;box-sizing:border-box;"></textarea>
+      <div id="goodDayCharCount" style="font-size:0.75rem;margin-bottom:40px;align-self:flex-end;max-width:340px;width:100%;text-align:right;">120 left</div>
+      <button class="hs-ghost-btn" onclick="submitHandshake()">Continue</button>
+    </div>
+  </div>
+
+  <!-- STAGE 3: Create account -->
+  <div id="stage3Screen">
+    <div id="stage3-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
+      <p class="ob-eyebrow">ONE LAST THING</p>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 10px;">One last thing.</h1>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#C9BED8;text-align:center;line-height:1.5;margin:0 0 36px;">Where should we send your Day 7 results?</p>
+      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;margin-bottom:24px;">
+        <input class="s3-input" id="s3FirstName" type="text" placeholder="First name" autocomplete="given-name" />
+        <input class="s3-input" id="s3Email" type="email" placeholder="Email address" autocomplete="email" />
+        <div style="position:relative;width:100%;">
+          <input class="s3-input" id="s3Password" type="password" placeholder="Password" autocomplete="new-password" style="padding-right:52px;" onkeydown="if(event.key==='Enter')submitStage3()" />
+          <button id="s3EyeBtn" onclick="toggleS3Password()" tabindex="-1"
+            style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;color:#C9BED8;line-height:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
+      <div id="stage3Error" class="s3-error"></div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:16px;text-align:center;">Already have an account? <button onclick="stage3SignIn()" style="background:none;border:none;color:#6B7280;font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
+    </div>
+  </div>
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-d">D</div>
+        <div class="auth-logo-name">DOPA<span>mine</span></div>
+      </div>
+      <div id="authMainContent">
+        <div class="auth-title" id="authTitle">Sign In</div>
+        <input class="auth-input" type="email" id="authEmail" placeholder="Email" autocomplete="email" />
+        <input class="auth-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') handleAuthSubmit()" />
+        <button class="auth-forgot" onclick="showForgotPassword()">Forgot password?</button>
+        <button class="auth-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign In</button>
+        <div class="auth-error" id="authError"></div>
+        <div id="authLegal" style="display:none;margin-top:14px;text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.6;">
+          By signing up you agree to our
+          <button onclick="openTos()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Terms of Service</button>
+          and
+          <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.
+        </div>
+        <div class="auth-toggle">
+          <span id="authToggleText">Don't have an account?</span>
+          <button class="auth-toggle-link" onclick="toggleAuthMode()" id="authToggleLink">Sign Up</button>
+        </div>
+      </div>
+      <div id="authForgotContent" style="display:none">
+        <div class="auth-title">Reset Password</div>
+        <input class="auth-input" type="email" id="authResetEmail" placeholder="Email address" autocomplete="email"
+          onkeydown="if(event.key==='Enter') sendPasswordReset()" />
+        <button class="auth-btn" id="authResetBtn" onclick="sendPasswordReset()">Send Reset Email</button>
+        <div class="auth-error" id="authResetError"></div>
+        <div class="auth-toggle">
+          <button class="auth-toggle-link" onclick="hideForgotPassword()">Back to Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECOVERY SCREEN -->
+  <div id="recoveryScreen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-d">D</div>
+        <div class="auth-logo-name">DOPA<span>mine</span></div>
+      </div>
+      <div class="auth-title">Set New Password</div>
+      <input class="auth-input" type="password" id="newPasswordInput" placeholder="New password" autocomplete="new-password" />
+      <input class="auth-input" type="password" id="confirmPasswordInput" placeholder="Confirm password" autocomplete="new-password"
+        onkeydown="if(event.key==='Enter') saveNewPassword()" />
+      <button class="auth-btn" id="savePasswordBtn" onclick="saveNewPassword()" style="background:#7B2FBE;">Save Password</button>
+      <div class="auth-error" id="recoveryError"></div>
+    </div>
+  </div>
+
+  <!-- TERMS OF SERVICE -->
+  <div id="tosScreen" style="display:none;" class="legal-screen">
+    <div class="legal-inner">
+      <button onclick="closeTos()" class="legal-back-btn">← Back</button>
+      <div class="legal-header">
+        <div style="width:36px;height:36px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:white;font-style:italic;flex-shrink:0;">D</div>
+        <div class="legal-page-title">Terms of Service</div>
+      </div>
+      <div class="legal-updated">Last updated: May 2026</div>
+      <div class="legal-cards">
+        <div class="legal-card">
+          <div class="legal-card-label">What DOPAmine Is</div>
+          <div class="legal-card-body">DOPAmine is a personal wins logging app designed to help you recognize and record positive moments in your day.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Age Requirement</div>
+          <div class="legal-card-body">You must be 13 years of age or older to use DOPAmine.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Your Content</div>
+          <div class="legal-card-body">You are solely responsible for the content you log. Do not enter sensitive personal information you would not want stored.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Misuse</div>
+          <div class="legal-card-body">We reserve the right to suspend or terminate accounts that misuse the service, including any attempts to abuse, spam, or harm the platform or its users.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">As-Is Service</div>
+          <div class="legal-card-body">DOPAmine is provided as-is without warranties of any kind. We are not liable for any loss of data or interruption of service.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY -->
+  <div id="privacyScreen" style="display:none;" class="legal-screen">
+    <div class="legal-inner">
+      <button onclick="closePrivacy()" class="legal-back-btn">← Back</button>
+      <div class="legal-header">
+        <div style="width:36px;height:36px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:white;font-style:italic;flex-shrink:0;">D</div>
+        <div class="legal-page-title">Privacy Policy</div>
+      </div>
+      <div class="legal-updated">Last updated: May 2026</div>
+      <div class="legal-cards">
+        <div class="legal-card">
+          <div class="legal-card-label">Data We Collect</div>
+          <div class="legal-card-body">We collect your email address and the moments you log within the app. No other personal data is collected.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">How It's Stored</div>
+          <div class="legal-card-body">Your data is stored securely via Supabase, a trusted cloud database provider with industry-standard security practices.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">We Don't Sell Your Data</div>
+          <div class="legal-card-body">We do not sell, rent, or share your personal data with third parties for marketing purposes, ever.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Push Notifications</div>
+          <div class="legal-card-body">We use push notifications only if you explicitly opt in. You can revoke this permission at any time through your device settings.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Deleting Your Data</div>
+          <div class="legal-card-body">You can request deletion of your account and all associated data by emailing <span style="color:#B57BF7;">hello@mydopa.app</span>. We will process your request within 30 days.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">Analytics</div>
+          <div class="legal-card-body">We use Google Analytics to track anonymous usage patterns. This data cannot be used to identify you personally and helps us improve the app.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header style="position:relative;">
+
+    <button onclick="signOutUser()" title="Sign out" style="position:absolute;top:22px;right:62px;border:none;background:none;color:rgba(255,255,255,0.35);font-size:0.7rem;cursor:pointer;font-family:inherit;padding:0;letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Sign out</button>
+    <div class="header-logo">
+      <div class="header-logo-d">D</div>
       <div class="header-logo-text">
         <div class="header-logo-name">DOPA<span>mine</span></div>
         <div class="header-logo-tagline">Great Yesterday. Better Tomorrow.</div>
@@ -1552,6 +2529,32 @@
     <p class="date" id="headerDate"></p>
   </header>
 
+  <!-- INSTALL PROMPT -->
+<div id="installOverlay" style="display:none;position:fixed;inset:0;background:#0E0B1A;z-index:999;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;">
+  <div style="width:72px;height:72px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:#FFFFFF;font-style:italic;margin-bottom:24px;">D</div>
+  <div style="font-size:1.6rem;font-weight:900;color:#FFFFFF;margin-bottom:12px;line-height:1.2;">One step to unlock everything</div>
+  <div style="font-size:1rem;color:rgba(255,255,255,0.85);margin-bottom:32px;line-height:1.5;">Add DOPAmine to your home screen for daily reminders and the full experience.</div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:16px;margin-bottom:32px;">
+    <div style="background:rgba(123,47,190,0.5);border:1px solid rgba(123,47,190,0.4);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;">
+      <div style="width:32px;height:32px;background:#7B2FBE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#FFFFFF;flex-shrink:0;">1</div>
+      <div style="font-size:0.95rem;color:#FFFFFF;line-height:1.4;">Tap the <strong style="color:#B57BF7;">Share icon</strong> at the bottom of Safari</div>
+    </div>
+    <div style="background:rgba(123,47,190,0.5);border:1px solid rgba(123,47,190,0.4);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;">
+      <div style="width:32px;height:32px;background:#7B2FBE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#FFFFFF;flex-shrink:0;">2</div>
+      <div style="font-size:0.95rem;color:#FFFFFF;line-height:1.4;">Scroll down and tap <strong style="color:#B57BF7;">Add to Home Screen</strong></div>
+    </div>
+    <div style="background:rgba(123,47,190,0.5);border:1px solid rgba(123,47,190,0.4);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;">
+      <div style="width:32px;height:32px;background:#7B2FBE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#FFFFFF;flex-shrink:0;">3</div>
+      <div style="font-size:0.95rem;color:#FFFFFF;line-height:1.4;">Tap <strong style="color:#B57BF7;">Add</strong> in the top right corner</div>
+    </div>
+    <div style="background:rgba(123,47,190,0.5);border:1px solid rgba(123,47,190,0.4);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;">
+      <div style="width:32px;height:32px;background:#7B2FBE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#FFFFFF;flex-shrink:0;">4</div>
+      <div style="font-size:0.95rem;color:#FFFFFF;line-height:1.4;">Open DOPAmine from your <strong style="color:#B57BF7;">home screen icon</strong> — you're ready</div>
+    </div>
+  </div>
+  <button onclick="dismissInstall()" style="width:100%;padding:18px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border:none;border-radius:14px;color:#FFFFFF;font-size:1.1rem;font-weight:700;cursor:pointer;margin-bottom:12px;">I've added it to my home screen ✓</button>
+  <div onclick="dismissInstall()" style="font-size:0.85rem;color:rgba(255,255,255,0.5);cursor:pointer;padding:8px;">Skip for now</div>
+</div>
   <!-- NAME MODAL -->
   <div class="modal-overlay" id="nameModal">
     <div class="modal">
@@ -1576,80 +2579,152 @@
 
   <!-- LOG VIEW -->
   <div class="view active" id="view-log">
-    <div class="prompt-card">
-      <div class="emoji">✨</div>
-      <p>ONLY GOOD THINGS</p>
-    </div>
 
-    <div class="log-streak" id="logStreak">
-      <span class="log-streak-pill" id="logStreakPill"></span>
-      <div class="log-streak-meaning" id="logStreakMeaning"></div>
-    </div>
-
-    <div class="input-area">
-      <textarea
-        id="momentInput"
-        placeholder="I just ....."
-        maxlength="280"
-        oninput="updateCharCount()"
-      ></textarea>
-
-      <!-- Photo preview -->
-      <div class="photo-preview" id="photoPreview">
-        <img id="photoImg" src="" alt="moment photo" />
-        <button class="photo-remove" onclick="removePhoto()" title="Remove photo">✕</button>
+    <div class="today-protagonist-card" id="todayProtagonistCard">
+      <div class="tpc-top-row">
+        <div class="tpc-streak-pill" id="tpcStreakPill"></div>
+        <div class="tpc-date" id="tpcDate"></div>
       </div>
-
-      <!-- Media buttons + save row -->
-      <div class="media-row">
-        <button class="media-btn" id="photoBtnToggle" onclick="togglePhotoCapture()">📷 Photo</button>
-        <button class="media-btn" id="moodBtnToggle" onclick="toggleMoodPicker()">😊 Mood</button>
-        <input type="file" id="photoInput" accept="image/*"
-          style="display:none" onchange="handlePhotoSelect(event)" />
-      </div>
-
-      <!-- Mood picker -->
-      <div class="mood-picker" id="moodPicker">
-        <div class="mood-grid" id="moodGrid">
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="😄 Joy">😄</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="💪 Win">💪</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🤝 Connection">🤝</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🧠 Growth">🧠</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="❤️ Gratitude">❤️</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎯 Focus">🎯</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🌿 Calm">🌿</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🍸 Cheers">🍸</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏃 Active">🏃</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏋️ Gym">🏋️</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🛍️ Shopping">🛍️</button>
-          <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎂 Birthday">🎂</button>
+      <div class="tpc-prompt" id="tpcPrompt" onclick="nextPrompt()">ONLY GOOD THINGS</div>
+      <div class="tpc-input-area">
+        <textarea
+          id="momentInput"
+          class="tpc-textarea"
+          placeholder="Today hasn't been written yet."
+          maxlength="280"
+          spellcheck="true"
+          autocorrect="on"
+          autocapitalize="sentences"
+          oninput="updateCharCount()"
+        ></textarea>
+        <div class="photo-preview" id="photoPreview">
+          <img id="photoImg" src="" alt="moment photo" />
+          <button class="photo-remove" onclick="removePhoto()" title="Remove photo">✕</button>
         </div>
       </div>
-
-      <div class="input-footer">
-        <span class="char-count"><span id="charCount">0</span>/280</span>
-        <button class="save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
+      <div class="tpc-bottom-row">
+        <button class="tpc-media-btn" id="photoBtnToggle" onclick="togglePhotoCapture()">📷 Photo</button>
+        <button class="tpc-media-btn" id="moodBtnToggle" onclick="toggleMoodPicker()">😊 Mood</button>
+        <span class="tpc-char-count" id="charCount">0/280</span>
+        <button class="tpc-save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
     </div>
 
-    <!-- Science visual card -->
-    <div class="science-card" id="scienceQuote"></div>
+    <!-- Hidden elements outside card -->
+    <input type="file" id="photoInput" accept="image/*"
+      style="display:none" onchange="handlePhotoSelect(event)" />
+    <div class="mood-picker" id="moodPicker">
+      <div class="mood-grid" id="moodGrid">
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="😄 Joy">😄</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="💪 Win">💪</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🤝 Connection">🤝</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🧠 Growth">🧠</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="❤️ Gratitude">❤️</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎯 Focus">🎯</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🌿 Calm">🌿</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🍸 Cheers">🍸</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏃 Active">🏃</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🏋️ Gym">🏋️</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🛍️ Shopping">🛍️</button>
+        <button class="mood-chip" onclick="toggleMoodTag(this)" data-tag="🎂 Birthday">🎂</button>
+      </div>
+    </div>
+
+    <!-- Today's entries stack -->
+    <div class="tpc-stack-header" style="margin-top:20px;">
+      <span class="tpc-stack-label">TODAY'S WINS</span>
+      <span class="tpc-wins-count" id="tpcWinsCount"></span>
+    </div>
+    <div class="tpc-deck" id="tpcDeck" onclick="tpcExpandDeck()" style="display:none;">
+      <div class="tpc-sh3"></div>
+      <div class="tpc-sh2"></div>
+      <div class="tpc-sh1">
+        <div class="tpc-sh1-content" id="tpcStackTop"></div>
+        <div class="tpc-sh1-cta" id="tpcSeeAll">see all →</div>
+      </div>
+    </div>
+    <div class="tpc-entries-expanded" id="tpcExpanded" style="display:none;"></div>
+    <div class="ypc-closing-wrap" id="tpcClosingWrap" style="display:none;">
+      <div class="ypc-closing-pill">
+        Your dopa. Made by <span class="ypc-closing-you">you</span>. Every day.
+      </div>
+    </div>
+    <div id="todayWhisperArea" style="padding-bottom:24px;"></div>
+
   </div>
 
   <!-- YESTERDAY VIEW -->
   <div class="view" id="view-yesterday">
-    <div class="yesterday-hero">
-      <div class="yesterday-headline">Yesterday Was Good.</div>
-      <div id="yesterdaySubtitle" class="yesterday-subtitle"></div>
+
+    <div class="yesterday-protagonist-card">
+      <div class="ypc-eyebrow">
+        <span class="ypc-eyebrow-dot"></span>
+        <span id="ypcDateLabel">MONDAY, MAY 11</span>
+      </div>
+      <div class="ypc-headline">Yesterday Was Good.</div>
+      <div class="ypc-feeling" id="ypcFeeling">Consistency beats talent. Every time.</div>
+      <div class="ypc-divider"></div>
+      <div class="ypc-question">How does it make you feel today?</div>
+      <div class="ypc-listen">This screen responds.</div>
+      <div class="ypc-input-wrap" id="ypcInputWrap">
+        <span class="ypc-cursor"></span>
+        <span class="ypc-placeholder" id="ypcPlaceholder">Just say what comes up.</span>
+        <textarea class="ypc-textarea" id="ypcTextarea"></textarea>
+      </div>
+      <button class="ypc-send" id="ypcSend" style="display:none;">Send it →</button>
+      <div class="ypc-scarcity">Today starts writing over this at midnight.</div>
     </div>
-    <div class="yesterday-list" id="yesterdayList"></div>
-    <button class="yesterday-start-btn" onclick="switchTab('log')">Start Today</button>
+
+    <div class="ypc-stack-header">
+      <span class="ypc-stack-label">YOUR MOMENTS</span>
+    </div>
+    <div class="ypc-stack" id="ypcDeck">
+      <div class="ypc-sh3"></div>
+      <div class="ypc-sh2"></div>
+      <div class="ypc-sh1">
+        <div class="ypc-sh1-content" id="ypcStackTop"></div>
+        <div class="ypc-sh1-cta" id="ypcSeeAll">see all →</div>
+      </div>
+    </div>
+    <div class="ypc-entries-expanded" id="ypcExpanded" style="display:none;"></div>
+    <div class="ypc-closing-wrap">
+      <div class="ypc-closing-pill">
+        Your dopa. Made by <span class="ypc-closing-you">you</span>. Every day.
+      </div>
+    </div>
+
   </div>
 
   <!-- SUMMARY VIEW -->
   <div class="view" id="view-summary">
     <div class="stats-bar" id="statsBar"></div>
+
+    <!-- Visual share card — always visible at top of progress -->
+    <div class="visual-share-card" id="visualShareCard">
+      <div class="vsc-brand" id="vscBrand">DOPAmine</div>
+      <div class="vsc-number" id="vscNumber">0</div>
+      <div class="vsc-label" id="vscLabel">good moments captured</div>
+      <div class="vsc-streak" id="vscStreak">🔥 0 day streak</div>
+      <div class="vsc-tagline">Training my brain to find good.<br><strong>mydopa.app</strong></div>
+    </div>
+
+    <!-- Share button -->
+    <button class="share-btn-top" onclick="shareProgress()">
+      🚀 Share my progress
+    </button>
+
     <div id="summaryContent"></div>
+
+    <div id="notifSettingsRow" style="margin:24px 0 8px;padding:14px 16px;background:rgba(123,47,190,0.1);border:1px solid rgba(123,47,190,0.25);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="openNotifSettings()">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.1rem;">🔔</span>
+        <div>
+          <div style="font-size:0.88rem;font-weight:700;color:white;">Daily Reminder</div>
+          <div style="font-size:0.76rem;color:rgba(255,255,255,0.45);" id="notifSettingsCurrentTime">Not set</div>
+        </div>
+      </div>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.8rem;">Change ›</span>
+    </div>
   </div>
 
   <!-- EDIT MODAL -->
@@ -1691,22 +2766,159 @@
     </div>
   </div>
 
+  <!-- Ritual Anchoring overlay (Item 16) -->
+  <div id="ritualOverlay">
+    <p class="ritual-prompt">What's one thing you already did this morning?</p>
+    <div class="ritual-chips">
+      <button class="ritual-chip" onclick="ritualChipTap(this)">☕ Had coffee</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">🚶 Went for a walk</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">💪 Hit the gym</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">🥐 Made breakfast</button>
+    </div>
+    <textarea id="ritualInput" class="ritual-textarea" placeholder="Type something…"></textarea>
+    <button id="ritualSaveBtn" class="ritual-save-btn" disabled onclick="ritualSave()">Save ✓</button>
+    <button class="ritual-skip-btn" onclick="ritualSkip()">Skip</button>
+  </div>
+
+  <!-- Re-entry overlay (Item 12) -->
+  <div id="reentryOverlay">
+    <p class="reentry-prompt">A few days went by. Something good probably happened. What's one thing worth keeping from it?</p>
+    <textarea id="reentryInput" class="reentry-textarea" placeholder="Type something…"></textarea>
+    <button id="reentrySaveBtn" class="reentry-save-btn" disabled onclick="reentrySave()">Save ✓</button>
+    <button class="reentry-skip-btn" onclick="reentrySkip()">Skip</button>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
+
+    // ── Blank Moment Onboarding (global scope) ───────────────────
+    const BLANK_KEY = 'dopamine_blank_seen';
+    window.blankChoose = function(path) {
+      document.getElementById('blankChoices').style.display = 'none';
+      const revealText = document.getElementById('blankRevealText');
+      const cta = document.getElementById('blankCTA');
+      if (path === 'A') {
+        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
+        cta.textContent = "DOPAmine fixes that. Let's start \u2192";
+      } else {
+        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
+        cta.textContent = "Let's build that reflex \u2192";
+      }
+      document.getElementById('blankReveal').style.display = 'flex';
+    };
+    window.dismissBlankScreen = function() {
+      localStorage.setItem(BLANK_KEY, '1');
+      document.getElementById('blankMomentScreen').style.display = 'none';
+      checkRitualAnchoring();
+    };
+
+    // ── Ritual Anchoring (Item 16) ───────────────────────────
+    function checkRitualAnchoring() {
+      if (localStorage.getItem('dopamine_ritual_seen')) return;
+      if (loadMoments().length > 0) return;
+      document.getElementById('ritualOverlay').classList.add('open');
+      setTimeout(() => document.getElementById('ritualInput').focus(), 120);
+      document.getElementById('ritualInput').addEventListener('input', function() {
+        document.getElementById('ritualSaveBtn').disabled = this.value.trim().length === 0;
+      });
+    }
+
+    function ritualChipTap(el) {
+      const input = document.getElementById('ritualInput');
+      input.value = el.textContent;
+      document.getElementById('ritualSaveBtn').disabled = false;
+      input.focus();
+    }
+
+    async function ritualSave() {
+      const text = document.getElementById('ritualInput').value.trim();
+      if (!text) return;
+
+      const lc = text.toLowerCase();
+      if (/walk|gym|run|workout|yoga|bike|swim/.test(lc)) {
+        localStorage.setItem('dopamine_context_tag', 'post_gym');
+      }
+
+      const moments = loadMoments();
+      const newMoment = {
+        id: Date.now(),
+        text,
+        tags: ['anchor_entry'],
+        autoTag: getTimeOfDayTag(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey(),
+        photo: null,
+      };
+      moments.unshift(newMoment);
+      saveMoments(moments);
+      localStorage.setItem(LAST_SAVE_TS_KEY, Date.now());
+      sbSave(newMoment);
+      showToast('Moment saved! 🌟');
+      updateLogStreak();
+      renderTodayEntries();
+
+      localStorage.setItem('dopamine_ritual_seen', '1');
+      document.getElementById('ritualInput').value = '';
+      document.getElementById('ritualOverlay').classList.remove('open');
+    }
+
+    function ritualSkip() {
+      localStorage.setItem('dopamine_ritual_seen', '1');
+      document.getElementById('ritualOverlay').classList.remove('open');
+    }
+
     // ── Helpers ──────────────────────────────────────────────
     const STORAGE_KEY = 'greatYesterday_moments';
     const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    function loadMoments() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      } catch { return []; }
+    const SB_URL = 'https://qcfoykmmbjvduspunvsb.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjZm95a21tYmp2ZHVzcHVudnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MTc1OTAsImV4cCI6MjA5Mjk5MzU5MH0.9WwCW0pbbciBy3sUO9Y6qpQK6-LclMCRUuF9cr_NEOE';
+    const SB_HEADS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
+
+    const sbClient = supabase.createClient(SB_URL, SB_KEY);
+    let currentUser = null;
+    let appInitialized = false;
+
+    const UID_KEY = 'dopamine_uid';
+    function getUserId() {
+      return currentUser ? currentUser.id : null;
     }
 
-    function saveMoments(moments) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(moments));
+    async function sbSave(m) {
+      try {
+        await fetch(SB_URL+'/rest/v1/moments', {method:'POST', headers:SB_HEADS,
+          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id)})});
+      } catch(e) { console.log('sbSave offline:', e.message); }
     }
+
+    async function sbSync() {
+      try {
+        const res = await fetch(SB_URL+'/rest/v1/moments?user_id=eq.'+getUserId()+'&order=created_at.desc&limit=500',
+          {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (!Array.isArray(rows) || rows.length === 0) return;
+       const remote = rows.map(r => ({id:r.moment_id||r.created_at, text:r.text, tags:(()=>{try{return JSON.parse(r.tags||'[]');}catch{return[];}})(), autoTag:r.auto_tag||null, dateKey:r.date_key, createdAt:r.created_at, photo:r.photo||null}));
+        const local = loadMomentsLocal();
+       const merged = [...local];
+remote.forEach(rm => { if (!deletedIds.has(String(rm.id)) && !merged.find(lm => String(lm.id)===String(rm.id) || lm.createdAt===rm.createdAt)) merged.push(rm); });
+        merged.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(UID_KEY, getUserId());
+        renderTodayEntries(); updateLogStreak();
+        updateVisualCard(merged, calcStreak(merged));
+        updateBgScore(merged.filter(m => m.dateKey === todayKey()).length, calcStreak(merged), false);
+        console.log('Synced', merged.length, 'moments');
+if (document.getElementById('view-summary').classList.contains('active')) renderSummary();
+      } catch(e) { console.log('sbSync offline:', e.message); }
+    }
+
+    function loadMomentsLocal() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+    }
+    function loadMoments() { return loadMomentsLocal(); }
+    function saveMoments(moments) { localStorage.setItem(STORAGE_KEY, JSON.stringify(moments)); }
 
     function formatDate(dateStr) {
       const today = todayKey();
@@ -1735,8 +2947,10 @@
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
+      t.style.setProperty('color', '#ffffff', 'important');
+      t.style.setProperty('background', '#1a1a2e', 'important');
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2200);
+      setTimeout(() => t.classList.remove('show'), 6600);
     }
 
     // ── Name & greeting ──────────────────────────────────────
@@ -1778,8 +2992,14 @@
         const daysDiff = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
 
         if (daysDiff === 1) {
-          // Came back after exactly one day — streak preserved via grace
-          // No message needed — the streak number says it all
+          const graceMsgs = [
+            "You missed yesterday. Your streak is still here. So are we.",
+            "Life got full. Your streak is safe — come back today.",
+            "Yesterday slipped by. What's good right now?",
+            "Your streak survived. Come find 3 good things. 🔥"
+          ];
+          const graceMsg = graceMsgs[Math.floor(Math.random() * graceMsgs.length)];
+          setTimeout(() => showToast(graceMsg), 600);
         } else if (daysDiff === 2) {
           setTimeout(() => showToast("You built something real. It's still here. 💜"), 600);
         } else if (daysDiff >= 3 && daysDiff <= 5) {
@@ -1793,6 +3013,42 @@
       }
 
       localStorage.setItem(LAST_OPEN_KEY, today);
+    }
+
+    // ── Re-entry screen (Item 12) ────────────────────────────
+    const REENTRY_SHOWN_KEY = 'dopamine_reentry_shown_date';
+    const LAST_SAVE_TS_KEY  = 'dopamine_last_save_ts';
+    const REENTRY_48H = 48 * 60 * 60 * 1000;
+
+    function checkReEntryScreen() {
+      const shownDate = localStorage.getItem(REENTRY_SHOWN_KEY);
+      if (shownDate === todayKey()) return;
+
+      const lastSaveTs = parseInt(localStorage.getItem(LAST_SAVE_TS_KEY) || '0', 10);
+      if (!lastSaveTs || Date.now() - lastSaveTs <= REENTRY_48H) return;
+
+      localStorage.setItem(REENTRY_SHOWN_KEY, todayKey());
+      const overlay = document.getElementById('reentryOverlay');
+      overlay.classList.add('open');
+      setTimeout(() => document.getElementById('reentryInput').focus(), 120);
+
+      document.getElementById('reentryInput').addEventListener('input', function() {
+        document.getElementById('reentrySaveBtn').disabled = this.value.trim().length === 0;
+      });
+    }
+
+    async function reentrySave() {
+      const text = document.getElementById('reentryInput').value.trim();
+      if (!text) return;
+
+      document.getElementById('momentInput').value = text;
+      await saveMoment();
+      document.getElementById('reentryInput').value = '';
+      document.getElementById('reentryOverlay').classList.remove('open');
+    }
+
+    function reentrySkip() {
+      document.getElementById('reentryOverlay').classList.remove('open');
     }
 
     // ── Day detail panel ─────────────────────────────────────
@@ -1854,22 +3110,71 @@
       showToast("We'll let you know when DOPAmine+ is ready. 💜");
     }
 
-    initName();
-    checkReEngagement();
-
-    // Auto-focus textarea on load if no name modal is shown
-    if (localStorage.getItem(NAME_KEY)) {
-      setTimeout(() => document.getElementById('momentInput').focus(), 100);
+    if (new URLSearchParams(location.search).get('reset_notif') === '1') {
+      localStorage.removeItem('dopamine_notif_prompt_shown');
+      localStorage.removeItem('dopamine_notif_time');
+      location.replace('https://mydopa.app/');
     }
 
-    updateLogStreak();
+    function initApp() {
+      if (appInitialized) return;
+      appInitialized = true;
+      syncOnboardingAnswers();
 
-    // ── Header date ──────────────────────────────────────────
-    document.getElementById('headerDate').textContent =
-      new Date().toLocaleDateString('en-US', {
-        weekday: 'long', month: 'long', day: 'numeric',
-        timeZone: TZ
-      });
+    // ── Blank Moment Onboarding ────────────────────────────────────────
+    const BLANK_KEY = 'dopamine_blank_seen';
+
+    function initBlankMomentScreen_inner() {
+      const moments = loadMoments();
+      if (localStorage.getItem(BLANK_KEY) || moments.length > 0) return;
+      document.getElementById('blankMomentScreen').style.cssText = 'display:flex; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;';
+      const fill = document.getElementById('blankTimerFill');
+      setTimeout(() => { fill.style.transition = 'width 5s linear'; fill.style.width = '100%'; }, 50);
+      setTimeout(() => { document.getElementById('blankChoices').style.display = 'flex'; }, 5000);
+    }
+
+    function blankChoose_inner(path) {
+      document.getElementById('blankChoices').style.display = 'none';
+      const revealText = document.getElementById('blankRevealText');
+      const cta = document.getElementById('blankCTA');
+      if (path === 'A') {
+        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
+        cta.textContent = "DOPAmine fixes that. Let's start →";
+      } else {
+        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
+        cta.textContent = "Let's build that reflex →";
+      }
+      document.getElementById('blankReveal').style.display = 'flex';
+    }
+
+    function dismissBlankScreen_inner() {
+      localStorage.setItem(BLANK_KEY, '1');
+      document.getElementById('blankMomentScreen').classList.remove('visible');
+    }
+
+    initName();
+      checkReEngagement();
+      checkReEntryScreen();
+      if (localStorage.getItem(NAME_KEY)) {
+        setTimeout(() => document.getElementById('momentInput').focus(), 100);
+      }
+      updateLogStreak();
+      sbSync();
+      document.getElementById('headerDate').textContent =
+        new Date().toLocaleDateString('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+        });
+      document.getElementById('tpcDate').textContent =
+        new Date().toLocaleDateString('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric', timeZone: TZ
+        }).toUpperCase();
+      setTimeout(sbSync, 3000);
+      checkInstallPrompt();
+      if (window.location.hash === '#yesterday') {
+        switchTab('yesterday');
+        history.replaceState(null, '', location.pathname);
+      }
+    }
 
     // ── Tabs ─────────────────────────────────────────────────
     function switchTab(tab) {
@@ -1883,15 +3188,16 @@
       document.getElementById('view-log').classList.toggle('active', tab === 'log');
       document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
       document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
-      if (tab === 'summary') renderSummary();
-      if (tab === 'yesterday') renderYesterday();
+      if (tab === 'summary') { renderSummary(); sbSync(); }
+      if (tab === 'yesterday') { renderYesterday(); mixpanel.track('Yesterday Tab Opened'); }
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
+      applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     }
 
     // ── Input / tag logic ────────────────────────────────────
     function updateCharCount() {
       const val = document.getElementById('momentInput').value;
-      document.getElementById('charCount').textContent = val.length;
+      document.getElementById('charCount').textContent = val.length + '/280';
       document.getElementById('saveBtn').disabled = val.trim().length === 0;
     }
 
@@ -1899,111 +3205,307 @@
       el.classList.toggle('selected');
     }
 
-    // ── Science visual cards ─────────────────────────────────
-    const SCIENCE_CARDS = {
-      morning: `
-        <div class="science-card-label">🧠 The Dopamine Loop</div>
-        <div class="science-card-headline">You do something good.<br><span>Your brain remembers.</span></div>
-        <div class="science-card-steps">
-          <div class="science-card-step">
-            <div class="science-step-icon">✓</div>
-            <div class="science-step-text"><strong>Do</strong> something meaningful</div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">⚡</div>
-            <div class="science-step-text"><strong>Dopamine</strong> is released</div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">🧠</div>
-            <div class="science-step-text">Brain says: <strong>"This matters — remember this"</strong></div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">🔄</div>
-            <div class="science-step-text">You're <strong>more likely to repeat it</strong></div>
-          </div>
-        </div>
-        <div class="science-card-divider"></div>
-        <div class="science-card-bottom">DOPAmine trains your brain to seek more of <strong>what matters.</strong></div>`,
+    // ── Prompt carousel ─────────────────────────────────
+    const PROMPTS = [
+      '✨  ONLY GOOD THINGS',
+      '😊  DO TELL, WHAT MADE YOU SMILE?',
+      '📸  CAPTURE THE MOMENT',
+      '🌟  WRITE ABOUT SOMETHING GOOD THAT HAPPENED',
+      '🧠  YOUR BRAIN IS WATCHING',
+      '💜  LOG IT BEFORE YOU FORGET IT',
+      '⚡  FEED YOUR DOPAMINE'
+    ];
+    let promptIdx = 0;
 
-      afternoon: `
-        <div class="science-card-label">📈 How Consistency Works</div>
-        <div class="science-card-headline"><span>Consistency</span> builds<br>more dopamine.</div>
-        <div class="science-card-steps">
-          <div class="science-card-step">
-            <div class="science-step-icon">1</div>
-            <div class="science-step-text"><strong>Repeat</strong> — You take a good action consistently</div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">2</div>
-            <div class="science-step-text"><strong>Anticipate</strong> — Your brain expects the positive outcome</div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">3</div>
-            <div class="science-step-text"><strong>Release</strong> — Dopamine fires more efficiently</div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">4</div>
-            <div class="science-step-text"><strong>Reinforce</strong> — The habit gets stronger. You repeat it.</div>
-          </div>
-        </div>
-        <div class="science-card-divider"></div>
-        <div class="science-card-bottom"><strong>More consistency = More dopamine = Stronger you.</strong></div>`,
-
-      evening: `
-        <div class="science-card-label">⚡ Consistent vs Inconsistent</div>
-        <div class="science-card-headline">Small moments.<br><span>Compounding forever.</span></div>
-        <div class="science-card-stats">
-          <div class="science-stat">
-            <div class="science-stat-num">📉</div>
-            <div class="science-stat-label">Inconsistent</div>
-            <div class="science-step-text" style="font-size:0.7rem;margin-top:4px;color:rgba(255,255,255,0.4)">Spikes then drops. Hard to build momentum.</div>
-          </div>
-          <div class="science-stat">
-            <div class="science-stat-num">📈</div>
-            <div class="science-stat-label">Consistent</div>
-            <div class="science-step-text" style="font-size:0.7rem;margin-top:4px;color:rgba(255,255,255,0.6)">Steady growth. Habits become automatic.</div>
-          </div>
-        </div>
-        <div class="science-card-divider"></div>
-        <div class="science-card-bottom">Every small, consistent action is a vote for <strong>the person you want to become.</strong></div>`,
-
-      night: `
-        <div class="science-card-label">🌙 What You Built Today</div>
-        <div class="science-card-headline">Today becomes<br><span>your yesterday.</span></div>
-        <div class="science-card-steps">
-          <div class="science-card-step">
-            <div class="science-step-icon">📝</div>
-            <div class="science-step-text">You noticed the good. Your brain <strong>filed it permanently.</strong></div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">💪</div>
-            <div class="science-step-text">Stronger neural pathways. <strong>Habits becoming automatic.</strong></div>
-          </div>
-          <div class="science-card-step">
-            <div class="science-step-icon">⭐</div>
-            <div class="science-step-text">Tomorrow you wake up with a <strong>better past than yesterday.</strong></div>
-          </div>
-        </div>
-        <div class="science-card-divider"></div>
-        <div class="science-card-bottom"><strong>Consistency today. Dopamine tomorrow. A better you forever.</strong></div>`,
-    };
-
-    function showScienceQuote() {
-      const hour = new Date().getHours();
-      let card;
-      if (hour >= 5  && hour < 12) card = SCIENCE_CARDS.morning;
-      else if (hour >= 12 && hour < 18) card = SCIENCE_CARDS.afternoon;
-      else if (hour >= 18 && hour < 23) card = SCIENCE_CARDS.evening;
-      else card = SCIENCE_CARDS.night;
-
-      const el = document.getElementById('scienceQuote');
-      el.innerHTML = card;
-      el.style.animation = 'none';
-      el.offsetHeight;
-      el.style.animation = 'fadeQuote 0.8s ease';
+    function buildPromptDots() {
+      const dots = document.getElementById('promptDots');
+      if (!dots) return;
+      dots.innerHTML = PROMPTS.map((_, i) =>
+        `<span style="
+          display:inline-block; width:5px; height:5px; border-radius:50%;
+          background:${i === 0 ? 'rgba(181,123,247,0.9)' : 'rgba(255,255,255,0.2)'};
+          margin: 0 3px; transition: background 0.3s;
+        " data-dot="${i}"></span>`
+      ).join('');
     }
 
-    showScienceQuote();
+    function showPrompt(idx) {
+      const el = document.getElementById('tpcPrompt');
+      if (!el) return;
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.textContent = PROMPTS[idx];
+        el.style.opacity = '1';
+      }, 200);
+    }
+
+    function nextPrompt() {
+      promptIdx = (promptIdx + 1) % PROMPTS.length;
+      showPrompt(promptIdx);
+    }
+
+    buildPromptDots();
+    setInterval(() => {
+      promptIdx = (promptIdx + 1) % PROMPTS.length;
+      showPrompt(promptIdx);
+    }, 4000);
+
+    // ── Today entries renderer ───────────────────────────
+    function renderTodayEntries() {
+      const moments = loadMoments();
+      const today = todayKey();
+      const todayMoments = moments.filter(m => m.dateKey === today);
+      const todayEntries = todayMoments.map(m => ({
+        id: m.id,
+        text: escapeHtml(m.text),
+        time: formatTime(m.createdAt),
+        autoTag: m.autoTag || '',
+        tags: (m.tags || []).join(',')
+      }));
+      tpcRenderStack(todayEntries);
+    }
+
+    function tpcRenderStack(entries) {
+      const deck = document.getElementById('tpcDeck');
+      const exp  = document.getElementById('tpcExpanded');
+      const winsCount = document.getElementById('tpcWinsCount');
+      const closingWrap = document.getElementById('tpcClosingWrap');
+      if (!entries || entries.length === 0) {
+        if (deck) deck.style.display = 'none';
+        if (exp)  exp.style.display  = 'none';
+        if (winsCount) winsCount.textContent = '';
+        if (closingWrap) closingWrap.style.display = 'none';
+        return;
+      }
+      if (deck) deck.style.display = 'block';
+      if (winsCount) winsCount.textContent = entries.length + ' saved';
+
+      const top = entries[0];
+      const topTags = [top.autoTag, ...(top.tags ? top.tags.split(',') : [])].filter(Boolean);
+      document.getElementById('tpcStackTop').innerHTML =
+        '<div class="tpc-sh1-text">' + top.text + '</div>' +
+        '<div class="tpc-sh1-meta">' +
+          '<span class="tpc-sh1-time">' + (top.time || '') + '</span>' +
+          topTags.map(t => '<span class="tpc-sh1-tag">' + t.trim() + '</span>').join('') +
+        '</div>';
+      document.getElementById('tpcSeeAll').textContent = 'see all ' + entries.length + ' →';
+
+      exp.innerHTML = entries.map(function(e) {
+        const tags = [e.autoTag, ...(e.tags ? e.tags.split(',') : [])].filter(Boolean);
+        return '<div class="tpc-entry-card">' +
+          '<div class="tpc-entry-text">' + e.text + '</div>' +
+          '<div class="tpc-entry-meta">' +
+            '<span class="tpc-entry-time">' + (e.time || '') + '</span>' +
+            tags.map(t => '<span class="tpc-entry-tag">' + t.trim() + '</span>').join('') +
+            (e.id ? '<button onclick="openEditModal(' + e.id + ')" style="background:none;border:none;color:rgba(201,190,216,0.28);font-size:11px;cursor:pointer;padding:0 3px;margin-left:auto;" title="Edit">✏️</button>' +
+                    '<button onclick="deleteMoment(' + e.id + ')" style="background:none;border:none;color:rgba(201,190,216,0.28);font-size:11px;cursor:pointer;padding:0 3px;" title="Delete">🗑</button>' : '') +
+          '</div></div>';
+      }).join('') + '<button class="tpc-collapse-btn" id="tpcCollapseBtn">↑ collapse</button>';
+
+      const collapseBtn = document.getElementById('tpcCollapseBtn');
+      if (collapseBtn) {
+        collapseBtn.addEventListener('click', function() {
+          exp.style.display = 'none';
+          if (deck) deck.style.display = 'block';
+        });
+      }
+
+      if (closingWrap) closingWrap.style.display = entries.length > 0 ? 'flex' : 'none';
+    }
+
+    function tpcExpandDeck() {
+      const deck = document.getElementById('tpcDeck');
+      const exp  = document.getElementById('tpcExpanded');
+      if (deck) deck.style.display = 'none';
+      if (exp)  { exp.style.display = 'flex'; exp.style.flexDirection = 'column'; exp.style.gap = '5px'; }
+    }
+
+    applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
+    renderTodayEntries();
+
+    // ── Share progress (Canvas image) ────────────────────
+    async function shareProgress() {
+      if (navigator.vibrate) navigator.vibrate(10);
+      const moments = loadMoments();
+      const streak  = calcStreak(moments);
+      const total   = moments.length;
+
+      showToast('Generating image...');
+
+      try {
+        // ── Build canvas ──────────────────────────────────
+        const W = 1080, H = 1080;
+        const canvas = document.createElement('canvas');
+        canvas.width  = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0,   '#3d1278');
+        bg.addColorStop(0.5, '#2a0d5e');
+        bg.addColorStop(1,   '#1a0840');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Top radial glow
+        const glow = ctx.createRadialGradient(W/2, 160, 0, W/2, 160, 440);
+        glow.addColorStop(0, 'rgba(123,47,190,0.55)');
+        glow.addColorStop(1, 'rgba(123,47,190,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, W, H);
+
+        // Bottom-right accent glow
+        const glow2 = ctx.createRadialGradient(W, H, 0, W, H, 500);
+        glow2.addColorStop(0, 'rgba(181,123,247,0.22)');
+        glow2.addColorStop(1, 'rgba(181,123,247,0)');
+        ctx.fillStyle = glow2;
+        ctx.fillRect(0, 0, W, H);
+
+        // Border
+        const br = 56;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(br, 0); ctx.lineTo(W-br, 0);
+        ctx.quadraticCurveTo(W, 0, W, br);
+        ctx.lineTo(W, H-br);
+        ctx.quadraticCurveTo(W, H, W-br, H);
+        ctx.lineTo(br, H);
+        ctx.quadraticCurveTo(0, H, 0, H-br);
+        ctx.lineTo(0, br);
+        ctx.quadraticCurveTo(0, 0, br, 0);
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(181,123,247,0.65)';
+        ctx.lineWidth   = 8;
+        ctx.stroke();
+        ctx.clip();
+
+        // ── Text — use only system fonts, no emoji in canvas ──
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'alphabetic';
+
+        // Brand
+        ctx.font      = '700 40px sans-serif';
+        ctx.fillStyle = 'rgba(181,123,247,0.85)';
+        ctx.fillText('D O P A m i n e', W/2, 210);
+
+        // Decorative line
+        ctx.strokeStyle = 'rgba(181,123,247,0.3)';
+        ctx.lineWidth   = 2;
+        ctx.beginPath();
+        ctx.moveTo(240, 240); ctx.lineTo(W-240, 240);
+        ctx.stroke();
+
+        // Big number with gradient
+        const numGrad = ctx.createLinearGradient(0, 300, 0, 570);
+        numGrad.addColorStop(0, '#ffffff');
+        numGrad.addColorStop(1, '#B57BF7');
+        ctx.fillStyle  = numGrad;
+        ctx.shadowColor = 'rgba(181,123,247,0.7)';
+        ctx.shadowBlur  = 70;
+        ctx.font = `900 ${total >= 1000 ? 210 : 260}px sans-serif`;
+        ctx.fillText(String(total), W/2, 565);
+        ctx.shadowBlur = 0;
+
+        // Moments label
+        ctx.font      = '300 46px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.60)';
+        ctx.fillText('good moments captured', W/2, 645);
+
+        // Streak pill background
+        const pillW = 460, pillH = 80, pillX = (W-pillW)/2, pillY = 700;
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(pillX, pillY, pillW, pillH, 40)
+          : (()=>{
+              ctx.moveTo(pillX+40,pillY); ctx.lineTo(pillX+pillW-40,pillY);
+              ctx.quadraticCurveTo(pillX+pillW,pillY,pillX+pillW,pillY+40);
+              ctx.lineTo(pillX+pillW,pillY+pillH-40);
+              ctx.quadraticCurveTo(pillX+pillW,pillY+pillH,pillX+pillW-40,pillY+pillH);
+              ctx.lineTo(pillX+40,pillY+pillH);
+              ctx.quadraticCurveTo(pillX,pillY+pillH,pillX,pillY+pillH-40);
+              ctx.lineTo(pillX,pillY+40);
+              ctx.quadraticCurveTo(pillX,pillY,pillX+40,pillY);
+              ctx.closePath();
+            })();
+        ctx.fillStyle   = 'rgba(255,255,255,0.12)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+        ctx.lineWidth   = 2;
+        ctx.stroke();
+
+        // Streak text (fire emoji works in fillText on modern iOS/Android)
+        ctx.font      = '600 40px sans-serif';
+        ctx.fillStyle = '#e0b8ff';
+        ctx.fillText(
+          '\uD83D\uDD25 ' + streak + ' day' + (streak !== 1 ? 's' : '') + ' streak',
+          W/2, pillY + 52
+        );
+
+        // Tagline
+        ctx.font      = '300 36px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.32)';
+        ctx.fillText('Training my brain to find good.', W/2, 858);
+
+        ctx.font      = '600 36px sans-serif';
+        ctx.fillStyle = 'rgba(181,123,247,0.80)';
+        ctx.fillText('mydopa.app', W/2, 912);
+
+        ctx.restore();
+
+        // ── Convert canvas → dataURL → Blob (most compatible path) ──
+        const dataURL = canvas.toDataURL('image/png');
+
+        // dataURL → Blob via fetch (avoids FileReader quirks on iOS)
+        const fetchRes = await fetch(dataURL);
+        const blob     = await fetchRes.blob();
+        const file     = new File([blob], 'dopamine-progress.png', { type: 'image/png' });
+
+        // ── Try native share sheet with image file ──
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'My DOPAmine Progress',
+              text:  `${total} good moments. ${streak}-day streak. mydopa.app`
+            });
+            return;
+          } catch (e) {
+            if (e.name === 'AbortError') return; // user cancelled
+            // fall through to download
+          }
+        }
+
+        // ── Fallback: save image to device ──
+        const objURL = URL.createObjectURL(blob);
+        const a      = document.createElement('a');
+        a.href        = objURL;
+        a.download    = 'dopamine-progress.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(objURL), 1000);
+        showToast('Image saved to your device! \uD83D\uDDBC\uFE0F');
+
+      } catch (err) {
+        console.error('shareProgress error:', err);
+        showToast('Could not generate image \u2014 try again');
+      }
+    }
+
+    // ── Update visual share card in progress ─────────────
+    function updateVisualCard(moments, streak) {
+      const numEl   = document.getElementById('vscNumber');
+      const strEl   = document.getElementById('vscStreak');
+      const brandEl = document.getElementById('vscBrand');
+      const labelEl = document.getElementById('vscLabel');
+      const raw  = localStorage.getItem(NAME_KEY) || '';
+      const name = raw ? (raw.split(' ')[0] || raw) : 'You';
+      if (numEl)   numEl.textContent   = moments.length;
+      if (strEl)   strEl.textContent   = `🔥 ${streak} day${streak !== 1 ? 's' : ''} streak`;
+      if (brandEl) brandEl.textContent = `What ${name} found.`;
+      if (labelEl) labelEl.textContent = `Each one happened. ${name} was paying attention.`;
+    }
+
     function toggleMoodPicker() {
       const picker = document.getElementById('moodPicker');
       const btn = document.getElementById('moodBtnToggle');
@@ -2067,21 +3569,26 @@
     function updateLogStreak() {
       const moments = loadMoments();
       const streak = calcStreak(moments);
-      const el = document.getElementById('logStreak');
-      const pill = document.getElementById('logStreakPill');
-      const meaning = document.getElementById('logStreakMeaning');
+      const pill = document.getElementById('tpcStreakPill');
+      if (!pill) return;
       if (streak > 0) {
         pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
-        meaning.textContent = getStreakMeaning(streak);
-        el.classList.add('visible');
+        pill.style.display = '';
       } else {
-        el.classList.remove('visible');
+        pill.textContent = '';
+        pill.style.display = 'none';
       }
     }
 
     function checkStreakMilestone(streakBefore, streakAfter) {
       if (STREAK_MILESTONES[streakAfter] && streakAfter !== streakBefore) {
-        setTimeout(() => showToast(STREAK_MILESTONES[streakAfter]), 400);
+        setTimeout(() => {
+          showToast(STREAK_MILESTONES[streakAfter]);
+          const t = document.getElementById('toast');
+          t.style.removeProperty('color');
+          t.style.removeProperty('background');
+          t.classList.add('toast-milestone');
+        }, 400);
       }
     }
 
@@ -2097,17 +3604,625 @@
       return 'Night';
     }
 
-    // ── Save ripple ──────────────────────────────────────────
+    // ── Save tone (Web Audio API) ─────────────────────────────
+    function playSaveTone() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, ctx.currentTime);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+
+        const osc2 = ctx.createOscillator();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(440, ctx.currentTime);
+
+        const gain2 = ctx.createGain();
+        gain2.gain.setValueAtTime(0, ctx.currentTime);
+        gain2.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.012);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+
+        osc.connect(gain);
+        osc2.connect(gain2);
+        gain.connect(ctx.destination);
+        gain2.connect(ctx.destination);
+
+        osc.start(ctx.currentTime);
+        osc2.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 1.1);
+        osc2.stop(ctx.currentTime + 0.8);
+      } catch (e) {}
+    }
+
+    // ── Save button ripple ────────────────────────────────────
     function triggerRipple() {
       const btn = document.getElementById('saveBtn');
+      if (!btn) return;
       const ripple = document.createElement('div');
       ripple.className = 'save-ripple';
       btn.appendChild(ripple);
       setTimeout(() => ripple.remove(), 400);
     }
 
+    // ── Save overlay (Items 1, 10, 14) ────────────────────────
+    const GHOST_VARIANTS = [
+      "You almost didn't keep that.",
+      "Gone if you hadn't.",
+      "Caught.",
+      "That one was close.",
+      "Most people let that go.",
+      "You stopped for it.",
+      "That one's yours now.",
+      "It would have disappeared."
+    ];
+
+    function showSaveCaught(totalCount) {
+      if (localStorage.getItem('dopa_accumulation_fired') === 'true') {
+        // already fired once ever — never fire accumulation overlay again
+      }
+      const isAccumulation = totalCount === 10 &&
+        localStorage.getItem('dopa_accumulation_fired') !== 'true';
+      if (isAccumulation) {
+        localStorage.setItem('dopa_accumulation_fired', 'true');
+      }
+
+      const idx = parseInt(localStorage.getItem('dopa_ghost_index') || '0', 10);
+      const ghostText = isAccumulation
+        ? "10 moments you almost didn't keep."
+        : GHOST_VARIANTS[idx % GHOST_VARIANTS.length];
+      if (!isAccumulation) {
+        localStorage.setItem('dopa_ghost_index',
+          String((idx + 1) % GHOST_VARIANTS.length));
+      }
+
+      const holdMs = isAccumulation ? 3000 : 4000;
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed', 'top:0', 'left:0', 'width:100%', 'height:100%',
+        'background:rgba(0,0,0,0.92)', 'z-index:9999',
+        'display:flex', 'flex-direction:column',
+        'align-items:center', 'justify-content:center',
+        'pointer-events:none', 'opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)', 'left:calc(50% - 250px)',
+        'width:500px', 'height:500px',
+        'border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute', 'bottom:0', 'left:50%',
+        'transform:translateX(-50%)',
+        'width:100%', 'height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none', 'z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = 'There it is.';
+      hero.style.cssText = [
+        'font-size:72px', 'font-weight:800', 'color:#FFB020',
+        'line-height:1.0', 'text-align:center',
+        'margin:0', 'padding:0 24px',
+        'font-family:inherit', 'letter-spacing:-0.5px'
+      ].join(';');
+
+      const ghost = document.createElement('p');
+      ghost.textContent = ghostText;
+      ghost.style.cssText = [
+        'font-size:20px', 'font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em', 'text-align:center',
+        'margin:20px 0 0 0', 'padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(ghost);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, holdMs);
+    }
+
+    // ── Day Completion State (3 wins) ─────────────────────────
+    const LIGHT_MILESTONE_VARIANTS = {
+      10: { hero: "{name}. Look at your screen.",    sub: "Ten days of evidence. The difference is visible now." },
+      20: { hero: "{name}. Twenty days of this.",    sub: "The screen looks different because you are." },
+      30: { hero: "{name}. Thirty days. This is it.", sub: "The screen is at full light. So are you." }
+    };
+
+    function checkLightMilestone(scoreBefore, scoreAfter) {
+      for (const threshold of [10, 20, 30]) {
+        if (scoreBefore < threshold && scoreAfter >= threshold) {
+          const key = `dopa_light_${threshold}_fired`;
+          if (!localStorage.getItem(key)) {
+            localStorage.setItem(key, '1');
+            return threshold;
+          }
+        }
+      }
+      return null;
+    }
+
+    function showLightMilestoneOverlay(score) {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const variant = LIGHT_MILESTONE_VARIANTS[score];
+      if (!variant) return;
+
+      function fill(s) { return s.replace(/{name}/g, displayName); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+    window.showLightMilestoneOverlay = showLightMilestoneOverlay;
+
+    const REVEAL_VARIANTS = {
+      7:  { hero: "7 days.",           sub: "{name}, you stopped trying this. You started being this. Do you see it?" },
+      14: { hero: "14 days, {name}.",  sub: "Two weeks ago you were trying this. Look at what you became instead." }
+    };
+
+    function checkRevealMilestone(streakAfter) {
+      for (const day of [7, 14]) {
+        if (streakAfter === day) {
+          const key = `dopa_reveal_${day}_fired`;
+          if (!localStorage.getItem(key)) {
+            localStorage.setItem(key, '1');
+            return day;
+          }
+        }
+      }
+      return null;
+    }
+
+    function showRevealOverlay(day) {
+      const variant = REVEAL_VARIANTS[day];
+      if (!variant) return;
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      function fill(s) { return s.replace(/{name}/g, displayName); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+
+    function showReveal7Overlay()  { showRevealOverlay(7);  }
+    function showReveal14Overlay() { showRevealOverlay(14); }
+    window.showReveal7Overlay  = showReveal7Overlay;
+    window.showReveal14Overlay = showReveal14Overlay;
+
+    const THREE_WIN_VARIANTS = [
+      { hero: "{name}. Day {N}. Three in.",            sub: "Every time you show up, your brain gets better at finding the good. There's more good today." },
+      { hero: "Day {N}. Challenge met.",               sub: "{name}, you're not just keeping a streak. You're becoming someone who does this." },
+      { hero: "{N} days. Three wins.",                 sub: "This is what your version of structure looks like. It's working." },
+      { hero: "{name}. Day {N} locked in.",            sub: "Three moments captured. More are waiting." },
+      { hero: "Day {N}. You showed up, {name}.",       sub: "Consistent people build extraordinary lives. You're being consistent." },
+      { hero: "{N} days strong.",                      sub: "{name}, growth doesn't announce itself. It just keeps happening. Like this." },
+      { hero: "Three in. Day {N} of your streak.",     sub: "Your best moments today may still be ahead." },
+      { hero: "{name}. {N} days of showing up.",       sub: "The day isn't finished with you yet." },
+      { hero: "Day {N}. Three and counting.",          sub: "You thought structure wasn't for you. Look at what you're building." },
+      { hero: "Challenge met. Day {N}, {name}.",       sub: "Three wins is the commitment. Everything after this is the reward." }
+    ];
+
+    const RETURN_STATE_VARIANTS = [
+      { hero: "{name}. You came back.",          sub: "Coming back is harder than starting. You did both." },
+      { hero: "Three in. The work continues.",   sub: "{name}, what you built before is still the foundation." },
+      { hero: "The gap is behind you.",          sub: "{name}, nothing you built before was lost. Only paused." },
+      { hero: "{name}. Today counts.",           sub: "The practice waited. It's still yours." },
+      { hero: "Back in it, {name}.",             sub: "Not perfect. Present. That's what this practice actually is." }
+    ];
+
+    function showReturnStateOverlay() {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const idx = parseInt(localStorage.getItem('dopa_return_index') || '0', 10);
+      const variant = RETURN_STATE_VARIANTS[idx];
+      localStorage.setItem('dopa_return_index', String((idx + 1) % 5));
+
+      function fill(s) { return s.replace(/{name}/g, displayName); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+    window.showReturnStateOverlay = showReturnStateOverlay;
+
+    function showThreeWinOverlay(streakCount) {
+      const raw = localStorage.getItem(NAME_KEY) || '';
+      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
+      const N = String(streakCount);
+      const idx = parseInt(localStorage.getItem('dopa_three_win_index') || '0', 10);
+      const variant = THREE_WIN_VARIANTS[idx];
+      localStorage.setItem('dopa_three_win_index', String((idx + 1) % 10));
+
+      function fill(s) { return s.replace(/{name}/g, displayName).replace(/{N}/g, N); }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100%','height:100%',
+        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'display:flex','flex-direction:column',
+        'align-items:center','justify-content:center',
+        'pointer-events:none','opacity:1'
+      ].join(';');
+
+      const glow = document.createElement('div');
+      glow.style.cssText = [
+        'position:absolute',
+        'top:calc(50% - 250px)','left:calc(50% - 250px)',
+        'width:500px','height:500px','border-radius:50%',
+        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
+        'animation:save-overlay-glow 1s ease-out forwards',
+        'pointer-events:none'
+      ].join(';');
+
+      const bloom = document.createElement('div');
+      bloom.style.cssText = [
+        'position:absolute','bottom:0','left:50%',
+        'transform:translateX(-50%)',
+        'width:100%','height:70%',
+        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
+          'rgba(255,176,32,0.09) 0%,' +
+          'rgba(255,176,32,0.04) 35%,' +
+          'transparent 70%)',
+        'pointer-events:none','z-index:0'
+      ].join(';');
+
+      const textWrap = document.createElement('div');
+      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+
+      const hero = document.createElement('p');
+      hero.textContent = fill(variant.hero);
+      hero.style.cssText = [
+        'font-size:56px','font-weight:800','color:#FFB020',
+        'line-height:1.1','text-align:center',
+        'margin:0','padding:0 24px',
+        'font-family:inherit','letter-spacing:-0.5px'
+      ].join(';');
+
+      const sub = document.createElement('p');
+      sub.textContent = fill(variant.sub);
+      sub.style.cssText = [
+        'font-size:20px','font-weight:400',
+        'color:rgba(255,255,255,0.65)',
+        'letter-spacing:0.02em','text-align:center',
+        'margin:20px 0 0 0','padding:0 24px',
+        'pointer-events:none'
+      ].join(';');
+
+      textWrap.appendChild(hero);
+      textWrap.appendChild(sub);
+      overlay.appendChild(bloom);
+      overlay.appendChild(glow);
+      overlay.appendChild(textWrap);
+      document.body.appendChild(overlay);
+
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+      }, 4000);
+    }
+
+    // ── Personal Progress Bloom ──────────────────────────────
+    function daysBetweenKeys(d1, d2) {
+      return Math.round((new Date(d2 + 'T12:00:00Z') - new Date(d1 + 'T12:00:00Z')) / 86400000);
+    }
+
+    function applyBloom(score) {
+      const bl = document.getElementById('dopa-glow-layer');
+      if (!bl) return;
+
+      if (score <= 0) {
+        bl.style.background = 'none';
+        const resetMask = 'linear-gradient(to bottom, transparent 0%, transparent 140px, black 200px, black 100%)';
+        bl.style.maskImage = resetMask;
+        bl.style.webkitMaskImage = resetMask;
+        return;
+      }
+
+      const t  = Math.pow(score / 30, 0.3);
+      const W  = (80 + t * 120).toFixed(1);
+      const H  = (50 + t * 100).toFixed(1);
+      const o1 = (t * 1.0).toFixed(3);
+      const o2 = (t * 0.5).toFixed(3);
+
+      let X = 50, Y = 58;
+      const activeView = document.querySelector('.view.active');
+      let protagonist = null;
+      if (activeView) {
+        const id = activeView.id;
+        if      (id === 'view-log')       protagonist = document.getElementById('momentInput');
+        else if (id === 'view-yesterday') protagonist = document.querySelector('.ypc-headline');
+        else if (id === 'view-summary')   protagonist = document.querySelector('.streak-pill');
+      }
+      if (protagonist) {
+        const r = protagonist.getBoundingClientRect();
+        X = ((r.left + r.width  / 2) / window.innerWidth  * 100).toFixed(1);
+        Y = Math.max(45, (r.top  + r.height / 2) / window.innerHeight * 100).toFixed(1);
+      }
+
+      const maskTop = Math.max(80, 140 - (score / 30) * 60);
+      const maskGradient = `linear-gradient(to bottom, transparent 0%, transparent ${maskTop}px, black ${maskTop + 60}px, black 100%)`;
+      bl.style.maskImage = maskGradient;
+      bl.style.webkitMaskImage = maskGradient;
+
+      bl.style.background =
+        `radial-gradient(ellipse ${W}% ${H}% at ${X}% ${Y}%,` +
+        `rgba(255,176,32,${o1}) 0%,` +
+        `rgba(255,176,32,${o2}) 35%,` +
+        `rgba(255,176,32,0) 70%)`;
+    }
+
+    function updateBgScore(todayWins, streak, patch) {
+      const currentDate = todayKey();
+      const lastDate    = localStorage.getItem('dopa_bg_date') || '';
+      let currentScore  = parseFloat(localStorage.getItem('dopa_bg_score')    || '0');
+      let prevTodayPts  = parseInt(localStorage.getItem('dopa_bg_today_pts') || '0', 10);
+      const storedScore = currentScore;
+
+      // Bootstrap for fresh installs: seed score from streak history
+      if (!lastDate && streak > 0) {
+        currentScore = Math.min(30, streak * 2);
+      }
+
+      if (lastDate && currentDate !== lastDate) {
+        const daysMissed = Math.max(0, daysBetweenKeys(lastDate, currentDate) - 1);
+        currentScore = Math.max(0, currentScore - prevTodayPts - daysMissed * 0.5);
+        prevTodayPts = 0;
+      }
+
+      let today_pts = 0;
+      if (todayWins >= 3 && streak > 0) {
+        if      (todayWins === 3)              today_pts = 1;
+        else if (todayWins >= 4 && todayWins <= 6) today_pts = 2;
+        else if (todayWins >= 7 && todayWins <= 9) today_pts = 3;
+        else                                   today_pts = 4;
+      }
+
+      const newScore = Math.min(30, Math.max(0, currentScore - prevTodayPts + today_pts));
+
+      localStorage.setItem('dopa_bg_score',     String(newScore));
+      localStorage.setItem('dopa_bg_date',      currentDate);
+      localStorage.setItem('dopa_bg_today_pts', String(today_pts));
+
+      if (patch) {
+        _latestSavedScore = newScore;
+        applyBloom(Math.max(newScore, storedScore));
+      } else {
+        applyBloom(Math.max(newScore, _latestSavedScore));
+      }
+
+      if (patch) {
+        const uid = getUserId();
+        if (uid) {
+          fetch(SB_URL + '/rest/v1/push_subscriptions?user_id=eq.' + uid, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ background_score: newScore })
+          }).catch(() => {});
+        }
+      }
+    }
+
     // ── Photo capture ────────────────────────────────────────
+    let _latestSavedScore = 0;
     let currentPhotoData = null;
+    let currentPhotoBlob = null;
 
     function togglePhotoCapture() {
       document.getElementById('photoInput').click();
@@ -2131,6 +4246,7 @@
           canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           currentPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+          canvas.toBlob(blob => { currentPhotoBlob = blob; }, 'image/jpeg', 0.7);
 
           // Show preview
           document.getElementById('photoImg').src = currentPhotoData;
@@ -2146,9 +4262,24 @@
 
     function removePhoto() {
       currentPhotoData = null;
+      currentPhotoBlob = null;
       document.getElementById('photoImg').src = '';
       document.getElementById('photoPreview').classList.remove('visible');
       document.getElementById('photoBtnToggle').classList.remove('active');
+    }
+
+    async function uploadPhotoToStorage(blob, momentId) {
+      try {
+        const uid = getUserId();
+        if (!uid || !blob) return null;
+        const path = uid + '/' + momentId + '.jpg';
+        const { error } = await sbClient.storage
+          .from('moment-photos')
+          .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+        if (error) { console.log('photo upload error:', error.message); return null; }
+        const { data } = sbClient.storage.from('moment-photos').getPublicUrl(path);
+        return data.publicUrl;
+      } catch(e) { console.log('photo upload offline:', e.message); return null; }
     }
 
     function resetMediaInputs() {
@@ -2157,14 +4288,18 @@
     }
 
     // ── Save ─────────────────────────────────────────────────
-    function saveMoment() {
+    async function saveMoment() {
       const text = document.getElementById('momentInput').value.trim();
       if (!text) return;
 
       const momentsBefore = loadMoments();
       const streakBefore = calcStreak(momentsBefore);
+      // Preserve last meaningful streak before it can reset to 1
+      if (streakBefore > 1) {
+        localStorage.setItem('dopa_last_streak', String(streakBefore));
+      }
 
-      momentsBefore.unshift({
+      const newMoment = {
         id: Date.now(),
         text,
         tags: getSelectedTags(),
@@ -2172,22 +4307,75 @@
         createdAt: new Date().toISOString(),
         dateKey: todayKey(),
         photo: currentPhotoData || null,
-      });
+      };
+      momentsBefore.unshift(newMoment);
       saveMoments(momentsBefore);
+      localStorage.setItem(LAST_SAVE_TS_KEY, Date.now());
+      sbSave(newMoment);
+      mixpanel.track('Moment Saved');
 
       const streakAfter = calcStreak(momentsBefore);
 
+      const todayCount = momentsBefore.filter(m => m.dateKey === todayKey()).length;
+      playSaveTone();
       triggerRipple();
 
+      // Score update runs first so we can detect threshold crossing
+      const scoreBefore = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
+      updateBgScore(todayCount, streakAfter, true);
+      const scoreAfter = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
+      const lightMilestone = checkLightMilestone(scoreBefore, scoreAfter);
+      const revealDay = checkRevealMilestone(streakAfter);
+
+      if (lightMilestone) {
+        showLightMilestoneOverlay(lightMilestone);
+      } else if (revealDay) {
+        showRevealOverlay(revealDay);
+      } else if (todayCount === 2) {
+        // Priority: Return State → Day Completion
+        const lastStreak = parseInt(localStorage.getItem('dopa_last_streak') || '0', 10);
+        if (streakAfter === 1 && lastStreak > 1) {
+          showReturnStateOverlay();
+        } else {
+          showThreeWinOverlay(streakAfter);
+        }
+      } else {
+        showSaveCaught(momentsBefore.length);
+      }
+      const saveBtn = document.getElementById('saveBtn');
+
       document.getElementById('momentInput').value = '';
-      document.getElementById('charCount').textContent = '0';
-      document.getElementById('saveBtn').disabled = true;
+      document.getElementById('charCount').textContent = '0/280';
+      setTimeout(() => { saveBtn.disabled = true; }, 700);
       document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+
+      const blobToUpload = currentPhotoBlob;
+      const uploadId = String(newMoment.id);
       resetMediaInputs();
 
-      showToast('Moment saved! 🌟');
       updateLogStreak();
+      renderTodayEntries();
+      maybeShowYesterdayWhisper(todayCount);
+      setTimeout(() => showToast('Moment saved! 🌟'), 1600);
       checkStreakMilestone(streakBefore, streakAfter);
+      if (momentsBefore.length === 1) {
+        maybeShowInstallBanner(maybeShowNotifPrompt);
+      } else {
+        maybeShowNotifPrompt();
+      }
+
+      // Upload photo to Storage and replace base64 with public URL
+      if (blobToUpload) {
+        const url = await uploadPhotoToStorage(blobToUpload, uploadId);
+        if (url) {
+          const moments = loadMoments();
+          const idx = moments.findIndex(m => String(m.id) === uploadId);
+          if (idx !== -1) { moments[idx].photo = url; saveMoments(moments); renderTodayEntries(); }
+          fetch(SB_URL+'/rest/v1/moments?moment_id=eq.'+encodeURIComponent(uploadId),
+            {method:'PATCH', headers:SB_HEADS, body:JSON.stringify({photo:url})})
+            .catch(e => console.log('photo patch failed:', e.message));
+        }
+      }
     }
 
     // ── Edit ─────────────────────────────────────────────────
@@ -2195,7 +4383,7 @@
 
     function openEditModal(id) {
       const moments = loadMoments();
-      const m = moments.find(m => m.id === id);
+      const m = moments.find(m => String(m.id) === String(id));
       if (!m) return;
       editingId = id;
 
@@ -2226,7 +4414,7 @@
         .map(el => el.textContent.trim());
 
       const moments = loadMoments();
-      const idx = moments.findIndex(m => m.id === editingId);
+      const idx = moments.findIndex(m => String(m.id) === String(editingId));
       if (idx === -1) return;
 
       moments[idx].text = text;
@@ -2236,11 +4424,13 @@
       saveMoments(moments);
       closeEditModal();
       renderSummary();
+      renderTodayEntries();
       showToast('Updated! ✓');
     }
 
     // ── Delete ───────────────────────────────────────────────
     let pendingDeleteId = null;
+    const deletedIds = new Set();
 
     function deleteMoment(id) {
       pendingDeleteId = id;
@@ -2254,10 +4444,17 @@
 
     function confirmDelete() {
       if (pendingDeleteId === null) return;
-      const moments = loadMoments().filter(m => m.id !== pendingDeleteId);
+      const idStr = String(pendingDeleteId);
+      deletedIds.add(String(pendingDeleteId));
+      const moments = loadMoments().filter(m => String(m.id) !== String(pendingDeleteId));
       saveMoments(moments);
+      fetch(SB_URL+'/rest/v1/moments?moment_id=eq.'+encodeURIComponent(String(pendingDeleteId)),
+        {method:'DELETE', headers:SB_HEADS}).catch(e => console.log('sbDelete offline:', e.message));
+      const card = document.getElementById('mc-' + idStr);
+      if (card) card.remove();
       closeDeleteModal();
       renderSummary();
+      renderTodayEntries();
       showToast('Removed');
     }
 
@@ -2273,31 +4470,196 @@
       const moments = loadMoments().filter(m => m.dateKey === yKey)
         .slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
-      const subtitle = document.getElementById('yesterdaySubtitle');
-      const list = document.getElementById('yesterdayList');
+      const yesterdayEntries = moments.map(m => ({
+        text: m.text,
+        time: formatTime(m.createdAt),
+        tag: m.tags && m.tags.length > 0 ? m.tags[0] : (m.autoTag || '')
+      }));
 
-      if (moments.length === 0) {
-        subtitle.innerHTML = '';
-        list.innerHTML = `<p class="yesterday-empty">Yesterday is a blank page.<br>Today doesn't have to be.</p>`;
-        return;
-      }
-
-      subtitle.textContent = `You captured ${moments.length} good moment${moments.length !== 1 ? 's' : ''}`;
-
-      list.innerHTML = moments.map(m => `
-        <div class="yesterday-card">
-          <div class="moment-text">${escapeHtml(m.text)}</div>
-          ${m.photo ? `<img class="card-photo" src="${m.photo}" alt="moment" />` : ''}
-          <div class="moment-meta">
-            <span class="moment-time">${formatTime(m.createdAt)}</span>
-            ${m.tags.map(t => `<span class="moment-tag">${escapeHtml(t)}</span>`).join('')}${m.autoTag ? `<span class="moment-tag-auto">${escapeHtml(m.autoTag)}</span>` : ''}
-          </div>
-        </div>
-      `).join('');
+      initYesterdayCard(moments.length);
+      ypcRenderStack(yesterdayEntries);
     }
+
+    // ── Yesterday whisper ────────────────────────────────────
+    function maybeShowYesterdayWhisper(count) {
+      if (count !== 3) return;
+      const today = todayKey();
+      if (localStorage.getItem('dopa_yesterday_whisper_date') === today) return;
+      localStorage.setItem('dopa_yesterday_whisper_date', today);
+
+      const existing = document.getElementById('yesterdayWhisper');
+      if (existing) existing.remove();
+
+      const el = document.createElement('div');
+      el.id = 'yesterdayWhisper';
+      el.style.cssText = 'font-size:13px;color:rgba(201,190,216,0.4);font-style:italic;text-align:center;margin-top:16px;opacity:0;transition:opacity 0.3s ease;';
+      el.textContent = 'Yesterday is already there. Takes 30 seconds to read it.';
+      document.getElementById('todayWhisperArea').appendChild(el);
+      requestAnimationFrame(() => { el.style.opacity = '1'; });
+
+      const dismiss = () => {
+        el.style.transition = 'opacity 0.5s ease';
+        el.style.opacity = '0';
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+        document.removeEventListener('click', tapDismiss);
+        document.removeEventListener('touchstart', tapDismiss);
+      };
+      const tapDismiss = () => { clearTimeout(autoTimer); dismiss(); };
+      const autoTimer = setTimeout(dismiss, 10000);
+      // Delay listener so the current save-button click doesn't fire it immediately
+      setTimeout(() => {
+        document.addEventListener('click', tapDismiss);
+        document.addEventListener('touchstart', tapDismiss);
+      }, 500);
+    }
+
+    // ── Yesterday protagonist card ────────────────────────────
+
+    const YPC_LINES_ACTIVE = [
+      'Consistency beats talent. Every time.',
+      'You are making progress.',
+      'This is what accountability looks like.',
+      'Motivation at its best.',
+      'Better every day.',
+      'Collecting good. One moment at a time.',
+      'Done is better than perfect. You keep proving it.',
+      'You showed up. Again.'
+    ];
+
+    const YPC_LINES_SLIP = [
+      "Missing a day doesn't erase the days you showed up.",
+      'The practice is patient. It waits for you.',
+      "It doesn't have to be perfect. It just has to be today.",
+      "One thing. Just one. That's all today needs.",
+      "You're not behind. You're just paused.",
+      "The streak broke. That's okay. Today is a new one.",
+      "Good things happened. You just haven't said them yet.",
+      "Come back. That's the whole move."
+    ];
+
+    function initYesterdayCard(winsYesterday) {
+      const lines = (winsYesterday >= 1) ? YPC_LINES_ACTIVE : YPC_LINES_SLIP;
+      const dayOfYear = Math.floor(
+        (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
+      );
+      document.getElementById('ypcFeeling').textContent = lines[dayOfYear % lines.length];
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const dayName = yesterday.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+      const monthDay = yesterday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toUpperCase();
+      document.getElementById('ypcDateLabel').textContent = dayName + ', ' + monthDay;
+    }
+
+    function ypcRenderStack(entries) {
+      if (!entries || entries.length === 0) return;
+      const top = entries[0];
+      document.getElementById('ypcStackTop').innerHTML =
+        '<div class="ypc-sh1-text">' + escapeHtml(top.text) + '</div>' +
+        '<div class="ypc-sh1-meta">' +
+          '<span class="ypc-sh1-time">' + (top.time || '') + '</span>' +
+          (top.tag ? '<span class="ypc-sh1-tag">' + escapeHtml(top.tag) + '</span>' : '') +
+        '</div>';
+      document.getElementById('ypcSeeAll').textContent = 'see all ' + entries.length + ' →';
+
+      const exp = document.getElementById('ypcExpanded');
+      exp.innerHTML = entries.map(function(e) {
+        return '<div class="ypc-entry-card">' +
+          '<div class="ypc-entry-text">' + escapeHtml(e.text) + '</div>' +
+          '<div class="ypc-entry-meta">' +
+            '<span class="ypc-entry-time">' + (e.time || '') + '</span>' +
+            (e.tag ? '<span class="ypc-entry-tag">' + escapeHtml(e.tag) + '</span>' : '') +
+          '</div></div>';
+      }).join('') + '<button class="ypc-collapse-btn" id="ypcCollapseBtn">↑ collapse</button>';
+
+      document.getElementById('ypcCollapseBtn').addEventListener('click', function() {
+        exp.style.display = 'none';
+        document.getElementById('ypcDeck').style.display = 'block';
+      });
+    }
+
+    function ypcSaveFeel(text) {
+      mixpanel.track('Feel Field Saved');
+      const t = text.toLowerCase();
+      let response = "That's the practice. You noticed yesterday. That's already more than most.";
+      if (/grateful|thankful/.test(t))
+        response = 'That feeling is the point. It means the filter is working.';
+      else if (/happy|\bgood\b/.test(t))
+        response = "That's evidence. Not a feeling — evidence. Keep it.";
+      else if (/proud/.test(t))
+        response = 'You should be. You built that yesterday yourself.';
+      else if (/calm|peaceful/.test(t))
+        response = "Consistency does that. You're building it one day at a time.";
+      else if (/surprised/.test(t))
+        response = 'Most people are. The good was always there.';
+      else if (/sad|hard|difficult/.test(t))
+        response = "The practice doesn't promise perfect days. Just that you'll notice what's real in them.";
+      else if (/motivated|ready|energized/.test(t))
+        response = 'Then go. Today is already being written.';
+
+      const wrap = document.getElementById('ypcInputWrap');
+      const send = document.getElementById('ypcSend');
+      const ack = document.createElement('div');
+      ack.className = 'ypc-acknowledgment';
+      ack.textContent = response;
+      wrap.parentNode.insertBefore(ack, wrap);
+      wrap.style.display = 'none';
+      send.style.display = 'none';
+
+      setTimeout(function() {
+        ack.style.transition = 'opacity 0.5s ease';
+        ack.style.opacity = '0';
+        setTimeout(function() {
+          ack.remove();
+          document.getElementById('ypcTextarea').value = '';
+          document.getElementById('ypcTextarea').classList.remove('active');
+          document.getElementById('ypcPlaceholder').style.display = 'inline';
+          document.querySelector('.ypc-cursor').style.display = 'inline-block';
+          wrap.classList.remove('focused');
+          wrap.style.display = 'flex';
+        }, 500);
+      }, 4000);
+    }
+
+    (function ypcWire() {
+      const wrap   = document.getElementById('ypcInputWrap');
+      const ta     = document.getElementById('ypcTextarea');
+      const ph     = document.getElementById('ypcPlaceholder');
+      const send   = document.getElementById('ypcSend');
+      const deck   = document.getElementById('ypcDeck');
+      const exp    = document.getElementById('ypcExpanded');
+      const cursor = document.querySelector('.ypc-cursor');
+      if (!wrap) return;
+
+      wrap.addEventListener('click', function() {
+        ph.style.display = 'none';
+        cursor.style.display = 'none';
+        ta.classList.add('active');
+        wrap.classList.add('focused');
+        ta.focus();
+      });
+
+      ta.addEventListener('input', function() {
+        send.style.display = ta.value.trim().length > 0 ? 'block' : 'none';
+      });
+
+      send.addEventListener('click', function() {
+        const text = ta.value.trim();
+        if (!text) return;
+        ypcSaveFeel(text);
+      });
+
+      deck.addEventListener('click', function() {
+        deck.style.display = 'none';
+        exp.style.display = 'flex';
+        exp.style.flexDirection = 'column';
+        exp.style.gap = '5px';
+      });
+    })();
 
     // ── Summary ──────────────────────────────────────────────
     function renderSummary() {
+      updateNotifSettingsRow();
       const moments = loadMoments();
       const container = document.getElementById('summaryContent');
       const statsBar = document.getElementById('statsBar');
@@ -2320,21 +4682,23 @@
 
       // ── Big number ──
       container.innerHTML = `
-        <div class="progress-hero">
-          <div class="progress-total-num">${moments.length}</div>
-          <div class="progress-total-label">Good moments captured</div>
-          <div class="progress-streak-row">
-            <span style="font-size:1.4rem">🔥</span>
-            <span class="progress-streak-num">${streak}</span>
-            <span class="progress-streak-text">day streak</span>
+        <div style="background:#1A1530 !important;border-radius:16px;padding:24px 20px;position:relative;z-index:2;text-align:center;">
+          <div class="progress-hero">
+            <div class="progress-total-num">${moments.length}</div>
+            <div class="progress-total-label">Good moments captured</div>
+            <div class="progress-streak-row">
+              <span style="font-size:1.4rem">🔥</span>
+              <span class="progress-streak-num">${streak}</span>
+              <span class="progress-streak-text">day streak</span>
+            </div>
+            ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
           </div>
-          ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
         </div>
 
         <!-- Quick stats -->
         <div class="quick-stats">
           <div class="quick-stat clickable" onclick="showDayDetail('${todayKey()}', new Date())">
-            <div class="quick-stat-num">${todayCount}</div>
+            <div class="quick-stat-num" style="${todayCount >= 3 ? 'color:#FFB020' : ''}">${todayCount}</div>
             <div class="quick-stat-label">Today ↓</div>
           </div>
           <div class="quick-stat">
@@ -2348,33 +4712,30 @@
         </div>
 
         <!-- 30-day dot calendar -->
-        <div class="progress-section-label">Last 30 Days — tap a date to see entries</div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Last 30 Days — tap a date to see entries</div></div>
         <div class="dot-calendar" id="dotCalendar"></div>
         <div class="day-detail-panel" id="dayDetailPanel"></div>
 
         <!-- Top mood tags -->
-        <div class="progress-section-label">Your Top Moments</div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Your Top Moments</div></div>
         <div class="top-tags-row" id="topTagsRow"></div>
 
         <!-- Motivator -->
         <div class="progress-motivator" id="progressMotivator"></div>
-
-        <!-- Share actions -->
-        <div class="share-actions">
-          <button class="share-btn share-invite" onclick="shareInvite()">
-            <img src="https://mydopa.app/images/dopa-04-excited.png"
-                 alt="DOPA" width="32" height="32"
-                 style="object-fit:contain;" />
-            <span>Send the dare to a friend</span>
-          </button>
-          <button class="share-btn share-number" onclick="sharePersonalNumber()">
-            <img src="https://mydopa.app/images/dopa-07-flexing.png"
-                 alt="DOPA" width="32" height="32"
-                 style="object-fit:contain;" />
-            <span>Share my progress</span>
-          </button>
-        </div>
       `;
+
+      // Force white text on all progress elements regardless of CSS cascade
+      const numEl = container.querySelector('.progress-total-num');
+      if (numEl) { numEl.style.color = '#FFFFFF'; numEl.style.webkitTextFillColor = '#FFFFFF'; numEl.style.background = 'none'; }
+      const totalLabelEl = container.querySelector('.progress-total-label');
+      if (totalLabelEl) totalLabelEl.style.color = '#FFFFFF';
+      const streakNumEl = container.querySelector('.progress-streak-num');
+      if (streakNumEl) streakNumEl.style.color = '#FFFFFF';
+      const streakTextEl = container.querySelector('.progress-streak-text');
+      if (streakTextEl) streakTextEl.style.color = '#FFFFFF';
+      const streakMeaningEl = container.querySelector('.progress-streak-meaning');
+      if (streakMeaningEl) streakMeaningEl.style.color = '#FFFFFF';
+      container.querySelectorAll('.progress-section-label').forEach(el => { el.style.color = '#FFFFFF'; });
 
       // ── Build 30-day dot calendar ──
       const activeDays = new Set(moments.map(m => m.dateKey));
@@ -2401,6 +4762,7 @@
       const tagCounts = {};
       moments.forEach(m => {
         (m.tags || []).forEach(t => {
+          if (t === 'anchor_entry') return;
           tagCounts[t] = (tagCounts[t] || 0) + 1;
         });
       });
@@ -2424,6 +4786,9 @@
       } else {
         tagRow.innerHTML = `<div style="font-size:0.82rem;color:rgba(255,255,255,0.3);font-style:italic;">Tag your moments to see patterns here.</div>`;
       }
+
+      // ── Update visual share card ──────────────────────
+      updateVisualCard(moments, streak);
 
       // ── Conversion trigger logic ──────────────────────────
       const mot = document.getElementById('progressMotivator');
@@ -2473,44 +4838,6 @@
       }
     }
 
-    // ── Controlled share — My Progress tab ─────────────────────────────
-    function shareInvite() {
-      // ── A/B test: alternate between variant A and B on each share ──
-      const count = parseInt(localStorage.getItem('dopa_ab_share_count') || '0');
-      const variant = (count % 2 === 0) ? 'a' : 'b';
-      localStorage.setItem('dopa_ab_share_count', count + 1);
-
-      const msgA = "7 days. You won\u2019t last.\nmydopa.app?ref=share_a";
-      const msgB = "7 days. Most people quit on day 3.\nmydopa.app?ref=share_b";
-      const msg  = variant === 'a' ? msgA : msgB;
-      const url  = 'https://mydopa.app?ref=share_' + variant;
-
-      // Track in Mixpanel
-      if (typeof mixpanel !== 'undefined') {
-        mixpanel.track('Share Sent', { variant: variant, surface: 'progress_tab' });
-      }
-
-      if (navigator.share) {
-        navigator.share({ text: msg, url: url }).catch(() => {});
-      } else {
-        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-      }
-      if (typeof haptic === 'function') haptic();
-    }
-
-    function sharePersonalNumber() {
-      const moments = loadMoments();
-      const streak = calcStreak(moments);
-      const total = moments.length;
-      const msg = `${streak} days of good things I didn\u2019t let go. My brain feels different.\nmydopa.app`;
-      if (navigator.share) {
-        navigator.share({ text: msg, url: 'https://mydopa.app' }).catch(() => {});
-      } else {
-        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-      }
-      if (typeof haptic === 'function') haptic();
-    }
-
     function calcStreak(moments) {
       if (moments.length === 0) return 0;
       const days = [...new Set(moments.map(m => m.dateKey))].sort((a, b) => b.localeCompare(a));
@@ -2555,13 +4882,519 @@
       return streak;
     }
 
-    function escapeHtml(str) {
+    // Push Notifications
+    const NOTIF_PROMPT_KEY='dopamine_notif_prompt_shown';
+    const NOTIF_TIME_KEY='dopamine_notif_time';
+    const VAPID_PUBLIC_KEY='BCI4h4JbzfRG-AYRF7XqkdC-57M2DAtw9WsNNNJzuj5dvIy5pqqGqDwv_nbQfds4Tcn_Q4HuAD4RxUlrx-xWZis';
+    let selectedNotifTime='09:00';
+
+    function shouldShowNotifPrompt(){
+      if(localStorage.getItem(NOTIF_PROMPT_KEY))return false;
+      if(localStorage.getItem(NOTIF_TIME_KEY))return false;
+      return true;
+    }
+
+    function maybeShowNotifPrompt(){
+      if(!shouldShowNotifPrompt())return;
+      setTimeout(()=>{
+        document.getElementById('notifModal').classList.add('open');
+        localStorage.setItem(NOTIF_PROMPT_KEY,todayKey());
+      },2000);
+    }
+
+    const INSTALL_BANNER_KEY = 'dopa_install_prompted';
+
+    function maybeShowInstallBanner(afterDismiss) {
+      const isStandalone = window.navigator.standalone === true ||
+        window.matchMedia('(display-mode: standalone)').matches;
+      if (isStandalone || localStorage.getItem(INSTALL_BANNER_KEY)) {
+        afterDismiss();
+        return;
+      }
+      const banner = document.getElementById('installBanner');
+      banner._afterDismiss = afterDismiss;
+      banner.style.display = 'block';
+    }
+
+    function dismissInstallBanner() {
+      localStorage.setItem(INSTALL_BANNER_KEY, '1');
+      const banner = document.getElementById('installBanner');
+      const cb = banner._afterDismiss;
+      banner.style.display = 'none';
+      if (cb) cb();
+    }
+
+    function selectNotifTime(btn,time){
+      selectedNotifTime=time;
+      document.querySelectorAll('.notif-time-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifCustom').style.display='none';
+    }
+
+    function toggleCustomTime(btn){
+      document.querySelectorAll('.notif-time-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifCustom').style.display='block';
+      selectedNotifTime=document.getElementById('notifCustomInput').value||'09:00';
+    }
+
+    function setCustomTime(val){selectedNotifTime=val;}
+
+    function closeNotifModal(granted){
+      document.getElementById('notifModal').classList.remove('open');
+      if(!granted)showToast('No problem. You can turn this on later.');
+    }
+
+    function urlB64ToUint8(b64){
+      const pad='='.repeat((4-b64.length%4)%4);
+      const b=(b64+pad).replace(/-/g,'+').replace(/_/g,'/');
+      const raw=window.atob(b);const arr=new Uint8Array(raw.length);
+      for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);return arr;
+    }
+
+    async function requestNotifPermission(){
+      try{
+        if(!('Notification'in window)||!('serviceWorker'in navigator)){
+          localStorage.setItem(NOTIF_TIME_KEY,selectedNotifTime);
+          closeNotifModal(true);
+          showToast('Add DOPAmine to your home screen for full notifications!');
+          return;
+        }
+        const perm=await Notification.requestPermission();
+        if(perm!=='granted'){closeNotifModal(false);showToast('Notifications blocked. Enable in settings.');return;}
+        const reg=await navigator.serviceWorker.register('/sw.js');
+        await navigator.serviceWorker.ready;
+        const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64ToUint8(VAPID_PUBLIC_KEY)});
+        let uid=getUserId();
+        const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Panama';
+        await fetch(SB_URL+'/rest/v1/push_subscriptions',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+          body:JSON.stringify({user_id:uid,subscription:sub,notify_time:selectedNotifTime,timezone:tz,active:true})
+        });
+        localStorage.setItem(NOTIF_TIME_KEY,selectedNotifTime);
+        closeNotifModal(true);
+        const[hh,mm]=selectedNotifTime.split(':');const h=parseInt(hh);
+        const ampm=h>=12?'pm':'am';const h12=h%12||12;
+        showToast('Done! Reminder set for '+h12+':'+mm+ampm);
+      }catch(err){
+        console.error('Notification setup error:',err);
+        localStorage.setItem(NOTIF_TIME_KEY,selectedNotifTime);
+        closeNotifModal(true);
+        showToast('Reminders set!');
+      }
+    }
+
+    let selectedSettingsTime = '09:00';
+
+    function updateNotifSettingsRow() {
+      const saved = localStorage.getItem(NOTIF_TIME_KEY);
+      const el = document.getElementById('notifSettingsCurrentTime');
+      if (!el) return;
+      if (saved) {
+        const [hh, mm] = saved.split(':');
+        const h = parseInt(hh);
+        el.textContent = (h % 12 || 12) + ':' + mm + (h >= 12 ? 'pm' : 'am');
+      } else {
+        el.textContent = 'Not set';
+      }
+    }
+
+    function openNotifSettings() {
+      if (!currentUser) return;
+      const saved = localStorage.getItem(NOTIF_TIME_KEY) || '09:00';
+      selectedSettingsTime = saved;
+      const timeMap = { '06:30': 'st-630', '08:00': 'st-800', '09:30': 'st-930' };
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('notifSettingsCustom').style.display = 'none';
+      if (timeMap[saved]) {
+        document.getElementById(timeMap[saved]).classList.add('selected');
+      } else {
+        document.getElementById('st-custom').classList.add('selected');
+        document.getElementById('notifSettingsCustomInput').value = saved;
+        document.getElementById('notifSettingsCustom').style.display = 'block';
+      }
+      document.getElementById('notifSettingsModal').classList.add('open');
+    }
+
+    function closeNotifSettings() {
+      document.getElementById('notifSettingsModal').classList.remove('open');
+    }
+
+    function selectSettingsTime(btn, time) {
+      selectedSettingsTime = time;
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifSettingsCustom').style.display = 'none';
+    }
+
+    function toggleSettingsCustomTime(btn) {
+      document.querySelectorAll('#notifSettingsModal .notif-time-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('notifSettingsCustom').style.display = 'block';
+      selectedSettingsTime = document.getElementById('notifSettingsCustomInput').value || '09:00';
+    }
+
+    function setSettingsCustomTime(val) { selectedSettingsTime = val; }
+
+    async function saveNotifTime() {
+      const uid = getUserId();
+      if (!uid) return;
+      const btn = document.getElementById('notifSettingsSaveBtn');
+      btn.disabled = true;
+      await fetch(SB_URL + '/rest/v1/push_subscriptions?user_id=eq.' + uid, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ notify_time: selectedSettingsTime })
+      });
+      btn.disabled = false;
+      localStorage.setItem(NOTIF_TIME_KEY, selectedSettingsTime);
+      updateNotifSettingsRow();
+      closeNotifSettings();
+      showToast('Reminder updated.');
+    }
+
+    function escapeHtml(str){
       return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
+
+  function dismissInstall() {
+  localStorage.setItem('dopamine_installed', 'true');
+  document.getElementById('installOverlay').style.display = 'none';
+}
+
+function checkInstallPrompt() {
+  const isInstalled = localStorage.getItem('dopamine_installed');
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  if (isStandalone) {
+    localStorage.setItem('dopamine_installed', 'true');
+    return;
+  }
+  if (!isInstalled) {
+    document.getElementById('installOverlay').style.display = 'flex';
+  }
+}
+
+    // ── Auth functions ────────────────────────────────────────
+    let authMode = 'signin';
+
+    function showPromiseScreen() {
+      document.getElementById('promiseScreen').style.display = 'flex';
+      requestAnimationFrame(animatePromiseGlow);
+    }
+
+    function animatePromiseGlow() {
+      const glowEl    = document.getElementById('promise-glow');
+      const contentEl = document.getElementById('promise-content');
+      const duration  = 3000;
+      const W = 200, H = 150, o1 = 0.98, o2 = 0.49;
+      const startY = 200, endY = 145;
+      const start  = performance.now();
+
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const Y = startY + (endY - startY) * easeOut(progress);
+        glowEl.style.background =
+          `radial-gradient(ellipse ${W}% ${H}% at 50% ${Y.toFixed(1)}%,` +
+          `rgba(255,176,32,${o1}) 0%,rgba(255,176,32,${o2}) 35%,rgba(255,176,32,0) 70%)`;
+        if (progress < 1) { requestAnimationFrame(frame); }
+        else { contentEl.style.opacity = '1'; }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    let _onboardingGlowBg = '';
+
+    function advanceToStage2() {
+      _onboardingGlowBg = document.getElementById('promise-glow').style.background;
+      document.getElementById('promiseScreen').style.display = 'none';
+      document.getElementById('stage2aScreen').style.display = 'flex';
+      document.getElementById('stage2a-glow').style.background = _onboardingGlowBg;
+    }
+
+    function selectReferral(value) {
+      localStorage.setItem('dopa_onboarding_referral', value);
+      document.getElementById('stage2aScreen').style.display = 'none';
+      document.getElementById('stage2bScreen').style.display = 'flex';
+      document.getElementById('stage2b-glow').style.background = _onboardingGlowBg;
+      const ta = document.getElementById('goodDayInput');
+      ta.addEventListener('input', () => {
+        const left = 120 - ta.value.length;
+        document.getElementById('goodDayCharCount').textContent = left + ' left';
+      });
+      setTimeout(() => ta.focus(), 100);
+    }
+
+    async function submitHandshake() {
+      const text = document.getElementById('goodDayInput').value.trim();
+      if (!text) return;
+      localStorage.setItem('dopa_onboarding_good_day', text);
+      document.getElementById('stage2bScreen').style.display = 'none';
+      document.getElementById('stage3Screen').style.display = 'flex';
+      document.getElementById('stage3-glow').style.background = _onboardingGlowBg;
+      setTimeout(() => document.getElementById('s3FirstName').focus(), 100);
+    }
+
+    async function submitStage3() {
+      const firstName = document.getElementById('s3FirstName').value.trim();
+      const email     = document.getElementById('s3Email').value.trim();
+      const password  = document.getElementById('s3Password').value;
+      const errEl     = document.getElementById('stage3Error');
+      const btn       = document.getElementById('stage3Btn');
+      errEl.textContent = '';
+      if (!firstName)          { errEl.textContent = 'Enter your first name.'; return; }
+      if (!email)              { errEl.textContent = 'Enter your email address.'; return; }
+      if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '…';
+      const { data, error } = await sbClient.auth.signUp({
+        email,
+        password,
+        options: { data: { first_name: firstName }, emailRedirectTo: 'https://mydopa.app/app.html' }
+      });
+      btn.disabled = false;
+      btn.textContent = orig;
+      if (error) { errEl.textContent = error.message; return; }
+      if (data.user && !data.session) {
+        errEl.style.color = 'var(--muted)';
+        errEl.textContent = 'Check your email to confirm your account.';
+        return;
+      }
+      localStorage.setItem('dopa_onboarding_complete', '1');
+      if (data.user) {
+        currentUser = data.user;
+        localStorage.setItem('dopamine_uid', data.user.id);
+      }
+      document.getElementById('stage3Screen').style.display = 'none';
+      initApp();
+    }
+
+    function promiseSignIn() {
+      document.getElementById('promiseScreen').style.display = 'none';
+      authMode = 'signin';
+      document.getElementById('authTitle').textContent = 'Sign In';
+      document.getElementById('authSubmitBtn').textContent = 'Sign In';
+      document.getElementById('authToggleText').textContent = "Don't have an account?";
+      document.getElementById('authToggleLink').textContent = 'Sign Up';
+      document.getElementById('authLegal').style.display = 'none';
+      document.getElementById('authError').textContent = '';
+      showAuthScreen();
+    }
+
+    function stage3SignIn() {
+      localStorage.setItem('dopa_onboarding_complete', '1');
+      document.getElementById('stage3Screen').style.display = 'none';
+      authMode = 'signin';
+      document.getElementById('authTitle').textContent = 'Sign In';
+      document.getElementById('authSubmitBtn').textContent = 'Sign In';
+      document.getElementById('authToggleText').textContent = "Don't have an account?";
+      document.getElementById('authToggleLink').textContent = 'Sign Up';
+      document.getElementById('authLegal').style.display = 'none';
+      showAuthScreen();
+    }
+
+    function toggleS3Password() {
+      const input = document.getElementById('s3Password');
+      const btn   = document.getElementById('s3EyeBtn');
+      const show  = input.type === 'password';
+      input.type  = show ? 'text' : 'password';
+      btn.innerHTML = show
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    }
+
+    async function syncOnboardingAnswers() {
+      const goodDay  = localStorage.getItem('dopa_onboarding_good_day');
+      const referral = localStorage.getItem('dopa_onboarding_referral');
+      if (!goodDay && !referral) return;
+      const uid = getUserId();
+      if (!uid) return;
+      const patch = {};
+      if (goodDay)  patch.good_day_description = goodDay;
+      if (referral) patch.onboarding_referral   = referral;
+      try {
+        await fetch(SB_URL + '/rest/v1/push_subscriptions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+          body: JSON.stringify({ user_id: uid, ...patch })
+        });
+        localStorage.removeItem('dopa_onboarding_good_day');
+        localStorage.removeItem('dopa_onboarding_referral');
+      } catch(e) {}
+    }
+
+    function showAuthScreen() {
+      document.getElementById('authScreen').style.display = 'flex';
+    }
+    function hideAuthScreen() {
+      document.getElementById('authScreen').style.display = 'none';
+    }
+
+    function toggleAuthMode() {
+      authMode = authMode === 'signin' ? 'signup' : 'signin';
+      if (authMode === 'signup') {
+        document.getElementById('authTitle').textContent = 'Create Account';
+        document.getElementById('authSubmitBtn').textContent = 'Create Account';
+        document.getElementById('authToggleText').textContent = 'Already have an account?';
+        document.getElementById('authToggleLink').textContent = 'Sign In';
+        document.getElementById('authLegal').style.display = 'block';
+      } else {
+        document.getElementById('authTitle').textContent = 'Sign In';
+        document.getElementById('authSubmitBtn').textContent = 'Sign In';
+        document.getElementById('authToggleText').textContent = "Don't have an account?";
+        document.getElementById('authToggleLink').textContent = 'Sign Up';
+        document.getElementById('authLegal').style.display = 'none';
+      }
+      document.getElementById('authError').textContent = '';
+    }
+
+    function openTos() { document.getElementById('tosScreen').style.display = 'block'; }
+    function closeTos() { document.getElementById('tosScreen').style.display = 'none'; }
+    function openPrivacy() { document.getElementById('privacyScreen').style.display = 'block'; }
+    function closePrivacy() { document.getElementById('privacyScreen').style.display = 'none'; }
+
+    async function handleAuthSubmit() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const errEl = document.getElementById('authError');
+      const btn = document.getElementById('authSubmitBtn');
+      if (!email || !password) { errEl.textContent = 'Enter your email and password.'; return; }
+      if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      btn.disabled = true;
+      errEl.textContent = '';
+      const origText = btn.textContent;
+      btn.textContent = '...';
+      const { error } = authMode === 'signin'
+        ? await sbClient.auth.signInWithPassword({ email, password })
+        : await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: 'https://mydopa.app/app.html' } });
+      btn.disabled = false;
+      btn.textContent = origText;
+      if (error) { errEl.textContent = error.message; }
+    }
+
+    async function signInWithGoogle() {
+      const { error } = await sbClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: 'https://mydopa.app/app.html' }
+      });
+      if (error) showToast('Google sign-in failed. Try again.');
+    }
+
+    function showForgotPassword() {
+      document.getElementById('authMainContent').style.display = 'none';
+      document.getElementById('authForgotContent').style.display = 'block';
+      document.getElementById('authResetEmail').value = '';
+      document.getElementById('authResetError').textContent = '';
+    }
+
+    function hideForgotPassword() {
+      document.getElementById('authForgotContent').style.display = 'none';
+      document.getElementById('authMainContent').style.display = 'block';
+    }
+
+    async function sendPasswordReset() {
+      const email = document.getElementById('authResetEmail').value.trim();
+      const errEl = document.getElementById('authResetError');
+      if (!email) { errEl.textContent = 'Enter your email address.'; return; }
+      const btn = document.getElementById('authResetBtn');
+      btn.disabled = true;
+      const { error } = await sbClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://mydopa.app/app.html' });
+      btn.disabled = false;
+      if (error) { errEl.textContent = error.message; return; }
+      hideForgotPassword();
+      showToast('Password reset email sent. Check your inbox.');
+    }
+
+    async function saveNewPassword() {
+      const pwd = document.getElementById('newPasswordInput').value;
+      const confirm = document.getElementById('confirmPasswordInput').value;
+      const errEl = document.getElementById('recoveryError');
+      if (pwd.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      if (pwd !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
+      const btn = document.getElementById('savePasswordBtn');
+      btn.disabled = true;
+      const { data, error } = await sbClient.auth.updateUser({ password: pwd });
+      btn.disabled = false;
+      if (error) { errEl.textContent = error.message; return; }
+      recoveryMode = false;
+      currentUser = data.user;
+      document.getElementById('recoveryScreen').style.display = 'none';
+      history.replaceState(null, '', window.location.pathname);
+      showToast('Password updated. You are now signed in.');
+      initApp();
+    }
+
+    async function signOutUser() {
+      await sbClient.auth.signOut();
+      currentUser = null;
+      appInitialized = false;
+      showAuthScreen();
+    }
+
+    // ── Auth init ─────────────────────────────────────────────
+    let recoveryMode = false;
+    if (window.location.hash.includes('type=recovery')) {
+      recoveryMode = true;
+      document.getElementById('recoveryScreen').style.display = 'flex';
+    }
+
+    (async () => {
+      sbClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          recoveryMode = true;
+          document.getElementById('recoveryScreen').style.display = 'flex';
+          return;
+        }
+        if (recoveryMode) return;
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          if (session) localStorage.setItem('dopa_onboarding_complete', '1');
+          currentUser = session ? session.user : null;
+          if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+          if (event === 'SIGNED_IN') {
+            mixpanel.track('Signed Up');
+            if (session?.user) {
+              const u = session.user;
+              mixpanel.identify(u.id);
+              mixpanel.people.set({
+                '$email': u.email,
+                '$name': u.user_metadata?.first_name || u.email
+              });
+            }
+          }
+          hideAuthScreen();
+          if (!appInitialized) initApp();
+        } else if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          appInitialized = false;
+          showAuthScreen();
+        }
+      });
+
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (recoveryMode) return;
+
+      if (session) {
+        // State 1: valid session — load app directly
+        currentUser = session.user;
+        if (session.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+        if (!appInitialized) initApp();
+      } else if (localStorage.getItem('dopa_onboarding_complete')) {
+        // State 2: no session, returning user — show sign-in
+        showAuthScreen();
+      } else {
+        // State 3: no session, no flag — genuine new user, show onboarding
+        showPromiseScreen();
+      }
+    })();
   </script>
   <!-- NEXT STEP MODAL -->
   <div class="next-step-modal" id="nextStepModal">
@@ -2608,6 +5441,76 @@
       </button>
     </div>
   </div>
+
+
+  <!-- NOTIFICATION PERMISSION MODAL -->
+  <div id="installBanner">
+    <p style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-weight:700;color:#E8D5FF;margin:0 0 8px 0;">One more thing.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:rgba(201,190,216,0.7);margin:0 0 20px 0;line-height:1.5;">Add DOPAmine to your home screen to get your daily reminders.</p>
+    <button onclick="dismissInstallBanner()" style="width:100%;padding:16px;background:transparent;border:1px solid rgba(232,213,255,0.35);border-radius:50px;color:#E8D5FF;font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Got it</button>
+  </div>
+
+  <div class="notif-overlay" id="notifModal">
+    <div class="notif-sheet">
+      <div class="notif-handle"></div>
+      <div class="notif-headline">Want a daily nudge to find your 3 good things?</div>
+      <div class="notif-sub">When does your morning usually start? We'll check in around that time.</div>
+      <div class="notif-times">
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'06:30')">
+          <span>6:30am</span><span class="notif-time-label">Before the day gets loud</span>
+        </button>
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'08:00')">
+          <span>8:00am</span><span class="notif-time-label">Coffee in hand, day starting</span>
+        </button>
+        <button class="notif-time-btn" onclick="selectNotifTime(this,'09:30')">
+          <span>9:30am</span><span class="notif-time-label">Once things are moving</span>
+        </button>
+        <button class="notif-time-btn" onclick="toggleCustomTime(this)">
+          <span>Pick a different time</span><span class="notif-time-label">Your choice</span>
+        </button>
+      </div>
+      <div class="notif-custom" id="notifCustom">
+        <input type="time" id="notifCustomInput" value="09:00" onchange="setCustomTime(this.value)" />
+      </div>
+      <button class="notif-cta" onclick="requestNotifPermission()">Yes, remind me</button>
+      <button class="notif-skip" onclick="closeNotifModal(false)">Not now</button>
+    </div>
+  </div>
+
+  <div class="notif-overlay" id="notifSettingsModal">
+    <div class="notif-sheet">
+      <div class="notif-handle"></div>
+      <div class="notif-headline">Change Reminder Time</div>
+      <div class="notif-sub">When should we check in with you?</div>
+      <div class="notif-times">
+        <button class="notif-time-btn" id="st-630" onclick="selectSettingsTime(this,'06:30')">
+          <span>6:30am</span><span class="notif-time-label">Before the day gets loud</span>
+        </button>
+        <button class="notif-time-btn" id="st-800" onclick="selectSettingsTime(this,'08:00')">
+          <span>8:00am</span><span class="notif-time-label">Coffee in hand, day starting</span>
+        </button>
+        <button class="notif-time-btn" id="st-930" onclick="selectSettingsTime(this,'09:30')">
+          <span>9:30am</span><span class="notif-time-label">Once things are moving</span>
+        </button>
+        <button class="notif-time-btn" id="st-custom" onclick="toggleSettingsCustomTime(this)">
+          <span>Pick a different time</span><span class="notif-time-label">Your choice</span>
+        </button>
+      </div>
+      <div class="notif-custom" id="notifSettingsCustom">
+        <input type="time" id="notifSettingsCustomInput" value="09:00" onchange="setSettingsCustomTime(this.value)" />
+      </div>
+      <button class="notif-cta" id="notifSettingsSaveBtn" onclick="saveNotifTime()">Save</button>
+      <button class="notif-skip" onclick="closeNotifSettings()">Cancel</button>
+    </div>
+  </div>
+
+<button
+  data-tally-open="rjG44L"
+  data-tally-emoji-text="👋"
+  data-tally-emoji-animation="wave"
+  style="position:fixed;bottom:24px;right:20px;z-index:999;background:rgba(123,47,190,0.85);border:none;border-radius:50px;padding:10px 18px;color:white;font-size:0.78rem;font-weight:700;letter-spacing:0.5px;cursor:pointer;backdrop-filter:blur(8px);">
+  Give feedback
+</button>
 
 </body>
 </html>

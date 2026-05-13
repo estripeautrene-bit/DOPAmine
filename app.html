@@ -2284,6 +2284,22 @@
     .blank-reveal-text { font-size:1rem; color:rgba(255,255,255,0.85); line-height:1.65; text-align:center; margin-bottom:36px; }
     .blank-cta-btn { background:#7B2FBE; border:none; border-radius:50px; padding:16px 32px; font-size:1rem; font-weight:700; color:white; cursor:pointer; width:100%; }
 </style>
+<script type="text/javascript">
+(function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?
+"https:":"http:")+"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d);
+a._i=[];a.init=function(b,c,f){function d(a,b){var c=b.split(".");
+2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==
+typeof f?g=a[f]=[]:f="mixpanel";g.people=g.people||[];h="disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.set people.increment".split(" ");
+for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.1}
+)(document,window.mixpanel||[]);
+mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
+  autocapture: true,
+  record_sessions_percent: 100
+});
+</script>
 </head>
 <body>
 
@@ -3172,7 +3188,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       document.getElementById('view-yesterday').classList.toggle('active', tab === 'yesterday');
       document.getElementById('view-summary').classList.toggle('active', tab === 'summary');
       if (tab === 'summary') { renderSummary(); sbSync(); }
-      if (tab === 'yesterday') renderYesterday();
+      if (tab === 'yesterday') { renderYesterday(); mixpanel.track('Yesterday Tab Opened'); }
       if (tab === 'log') setTimeout(() => document.getElementById('momentInput').focus(), 50);
       applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     }
@@ -4295,6 +4311,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       saveMoments(momentsBefore);
       localStorage.setItem(LAST_SAVE_TS_KEY, Date.now());
       sbSave(newMoment);
+      mixpanel.track('Moment Saved');
 
       const streakAfter = calcStreak(momentsBefore);
 
@@ -4561,6 +4578,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     function ypcSaveFeel(text) {
+      mixpanel.track('Feel Field Saved');
       const t = text.toLowerCase();
       let response = "That's the practice. You noticed yesterday. That's already more than most.";
       if (/grateful|thankful/.test(t))
@@ -5340,6 +5358,7 @@ function checkInstallPrompt() {
           if (session) localStorage.setItem('dopa_onboarding_complete', '1');
           currentUser = session ? session.user : null;
           if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
+          if (event === 'SIGNED_IN') mixpanel.track('Signed Up');
           hideAuthScreen();
           if (!appInitialized) initApp();
         } else if (event === 'SIGNED_OUT') {

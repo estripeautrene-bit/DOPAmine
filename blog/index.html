@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- ── SEO ── -->
+<title>The Brain Lab — DOPAmine Blog | mydopa.app</title>
+<meta name="description" content="The science of why your brain discards good moments — and how to fix it. Essays on negativity bias, habit formation, and rewiring how you see your own life."/>
+<meta name="keywords" content="negativity bias, brain training, habit formation, good moments, mindfulness science, dopamine habit, gratitude practice, positive psychology"/>
+<meta name="author" content="DOPAmine"/>
+<link rel="canonical" href="https://mydopa.app/blog"/>
+
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="The Brain Lab — DOPAmine Blog"/>
+<meta property="og:description" content="The science of why your brain discards good moments — and how to fix it."/>
+<meta property="og:url" content="https://mydopa.app/blog"/>
+<meta property="og:site_name" content="DOPAmine"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --text-body:     #D4CAE8;
+  --font-d:        'Playfair Display', Georgia, serif;
+  --font-b:        'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--text-body);
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-b); font-size: 18px; font-weight: 700; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-home {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-home:hover { color: var(--purple-mid); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(168,85,247,0.35);
+  color: var(--purple-bright);
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border-radius: 999px;
+  text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ─── HEADER ─── */
+.blog-header {
+  padding: 100px 24px 80px;
+  max-width: 1100px; margin: 0 auto;
+  position: relative;
+}
+.blog-header::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 500px; height: 500px;
+  background: radial-gradient(ellipse at top right, rgba(123,47,190,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.blog-eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.blog-title {
+  font-family: var(--font-d); font-size: clamp(48px, 7vw, 88px);
+  font-weight: 900; line-height: 0.95; letter-spacing: -2px;
+  color: var(--white); margin-bottom: 28px;
+}
+.blog-title em { font-style: italic; color: var(--purple-bright); display: block; }
+.blog-intro {
+  font-size: 18px; color: var(--gray-light); font-weight: 300; line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ─── FEATURED POST ─── */
+.featured-section {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+}
+.section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--purple-mid); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: rgba(168,85,247,0.12);
+}
+
+.featured-card {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 24px;
+  padding: 56px 64px;
+  text-decoration: none; display: block;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.featured-card:hover { border-color: rgba(168,85,247,0.35); transform: translateY(-4px); }
+.featured-card::before {
+  content: '';
+  position: absolute; bottom: -100px; right: -100px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,176,32,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.feat-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.feat-live {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--orange-energy);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.feat-title {
+  font-family: var(--font-d); font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900; line-height: 1.1; color: var(--white);
+  margin-bottom: 20px; max-width: 640px;
+}
+.feat-title em { font-style: italic; color: var(--purple-bright); }
+.feat-excerpt {
+  font-size: 17px; color: var(--gray-light); font-weight: 300; line-height: 1.7;
+  max-width: 540px; margin-bottom: 32px;
+}
+.feat-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-size: 13px; color: var(--gray-muted);
+}
+.feat-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-muted); }
+.feat-arrow {
+  margin-left: auto;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(168,85,247,0.3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--purple-mid); font-size: 18px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.featured-card:hover .feat-arrow { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ─── GRID ─── */
+.grid-section {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px 120px;
+}
+.post-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+
+.post-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(123,47,190,0.12);
+  border-radius: 20px; padding: 36px 32px;
+  text-decoration: none; display: block;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.post-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-4px); }
+.post-card.soon {
+  opacity: 0.55; cursor: default;
+  pointer-events: none;
+}
+.post-card.soon:hover { transform: none; }
+
+.card-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.card-tag.science { color: var(--orange-energy); }
+.card-tag.product { color: var(--purple-mid); }
+.card-tag.behavior { color: #6EE7B7; }
+.soon-badge {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  background: rgba(123,47,190,0.15); color: var(--purple-mid);
+  padding: 3px 8px; border-radius: 999px; font-weight: 600;
+}
+
+.card-title {
+  font-family: var(--font-d); font-size: clamp(19px, 2vw, 23px);
+  font-weight: 700; color: var(--white); line-height: 1.2;
+  margin-bottom: 14px;
+}
+.card-title em { font-style: italic; color: var(--purple-bright); }
+.card-excerpt {
+  font-size: 14px; color: var(--gray-muted); line-height: 1.65; font-weight: 300;
+  margin-bottom: 24px;
+}
+.card-read {
+  font-size: 13px; color: var(--purple-mid); font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ─── SUBSCRIBE ─── */
+.subscribe-section {
+  background: var(--navy-panel);
+  border-top: 1px solid rgba(123,47,190,0.1);
+  border-bottom: 1px solid rgba(123,47,190,0.1);
+  padding: 80px 24px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.subscribe-section::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.05) 0%, rgba(123,47,190,0.05) 40%, transparent 70%);
+  pointer-events: none;
+}
+.sub-eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 16px;
+}
+.sub-title {
+  font-family: var(--font-d); font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900; color: var(--white); margin-bottom: 16px; line-height: 1.1;
+}
+.sub-title em { font-style: italic; color: var(--purple-bright); }
+.sub-body {
+  font-size: 16px; color: var(--gray-light); font-weight: 300; line-height: 1.65;
+  max-width: 400px; margin: 0 auto 36px;
+}
+.sub-form {
+  display: flex; gap: 12px; max-width: 420px; margin: 0 auto;
+  justify-content: center;
+}
+.sub-input {
+  flex: 1; padding: 14px 20px; border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(168,85,247,0.25);
+  color: var(--white); font-family: var(--font-b); font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+}
+.sub-input::placeholder { color: var(--gray-muted); }
+.sub-input:focus { border-color: rgba(168,85,247,0.5); }
+.sub-btn {
+  padding: 14px 28px; border-radius: 999px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-family: var(--font-b); font-size: 14px; font-weight: 600;
+  border: none; cursor: pointer;
+  box-shadow: 0 0 30px rgba(123,47,190,0.35);
+  transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap;
+}
+.sub-btn:hover { transform: translateY(-1px); box-shadow: 0 0 50px rgba(168,85,247,0.45); }
+.sub-fine { font-size: 12px; color: var(--gray-muted); margin-top: 14px; }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid rgba(123,47,190,0.1);
+  padding: 36px 48px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.footer-logo { font-family: var(--font-b); font-size: 16px; font-weight: 700; text-decoration: none; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tag { font-family: var(--font-d); font-size: 13px; font-style: italic; color: var(--gray-muted); }
+.footer-link { font-size: 13px; color: var(--gray-muted); text-decoration: none; transition: color 0.2s; }
+.footer-link:hover { color: var(--purple-mid); }
+
+/* ─── REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; } .d3 { transition-delay: 0.19s; }
+.d4 { transition-delay: 0.26s; } .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.4s; }
+
+@media (max-width: 900px) {
+  .post-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  nav { padding: 14px 20px; }
+  .blog-header { padding: 64px 20px 56px; }
+  .featured-card { padding: 36px 28px; }
+  .post-grid { grid-template-columns: 1fr; }
+  .sub-form { flex-direction: column; }
+  footer { flex-direction: column; text-align: center; padding: 32px 20px 40px; }
+  .nav-home { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">DOPA</span><span class="m">mine</span></a>
+  <a href="https://mydopa.app" class="nav-home">← mydopa.app</a>
+  <a href="https://mydopa.app/app.html" class="nav-cta">Try DOPAmine free →</a>
+</nav>
+
+<!-- HEADER -->
+<header class="blog-header">
+  <p class="blog-eyebrow">The Brain Lab</p>
+  <h1 class="blog-title">
+    The science<br/>of noticing<br/><em>what's good.</em>
+  </h1>
+  <p class="blog-intro">
+    Essays on negativity bias, habit formation, and why your brain discards the best parts of your day — plus what you can actually do about it.
+  </p>
+</header>
+
+<!-- FEATURED -->
+<section class="featured-section">
+  <p class="section-label reveal">Latest</p>
+
+  <a href="/blog/can-you-remember-last-tuesday" class="featured-card reveal">
+    <p class="feat-tag"><span class="feat-live"></span> Live now &nbsp;·&nbsp; The Science</p>
+    <h2 class="feat-title">Can You Remember the Best Moment from <em>Last Tuesday?</em></h2>
+    <p class="feat-excerpt">Most people can't. Not because the day was bad — but because your brain is wired to discard good moments the instant they happen. Here's what that costs you.</p>
+    <div class="feat-meta">
+      <span>May 14, 2026</span>
+      <span class="feat-meta-dot"></span>
+      <span>5 min read</span>
+      <span class="feat-arrow">→</span>
+    </div>
+  </a>
+</section>
+
+<!-- GRID -->
+<section class="grid-section">
+  <p class="section-label reveal">All posts</p>
+
+  <div class="post-grid">
+
+    <!-- LIVE -->
+    <a href="/blog/your-brain-is-not-broken" class="post-card reveal d1">
+      <p class="card-tag science">The Science</p>
+      <h2 class="card-title">Your Brain Is Not Broken. It's Set to the <em>Wrong Default.</em></h2>
+      <p class="card-excerpt">The negativity bias isn't a character flaw. It's a factory setting from 200,000 years ago — and factory settings can be changed.</p>
+      <span class="card-read">Read →</span>
+    </a>
+
+    <!-- COMING SOON -->
+    <div class="post-card soon reveal d2">
+      <p class="card-tag product">The Product <span class="soon-badge">Soon</span></p>
+      <h2 class="card-title">Why I Quit Every Journaling App I Ever Tried</h2>
+      <p class="card-excerpt">You didn't fail at journaling. The journal failed you — by saying nothing back. Every one-way street is a churn event waiting to happen.</p>
+    </div>
+
+    <div class="post-card soon reveal d3">
+      <p class="card-tag behavior">Behavior <span class="soon-badge">Soon</span></p>
+      <h2 class="card-title">The Moment a Habit Stops Being Hard</h2>
+      <p class="card-excerpt">There's a threshold where the brain stops logging because it set a goal — and starts logging because it wants to. Here's what that crossing looks like.</p>
+    </div>
+
+    <div class="post-card soon reveal d4">
+      <p class="card-tag science">The Science <span class="soon-badge">Soon</span></p>
+      <h2 class="card-title">Why Your Streak Counter Is Making You <em>Worse</em></h2>
+      <p class="card-excerpt">36 good moments logged, sitting next to a 2-day streak. The negative number dominates. The app designed to fight negativity bias is triggering it.</p>
+    </div>
+
+    <div class="post-card soon reveal d5">
+      <p class="card-tag behavior">Behavior <span class="soon-badge">Soon</span></p>
+      <h2 class="card-title">Day 90: What Actually Changes When You Train Your Brain for 3 Months</h2>
+      <p class="card-excerpt">Not a testimonial. A roadmap. What the research actually says happens at Day 7, Day 14, Day 30, and the point of no return.</p>
+    </div>
+
+    <div class="post-card soon reveal d6">
+      <p class="card-tag science">The Science <span class="soon-badge">Soon</span></p>
+      <h2 class="card-title">The Four Pillars: Why Self-Development Only Works When You Work All Four</h2>
+      <p class="card-excerpt">Mindset. Body. Emotions. Goals. The research on why these don't work in isolation — and what happens when you finally run them together.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="subscribe-section">
+  <p class="sub-eyebrow">The Brain Lab · Newsletter</p>
+  <h2 class="sub-title">New essays on <em>rewiring</em><br/>how you see your life.</h2>
+  <p class="sub-body">One essay a week. The science of noticing. No noise.</p>
+  <div class="sub-form">
+    <input type="email" class="sub-input" placeholder="your@email.com"/>
+    <button class="sub-btn">Get the essays</button>
+  </div>
+  <p class="sub-fine">No spam. Unsubscribe whenever. Your inbox is not a landfill.</p>
+</section>
+
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">DOPA</span><span class="m">mine</span></a>
+  <p class="footer-tag">"Your dopamine. From the inside."</p>
+  <a href="https://mydopa.app" class="footer-link">mydopa.app</a>
+</footer>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+els.forEach(el => io.observe(el));
+</script>
+
+<!-- Blog structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "The Brain Lab — DOPAmine",
+  "description": "Essays on negativity bias, habit formation, and why your brain discards the best parts of your day.",
+  "url": "https://mydopa.app/blog",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DOPAmine",
+    "url": "https://mydopa.app"
+  }
+}
+</script>
+
+</body>
+</html>

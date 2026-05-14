@@ -218,23 +218,91 @@ footer {
 .d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.12s; } .d3 { transition-delay: 0.19s; }
 .d4 { transition-delay: 0.26s; } .d5 { transition-delay: 0.33s; } .d6 { transition-delay: 0.4s; } .d7 { transition-delay: 0.47s; }
 
+/* ─── BLOG STRIP ─── */
+.blog-strip {
+  padding: 100px 24px;
+  position: relative; overflow: hidden;
+  background: var(--navy-panel);
+  border-top: 1px solid rgba(123,47,190,0.08);
+  border-bottom: 1px solid rgba(123,47,190,0.08);
+}
+.blog-strip::before {
+  content: '';
+  position: absolute; top: -120px; left: -120px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(123,47,190,0.05), transparent 65%);
+  pointer-events: none;
+}
+.blog-strip-inner { max-width: 1080px; margin: 0 auto; }
+.blog-strip-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; margin-bottom: 52px;
+}
+.blog-strip-head-left {}
+.blog-strip-eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 12px;
+}
+.blog-strip-title {
+  font-family: var(--font-d); font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900; line-height: 1.1; color: var(--white);
+}
+.blog-strip-title em { font-style: italic; color: var(--purple-bright); }
+.blog-strip-all {
+  font-size: 14px; color: var(--purple-mid); text-decoration: none; font-weight: 500;
+  border: 1px solid rgba(168,85,247,0.25); padding: 10px 20px; border-radius: 999px;
+  white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+}
+.blog-strip-all:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+.blog-cards {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+}
+.blog-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(123,47,190,0.12);
+  border-radius: 20px; padding: 32px 28px;
+  text-decoration: none; display: block;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.blog-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-4px); }
+.blog-card-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.bc-live {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--orange-energy);
+  animation: bc-pulse 2s ease-in-out infinite;
+}
+@keyframes bc-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.blog-card-title {
+  font-family: var(--font-d); font-size: clamp(18px, 2vw, 22px);
+  font-weight: 700; color: var(--white); line-height: 1.2;
+  margin-bottom: 12px;
+}
+.blog-card-title em { font-style: italic; color: var(--purple-bright); }
+.blog-card-excerpt {
+  font-size: 14px; color: var(--gray-muted); line-height: 1.65; font-weight: 300;
+  margin-bottom: 20px;
+}
+.blog-card-read { font-size: 13px; color: var(--purple-mid); font-weight: 500; }
+.blog-card.soon-card { opacity: 0.55; pointer-events: none; }
+.soon-pill {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  background: rgba(123,47,190,0.15); color: var(--purple-mid);
+  padding: 3px 8px; border-radius: 999px; font-weight: 600;
+}
+
 @media (max-width: 768px) {
   nav { padding: 16px 20px; }
   .days { grid-template-columns: repeat(4, 1fr); }
   footer { flex-direction: column; text-align: center; padding: 36px 24px 48px; }
+  .blog-strip-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .blog-cards { grid-template-columns: 1fr; }
 }
 </style>
-  <!-- Open Graph — WhatsApp / iMessage / Social share card -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://mydopa.app" />
-  <meta property="og:title"       content="7 days. You won't last." />
-  <meta property="og:description" content="Train your brain to find the good. 3 things a day. mydopa.app" />
-  <meta property="og:image"       content="https://mydopa.app/images/dopa-share-og.png" />
-  <meta property="og:image:width"  content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="7 days. You won't last." />
-  <meta name="twitter:image"       content="https://mydopa.app/images/dopa-share-og.png" />
+<link rel="canonical" href="https://mydopa.app"/>
 </head>
 <body>
 
@@ -319,6 +387,40 @@ footer {
     <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
       <a href="app.html" class="btn-final" style="font-size:16px;padding:16px 40px;">Start my 7 days →</a>
       <p class="hero-fine">Free for 7 days. No card needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG STRIP -->
+<section class="blog-strip">
+  <div class="blog-strip-inner">
+    <div class="blog-strip-head reveal">
+      <div class="blog-strip-head-left">
+        <p class="blog-strip-eyebrow">The Brain Lab</p>
+        <h2 class="blog-strip-title">The science of why your<br/>brain discards <em>what's good.</em></h2>
+      </div>
+      <a href="/blog" class="blog-strip-all">All essays →</a>
+    </div>
+
+    <div class="blog-cards">
+      <a href="/blog/can-you-remember-last-tuesday" class="blog-card reveal d1">
+        <p class="blog-card-tag"><span class="bc-live"></span> New · The Science</p>
+        <h2 class="blog-card-title">Can You Remember the Best Moment from <em>Last Tuesday?</em></h2>
+        <p class="blog-card-excerpt">Most people can't. Not because the day was bad — because your brain deleted it. Here's why.</p>
+        <span class="blog-card-read">5 min read →</span>
+      </a>
+
+      <div class="blog-card soon-card reveal d2">
+        <p class="blog-card-tag">The Science <span class="soon-pill">Soon</span></p>
+        <h2 class="blog-card-title">Your Brain Is Not Broken. It's Set to the Wrong Default.</h2>
+        <p class="blog-card-excerpt">The negativity bias isn't a flaw. It's a 200,000-year-old factory setting — and factory settings can be changed.</p>
+      </div>
+
+      <div class="blog-card soon-card reveal d3">
+        <p class="blog-card-tag">Behavior <span class="soon-pill">Soon</span></p>
+        <h2 class="blog-card-title">Why Your Streak Counter Is Making You Worse</h2>
+        <p class="blog-card-excerpt">The app designed to fight negativity bias triggering it on its own progress screen. The honest case against streaks.</p>
+      </div>
     </div>
   </div>
 </section>

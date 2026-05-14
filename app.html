@@ -4968,15 +4968,17 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function sharePersonalNumber() {
       const moments = loadMoments();
-      const streak = calcStreak(moments);
-      const total  = moments.length;
-      const msg = streak + ' days. ' + total + ' good moments I almost didn\u2019t keep.\nMy brain feels different.\nmydopa.app';
+      const streak  = calcStreak(moments);
+      const total   = moments.length;
+      const msg = `${streak} days. ${total} good moments I almost didn't keep. My brain feels different. mydopa.app`;
       if (navigator.share) {
-        navigator.share({ text: msg, url: 'https://mydopa.app' }).catch(() => {});
+        navigator.share({ text: msg, url: 'https://mydopa.app' })
+          .catch(() => {});
       } else {
-        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+        const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+        window.open(url, '_blank');
       }
-      if (typeof mixpanel !== 'undefined') mixpanel.track('Share Sent', { variant: 'personal_number', surface: 'progress_tab' });
+      if (typeof haptic === 'function') haptic();
     }
 
         function calcStreak(moments) {

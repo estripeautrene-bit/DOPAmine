@@ -4970,14 +4970,50 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const moments = loadMoments();
       const streak  = calcStreak(moments);
       const total   = moments.length;
-      const msg = `${streak} days. ${total} good moments I almost didn't keep. My brain feels different. mydopa.app`;
-      if (navigator.share) {
-        navigator.share({ text: msg, url: 'https://mydopa.app' })
-          .catch(() => {});
-      } else {
-        const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
-        window.open(url, '_blank');
-      }
+
+      const W = 1200, H = 630;
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0E0B1A';
+      ctx.fillRect(0, 0, W, H);
+
+      const bloom = ctx.createRadialGradient(W*0.42, H*0.62, 0, W*0.42, H*0.62, H*0.85);
+      bloom.addColorStop(0,   'rgba(200,100,10,0.55)');
+      bloom.addColorStop(0.4, 'rgba(140,60,5,0.25)');
+      bloom.addColorStop(1,   'rgba(14,11,26,0)');
+      ctx.fillStyle = bloom;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.font = '400 26px -apple-system,Arial'; ctx.fillStyle = '#FFB020';
+      ctx.fillText('DOPAmine · mydopa.app', 72, 80);
+
+      ctx.font = '900 148px -apple-system,Arial'; ctx.fillStyle = '#FFFFFF';
+      ctx.fillText(`${streak} days.`, 72, 268);
+
+      ctx.font = '700 62px -apple-system,Arial'; ctx.fillStyle = '#B57BF7';
+      ctx.fillText(`${total} good moments captured.`, 72, 368);
+
+      ctx.font = '400 38px -apple-system,Arial'; ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.fillText('My brain feels different.', 72, 446);
+
+      ctx.font = '400 26px -apple-system,Arial'; ctx.fillStyle = '#5A5470';
+      ctx.fillText('mydopa.app', 72, 584);
+
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'my-dopamine-progress.png', { type: 'image/png' });
+        const text = `${streak} days. ${total} good moments I almost didn't keep. My brain feels different. mydopa.app`;
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try { await navigator.share({ files: [file], text }); }
+          catch(e) { if (e.name !== 'AbortError') navigator.share({ text, url: 'https://mydopa.app' }).catch(()=>{}); }
+        } else if (navigator.share) {
+          navigator.share({ text, url: 'https://mydopa.app' }).catch(()=>{});
+        } else {
+          const a = document.createElement('a'); a.href = canvas.toDataURL(); a.download = 'my-dopamine-progress.png'; a.click();
+        }
+      }, 'image/png');
+
       if (typeof haptic === 'function') haptic();
     }
 

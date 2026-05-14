@@ -5006,7 +5006,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       canvas.toBlob(async (blob) => {
         const file = new File([blob], 'my-dopamine-progress.png', { type: 'image/png' });
-        const text = `${streak} days. ${total} good moments I almost didn't keep. My brain feels different. mydopa.app`;
+        const text = `${streak} days. ${total} good moments I almost didn't keep. My brain feels different. https://mydopa.app`;
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
           try { await navigator.share({ files: [file], text }); }
           catch(e) { if (e.name !== 'AbortError') navigator.share({ text, url: 'https://mydopa.app' }).catch(()=>{}); }

@@ -1834,7 +1834,7 @@
       width: 100%;
       border: none;
       outline: none;
-      font-size: 15px;
+      font-size: 22px;
       font-family: inherit;
       color: white;
       resize: none;
@@ -3374,7 +3374,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         text: escapeHtml(m.text),
         time: formatTime(m.createdAt),
         autoTag: m.autoTag || '',
-        tags: (m.tags || []).join(',')
+        tags: (m.tags || []).join(','),
+        photo: m.photo || null
       }));
       tpcRenderStack(todayEntries);
     }
@@ -3408,6 +3409,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         const tags = [e.autoTag, ...(e.tags ? e.tags.split(',') : [])].filter(Boolean);
         return '<div class="tpc-entry-card">' +
           '<div class="tpc-entry-text">' + e.text + '</div>' +
+          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="" style="width:100%;border-radius:10px;margin-top:8px;" />' : '') +
           '<div class="tpc-entry-meta">' +
             '<span class="tpc-entry-time">' + (e.time || '') + '</span>' +
             tags.map(t => '<span class="tpc-entry-tag">' + t.trim() + '</span>').join('') +

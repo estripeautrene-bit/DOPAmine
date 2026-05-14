@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Allow: /blog/
+Allow: /blog/can-you-remember-last-tuesday
+Allow: /blog/no-better-predictor-than-your-past
+Allow: /blog/no-hay-mejor-predicador-que-el-pasado
+
+# Block the app from being indexed — it requires login, not useful in search results
+Disallow: /app.html
 
 Sitemap: https://mydopa.app/sitemap.xml

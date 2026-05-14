@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
   <url>
     <loc>https://mydopa.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Blog Index -->
   <url>
-    <loc>https://mydopa.app/blog</loc>
+    <loc>https://mydopa.app/blog/</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
+  <!-- Blog Post 1 — English -->
   <url>
     <loc>https://mydopa.app/blog/can-you-remember-last-tuesday</loc>
-    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- Blog Post 2 — English -->
+  <url>
+    <loc>https://mydopa.app/blog/no-better-predictor-than-your-past</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post 2 — Spanish -->
+  <url>
+    <loc>https://mydopa.app/blog/no-hay-mejor-predicador-que-el-pasado</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mydopa.app/blog/no-hay-mejor-predicador-que-el-pasado"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mydopa.app/blog/no-better-predictor-than-your-past"/>
+  </url>
+
 </urlset>

@@ -27,14 +27,6 @@ def font(size, weight="bold"):
                 continue
     return ImageFont.load_default()
 
-def emoji_font(size):
-    path = "/System/Library/Fonts/Apple Color Emoji.ttc"
-    if os.path.exists(path):
-        try:
-            return ImageFont.truetype(path, size)
-        except Exception:
-            pass
-    return None
 
 img  = Image.new("RGBA", (W, H), color=(14, 11, 26, 255))
 draw = ImageDraw.Draw(img)
@@ -60,16 +52,6 @@ draw.text((68, 142 + GAP*2), "last.",     font=h1, fill=PURPLE)
 
 draw.text((68, H - 48), "mydopa.app", font=font(24, "regular"), fill=MUTED)
 
-from pilmoji import Pilmoji
-
-EMOJI_SIZE = 220
-ef = font(EMOJI_SIZE, "bold")  # size reference for positioning
-
-with Pilmoji(img) as pilmoji:
-    bbox = pilmoji.getsize("🧠", font=ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", EMOJI_SIZE))
-    ex = W - bbox[0] - 80
-    ey = (H - bbox[1]) // 2 - 20
-    pilmoji.text((ex, ey), "🧠", fill=(255, 255, 255), font=ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", EMOJI_SIZE))
 
 final = img.convert("RGB")
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)

@@ -60,13 +60,16 @@ draw.text((68, 142 + GAP*2), "last.",     font=h1, fill=PURPLE)
 
 draw.text((68, H - 48), "mydopa.app", font=font(24, "regular"), fill=MUTED)
 
-ef = emoji_font(260)
-if ef:
-    bbox = draw.textbbox((0, 0), "🧠", font=ef)
-    ew, eh = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    ex = W - ew - 80
-    ey = (H - eh) // 2 - 20
-    draw.text((ex, ey), "🧠", font=ef, embedded_color=True)
+from pilmoji import Pilmoji
+
+EMOJI_SIZE = 220
+ef = font(EMOJI_SIZE, "bold")  # size reference for positioning
+
+with Pilmoji(img) as pilmoji:
+    bbox = pilmoji.getsize("🧠", font=ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", EMOJI_SIZE))
+    ex = W - bbox[0] - 80
+    ey = (H - bbox[1]) // 2 - 20
+    pilmoji.text((ex, ey), "🧠", fill=(255, 255, 255), font=ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", EMOJI_SIZE))
 
 final = img.convert("RGB")
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)

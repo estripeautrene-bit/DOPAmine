@@ -1715,6 +1715,11 @@
       letter-spacing: 0.04em;
       margin-bottom: 14px;
     }
+    @media (max-width: 390px) {
+      .ypc-feeling   { font-size: 1.2rem; }
+      .ypc-question  { font-size: 18px; }
+      .ypc-textarea  { font-size: 18px; }
+    }
     .ypc-reflection-loading {
       font-size: 1.4rem;
       color: rgba(255,255,255,0.4);
@@ -4659,6 +4664,14 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       renderYesterdayAccumulation(allMoments, moments.length);
       initYesterdayCard(moments.length);
       ypcRenderStack(yesterdayEntries);
+
+      // Hide the moments deck when yesterday had no entries
+      const stackHeader = document.querySelector('.ypc-stack-header');
+      const stackDeck   = document.getElementById('ypcDeck');
+      const noEntries   = moments.length === 0;
+      if (stackHeader) stackHeader.style.display = noEntries ? 'none' : '';
+      if (stackDeck)   stackDeck.style.display   = noEntries ? 'none' : '';
+
       maybeShowDopaReflection();
     }
 
@@ -4675,8 +4688,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       el.textContent = `Day ${dayN}. ${allMoments.length} moments in your archive. Yesterday added ${yesterdayCount}.`;
 
       const dopaImg = document.getElementById('ypcDopaImage');
-      if (dopaImg && dayN !== '?') {
-        const n = Number(dayN);
+      if (dopaImg) {
+        const n = dayN === '?' ? 1 : Number(dayN);
         dopaImg.src = n <= 3  ? '/images/dopa-02-thinking.png'
                     : n <= 6  ? '/images/dopa-03-winking.png'
                     : n <= 9  ? '/images/dopa-05-celebrating.png'

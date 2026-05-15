@@ -4674,8 +4674,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       renderYesterdayAccumulation(allMoments, moments.length);
       initYesterdayCard(moments.length);
       ypcRenderStack(yesterdayEntries);
-      renderYesterdayInsights(allMoments, moments);
-      setupYesterdayReveal(moments.length > 0);
       maybeShowDopaReflection();
     }
 
@@ -4720,53 +4718,22 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         const { reflection } = await res.json();
         if (reflection) {
           const feelingEl = document.getElementById('ypcFeeling');
-          if (window._ypcRevealDone) {
-            // Already revealed — cross-fade to the AI sentence
-            feelingEl.style.transition = 'opacity 0.4s ease';
-            feelingEl.style.opacity = '0';
-            setTimeout(() => {
-              feelingEl.textContent = reflection;
-              requestAnimationFrame(() => { feelingEl.style.opacity = '1'; });
-            }, 400);
-          } else {
-            // Reveal pending — update text silently; trigger will fade it in
+          feelingEl.style.transition = 'opacity 0.4s ease';
+          feelingEl.style.opacity = '0';
+          setTimeout(() => {
             feelingEl.textContent = reflection;
-          }
+            requestAnimationFrame(() => {
+              feelingEl.style.opacity = '1';
+              if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+              // Insights only surface once the AI sentence is confirmed
+              const allM = loadMoments();
+              const yMoments = allM.filter(m => m.dateKey === yesterdayKey());
+              renderYesterdayInsights(allM, yMoments);
+            });
+          }, 400);
         }
       } catch (e) {
-        // fail silently — static rotating quote revealed by trigger
-      }
-    }
-
-    // ── Yesterday reveal trigger ─────────────────────────────
-    function setupYesterdayReveal(hasEntries) {
-      window._ypcRevealDone = false;
-      let obs = null;
-
-      function doReveal() {
-        if (window._ypcRevealDone) return;
-        window._ypcRevealDone = true;
-        const feelEl = document.getElementById('ypcFeeling');
-        const loadEl = document.getElementById('ypcReflectionLoading');
-        if (feelEl) { feelEl.style.transition = 'opacity 0.6s ease'; feelEl.style.opacity = '1'; }
-        if (loadEl) { loadEl.style.transition = 'opacity 0.4s ease'; loadEl.style.opacity = '0'; }
-        if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-        clearTimeout(timer);
-        if (obs) obs.disconnect();
-      }
-
-      const timer = setTimeout(doReveal, 3000);
-
-      if (hasEntries && 'IntersectionObserver' in window) {
-        const deck = document.getElementById('ypcDeck');
-        if (deck) {
-          obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-              if (!e.isIntersecting && e.boundingClientRect.top < 0) doReveal();
-            });
-          }, { threshold: 0 });
-          obs.observe(deck);
-        }
+        // fail silently — static rotating quote remains visible
       }
     }
 
@@ -4921,12 +4888,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const dayOfYear = Math.floor(
         (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
       );
-      const feelingEl = document.getElementById('ypcFeeling');
-      feelingEl.textContent = lines[dayOfYear % lines.length];
-      feelingEl.style.opacity = '0'; // revealed by setupYesterdayReveal
-
-      const loadingEl = document.getElementById('ypcReflectionLoading');
-      if (loadingEl) loadingEl.style.opacity = '1'; // visible until trigger fires
+      document.getElementById('ypcFeeling').textContent = lines[dayOfYear % lines.length];
+      // haptic fires in maybeShowDopaReflection() on AI sentence arrival
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);

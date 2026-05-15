@@ -2502,7 +2502,13 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
       </div>
       <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
       <div id="stage3Error" class="s3-error"></div>
-      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:20px;text-align:center;">Free for 7 days. No card needed.</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.75rem;color:#6B7280;margin-top:16px;text-align:center;line-height:1.6;">
+        By creating an account you agree to our
+        <button onclick="openTos()" style="background:none;border:none;color:#9CA3AF;font-size:0.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Terms of Service</button>
+        and
+        <button onclick="openPrivacy()" style="background:none;border:none;color:#9CA3AF;font-size:0.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.
+      </p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:8px;text-align:center;">Free for 7 days. No card needed.</p>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:16px;text-align:center;">Already have an account? <button onclick="stage3SignIn()" style="background:none;border:none;color:#6B7280;font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
     </div>
   </div>

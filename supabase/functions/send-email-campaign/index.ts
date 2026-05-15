@@ -19,6 +19,7 @@ function wrap(opts: {
   ctaUrl: string
   ctaBorder?: string
   ctaColor?: string
+  logo: string
 }): string {
   const border = opts.ctaBorder ?? 'rgba(255,255,255,0.45)'
   const color  = opts.ctaColor  ?? 'white'
@@ -35,15 +36,11 @@ function wrap(opts: {
 <tr><td style="position:relative;padding:48px 48px 56px;background:#0E0B1A;border-radius:16px;overflow:hidden;">
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 80% at 50% 85%,rgba(255,176,32,0.85) 0%,rgba(200,110,0,0.55) 28%,rgba(120,60,0,0.35) 50%,rgba(60,25,0,0.15) 68%,transparent 82%);pointer-events:none;"></div>
   <div style="position:relative;">
-    <table cellpadding="0" cellspacing="0" style="margin-bottom:40px;"><tr>
-      <td style="padding-right:12px;vertical-align:middle;">
-        <div style="width:48px;height:48px;background:linear-gradient(135deg,#7B2FBE,#B57BF7);border-radius:11px;text-align:center;line-height:48px;font-size:26px;font-weight:900;color:white;font-style:italic;font-family:Georgia,serif;">D</div>
-      </td>
-      <td style="vertical-align:middle;">
-        <div style="font-size:1.1rem;font-weight:900;color:white;letter-spacing:-0.3px;line-height:1.1;${FONT};">DOPA<span style="font-weight:400;color:#B57BF7;">mine</span></div>
-        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;${FONT};">GREAT YESTERDAY. BETTER TOMORROW.</div>
-      </td>
-    </tr></table>
+    <div style="text-align:center;margin-bottom:40px;">
+      <img src="${opts.logo}" alt="DOPA" width="80" style="display:block;margin:0 auto 16px;border-radius:50%;" />
+      <div style="font-size:1.1rem;font-weight:900;color:white;letter-spacing:-0.3px;line-height:1.1;${FONT};">DOPA<span style="font-weight:400;color:#B57BF7;">mine</span></div>
+      <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;${FONT};">GREAT YESTERDAY. BETTER TOMORROW.</div>
+    </div>
     <div style="font-size:0.65rem;font-weight:700;color:rgba(255,176,32,0.7);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;${FONT};">${opts.eyebrow}</div>
     <div style="font-size:3rem;font-weight:900;color:#B57BF7;font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:8px;">${opts.name}.</div>
     <div style="font-size:1.9rem;font-weight:800;color:white;font-family:Georgia,'Times New Roman',serif;line-height:1.25;margin-bottom:28px;">${opts.headline}</div>
@@ -96,7 +93,8 @@ function tmplWelcome(name: string): string {
               bpLast('Until then — go find your first one.'),
     sig:      '— DOPAmine',
     ctaLabel: 'Open the app →',
-    ctaUrl:   'https://mydopa.app/app.html'
+    ctaUrl:   'https://mydopa.app/app.html',
+    logo:     'https://mydopa.app/images/dopa-01-holding-orb.png'
   })
 }
 
@@ -113,7 +111,8 @@ function tmplDay3Active(name: string): string {
               bpLast('Keep going.'),
     sig:      '— DOPAmine',
     ctaLabel: 'See your streak →',
-    ctaUrl:   'https://mydopa.app/app.html'
+    ctaUrl:   'https://mydopa.app/app.html',
+    logo:     'https://mydopa.app/images/dopa-03-winking.png'
   })
 }
 
@@ -132,7 +131,8 @@ function tmplDay3Dormant(name: string): string {
     ctaLabel:  'Find my 3 →',
     ctaUrl:    'https://mydopa.app/app.html',
     ctaBorder: 'rgba(255,176,32,0.6)',
-    ctaColor:  '#FFB020'
+    ctaColor:  '#FFB020',
+    logo:      'https://mydopa.app/images/dopa-02-thinking.png'
   })
 }
 
@@ -152,7 +152,8 @@ function tmplDay7(name: string): string {
               bpLast('Tomorrow morning, a note lands in your inbox. Don\'t miss it.'),
     sig:      '— DOPAmine',
     ctaLabel: 'See your week →',
-    ctaUrl:   'https://mydopa.app/app.html'
+    ctaUrl:   'https://mydopa.app/app.html',
+    logo:     'https://mydopa.app/images/dopa-05-celebrating.png'
   })
 }
 
@@ -169,7 +170,10 @@ function tmplDay8(name: string): string {
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:0;background:#ffffff;${FONT};">
 <table width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding:48px;max-width:560px;">
+<tr><td style="padding:48px 48px 0;max-width:560px;text-align:center;">
+  <img src="https://mydopa.app/images/dopa-06-supportive.png" alt="DOPA" width="80" style="display:block;margin:0 auto 16px;border-radius:50%;" />
+</td></tr>
+<tr><td style="padding:0 48px 48px;max-width:560px;">
 ${pp(`${name},`)}
 ${pp('Seven days. You showed up.')}
 ${pp("I've been watching the numbers on my end and I want you to know that most people don't make it here. Something caught your attention and you kept going with it. That is not nothing.")}
@@ -204,7 +208,8 @@ function tmplDay14(name: string): string {
               bpLast('If you\'ve felt something shift — this is how you keep it.'),
     sig:      '— Rene, Founder',
     ctaLabel: 'Become a founding member →',
-    ctaUrl:   GUMROAD_URL
+    ctaUrl:   GUMROAD_URL,
+    logo:     'https://mydopa.app/images/dopa-07-flexing.png'
   })
 }
 

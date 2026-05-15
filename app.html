@@ -494,14 +494,18 @@
     .mood-chip {
       -webkit-appearance: none;
       appearance: none;
-      background: rgba(20, 14, 40, 0.85);
-      border: 1.5px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
       padding: 8px 4px;
       font-size: 1.3rem;
       cursor: pointer;
       text-align: center;
       transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      -webkit-text-fill-color: initial;
+      opacity: 1;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .mood-chip:active { transform: scale(0.9); }

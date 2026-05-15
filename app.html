@@ -1595,6 +1595,14 @@
       border-radius: 50%;
       flex-shrink: 0;
     }
+    .ypc-dopa-image {
+      display: block;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: contain;
+      margin: 0 auto 16px;
+    }
     .ypc-headline {
       font-size: 24px;
       font-weight: 700;
@@ -2807,6 +2815,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
         <span class="ypc-eyebrow-dot"></span>
         <span id="ypcDateLabel">MONDAY, MAY 11</span>
       </div>
+      <img id="ypcDopaImage" class="ypc-dopa-image" src="" alt="DOPA" style="display:none;" />
       <div class="ypc-headline">Yesterday Was Good.</div>
       <div class="ypc-feeling" id="ypcFeeling">Consistency beats talent. Every time.</div>
       <div class="ypc-reflection-loading" id="ypcReflectionLoading">DOPA is reading your archive…</div>
@@ -4668,6 +4677,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       initYesterdayCard(moments.length);
       ypcRenderStack(yesterdayEntries);
       renderYesterdayInsights(allMoments, moments);
+      setupYesterdayReveal(moments.length > 0);
       maybeShowDopaReflection();
     }
 
@@ -4682,15 +4692,22 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         dayN = Math.max(1, Math.floor((Date.now() - new Date(currentUser.created_at).getTime()) / 86400000) + 1);
       }
       el.textContent = `Day ${dayN}. ${allMoments.length} moments in your archive. Yesterday added ${yesterdayCount}.`;
+
+      const dopaImg = document.getElementById('ypcDopaImage');
+      if (dopaImg && dayN !== '?') {
+        const n = Number(dayN);
+        dopaImg.src = n <= 3  ? '/images/dopa-02-thinking.png'
+                    : n <= 6  ? '/images/dopa-03-winking.png'
+                    : n <= 9  ? '/images/dopa-05-celebrating.png'
+                    : n <= 29 ? '/images/dopa-06-supportive.png'
+                    :           '/images/dopa-07-flexing.png';
+        dopaImg.style.display = 'block';
+      }
     }
 
     async function maybeShowDopaReflection() {
       const uid = getUserId();
       if (!uid) return;
-
-      const loadingEl = document.getElementById('ypcReflectionLoading');
-      if (loadingEl) loadingEl.style.opacity = '1';
-
       try {
         const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('timeout')), 8000)
@@ -4700,29 +4717,57 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_KEY },
           body: JSON.stringify({ user_id: uid })
         });
-
         const res = await Promise.race([fetchPromise, timeoutPromise]);
         if (!res.ok) throw new Error('http ' + res.status);
         const { reflection } = await res.json();
-
         if (reflection) {
           const feelingEl = document.getElementById('ypcFeeling');
-          feelingEl.style.transition = 'opacity 0.4s ease';
-          feelingEl.style.opacity = '0';
-          setTimeout(() => {
+          if (window._ypcRevealDone) {
+            // Already revealed — cross-fade to the AI sentence
+            feelingEl.style.transition = 'opacity 0.4s ease';
+            feelingEl.style.opacity = '0';
+            setTimeout(() => {
+              feelingEl.textContent = reflection;
+              requestAnimationFrame(() => { feelingEl.style.opacity = '1'; });
+            }, 400);
+          } else {
+            // Reveal pending — update text silently; trigger will fade it in
             feelingEl.textContent = reflection;
-            requestAnimationFrame(() => {
-              feelingEl.style.opacity = '1';
-              if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-            });
-          }, 400);
+          }
         }
       } catch (e) {
-        // fail silently — static rotating quote remains visible
-      } finally {
-        if (loadingEl) {
-          loadingEl.style.transition = 'opacity 0.4s ease';
-          loadingEl.style.opacity = '0';
+        // fail silently — static rotating quote revealed by trigger
+      }
+    }
+
+    // ── Yesterday reveal trigger ─────────────────────────────
+    function setupYesterdayReveal(hasEntries) {
+      window._ypcRevealDone = false;
+      let obs = null;
+
+      function doReveal() {
+        if (window._ypcRevealDone) return;
+        window._ypcRevealDone = true;
+        const feelEl = document.getElementById('ypcFeeling');
+        const loadEl = document.getElementById('ypcReflectionLoading');
+        if (feelEl) { feelEl.style.transition = 'opacity 0.6s ease'; feelEl.style.opacity = '1'; }
+        if (loadEl) { loadEl.style.transition = 'opacity 0.4s ease'; loadEl.style.opacity = '0'; }
+        if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+        clearTimeout(timer);
+        if (obs) obs.disconnect();
+      }
+
+      const timer = setTimeout(doReveal, 3000);
+
+      if (hasEntries && 'IntersectionObserver' in window) {
+        const deck = document.getElementById('ypcDeck');
+        if (deck) {
+          obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (!e.isIntersecting && e.boundingClientRect.top < 0) doReveal();
+            });
+          }, { threshold: 0 });
+          obs.observe(deck);
         }
       }
     }
@@ -4878,8 +4923,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const dayOfYear = Math.floor(
         (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
       );
-      document.getElementById('ypcFeeling').textContent = lines[dayOfYear % lines.length];
-      // haptic fires in maybeShowDopaReflection() on AI sentence arrival
+      const feelingEl = document.getElementById('ypcFeeling');
+      feelingEl.textContent = lines[dayOfYear % lines.length];
+      feelingEl.style.opacity = '0'; // revealed by setupYesterdayReveal
+
+      const loadingEl = document.getElementById('ypcReflectionLoading');
+      if (loadingEl) loadingEl.style.opacity = '1'; // visible until trigger fires
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -4918,6 +4967,17 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function ypcSaveFeel(text) {
       mixpanel.track('Feel Field Saved');
+
+      const uid = getUserId();
+      if (uid) {
+        sbClient.from('feel_entries').insert({
+          user_id: uid,
+          content: text,
+          date_key: todayKey()
+        }).then(({ error }) => {
+          if (error) console.warn('feel_entries save failed:', error.message);
+        });
+      }
       const t = text.toLowerCase();
       let response = "That's the practice. You noticed yesterday. That's already more than most.";
       if (/grateful|thankful/.test(t))

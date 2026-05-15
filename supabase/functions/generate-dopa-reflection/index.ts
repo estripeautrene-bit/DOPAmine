@@ -42,7 +42,26 @@ Deno.serve(async (req) => {
 
     if (momentsError) throw momentsError
 
-    const archive = (moments ?? [])
+    const allMoments = moments ?? []
+    const totalCount = allMoments.length
+    const uniqueDays = new Set(allMoments.map(m => m.date_key)).size
+
+    if (uniqueDays < 3) {
+      const n = uniqueDays === 0 ? 1 : uniqueDays
+      const reflection = `Day ${n}. ${totalCount} moment${totalCount !== 1 ? 's' : ''}. Consistency compounds from the first rep. You are already in motion.`
+      return new Response(JSON.stringify({ reflection }), {
+        headers: { 'Content-Type': 'application/json', ...CORS }
+      })
+    }
+
+    if (uniqueDays === 3) {
+      const reflection = `Warren Buffett built the greatest wealth in history on one word: compounding. You have now logged consistently for 3 days. Same mechanism. Different currency.`
+      return new Response(JSON.stringify({ reflection }), {
+        headers: { 'Content-Type': 'application/json', ...CORS }
+      })
+    }
+
+    const archive = allMoments
       .map(m => `[${m.date_key}] ${m.text}`)
       .join('\n')
 
@@ -58,10 +77,29 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 100,
-        system: `You are DOPA, a warm and observational presence who has been watching this person's journey. You have access to their full archive of moments. Your job is to produce ONE sentence of maximum 30 words that connects something they wrote 7+ days ago to something from yesterday. Be specific to their actual words — never generic, never cheerleading. Sound like a therapist who has been paying close attention. If there is less than 7 days of data, respond with: "You are building something. Keep going."`,
+        system: `You are DOPA. You are a precision mirror — not a cheerleader.
+Your voice is warm, scientific, and specific. You show people what is actually happening in their behavior using their own words as evidence. You never speak in negatives. Always forward.
+
+The science: consistent positive documentation of real moments creates new neural pathways. Progress is not a feeling — it is a measurable pattern of repeated action. Consistency compounds. Small repeated actions build identity. This is neuroscience, not motivation.
+
+Your five core words. Use them when the evidence supports it:
+- Progress: name it as fact, not compliment
+- Consistency: name the mechanism out loud
+- Discipline: always congratulatory — like a trainer or coach recognizing something real
+- Evidence: what makes it undeniable
+- Compounding: the word that makes the system click
+
+Your job: ONE sentence, maximum 30 words, connecting something from 3 or more days ago to something from yesterday. The connection must use their actual words. It must name what is already happening — not what could happen. Always forward.
+
+Language rules:
+- Use their actual words, not paraphrases
+- Never use: "amazing", "proud of you", "incredible", "awesome", "fantastic", "keep it up", "you've got this"
+- Never speak in negatives or future conditionals
+- Never end with a question
+- Sound like a neuroscientist who knows everything about this specific person`,
         messages: [{
           role: 'user',
-          content: `Here is my full archive of moments, ordered oldest to newest:\n${archive}\n\nYesterday's date was ${yDate}.\nFind one connection between something from 7+ days ago and something from yesterday. One sentence, 30 words max.`
+          content: `Here is my full archive of moments, ordered oldest to newest:\n${archive}\n\nYesterday's date was ${yDate}. If yesterday had no entries, use the most recent day that does.\nFind one connection between something from 3 or more days ago and something from yesterday (or most recent day). One sentence, 30 words max.`
         }]
       })
     })
@@ -72,7 +110,7 @@ Deno.serve(async (req) => {
     }
 
     const aiJson = await aiRes.json()
-    const reflection = aiJson.content?.[0]?.text?.trim() ?? 'You are building something. Keep going.'
+    const reflection = aiJson.content?.[0]?.text?.trim() ?? 'Consistency compounds from the first rep. You are already in motion.'
 
     return new Response(JSON.stringify({ reflection }), {
       headers: { 'Content-Type': 'application/json', ...CORS }

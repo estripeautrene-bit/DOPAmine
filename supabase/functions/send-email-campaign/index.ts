@@ -94,7 +94,7 @@ function tmplWelcome(name: string): string {
     sig:      '— DOPAmine',
     ctaLabel: 'Open the app →',
     ctaUrl:   'https://mydopa.app/app.html',
-    logo:     'https://mydopa.app/images/dopa-01-holding-orb.png'
+    logo:     'https://mydopa.app/images/dopa-pulse.gif'
   })
 }
 
@@ -112,7 +112,7 @@ function tmplDay3Active(name: string): string {
     sig:      '— DOPAmine',
     ctaLabel: 'See your streak →',
     ctaUrl:   'https://mydopa.app/app.html',
-    logo:     'https://mydopa.app/images/dopa-03-winking.png'
+    logo:     'https://mydopa.app/images/dopa-pulse.gif'
   })
 }
 
@@ -132,7 +132,7 @@ function tmplDay3Dormant(name: string): string {
     ctaUrl:    'https://mydopa.app/app.html',
     ctaBorder: 'rgba(255,176,32,0.6)',
     ctaColor:  '#FFB020',
-    logo:      'https://mydopa.app/images/dopa-02-thinking.png'
+    logo:      'https://mydopa.app/images/dopa-pulse.gif'
   })
 }
 
@@ -153,7 +153,7 @@ function tmplDay7(name: string): string {
     sig:      '— DOPAmine',
     ctaLabel: 'See your week →',
     ctaUrl:   'https://mydopa.app/app.html',
-    logo:     'https://mydopa.app/images/dopa-05-celebrating.png'
+    logo:     'https://mydopa.app/images/dopa-pulse.gif'
   })
 }
 
@@ -171,7 +171,7 @@ function tmplDay8(name: string): string {
 <body style="margin:0;padding:0;background:#ffffff;${FONT};">
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="padding:48px 48px 0;max-width:560px;text-align:center;">
-  <img src="https://mydopa.app/images/dopa-06-supportive.png" alt="DOPA" width="80" style="display:block;margin:0 auto 16px;border-radius:50%;" />
+  <img src="https://mydopa.app/images/dopa-pulse.gif" alt="DOPA" width="80" style="display:block;margin:0 auto 16px;border-radius:50%;" />
 </td></tr>
 <tr><td style="padding:0 48px 48px;max-width:560px;">
 ${pp(`${name},`)}
@@ -209,7 +209,7 @@ function tmplDay14(name: string): string {
     sig:      '— Rene, Founder',
     ctaLabel: 'Become a founding member →',
     ctaUrl:   GUMROAD_URL,
-    logo:     'https://mydopa.app/images/dopa-07-flexing.png'
+    logo:     'https://mydopa.app/images/dopa-pulse.gif'
   })
 }
 

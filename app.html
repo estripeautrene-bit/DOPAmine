@@ -4448,6 +4448,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const todayCount = momentsBefore.filter(m => m.dateKey === todayKey()).length;
       playSaveTone();
       triggerRipple();
+      if (navigator.vibrate) navigator.vibrate(40);
 
       // Score update runs first so we can detect threshold crossing
       const scoreBefore = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
@@ -4673,6 +4674,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
       );
       document.getElementById('ypcFeeling').textContent = lines[dayOfYear % lines.length];
+      // HAPTIC: navigator.vibrate([30, 50, 30]) — trigger here on DOPA sentence fade-in (Session 1 Yesterday AI build)
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);

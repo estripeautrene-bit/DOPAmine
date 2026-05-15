@@ -2493,7 +2493,8 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
           By signing up you agree to our
           <button onclick="openTos()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Terms of Service</button>
           and
-          <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.
+          <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Privacy Policy</button>.<br/>
+          Includes AI-generated content. <button onclick="openPrivacy()" style="border:none;background:none;color:#B57BF7;font-size:0.75rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;">Learn more.</button>
         </div>
         <div class="auth-toggle">
           <span id="authToggleText">Don't have an account?</span>
@@ -2602,6 +2603,10 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
         <div class="legal-card">
           <div class="legal-card-label">Analytics</div>
           <div class="legal-card-body">We use Google Analytics to track anonymous usage patterns. This data cannot be used to identify you personally and helps us improve the app.</div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-card-label">AI-Generated Content &amp; Data Processing</div>
+          <div class="legal-card-body">DOPAmine uses Anthropic's Claude API to generate personalized reflections on the Yesterday tab. To generate these reflections, your saved moment text entries are sent to Anthropic's API server-side via a Supabase Edge Function.<br/><br/>Your data is <strong style="color:rgba(255,255,255,0.85);">not</strong> used to train Anthropic's AI models. Data sent to the API is used solely to generate your personal reflection and is not stored by Anthropic beyond the duration of the API call.<br/><br/><strong style="color:rgba(255,255,255,0.85);">Third-party processors:</strong> Supabase (database &amp; edge functions), Anthropic (AI reflection generation), Google Analytics (anonymous usage analytics), Resend (transactional email).</div>
         </div>
       </div>
     </div>

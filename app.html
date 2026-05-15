@@ -4773,10 +4773,11 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     function computeTopTag(allMoments) {
+      const TIME_TAGS = new Set(['Morning', 'Afternoon', 'Evening', 'Night']);
       const counts = {};
       for (const m of allMoments) {
         const tags = (m.tags && m.tags.length > 0) ? m.tags : (m.autoTag ? [m.autoTag] : []);
-        for (const tag of tags) { if (tag) counts[tag] = (counts[tag] || 0) + 1; }
+        for (const tag of tags) { if (tag && !TIME_TAGS.has(tag)) counts[tag] = (counts[tag] || 0) + 1; }
       }
       let topTag = null, topCount = 2;
       for (const [tag, count] of Object.entries(counts)) {

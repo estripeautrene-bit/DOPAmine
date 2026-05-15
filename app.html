@@ -489,12 +489,14 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 8px;
+      background: transparent;
+      isolation: isolate;
     }
 
     .mood-chip {
-      -webkit-appearance: none;
+      -webkit-appearance: none !important;
       appearance: none;
-      background: rgba(255, 255, 255, 0.08);
+      background-color: rgba(255, 255, 255, 0.10) !important;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
       padding: 8px 4px;
@@ -2316,7 +2318,7 @@
 .auth-or-divider::before, .auth-or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
 .auth-google-btn { width:100%; height:48px; background:rgba(255,255,255,0.06); color:#E8D5FF; border:1px solid rgba(232,213,255,0.2); border-radius:14px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.95rem; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
 .auth-google-btn:active { opacity:0.85; }
-.auth-apple-btn { width:100%; height:48px; background:#000000; color:#ffffff; border:none; border-radius:14px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.95rem; font-weight:600; font-family:-apple-system,'DM Sans',sans-serif; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
+.auth-apple-btn { width:100%; height:44px; background:#000000; color:#ffffff; border:none; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:16px; font-weight:500; font-family:-apple-system,'DM Sans',sans-serif; cursor:pointer; margin-bottom:4px; transition:opacity 0.15s; }
 .auth-apple-btn:active { opacity:0.85; }
 .auth-forgot { display:block; text-align:right; background:none; border:none; color:rgba(201,190,216,0.5); font-size:0.78rem; font-family:'DM Sans',sans-serif; cursor:pointer; padding:0; margin-top:-6px; margin-bottom:8px; }
 #recoveryScreen { position:fixed; inset:0; background:#0E0B1A; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
@@ -2556,7 +2558,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
              Built here. Supabase config step: Auth > Providers > Apple.
              Coordinate with Capacitor developer for native app build. -->
         <button class="auth-apple-btn" onclick="signInWithApple()">
-          <svg width="18" height="22" viewBox="0 0 814 1000" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 509.6 0 401.3 0 297.4c0-141.9 92.4-216.7 183.3-216.7 47.9 0 87.7 31.3 117.7 31.3 28.5 0 73.4-33.5 129-33.5 20.8 0 108.2 1.9 162.3 85.2zm-166.2-184.5c26.6-30.9 45.2-73.3 45.2-115.7 0-5.8-.6-11.7-1.9-16.2-42.8 1.6-93.7 28.4-124 61.6-23.4 25.7-46.4 68.1-46.4 111.2 0 6.4 1.3 12.9 1.9 15.1 2.6.6 6.5 1.3 10.4 1.3 38.2 0 86.1-25.4 114.8-57.3z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 814 1000"><path fill="white" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 71 0 130.5 46.4 175 46.4 42.1 0 108.6-49.9 190.5-49.9zm-134.5-117c-28.3 33.8-68.7 60.4-110.7 60.4-5.2 0-10.4-.6-15.6-1.3-2.6-39.5 11.7-80.9 36.4-109.8 28.3-32.5 72.4-57.8 112.8-60.4 1.9 42.8-11 83.6-22.9 111.1z"/></svg>
           Sign in with Apple
         </button>
         <button class="auth-google-btn" onclick="signInWithGoogle()">
@@ -3492,7 +3494,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         const tags = [e.autoTag, ...(e.tags ? e.tags.split(',') : [])].filter(Boolean);
         return '<div class="tpc-entry-card">' +
           '<div class="tpc-entry-text">' + e.text + '</div>' +
-          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="" style="width:100%;border-radius:10px;margin-top:8px;" />' : '') +
+          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="" style="width:100%;border-radius:8px;margin-top:8px;max-height:240px;object-fit:cover;display:block;" />' : '') +
           '<div class="tpc-entry-meta">' +
             '<span class="tpc-entry-time">' + (e.time || '') + '</span>' +
             tags.map(t => '<span class="tpc-entry-tag">' + t.trim() + '</span>').join('') +
@@ -4835,7 +4837,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       exp.innerHTML = entries.map(function(e) {
         return '<div class="ypc-entry-card">' +
           '<div class="ypc-entry-text">' + escapeHtml(e.text) + '</div>' +
-          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="moment" />' : '') +
+          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="moment" style="width:100%;border-radius:8px;margin-top:8px;max-height:240px;object-fit:cover;display:block;" />' : '') +
           '<div class="ypc-entry-meta">' +
             '<span class="ypc-entry-time">' + (e.time || '') + '</span>' +
             (e.tag ? '<span class="ypc-entry-tag">' + escapeHtml(e.tag) + '</span>' : '') +

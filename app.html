@@ -4602,7 +4602,8 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const yesterdayEntries = moments.map(m => ({
         text: m.text,
         time: formatTime(m.createdAt),
-        tag: m.tags && m.tags.length > 0 ? m.tags[0] : (m.autoTag || '')
+        tag: m.tags && m.tags.length > 0 ? m.tags[0] : (m.autoTag || ''),
+        photo: m.photo || null
       }));
 
       initYesterdayCard(moments.length);
@@ -4695,6 +4696,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       exp.innerHTML = entries.map(function(e) {
         return '<div class="ypc-entry-card">' +
           '<div class="ypc-entry-text">' + escapeHtml(e.text) + '</div>' +
+          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="moment" />' : '') +
           '<div class="ypc-entry-meta">' +
             '<span class="ypc-entry-time">' + (e.time || '') + '</span>' +
             (e.tag ? '<span class="ypc-entry-tag">' + escapeHtml(e.tag) + '</span>' : '') +

@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
     }
 
     if (uniqueDays === 3) {
-      const reflection = `Warren Buffett built the greatest wealth in history on one word: compounding. You have now logged consistently for 3 days. Same mechanism. Different currency.`
+      const reflection = `Just like Warren Buffett, you are compounding wins. Keep using his recipe.`
       return new Response(JSON.stringify({ reflection }), {
         headers: { 'Content-Type': 'application/json', ...CORS }
       })

@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
     }
 
     if (uniqueDays === 3) {
-      const reflection = `Just like Warren Buffett, you are compounding wins. Keep using his recipe.`
+      const reflection = `Just like Warren Buffett, you are compounding wins. Keep using his recipe. What's good today?`
       return new Response(JSON.stringify({ reflection }), {
         headers: { 'Content-Type': 'application/json', ...CORS }
       })

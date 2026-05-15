@@ -3087,7 +3087,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
     async function sbSave(m) {
       try {
         await fetch(SB_URL+'/rest/v1/moments', {method:'POST', headers:SB_HEADS,
-          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id)})});
+          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id), photo:m.photo||null})});
       } catch(e) { console.log('sbSave offline:', e.message); }
     }
 

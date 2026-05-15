@@ -30,6 +30,13 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Blog Post 3 — English -->
+  <url>
+    <loc>https://mydopa.app/blog/consistency-is-the-compounding-effect</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Blog Post 2 — Spanish -->
   <url>
     <loc>https://mydopa.app/blog/no-hay-mejor-predicador-que-el-pasado</loc>

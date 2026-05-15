@@ -2483,7 +2483,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
   <!-- STAGE 3: Create account -->
   <div id="stage3Screen">
     <div id="stage3-glow" style="position:absolute;inset:0;pointer-events:none;"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
+    <div id="stage3FormArea" style="position:relative;z-index:1;width:100%;max-width:400px;padding:72px 32px 48px;display:flex;flex-direction:column;align-items:center;">
       <p class="ob-eyebrow">ONE LAST THING</p>
       <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:700;color:#E8D5FF;text-align:center;line-height:1.25;margin:0 0 10px;">One last thing.</h1>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#C9BED8;text-align:center;line-height:1.5;margin:0 0 36px;">Where should we send your Day 7 results?</p>
@@ -2500,6 +2500,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
           </button>
         </div>
       </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.5);text-align:center;margin:0 0 14px;line-height:1.5;">You'll receive a confirmation email.<br>Check your inbox to activate your account.</p>
       <button class="hs-ghost-btn" id="stage3Btn" onclick="submitStage3()">Create my account</button>
       <div id="stage3Error" class="s3-error"></div>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.75rem;color:#6B7280;margin-top:16px;text-align:center;line-height:1.6;">
@@ -2510,6 +2511,12 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
       </p>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:8px;text-align:center;">Free for 7 days. No card needed.</p>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#6B7280;margin-top:16px;text-align:center;">Already have an account? <button onclick="stage3SignIn()" style="background:none;border:none;color:#6B7280;font-size:0.8rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;">Sign in</button></p>
+    </div>
+    <div id="stage3ConfirmArea" style="display:none;position:relative;z-index:1;width:100%;max-width:400px;padding:80px 32px 48px;display:none;flex-direction:column;align-items:center;text-align:center;">
+      <div style="font-size:2.8rem;margin-bottom:20px;">✉️</div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:700;color:#E8D5FF;margin:0 0 16px;line-height:1.2;">Check your inbox.</h2>
+      <p id="stage3ConfirmMsg" style="font-family:'DM Sans',sans-serif;font-size:0.95rem;color:#C9BED8;line-height:1.7;margin:0 0 36px;"></p>
+      <button onclick="stage3SignIn()" style="background:none;border:1px solid rgba(181,123,247,0.4);border-radius:14px;padding:14px 32px;color:#B57BF7;font-size:0.95rem;font-family:'DM Sans',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;">Back to Sign In</button>
     </div>
   </div>
 
@@ -2566,7 +2573,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
       <div id="authConfirmContent" style="display:none">
         <div class="auth-confirm-icon">✉️</div>
         <div class="auth-confirm-title">Check your inbox.</div>
-        <div class="auth-confirm-sub">We sent you a confirmation.<br>Once confirmed, come back and sign in.</div>
+        <div class="auth-confirm-sub" id="authConfirmSub">We sent you a confirmation link. Once confirmed, come back here and sign in.</div>
         <button class="auth-confirm-back" onclick="showAuthMain()">Back to Sign In</button>
       </div>
     </div>
@@ -5503,8 +5510,11 @@ function checkInstallPrompt() {
       btn.textContent = orig;
       if (error) { errEl.textContent = error.message; return; }
       if (data.user && !data.session) {
-        errEl.style.color = 'var(--muted)';
-        errEl.textContent = 'Check your email to confirm your account.';
+        document.getElementById('stage3FormArea').style.display = 'none';
+        const confirmArea = document.getElementById('stage3ConfirmArea');
+        confirmArea.style.display = 'flex';
+        document.getElementById('stage3ConfirmMsg').innerHTML =
+          `We sent a confirmation link to<br><strong style="color:#B57BF7;">${escapeHtml(email)}</strong>.<br><br>Tap the link to activate your account,<br>then come back here and sign in.`;
         return;
       }
       localStorage.setItem('dopa_onboarding_complete', '1');
@@ -5617,7 +5627,7 @@ function checkInstallPrompt() {
       btn.disabled = false;
       btn.textContent = origText;
       if (error) { errEl.textContent = error.message; return; }
-      if (authMode === 'signup' && data?.user && !data?.session) { showAuthConfirm(); }
+      if (authMode === 'signup' && data?.user && !data?.session) { showAuthConfirm(email); }
     }
 
     async function signInWithGoogle() {
@@ -5648,7 +5658,11 @@ function checkInstallPrompt() {
       document.getElementById('authMainContent').style.display = 'block';
     }
 
-    function showAuthConfirm() {
+    function showAuthConfirm(email) {
+      const sub = document.getElementById('authConfirmSub');
+      if (sub && email) {
+        sub.innerHTML = `Check your inbox at <strong style="color:#B57BF7;">${escapeHtml(email)}</strong>.<br>Tap the confirmation link to activate your account,<br>then come back here and sign in.`;
+      }
       document.getElementById('authMainContent').style.display = 'none';
       document.getElementById('authConfirmContent').style.display = 'block';
     }

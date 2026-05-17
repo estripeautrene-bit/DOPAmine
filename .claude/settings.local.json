@@ -18,7 +18,26 @@
       "Bash(git *)",
       "Bash(pip3 install *)",
       "Bash(gh api *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(supabase db *)",
+      "Bash(cp ~/Downloads/dopa-*.png /Users/reneestripeaut/DOPAmine/images/)",
+      "Bash(cp ~/Downloads/dopa-share-og.png /Users/reneestripeaut/DOPAmine/images/)",
+      "mcp__plugin_supabase_supabase__deploy_edge_function",
+      "Bash(convert --version)",
+      "Bash(magick --version)",
+      "Bash(brew list *)",
+      "Bash(brew install *)",
+      "Bash(magick -delay 60 -loop 0 '\\(' images/dopa-01-holding-orb.png -resize 120x120 '\\)' '\\(' images/dopa-01-holding-orb.png -resize 120x120 -brightness-contrast 8 '\\)' '\\(' images/dopa-01-holding-orb.png -resize 120x120 '\\)' images/dopa-pulse.gif)",
+      "mcp__plugin_supabase_supabase__execute_sql",
+      "mcp__plugin_supabase_supabase__get_project_url",
+      "Bash(supabase secrets *)",
+      "Bash(cp ~/Downloads/terms.html /Users/reneestripeaut/DOPAmine/terms.html)",
+      "Bash(cp ~/Downloads/privacy.html /Users/reneestripeaut/DOPAmine/privacy.html)",
+      "Bash(sed -n '456,470p' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(sed -n '496,520p' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(sed -n '1237,1248p' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(sed -n '1,20p' /Users/reneestripeaut/DOPAmine/sw.js)",
+      "Bash(sed -n '515,521p' /Users/reneestripeaut/DOPAmine/app.html)"
     ]
   }
 }

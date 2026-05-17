@@ -67,30 +67,14 @@ const PAIR_J: Record<string, Partial<Record<PairSlot, string>>> = {
 
 const DEFAULT_ROTATION = ['A', 'B', 'D']
 
-// Yesterday Was Good – tiered personalized copy
-const YWG_TIERS = {
-  TIER1: [
-    "Yesterday you kept {n} things. Your past is building itself.",
-    "{n} wins yesterday. That's a day worth remembering.",
-    "Yesterday had {n} good moments in it. You caught them all."
-  ],
-  TIER2: [
-    "Yesterday you kept {n} things. That's not nothing.",
-    "{n} wins from yesterday. Still yours this morning.",
-    "Yesterday didn't disappear. You kept {n} pieces of it."
-  ],
-  TIER3: [
-    "Yesterday had at least one good thing in it. You kept it.",
-    "One win from yesterday. Still counts this morning."
-  ],
-  COLD: [
-    "Yesterday is waiting. See what you kept."
-  ],
-  MILESTONE: [
-    "{streak} days of keeping things. That's a great past being built."
-  ]
-}
-const STREAK_MILESTONES = new Set([7, 14, 30, 50, 100])
+// Yesterday Was Good – 5 rotating copy variants
+const YWG_VARIANTS = [
+  "Yesterday had {n} good things in it. Do you remember them?",
+  "You noticed {n} things yesterday. Come see what they add up to.",
+  "Your {n} moments from yesterday are waiting. What do they make you feel today?",
+  "Something good happened yesterday. {n} times actually.",
+  "Yesterday left {n} things behind. They're still here."
+]
 
 interface UserState {
   streak_count: number
@@ -129,26 +113,9 @@ function addMinutesToHHMM(hhmm: string, minutes: number): string {
   return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
 }
 
-function getYWGCopy(state: UserState, variantIndex: number): { copy: string; tierSize: number } {
-  if (STREAK_MILESTONES.has(state.streak_count)) {
-    return {
-      copy: YWG_TIERS.MILESTONE[0].replace('{streak}', String(state.streak_count)),
-      tierSize: 1
-    }
-  }
-  const n = state.wins_yesterday
-  let tier: string[]
-  if (state.account_age_days <= 3 || n === 0) {
-    tier = YWG_TIERS.COLD
-  } else if (n >= 5) {
-    tier = YWG_TIERS.TIER1
-  } else if (n >= 2) {
-    tier = YWG_TIERS.TIER2
-  } else {
-    tier = YWG_TIERS.TIER3
-  }
-  const copy = tier[variantIndex % tier.length].replace(/{n}/g, String(n))
-  return { copy, tierSize: tier.length }
+function getYWGCopy(winsYesterday: number, variantIndex: number): string {
+  return YWG_VARIANTS[variantIndex % YWG_VARIANTS.length]
+    .replace(/{n}/g, String(winsYesterday))
 }
 
 function localHHMM(timezone: string): string {
@@ -315,7 +282,11 @@ Deno.serve(async (req) => {
       const tz       = s.timezone ?? 'UTC'
       const now      = localHHMM(tz)
       const baseTime = (s.notify_time ?? '08:00').substring(0, 5)
-      if (slot === 'ywg')     return now === baseTime
+      if (slot === 'ywg') {
+        const uid = s.user_id ?? ''
+        const offset = uid.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0) % 60
+        return now === addMinutesToHHMM('08:00', offset)
+      }
       if (slot === 'morning') return now === addMinutesToHHMM(baseTime, 30)
       return now === FIXED_TIMES[slot]
     })
@@ -354,10 +325,10 @@ Deno.serve(async (req) => {
         let message: string
 
         if (slot === 'ywg') {
-          const variantIndex = (s.last_ywg_variant_index ?? 0)
-          const { copy, tierSize } = getYWGCopy(state, variantIndex)
-          message = copy
-          ywgUpdates.push({ id: s.id, nextIndex: (variantIndex + 1) % tierSize })
+          if (state.wins_yesterday < 1) return
+          const variantIndex = s.last_ywg_variant_index ?? 0
+          message = getYWGCopy(state.wins_yesterday, variantIndex)
+          ywgUpdates.push({ id: s.id, nextIndex: (variantIndex + 1) % YWG_VARIANTS.length })
         } else if (slot === 'morning') {
           const pair = selectPair(state, tz, momentsByUser[s.user_id] ?? [])
           message = pair.startsWith('J_')
@@ -395,7 +366,9 @@ Deno.serve(async (req) => {
           }
         }
 
-        const payload = JSON.stringify({ title: 'DOPAmine', body: message, icon: '/icon.png' })
+        const payloadObj: Record<string, string> = { title: 'DOPAmine', body: message, icon: '/icon.png' }
+        if (slot === 'ywg') payloadObj.url = 'https://mydopa.app/app.html#yesterday'
+        const payload = JSON.stringify(payloadObj)
         return webpush.sendNotification(s.subscription, payload)
       })
     )

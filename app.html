@@ -2423,10 +2423,14 @@ Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==
 typeof f?g=a[f]=[]:f="mixpanel";g.people=g.people||[];h="disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.set people.increment".split(" ");
 for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.1}
 )(document,window.mixpanel||[]);
-mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {
-  autocapture: true,
-  record_sessions_percent: 100
-});
+mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persistence: 'localStorage'});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBD1H2JJTR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KBD1H2JJTR');
 </script>
 <script src="https://tally.so/widgets/embed.js"></script>
 </head>
@@ -5520,6 +5524,7 @@ function checkInstallPrompt() {
       btn.disabled = false;
       btn.textContent = orig;
       if (error) { errEl.textContent = error.message; return; }
+      mixpanel.track('Signed Up');
       if (data.user && !data.session) {
         document.getElementById('stage3FormArea').style.display = 'none';
         const confirmArea = document.getElementById('stage3ConfirmArea');
@@ -5638,6 +5643,7 @@ function checkInstallPrompt() {
       btn.disabled = false;
       btn.textContent = origText;
       if (error) { errEl.textContent = error.message; return; }
+      if (authMode === 'signup' && data?.user) mixpanel.track('Signed Up');
       if (authMode === 'signup' && data?.user && !data?.session) { showAuthConfirm(email); }
     }
 

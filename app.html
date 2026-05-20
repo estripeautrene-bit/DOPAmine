@@ -2835,6 +2835,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       <img id="ypcDopaImage" class="ypc-dopa-image" src="" alt="DOPA" style="display:none;" />
       <div class="ypc-headline">Yesterday Was Good.</div>
       <div class="ypc-feeling" id="ypcFeeling">Consistency beats talent. Every time.</div>
+      <div id="ypcMascotQuestion" style="font-size:14px;color:rgba(181,123,247,0.85);font-style:italic;margin-top:12px;opacity:0;transition:opacity 0.4s ease;text-align:center;"></div>
       <div class="ypc-reflection-loading" id="ypcReflectionLoading"></div>
 <div class="ypc-divider"></div>
       <div class="ypc-question">How does it make you feel today?</div>
@@ -4747,6 +4748,11 @@ if (document.getElementById('view-summary').classList.contains('active')) render
           feelingEl.style.opacity = '0';
           setTimeout(() => {
             feelingEl.textContent = insight;
+            const mascotEl = document.getElementById('ypcMascotQuestion');
+            if (mascotEl && mascot_question) {
+              mascotEl.textContent = mascot_question;
+              requestAnimationFrame(() => { mascotEl.style.opacity = '1'; });
+            }
             requestAnimationFrame(() => {
               feelingEl.style.opacity = '1';
               if (navigator.vibrate) navigator.vibrate([30, 50, 30]);

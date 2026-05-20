@@ -4727,7 +4727,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       }
     }
 
-    async function maybeShowDopaReflection() {
+    async function dopaFetchSlot(slot) {
       const uid = getUserId();
       if (!uid) return;
       try {
@@ -4737,11 +4737,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         const fetchPromise = fetch(SB_URL + '/functions/v1/generate-dopa-reflection', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_KEY },
-          body: JSON.stringify({ user_id: uid, date_key: todayKey(), slot: 1 })
+          body: JSON.stringify({ user_id: uid, date_key: todayKey(), slot: slot })
         });
         const res = await Promise.race([fetchPromise, timeoutPromise]);
         if (!res.ok) throw new Error('http ' + res.status);
         const { insight, mascot_question } = await res.json();
+        localStorage.setItem('dopa_slot_ts_' + slot + '_' + todayKey(), Date.now());
         if (insight) {
           const feelingEl = document.getElementById('ypcFeeling');
           feelingEl.style.transition = 'opacity 0.4s ease';
@@ -4761,6 +4762,18 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         }
       } catch (e) {
         // fail silently — static rotating quote remains visible
+      }
+    }
+
+    function maybeShowDopaReflection() {
+      dopaFetchSlot(1);
+      const ts1 = localStorage.getItem('dopa_slot_ts_1_' + todayKey());
+      if (ts1 && Date.now() - Number(ts1) > 10800000) {
+        setTimeout(() => dopaFetchSlot(2), 3000);
+      }
+      const ts2 = localStorage.getItem('dopa_slot_ts_2_' + todayKey());
+      if (ts2 && Date.now() - Number(ts2) > 10800000) {
+        setTimeout(() => dopaFetchSlot(3), 3000);
       }
     }
 

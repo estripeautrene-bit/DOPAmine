@@ -24,10 +24,94 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { user_id, date_key, slot = 1 } = await req.json()
+    const { user_id, date_key, slot = 1, micro_entry, mode } = await req.json()
     if (!user_id) {
       return new Response(JSON.stringify({ error: 'user_id required' }), {
         status: 400,
+        headers: { 'Content-Type': 'application/json', ...CORS }
+      })
+    }
+
+    // ── Micro-reflection mode — one sentence, fires same session ──
+    if (mode === 'micro') {
+      if (!micro_entry) {
+        return new Response(JSON.stringify({ error: 'micro_entry required' }), {
+          status: 400, headers: { 'Content-Type': 'application/json', ...CORS }
+        })
+      }
+
+      const supabaseMicro = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+        { auth: { autoRefreshToken: false, persistSession: false } }
+      )
+
+      const microDateKey = date_key || todayDateStr()
+      const fingerprint = micro_entry.slice(0, 120)
+
+      const { data: cachedMicro } = await supabaseMicro
+        .from('dopa_reflections')
+        .select('insight')
+        .eq('user_id', user_id)
+        .eq('date_key', microDateKey)
+        .eq('slot', 0)
+        .eq('angle', fingerprint)
+        .maybeSingle()
+
+      if (cachedMicro?.insight) {
+        return new Response(JSON.stringify({ micro_response: cachedMicro.insight }), {
+          headers: { 'Content-Type': 'application/json', ...CORS }
+        })
+      }
+
+      const microPrompt = `You are DOPA, the AI companion inside DOPAmine.
+Voice: warm, observational, specific. Never generic.
+Never use: 'great job', 'well done', 'proud of you'.
+Always reference the specific words the user wrote.
+
+The user just saved this moment: "${micro_entry}"
+
+Write ONE sentence — maximum 20 words — that references something specific from what they wrote.
+Do not summarize. Do not evaluate. Just notice one specific thing and name it.
+
+Examples of the right tone:
+- Entry: "Had coffee before the meeting and felt ready"
+  Response: The coffee before the meeting — you set the tone before it started.
+- Entry: "My daughter laughed at breakfast"
+  Response: That laugh at breakfast — your brain almost filed it under ordinary.
+- Entry: "Finished the report finally"
+  Response: Finally is doing a lot of work in that sentence.
+
+Return ONLY the sentence. No JSON. No preamble. No quotation marks. Just the sentence.`
+
+      const microRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 60,
+          messages: [{ role: 'user', content: microPrompt }]
+        })
+      })
+
+      if (!microRes.ok) throw new Error('Anthropic API error')
+
+      const microJson = await microRes.json()
+      const sentence = (microJson.content?.[0]?.text ?? '').trim()
+        .replace(/^["']|["']$/g, '')
+
+      try {
+        await supabaseMicro.from('dopa_reflections').upsert(
+          { user_id, date_key: microDateKey, slot: 0, insight: sentence, mascot_question: '', angle: fingerprint },
+          { onConflict: 'user_id,date_key,slot' }
+        )
+      } catch (_) { /* best-effort cache — don't block response */ }
+
+      return new Response(JSON.stringify({ micro_response: sentence }), {
         headers: { 'Content-Type': 'application/json', ...CORS }
       })
     }

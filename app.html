@@ -2745,6 +2745,16 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
 
   <!-- INSTALL PROMPT -->
 <div id="installOverlay" style="display:none;position:fixed;inset:0;background:#0E0B1A;z-index:999;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;overflow-y:auto;"></div>
+  <!-- 7-DAY DARE SCREEN -->
+  <div id="dareScreen" style="display:none;position:fixed;inset:0;background:#07040E;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;">
+    <div style="position:relative;margin-bottom:24px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:60px;background:radial-gradient(circle,rgba(255,176,32,0.28) 0%,transparent 70%);pointer-events:none;"></div>
+      <img src="https://mydopa.app/images/dopa-03-winking.png" alt="DOPA" width="64" height="64" style="object-fit:contain;display:block;position:relative;" />
+    </div>
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:#FFFFFF;line-height:1.3;margin-bottom:8px;">7 days.</div>
+    <div style="font-size:17px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:280px;margin-bottom:32px;">That is all DOPA asks. One good thing a day for 7 days. See what happens.</div>
+    <button onclick="dismissDareScreen()" style="width:100%;max-width:280px;background:#7B3FE4;border:none;border-radius:12px;padding:18px;font-size:17px;color:#FFFFFF;font-weight:600;cursor:pointer;font-family:inherit;">Start the dare →</button>
+  </div>
   <!-- NAME MODAL -->
   <div class="modal-overlay" id="nameModal">
     <div class="modal">
@@ -3104,6 +3114,14 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       mixpanel.track('Onboarding Completed', { anchor_entry: true });
       document.getElementById('ritualInput').value = '';
       document.getElementById('ritualOverlay').classList.remove('open');
+      if (!localStorage.getItem('dopamine_dare_shown')) {
+        document.getElementById('dareScreen').style.display = 'flex';
+      }
+    }
+
+    function dismissDareScreen() {
+      localStorage.setItem('dopamine_dare_shown', 'true');
+      document.getElementById('dareScreen').style.display = 'none';
     }
 
     // ── Helpers ──────────────────────────────────────────────

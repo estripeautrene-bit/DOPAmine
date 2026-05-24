@@ -2785,6 +2785,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
         <div class="tpc-streak-pill" id="tpcStreakPill"></div>
         <div class="tpc-date" id="tpcDate"></div>
       </div>
+      <div id="streakProtectLabel" style="display:none;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:4px;"></div>
       <div class="tpc-prompt" id="tpcPrompt">YOUR DAY IS BUILDING.</div>
       <div class="tpc-input-area">
         <textarea
@@ -3267,16 +3268,23 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         const lastDate = new Date(lastOpen + 'T12:00:00');
         const todayDate = new Date(today + 'T12:00:00');
         const daysDiff = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+        const accountAgeDays = getAccountAgeDays();
 
         if (daysDiff === 1) {
-          const graceMsgs = [
-            "You missed yesterday. Your streak is still here. So are we.",
-            "Life got full. Your streak is safe — come back today.",
-            "Yesterday slipped by. What's good right now?",
-            "Your streak survived. Come find 3 good things. 🔥"
-          ];
-          const graceMsg = graceMsgs[Math.floor(Math.random() * graceMsgs.length)];
-          setTimeout(() => showToast(graceMsg), 600);
+          if (accountAgeDays <= 7) {
+            // suppress streak loss messaging entirely
+          } else if (accountAgeDays <= 30) {
+            const totalDays = new Set(loadMoments().map(m => m.dateKey)).size;
+            setTimeout(() => showToast(`You logged ${totalDays} total days. Today adds to that.`), 600);
+          } else {
+            const graceMsgs = [
+              "You missed yesterday. Your streak is still here. So are we.",
+              "Life got full. Your streak is safe — come back today.",
+              "Yesterday slipped by. What's good right now?",
+              "Your streak survived. Come find 3 good things. 🔥"
+            ];
+            setTimeout(() => showToast(graceMsgs[Math.floor(Math.random() * graceMsgs.length)]), 600);
+          }
         } else if (daysDiff === 2) {
           setTimeout(() => showToast("You built something real. It's still here. 💜"), 600);
         } else if (daysDiff >= 3 && daysDiff <= 5) {
@@ -3977,15 +3985,39 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
     function updateLogStreak() {
       const moments = loadMoments();
-      const streak = calcStreak(moments);
       const pill = document.getElementById('tpcStreakPill');
+      const label = document.getElementById('streakProtectLabel');
       if (!pill) return;
-      if (streak > 0) {
-        pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
-        pill.style.display = '';
+
+      const accountAgeDays = getAccountAgeDays();
+
+      if (accountAgeDays <= 14) {
+        const totalDaysLogged = new Set(moments.map(m => m.dateKey)).size;
+        if (totalDaysLogged > 0) {
+          pill.textContent = '✶ ' + totalDaysLogged + (totalDaysLogged === 1 ? ' day logged' : ' days logged');
+          pill.style.display = '';
+        } else {
+          pill.textContent = '';
+          pill.style.display = 'none';
+        }
+        if (label) {
+          if (accountAgeDays <= 7 && totalDaysLogged > 0) {
+            label.textContent = 'Streak protected while you get started.';
+            label.style.display = '';
+          } else {
+            label.style.display = 'none';
+          }
+        }
       } else {
-        pill.textContent = '';
-        pill.style.display = 'none';
+        const streak = calcStreak(moments);
+        if (streak > 0) {
+          pill.textContent = '🔥 ' + streak + (streak === 1 ? ' day' : ' days');
+          pill.style.display = '';
+        } else {
+          pill.textContent = '';
+          pill.style.display = 'none';
+        }
+        if (label) label.style.display = 'none';
       }
     }
 

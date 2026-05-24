@@ -51,6 +51,20 @@ const EVENING_TYPE2 = [
   "Tonight is the last chance to catch today. What happened?"
 ]
 
+// ── Re-entry copy (days_since_last_entry 3–13) ───────────────────────
+const REENTRY_COPY: Record<PairSlot, string> = {
+  morning:   "Something good happened while you were away. DOPA is ready when you are.",
+  afternoon: "DOPA has been waiting. Good things kept happening. Catch one today.",
+  evening:   "Today still has time. One moment is all DOPA needs."
+}
+
+// ── Win-back copy (days_since_last_entry 14+) ────────────────────────
+const WINBACK_COPY: Record<PairSlot, string> = {
+  morning:   "You started something. It is still here. DOPA kept everything you logged.",
+  afternoon: "Your moments are still saved. DOPA is still here. Today counts.",
+  evening:   "It has been a while. One good thing. That is all. DOPA is listening."
+}
+
 // ── Pair J — Ghost notifications ────────────────────────────────────
 const PAIR_J: Record<string, Partial<Record<PairSlot, string>>> = {
   WEEKDAY: {
@@ -75,6 +89,7 @@ const YWG_VARIANTS = [
   "Your day from yesterday. DOPA kept it. Come read it."
 ]
 
+// ── Interfaces ──────────────────────────────────────────────────────
 interface UserState {
   streak_count: number
   wins_today: number
@@ -84,24 +99,16 @@ interface UserState {
   avg_daily_wins_7d: number
 }
 
+interface UserSignals {
+  wins_today: number
+  days_since_last_entry: number
+  account_age_days: number
+  opened_today: boolean
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────
 function pickRandom(arr: string[]): string {
   return arr[Math.floor(Math.random() * arr.length)]
-}
-
-// last_open_date: pass from push_subscriptions when available; null → default TYPE 2
-function morningMessage(state: UserState, lastOpenDate: string | null, tz: string): string {
-  if (state.wins_today >= 1) return pickRandom(MORNING_TYPE1)
-  const today = dateKey(tz, 0)
-  if (lastOpenDate && lastOpenDate !== today) return pickRandom(MORNING_TYPE3)
-  return pickRandom(MORNING_TYPE2)
-}
-
-function afternoonMessage(state: UserState): string {
-  return state.wins_today >= 1 ? pickRandom(AFTERNOON_TYPE1) : pickRandom(AFTERNOON_TYPE2)
-}
-
-function eveningMessage(state: UserState): string {
-  return state.wins_today >= 1 ? pickRandom(EVENING_TYPE1) : pickRandom(EVENING_TYPE2)
 }
 
 function addMinutesToHHMM(hhmm: string, minutes: number): string {
@@ -141,6 +148,7 @@ function dayOfWeek(timezone: string): string {
   } catch { return 'Monday' }
 }
 
+// ── State + signals ─────────────────────────────────────────────────
 function computeState(
   moments: { date_key: string; created_at: string }[],
   timezone: string
@@ -187,6 +195,33 @@ function computeState(
   return { streak_count, wins_today, wins_yesterday, missed_yesterday, account_age_days, avg_daily_wins_7d }
 }
 
+function buildSignals(
+  moments: { date_key: string; created_at: string }[],
+  tz: string
+): UserSignals {
+  const today = dateKey(tz, 0)
+
+  const wins_today = moments.filter(m => m.date_key === today).length
+
+  let days_since_last_entry = 999
+  if (moments.length > 0) {
+    const latest = moments.reduce((a, b) => a.created_at > b.created_at ? a : b)
+    days_since_last_entry = Math.floor((Date.now() - new Date(latest.created_at).getTime()) / 86400000)
+  }
+
+  let account_age_days = 0
+  if (moments.length > 0) {
+    const earliest = moments.reduce((a, b) => a.created_at < b.created_at ? a : b)
+    account_age_days = Math.floor((Date.now() - new Date(earliest.created_at).getTime()) / 86400000)
+  }
+
+  // opened_today not yet tracked in DB — defaults to false (treat as not opened)
+  const opened_today = false
+
+  return { wins_today, days_since_last_entry, account_age_days, opened_today }
+}
+
+// ── J ghost variant detection ────────────────────────────────────────
 function detectJVariant(
   state: UserState,
   tz: string,
@@ -219,14 +254,54 @@ function getJCopy(pairId: string, slot: PairSlot): string {
   return PAIR_J[variant]?.[slot] ?? PAIR_J.WEEKDAY[slot] ?? ''
 }
 
-// Returns J_WEEKDAY/J_POSTGYM/J_WEEKEND for ghost-variant users; 'DEFAULT' otherwise
-function selectVariant(
-  state: UserState,
-  timezone: string,
-  moments: { date_key: string; created_at: string }[]
-): string {
-  if (state.account_age_days <= 21) return detectJVariant(state, timezone, moments)
-  return 'DEFAULT'
+// ── V2 message selection — priority chain ────────────────────────────
+// Evaluate P1→P5 in order; use first match. jVariant non-null for ghost-variant users.
+function selectMessage(slot: PairSlot, signals: UserSignals, jVariant: string | null): string {
+  const { wins_today, days_since_last_entry, account_age_days, opened_today } = signals
+
+  // P1 — New user (≤3 days), no entry today — highest urgency
+  if (account_age_days <= 3 && wins_today === 0) {
+    if (slot === 'morning') return pickRandom(MORNING_TYPE3)
+    if (slot === 'afternoon') return pickRandom(AFTERNOON_TYPE2)
+    return pickRandom(EVENING_TYPE2)
+  }
+
+  // P2 — Dormant, 3–13 days since last entry — warm re-engagement
+  if (days_since_last_entry >= 3 && days_since_last_entry < 14) {
+    return REENTRY_COPY[slot]
+  }
+
+  // P3 — Dormant, 14+ days — soft win-back
+  if (days_since_last_entry >= 14) {
+    return WINBACK_COPY[slot]
+  }
+
+  // P4 — Active, logged today — pull toward reward
+  if (wins_today >= 1) {
+    if (jVariant) {
+      const jCopy = getJCopy(jVariant, slot)
+      if (jCopy) return jCopy
+    }
+    if (slot === 'morning') return pickRandom(MORNING_TYPE1)
+    if (slot === 'afternoon') return pickRandom(AFTERNOON_TYPE1)
+    return pickRandom(EVENING_TYPE1)
+  }
+
+  // P5 — Active, not logged today
+  if (jVariant) {
+    const jCopy = getJCopy(jVariant, slot)
+    if (jCopy) return jCopy
+  }
+  if (!opened_today) {
+    // FOMO bridge — user has not opened app today
+    if (slot === 'morning') return pickRandom(MORNING_TYPE3)
+    return pickRandom(EVENING_TYPE2)
+  }
+
+  // Default (P5 opened, or fallback when signals unavailable)
+  if (slot === 'morning') return pickRandom(MORNING_TYPE2)
+  if (slot === 'afternoon') return pickRandom(AFTERNOON_TYPE2)
+  return pickRandom(EVENING_TYPE2)
 }
 
 const FIXED_TIMES: Record<string, string> = { afternoon: '12:30', evening: '20:30' }
@@ -286,7 +361,8 @@ Deno.serve(async (req) => {
     }
 
     const userIds    = [...new Set(targets.map(t => t.user_id).filter(Boolean))]
-    const cutoffDate = dateKey('UTC', -30)
+    // Extend cutoff to 60 days so dormant/winback users are correctly identified
+    const cutoffDate = dateKey('UTC', -60)
 
     const { data: allMoments } = await supabase
       .from('moments')
@@ -306,35 +382,31 @@ Deno.serve(async (req) => {
 
     const results = await Promise.allSettled(
       targets.map(async s => {
-        const tz    = s.timezone ?? 'UTC'
-        const state = computeState(momentsByUser[s.user_id] ?? [], tz)
+        const tz      = s.timezone ?? 'UTC'
+        const moments = momentsByUser[s.user_id] ?? []
+        const state   = computeState(moments, tz)
+        const signals = buildSignals(moments, tz)
 
         let message: string
 
+        // YWG slot — fires independently; highest morning priority when reflection exists
         if (slot === 'ywg') {
           if (state.wins_yesterday < 1) return
           const variantIndex = s.last_ywg_variant_index ?? 0
           message = getYWGCopy(variantIndex)
           ywgUpdates.push({ id: s.id, nextIndex: (variantIndex + 1) % YWG_VARIANTS.length })
         } else if (slot === 'morning') {
-          const variant = selectVariant(state, tz, momentsByUser[s.user_id] ?? [])
-          message = variant.startsWith('J_')
-            ? getJCopy(variant, 'morning')
-            : morningMessage(state, null, tz)
-          pairUpdates.push({ id: s.id, pair: variant })
+          // Detect J ghost variant for users ≤21 days; null otherwise
+          const jVariant = signals.account_age_days <= 21
+            ? detectJVariant(state, tz, moments)
+            : null
+          message = selectMessage('morning', signals, jVariant)
+          pairUpdates.push({ id: s.id, pair: jVariant ?? 'DEFAULT' })
         } else {
-          const pair = s.last_morning_pair_id ?? 'DEFAULT'
-          const isJ  = pair.startsWith('J_')
-
-          if (slot === 'afternoon') {
-            message = isJ
-              ? (getJCopy(pair, 'afternoon') || afternoonMessage(state))
-              : afternoonMessage(state)
-          } else {
-            message = isJ
-              ? (getJCopy(pair, 'evening') || eveningMessage(state))
-              : eveningMessage(state)
-          }
+          // Afternoon / evening: use J variant from this morning's pair if set
+          const morningPair = s.last_morning_pair_id ?? 'DEFAULT'
+          const jVariant    = morningPair.startsWith('J_') ? morningPair : null
+          message = selectMessage(slot as PairSlot, signals, jVariant)
         }
 
         const payloadObj: Record<string, string> = { title: 'DOPAmine', body: message, icon: '/icon.png' }

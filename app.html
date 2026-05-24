@@ -5649,6 +5649,10 @@ function renderInstallOverlay() {
 }
 
 function checkInstallPrompt() {
+  if (PLATFORM === 'desktop') {
+    localStorage.setItem('dopamine_installed', 'true');
+    return;
+  }
   const isInstalled = localStorage.getItem('dopamine_installed');
   const isStandalone = window.navigator.standalone === true ||
     window.matchMedia('(display-mode: standalone)').matches;

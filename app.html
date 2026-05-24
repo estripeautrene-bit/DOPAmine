@@ -2033,6 +2033,13 @@
     .tpc-entry-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .tpc-entry-time { font-size: 9.5px; color: rgba(201,190,216,0.3); }
     .tpc-entry-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
+    .dopa-micro-card { background: rgba(123,47,190,0.12); border: 0.5px solid rgba(181,123,247,0.25); border-radius: 12px; padding: 12px 14px; margin-top: 6px; opacity: 0; transform: translateY(8px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .dopa-micro-card.visible { opacity: 1; transform: translateY(0); }
+    .dopa-micro-header { display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
+    .dopa-micro-label { font-size: 10px; color: #B57BF7; text-transform: uppercase; letter-spacing: 1px; font-family: -apple-system,Arial,sans-serif; font-weight: 600; }
+    .dopa-micro-text { font-family: Georgia,'Times New Roman',serif; font-style: italic; font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.5; margin: 0; }
+    .dopa-micro-text.loading-dots { color: rgba(255,255,255,0.25); animation: microPulse 1.5s ease-in-out infinite; }
+    @keyframes microPulse { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
     .tpc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
 
     /* ── Auto time-of-day tag ── */
@@ -3563,6 +3570,44 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       return 'Tomorrow morning DOPA reflects your day back to you.';
     }
 
+    const MICRO_KEY_PREFIX = 'dopamine_micro_';
+
+    async function triggerMicroReflection(momentId, text) {
+      if (!text || text.length < 5) return;
+      if (!currentUser) return;
+      if (localStorage.getItem(MICRO_KEY_PREFIX + momentId)) return;
+      const cards = document.querySelectorAll('[data-moment-id="' + momentId + '"]');
+      if (!cards.length) return;
+      cards.forEach(function(card) {
+        var t = card.querySelector('.dopa-micro-text');
+        if (t) { t.textContent = '...'; t.classList.add('loading-dots'); }
+        requestAnimationFrame(function() { card.classList.add('visible'); });
+      });
+      var controller = new AbortController();
+      var timer = setTimeout(function() { controller.abort(); }, 5000);
+      try {
+        var res = await fetch(SB_URL + '/functions/v1/generate-dopa-reflection', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_KEY },
+          body: JSON.stringify({ user_id: currentUser.id, date_key: todayKey(), slot: 0, micro_entry: text, mode: 'micro' }),
+          signal: controller.signal
+        });
+        clearTimeout(timer);
+        if (!res.ok) throw new Error('err');
+        var data = await res.json();
+        var sentence = (data.micro_response || '').trim();
+        if (!sentence) throw new Error('empty');
+        localStorage.setItem(MICRO_KEY_PREFIX + momentId, sentence);
+        cards.forEach(function(card) {
+          var t = card.querySelector('.dopa-micro-text');
+          if (t) { t.textContent = sentence; t.classList.remove('loading-dots'); }
+        });
+      } catch (_) {
+        clearTimeout(timer);
+        cards.forEach(function(card) { card.classList.remove('visible'); });
+      }
+    }
+
     // ── Today entries renderer ───────────────────────────
     function renderTodayEntries() {
       const moments = loadMoments();
@@ -3617,17 +3662,33 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       const top = entries[0];
       const topTags = [top.autoTag, ...(top.tags ? top.tags.split(',') : [])].filter(Boolean);
+      const topIsAnchor = top.tags && top.tags.split(',').includes('anchor_entry');
+      const topMicro = topIsAnchor ? null : localStorage.getItem(MICRO_KEY_PREFIX + String(top.id));
       document.getElementById('tpcStackTop').innerHTML =
         '<div class="tpc-sh1-text">' + top.text + '</div>' +
         (top.photo ? '<img src="' + top.photo + '" alt="" style="width:100%;border-radius:8px;margin-top:8px;max-height:200px;object-fit:cover;display:block;" />' : '') +
         '<div class="tpc-sh1-meta">' +
           '<span class="tpc-sh1-time">' + (top.time || '') + '</span>' +
           topTags.map(t => '<span class="tpc-sh1-tag">' + t.trim() + '</span>').join('') +
-        '</div>';
+        '</div>' +
+        (topIsAnchor ? '' :
+          '<div class="dopa-micro-card' + (topMicro ? ' visible' : '') + '" data-moment-id="' + top.id + '">' +
+          '<div class="dopa-micro-header"><img src="https://mydopa.app/images/dopa-03-winking.png" width="16" style="display:inline-block;vertical-align:middle;border-radius:50%;" alt="" />' +
+          '<span class="dopa-micro-label">DOPA</span></div>' +
+          '<div class="dopa-micro-text">' + (topMicro ? escapeHtml(topMicro) : '') + '</div>' +
+          '</div>');
       document.getElementById('tpcSeeAll').textContent = 'see all ' + entries.length + ' →';
 
       exp.innerHTML = entries.map(function(e) {
         const tags = [e.autoTag, ...(e.tags ? e.tags.split(',') : [])].filter(Boolean);
+        const isAnchor = e.tags && e.tags.split(',').includes('anchor_entry');
+        const micro = isAnchor ? null : localStorage.getItem(MICRO_KEY_PREFIX + String(e.id));
+        const microCard = isAnchor ? '' :
+          '<div class="dopa-micro-card' + (micro ? ' visible' : '') + '" data-moment-id="' + e.id + '">' +
+          '<div class="dopa-micro-header"><img src="https://mydopa.app/images/dopa-03-winking.png" width="16" style="display:inline-block;vertical-align:middle;border-radius:50%;" alt="" />' +
+          '<span class="dopa-micro-label">DOPA</span></div>' +
+          '<div class="dopa-micro-text">' + (micro ? escapeHtml(micro) : '') + '</div>' +
+          '</div>';
         return '<div class="tpc-entry-card">' +
           '<div class="tpc-entry-text">' + e.text + '</div>' +
           (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="" style="width:100%;border-radius:8px;margin-top:8px;max-height:240px;object-fit:cover;display:block;" />' : '') +
@@ -3636,7 +3697,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
             tags.map(t => '<span class="tpc-entry-tag">' + t.trim() + '</span>').join('') +
             (e.id ? '<button onclick="openEditModal(' + e.id + ')" style="background:none;border:none;color:rgba(201,190,216,0.28);font-size:11px;cursor:pointer;padding:0 3px;margin-left:auto;" title="Edit">✏️</button>' +
                     '<button onclick="deleteMoment(' + e.id + ')" style="background:none;border:none;color:rgba(201,190,216,0.28);font-size:11px;cursor:pointer;padding:0 3px;" title="Delete">🗑</button>' : '') +
-          '</div></div>';
+          '</div></div>' + microCard;
       }).join('') + '<button class="tpc-collapse-btn" id="tpcCollapseBtn">↑ collapse</button>';
 
       const collapseBtn = document.getElementById('tpcCollapseBtn');
@@ -4532,6 +4593,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         } else if (todayCount === 3) {
           showDayCompleteOverlay();
         }
+        if (!newMoment.anchor_entry) triggerMicroReflection(newMoment.id, text);
       }, 1400);
       const blobToUpload = currentPhotoBlob;
       const uploadId = String(newMoment.id);

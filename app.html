@@ -1150,22 +1150,30 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: #0E0B1A;
-      z-index: 200;
+      background: #07040E;
+      z-index: 9999;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 40px 28px;
     }
     #reentryOverlay.open { display: flex; }
-    .reentry-prompt {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.55;
+    .reentry-headline {
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.4;
       text-align: center;
-      max-width: 320px;
-      margin-bottom: 28px;
+      max-width: 340px;
+      margin: 0 0 16px;
+    }
+    .reentry-body {
+      font-size: 17px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+      text-align: center;
+      max-width: 340px;
+      margin: 0 0 24px;
     }
     .reentry-textarea {
       width: 100%;
@@ -1186,34 +1194,25 @@
     .reentry-save-btn {
       width: 100%;
       max-width: 400px;
-      background: #7B2FBE;
+      background: #7B3FE4;
       border: none;
-      border-radius: 50px;
-      padding: 15px;
-      font-size: 1rem;
+      border-radius: 12px;
+      padding: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: white;
       cursor: pointer;
-      margin-bottom: 14px;
       transition: opacity 0.2s;
     }
     .reentry-save-btn:disabled { opacity: 0.35; cursor: default; }
-    .reentry-skip-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.82rem;
-      cursor: pointer;
-      padding: 4px 8px;
-    }
 
     /* ── Ritual Anchoring overlay (Item 16) ── */
     #ritualOverlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: #0E0B1A;
-      z-index: 200;
+      background: #07040E;
+      z-index: 9999;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -1221,13 +1220,13 @@
     }
     #ritualOverlay.open { display: flex; }
     .ritual-prompt {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.55;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.3;
       text-align: center;
-      max-width: 320px;
-      margin-bottom: 24px;
+      max-width: 340px;
+      margin-bottom: 28px;
     }
     .ritual-chips {
       display: flex;
@@ -1239,15 +1238,15 @@
     }
     .ritual-chip {
       background: none !important;
-      border: 1px solid rgba(123,47,190,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 50px;
-      color: var(--muted);
-      font-size: 0.88rem;
-      padding: 8px 16px;
+      color: white;
+      font-size: 15px;
+      padding: 10px 18px;
       cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s;
     }
-    .ritual-chip:hover { border-color: rgba(123,47,190,0.8); color: var(--text); }
+    .ritual-chip:hover { border-color: rgba(255,255,255,0.5); }
     .ritual-textarea {
       width: 100%;
       max-width: 400px;
@@ -1267,26 +1266,17 @@
     .ritual-save-btn {
       width: 100%;
       max-width: 400px;
-      background: #7B2FBE;
+      background: #7B3FE4;
       border: none;
-      border-radius: 50px;
-      padding: 15px;
-      font-size: 1rem;
+      border-radius: 12px;
+      padding: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: white;
       cursor: pointer;
-      margin-bottom: 14px;
       transition: opacity 0.2s;
     }
     .ritual-save-btn:disabled { opacity: 0.35; cursor: default; }
-    .ritual-skip-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.82rem;
-      cursor: pointer;
-      padding: 4px 8px;
-    }
 
     .modal {
       background: #ffffff;
@@ -1913,7 +1903,7 @@
       margin-left: auto;
     }
     .tpc-save-btn {
-      background: #7B2FBE;
+      background: #7B3FE4;
       border: none;
       border-radius: 50px;
       padding: 9px 20px;
@@ -1931,6 +1921,51 @@
     .tpc-save-btn:active {
       opacity: 0.8;
       transform: scale(0.97);
+    }
+    @keyframes savePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.7; }
+    }
+    @keyframes saveCircleIn {
+      from { transform: scale(0.6); }
+      to   { transform: scale(1); }
+    }
+    #saveBtn.saving {
+      animation: savePulse 0.4s ease-in-out infinite;
+      pointer-events: none;
+      cursor: default;
+    }
+    #saveBtn.save-done {
+      width: 40px !important;
+      min-width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      border-radius: 50% !important;
+      font-size: 18px !important;
+      line-height: 40px !important;
+      text-align: center !important;
+      animation: saveCircleIn 0.2s ease-out forwards;
+      transition: none !important;
+      pointer-events: none;
+    }
+    #savingStateText {
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 8px;
+      opacity: 0;
+      pointer-events: none;
+      min-height: 18px;
+      transition: opacity 0.2s ease;
+    }
+    #saveGhostLine {
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+      opacity: 0;
+      pointer-events: none;
+      min-height: 20px;
     }
 
     /* ── Today entries stack ── */
@@ -2300,7 +2335,7 @@
 #authScreen { position:fixed; inset:0; background:#06000D; z-index:2000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
 .auth-card { width:100%; max-width:400px; background:transparent; border:none; padding:0; }
 .auth-logo { display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:40px; }
-.auth-logo-d { width:40px; height:40px; background:linear-gradient(135deg,#7B2FBE,#B57BF7); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:900; color:white; font-style:italic; flex-shrink:0; }
+.auth-logo-d { width:40px; height:40px; background:linear-gradient(135deg,#7B2FBE,#B57BF7); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
 .auth-logo-name { font-size:1.3rem; font-weight:700; color:white; letter-spacing:-0.3px; }
 .auth-logo-name span { color:#B57BF7; font-weight:400; }
 .auth-title { font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:700; color:#E8D5FF; margin-bottom:28px; text-align:center; }
@@ -2439,18 +2474,21 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
   <div id="dopa-glow-layer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></div>
 
   <!-- BLANK MOMENT ONBOARDING -->
-  <div id="blankMomentScreen" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;">
-    <div style="font-size:1.75rem; font-weight:800; color:white; text-align:center; line-height:1.3; max-width:340px; margin-bottom:40px;">What was the best moment from last Tuesday?</div>
-    <div style="width:100%; max-width:340px; height:3px; background:rgba(255,255,255,0.12); border-radius:3px; overflow:hidden; margin-bottom:48px;">
-      <div id="blankTimerFill" style="height:100%; width:0%; background:#7B2FBE; border-radius:3px;"></div>
+  <div id="blankMomentScreen" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#07040E; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;">
+    <div id="blankQuestion" style="width:100%; max-width:340px; display:flex; flex-direction:column; align-items:center;">
+      <div style="font-size:28px; font-weight:700; color:white; text-align:center; line-height:1.3; margin-bottom:40px;">What was the best moment from last Tuesday?</div>
+      <div style="width:100%; height:3px; background:rgba(255,255,255,0.15); border-radius:3px; overflow:hidden; margin-bottom:48px;">
+        <div id="blankTimerFill" style="height:100%; width:0%; background:#FFFFFF; border-radius:3px;"></div>
+      </div>
+      <div id="blankChoices" style="display:none; flex-direction:column; gap:14px; width:100%; opacity:0; transition:opacity 0.4s ease;">
+        <button onclick="blankChoose('A')" style="width:100%; padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:17px; cursor:pointer;">I can't remember</button>
+        <button onclick="blankChoose('B')" style="width:100%; padding:18px; border-radius:12px; border:none; background:#7B3FE4; color:white; font-size:17px; cursor:pointer;">I remember it clearly</button>
+      </div>
     </div>
-    <div id="blankChoices" style="display:none; flex-direction:column; gap:14px; width:100%; max-width:340px;">
-      <button onclick="blankChoose('A')" style="width:100%; padding:16px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:1rem; font-weight:600; cursor:pointer;">I can't remember</button>
-      <button onclick="blankChoose('B')" style="width:100%; padding:16px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.2); background:transparent; color:white; font-size:1rem; font-weight:600; cursor:pointer;">I remember it clearly</button>
-    </div>
-    <div id="blankReveal" style="display:none; flex-direction:column; align-items:center; max-width:340px; width:100%; overflow-y:auto; max-height:60vh;">
-      <p id="blankRevealText" style="font-size:1rem; color:rgba(255,255,255,0.85); line-height:1.65; text-align:center; margin-bottom:36px;"></p>
-      <button id="blankCTA" onclick="dismissBlankScreen()" style="background:#7B2FBE; border:none; border-radius:50px; padding:16px 32px; font-size:1rem; font-weight:700; color:white; cursor:pointer; width:100%;"></button>
+    <div id="blankReveal" style="display:none; flex-direction:column; align-items:center; max-width:340px; width:100%; overflow-y:auto; max-height:70vh; opacity:0; transition:opacity 0.4s ease;">
+      <p id="blankRevealHead" style="font-size:22px; font-weight:700; color:white; text-align:center; margin:0 0 12px;"></p>
+      <p id="blankRevealText" style="font-size:16px; color:rgba(255,255,255,0.75); line-height:1.65; text-align:center; margin:0 0 20px;"></p>
+      <button id="blankCTA" onclick="dismissBlankScreen()" style="background:#7B3FE4; border:none; border-radius:12px; padding:18px; font-size:17px; font-weight:700; color:white; cursor:pointer; width:100%;"></button>
     </div>
   </div>
 
@@ -2537,7 +2575,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
   <div id="authScreen">
     <div class="auth-card">
       <div class="auth-logo">
-        <div class="auth-logo-d">D</div>
+        <div class="auth-logo-d"><img src="https://mydopa.app/images/dopa-03-winking.png" alt="DOPA" width="36" height="36" style="object-fit:contain;display:block;" /></div>
         <div class="auth-logo-name">DOPA<span>mine</span></div>
       </div>
       <div id="authMainContent">
@@ -2584,7 +2622,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
         </div>
       </div>
       <div id="authConfirmContent" style="display:none">
-        <div class="auth-confirm-icon">✉️</div>
+        <div class="auth-confirm-icon"><img src="https://mydopa.app/images/dopa-03-winking.png" alt="DOPA" width="64" height="64" style="object-fit:contain;display:block;margin:0 auto;" /></div>
         <div class="auth-confirm-title">Check your inbox.</div>
         <div class="auth-confirm-sub" id="authConfirmSub">We sent you a confirmation link. Once confirmed, come back here and sign in.</div>
         <button class="auth-confirm-back" onclick="showAuthMain()">Back to Sign In</button>
@@ -2596,7 +2634,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
   <div id="recoveryScreen">
     <div class="auth-card">
       <div class="auth-logo">
-        <div class="auth-logo-d">D</div>
+        <div class="auth-logo-d"><img src="https://mydopa.app/images/dopa-03-winking.png" alt="DOPA" width="36" height="36" style="object-fit:contain;display:block;" /></div>
         <div class="auth-logo-name">DOPA<span>mine</span></div>
       </div>
       <div class="auth-title">Set New Password</div>
@@ -2754,7 +2792,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
         <div class="tpc-streak-pill" id="tpcStreakPill"></div>
         <div class="tpc-date" id="tpcDate"></div>
       </div>
-      <div class="tpc-prompt" id="tpcPrompt" onclick="nextPrompt()">ONLY GOOD THINGS</div>
+      <div class="tpc-prompt" id="tpcPrompt">YOUR DAY IS BUILDING.</div>
       <div class="tpc-input-area">
         <textarea
           id="momentInput"
@@ -2777,6 +2815,8 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
         <span class="tpc-char-count" id="charCount">0/280</span>
         <button class="tpc-save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       </div>
+      <div id="savingStateText"></div>
+      <div id="saveGhostLine"></div>
     </div>
 
     <!-- Hidden elements outside card -->
@@ -2813,17 +2853,21 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       </div>
     </div>
     <div class="tpc-entries-expanded" id="tpcExpanded" style="display:none;"></div>
+    <div id="tpcEmptyState" style="display:block;text-align:center;font-size:15px;color:rgba(255,255,255,0.25);padding:28px 0;">Today hasn't been written yet.</div>
     <div class="ypc-closing-wrap" id="tpcClosingWrap" style="display:none;">
       <div class="ypc-closing-pill">
         Your dopa. Made by <span class="ypc-closing-you">you</span>. Every day.
       </div>
     </div>
+    <div id="anticipatedPullLine" style="display:none;text-align:center;font-size:13px;color:rgba(255,255,255,0.3);padding:16px 0 8px;">See what today looks like tomorrow morning.</div>
     <div id="todayWhisperArea" style="padding-bottom:24px;"></div>
 
   </div>
 
   <!-- YESTERDAY VIEW -->
   <div class="view" id="view-yesterday">
+
+    <div id="ypcAmbientPull" style="display:none;text-align:center;font-size:13px;color:rgba(255,255,255,0.25);padding:12px 0 4px;">Today hasn't been written yet. DOPA is waiting.</div>
 
     <div class="ypc-accumulation" id="ypcAccumulation"></div>
 
@@ -2846,6 +2890,11 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       </div>
       <button class="ypc-send" id="ypcSend" style="display:none;">Send it →</button>
       <div style="font-size:0.68rem;color:rgba(255,255,255,0.25);text-align:center;margin-top:14px;">DOPA's reflections are generated by AI based on your entries.</div>
+    </div>
+
+    <div id="ypcCravingBridge" style="display:none;text-align:center;margin-top:24px;margin-bottom:32px;">
+      <div style="font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:8px;">Today is still being written.</div>
+      <div onclick="switchToTodayFromYesterday()" style="font-size:16px;color:#B57BF7;cursor:pointer;">Give DOPA something to work with. →</div>
     </div>
 
     <div class="ypc-stack-header">
@@ -2977,22 +3026,21 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
   <div id="ritualOverlay">
     <p class="ritual-prompt">What's one thing you already did this morning?</p>
     <div class="ritual-chips">
-      <button class="ritual-chip" onclick="ritualChipTap(this)">☕ Had coffee</button>
-      <button class="ritual-chip" onclick="ritualChipTap(this)">🚶 Went for a walk</button>
-      <button class="ritual-chip" onclick="ritualChipTap(this)">💪 Hit the gym</button>
-      <button class="ritual-chip" onclick="ritualChipTap(this)">🥐 Made breakfast</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Had coffee</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Went for a walk</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Hit the gym</button>
+      <button class="ritual-chip" onclick="ritualChipTap(this)">Made breakfast</button>
     </div>
     <textarea id="ritualInput" class="ritual-textarea" placeholder="Type something…"></textarea>
-    <button id="ritualSaveBtn" class="ritual-save-btn" disabled onclick="ritualSave()">Save ✓</button>
-    <button class="ritual-skip-btn" onclick="ritualSkip()">Skip</button>
+    <button id="ritualSaveBtn" class="ritual-save-btn" disabled onclick="ritualSave()">Save it →</button>
   </div>
 
   <!-- Re-entry overlay (Item 12) -->
   <div id="reentryOverlay">
-    <p class="reentry-prompt">A few days went by. Something good probably happened. What's one thing worth keeping from it?</p>
+    <p class="reentry-headline">A few days went by.</p>
+    <p class="reentry-body">Something good probably happened. What's one thing worth keeping from it?</p>
     <textarea id="reentryInput" class="reentry-textarea" placeholder="Type something…"></textarea>
-    <button id="reentrySaveBtn" class="reentry-save-btn" disabled onclick="reentrySave()">Save ✓</button>
-    <button class="reentry-skip-btn" onclick="reentrySkip()">Skip</button>
+    <button id="reentrySaveBtn" class="reentry-save-btn" disabled onclick="reentrySave()">Save it →</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -3000,36 +3048,39 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
   <script>
 
     // ── Blank Moment Onboarding (global scope) ───────────────────
-    const BLANK_KEY = 'dopamine_blank_seen';
+    const BLANK_KEY = 'blank_moment_complete';
     window.blankChoose = function(path) {
-      document.getElementById('blankChoices').style.display = 'none';
-      const revealText = document.getElementById('blankRevealText');
-      const cta = document.getElementById('blankCTA');
+      document.getElementById('blankQuestion').style.display = 'none';
+      const head = document.getElementById('blankRevealHead');
+      const body = document.getElementById('blankRevealText');
+      const cta  = document.getElementById('blankCTA');
       if (path === 'A') {
-        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
-        cta.textContent = "DOPAmine fixes that. Let's start \u2192";
+        mixpanel.track('Blank Moment Choice', { choice: 'cant_remember' });
+        head.textContent = "That's the problem.";
+        body.textContent = "Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
+        cta.textContent  = "DOPAmine fixes that. Let's start →";
       } else {
-        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
-        cta.textContent = "Let's build that reflex \u2192";
+        mixpanel.track('Blank Moment Choice', { choice: 'remember_clearly' });
+        head.textContent = "You're already ahead.";
+        body.textContent = "Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
+        cta.textContent  = "Let's build that reflex →";
       }
-      document.getElementById('blankReveal').style.display = 'flex';
+      const reveal = document.getElementById('blankReveal');
+      reveal.style.display = 'flex';
+      requestAnimationFrame(() => { reveal.style.opacity = '1'; });
     };
     window.dismissBlankScreen = function() {
-      localStorage.setItem(BLANK_KEY, '1');
       document.getElementById('blankMomentScreen').style.display = 'none';
-      checkRitualAnchoring();
-    };
-
-    // ── Ritual Anchoring (Item 16) ───────────────────────────
-    function checkRitualAnchoring() {
-      if (localStorage.getItem('dopamine_ritual_seen')) return;
-      if (loadMoments().length > 0) return;
-      document.getElementById('ritualOverlay').classList.add('open');
-      setTimeout(() => document.getElementById('ritualInput').focus(), 120);
-      document.getElementById('ritualInput').addEventListener('input', function() {
-        document.getElementById('ritualSaveBtn').disabled = this.value.trim().length === 0;
+      const overlay = document.getElementById('ritualOverlay');
+      overlay.classList.add('open');
+      mixpanel.track('Onboarding Screen Viewed', { screen: 'ritual_anchoring' });
+      const input   = document.getElementById('ritualInput');
+      const saveBtn = document.getElementById('ritualSaveBtn');
+      setTimeout(() => input.focus(), 120);
+      input.addEventListener('input', function() {
+        saveBtn.disabled = this.value.trim().length === 0;
       });
-    }
+    };
 
     function ritualChipTap(el) {
       const input = document.getElementById('ritualInput');
@@ -3056,6 +3107,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
         createdAt: new Date().toISOString(),
         dateKey: todayKey(),
         photo: null,
+        anchor_entry: true,
       };
       moments.unshift(newMoment);
       saveMoments(moments);
@@ -3065,13 +3117,9 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       updateLogStreak();
       renderTodayEntries();
 
-      localStorage.setItem('dopamine_ritual_seen', '1');
+      localStorage.setItem(BLANK_KEY, '1');
+      mixpanel.track('Onboarding Completed', { anchor_entry: true });
       document.getElementById('ritualInput').value = '';
-      document.getElementById('ritualOverlay').classList.remove('open');
-    }
-
-    function ritualSkip() {
-      localStorage.setItem('dopamine_ritual_seen', '1');
       document.getElementById('ritualOverlay').classList.remove('open');
     }
 
@@ -3095,7 +3143,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
     async function sbSave(m) {
       try {
         await fetch(SB_URL+'/rest/v1/moments', {method:'POST', headers:SB_HEADS,
-          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id), photo:m.photo||null})});
+          body: JSON.stringify({user_id:getUserId(), text:m.text, tags:JSON.stringify(m.tags||[]), auto_tag:m.autoTag||null, date_key:m.dateKey, created_at:m.createdAt, moment_id:String(m.id), photo:m.photo||null, anchor_entry:m.anchor_entry||false})});
       } catch(e) { console.log('sbSave offline:', e.message); }
     }
 
@@ -3111,12 +3159,17 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
        const merged = [...local];
 remote.forEach(rm => { if (!deletedIds.has(String(rm.id)) && !merged.find(lm => String(lm.id)===String(rm.id) || lm.createdAt===rm.createdAt)) merged.push(rm); });
         merged.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
+        if (merged.length > 0) {
+          const bs = document.getElementById('blankMomentScreen');
+          if (bs && bs.style.display === 'flex') { bs.style.display = 'none'; localStorage.setItem(BLANK_KEY, '1'); }
+        }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         localStorage.setItem(UID_KEY, getUserId());
         renderTodayEntries(); updateLogStreak();
         updateVisualCard(merged, calcStreak(merged));
         updateBgScore(merged.filter(m => m.dateKey === todayKey()).length, calcStreak(merged), false);
         console.log('Synced', merged.length, 'moments');
+        checkReEntryScreen();
 if (document.getElementById('view-summary').classList.contains('active')) renderSummary();
       } catch(e) { console.log('sbSync offline:', e.message); }
     }
@@ -3223,23 +3276,27 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     // ── Re-entry screen (Item 12) ────────────────────────────
-    const REENTRY_SHOWN_KEY = 'dopamine_reentry_shown_date';
-    const LAST_SAVE_TS_KEY  = 'dopamine_last_save_ts';
+    const LAST_SAVE_TS_KEY = 'dopamine_last_save_ts';
     const REENTRY_48H = 48 * 60 * 60 * 1000;
 
     function checkReEntryScreen() {
-      const shownDate = localStorage.getItem(REENTRY_SHOWN_KEY);
-      if (shownDate === todayKey()) return;
+      if (document.getElementById('reentryOverlay').classList.contains('open')) return;
+      if (!localStorage.getItem(BLANK_KEY)) return;
+      const moments = loadMoments();
+      if (moments.length === 0) return;
+      const todayMoments = moments.filter(m => m.dateKey === todayKey());
+      if (todayMoments.length >= 1) return;
+      const lastTs = new Date(moments[0].createdAt).getTime();
+      if (Date.now() - lastTs <= REENTRY_48H) return;
 
-      const lastSaveTs = parseInt(localStorage.getItem(LAST_SAVE_TS_KEY) || '0', 10);
-      if (!lastSaveTs || Date.now() - lastSaveTs <= REENTRY_48H) return;
-
-      localStorage.setItem(REENTRY_SHOWN_KEY, todayKey());
       const overlay = document.getElementById('reentryOverlay');
       overlay.classList.add('open');
-      setTimeout(() => document.getElementById('reentryInput').focus(), 120);
-
-      document.getElementById('reentryInput').addEventListener('input', function() {
+      mixpanel.track('Re-Entry Screen Shown', {
+        hours_since_last_entry: Math.round((Date.now() - lastTs) / (1000 * 60 * 60))
+      });
+      const input = document.getElementById('reentryInput');
+      setTimeout(() => input.focus(), 120);
+      input.addEventListener('input', function() {
         document.getElementById('reentrySaveBtn').disabled = this.value.trim().length === 0;
       });
     }
@@ -3248,13 +3305,27 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const text = document.getElementById('reentryInput').value.trim();
       if (!text) return;
 
-      document.getElementById('momentInput').value = text;
-      await saveMoment();
-      document.getElementById('reentryInput').value = '';
-      document.getElementById('reentryOverlay').classList.remove('open');
-    }
+      const moments = loadMoments();
+      const newMoment = {
+        id: Date.now(),
+        text,
+        tags: [],
+        autoTag: getTimeOfDayTag(),
+        createdAt: new Date().toISOString(),
+        dateKey: todayKey(),
+        photo: null,
+      };
+      moments.unshift(newMoment);
+      saveMoments(moments);
+      localStorage.setItem(LAST_SAVE_TS_KEY, Date.now());
+      sbSave(newMoment);
+      updateLogStreak();
+      renderTodayEntries();
+      showToast('Moment saved! 🌟');
 
-    function reentrySkip() {
+      mixpanel.track('Re-Entry Completed');
+      document.getElementById('reentryInput').value = '';
+      document.getElementById('reentrySaveBtn').disabled = true;
       document.getElementById('reentryOverlay').classList.remove('open');
     }
 
@@ -3329,39 +3400,22 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       syncOnboardingAnswers();
 
     // ── Blank Moment Onboarding ────────────────────────────────────────
-    const BLANK_KEY = 'dopamine_blank_seen';
-
-    function initBlankMomentScreen_inner() {
-      const moments = loadMoments();
-      if (localStorage.getItem(BLANK_KEY) || moments.length > 0) return;
-      document.getElementById('blankMomentScreen').style.cssText = 'display:flex; position:fixed; top:0; left:0; right:0; bottom:0; background:#1a1a2e; z-index:9999; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px;';
-      const fill = document.getElementById('blankTimerFill');
-      setTimeout(() => { fill.style.transition = 'width 5s linear'; fill.style.width = '100%'; }, 50);
-      setTimeout(() => { document.getElementById('blankChoices').style.display = 'flex'; }, 5000);
-    }
-
-    function blankChoose_inner(path) {
-      document.getElementById('blankChoices').style.display = 'none';
-      const revealText = document.getElementById('blankRevealText');
-      const cta = document.getElementById('blankCTA');
-      if (path === 'A') {
-        revealText.textContent = "That's the problem. Your day was full of good moments. The gym. The call that finally came through. The coffee that hit right. The small thing your kid said. Gone. All of it. Not because the day wasn't good. Because nothing caught it.";
-        cta.textContent = "DOPAmine fixes that. Let's start →";
-      } else {
-        revealText.textContent = "You're already ahead. Most people can't. The brain filters fast. By Tuesday night most of Wednesday's good is already gone. DOPAmine catches it before that happens.";
-        cta.textContent = "Let's build that reflex →";
+    if (!localStorage.getItem(BLANK_KEY) && loadMoments().length === 0) {
+      const el = document.getElementById('blankMomentScreen');
+      if (el) {
+        el.style.display = 'flex';
+        mixpanel.track('Onboarding Screen Viewed', { screen: 'blank_moment' });
+        const fill = document.getElementById('blankTimerFill');
+        setTimeout(() => { if (fill) { fill.style.transition = 'width 5s linear'; fill.style.width = '100%'; } }, 50);
+        setTimeout(() => {
+          const c = document.getElementById('blankChoices');
+          if (c) { c.style.display = 'flex'; requestAnimationFrame(() => { c.style.opacity = '1'; }); }
+        }, 5050);
       }
-      document.getElementById('blankReveal').style.display = 'flex';
-    }
-
-    function dismissBlankScreen_inner() {
-      localStorage.setItem(BLANK_KEY, '1');
-      document.getElementById('blankMomentScreen').classList.remove('visible');
     }
 
     initName();
       checkReEngagement();
-      checkReEntryScreen();
       if (localStorage.getItem(NAME_KEY)) {
         setTimeout(() => document.getElementById('momentInput').focus(), 100);
       }
@@ -3401,6 +3455,14 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     }
 
+    function switchToTodayFromYesterday() {
+      switchTab('log');
+      setTimeout(() => {
+        const input = document.getElementById('momentInput');
+        if (input) { input.focus(); }
+      }, 100);
+    }
+
     // ── Input / tag logic ────────────────────────────────────
     function updateCharCount() {
       const val = document.getElementById('momentInput').value;
@@ -3412,50 +3474,94 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       el.classList.toggle('selected');
     }
 
-    // ── Prompt carousel ─────────────────────────────────
-    const PROMPTS = [
-      '✨  ONLY GOOD THINGS',
-      '😊  DO TELL, WHAT MADE YOU SMILE?',
-      '📸  CAPTURE THE MOMENT',
-      '🌟  WRITE ABOUT SOMETHING GOOD THAT HAPPENED',
-      '🧠  YOUR BRAIN IS WATCHING',
-      '💜  LOG IT BEFORE YOU FORGET IT',
-      '⚡  FEED YOUR DOPAMINE'
+    // ── Prompt pool (save-driven rotation) ──────────────
+    const PROMPT_POOL = [
+      'What happened today that your brain almost let go?',
+      'What else happened that is worth keeping?',
+      'What made today different from yesterday?',
+      'What just happened that most people would walk past?',
+      'Something good is still out there today. What is it?',
+      'What would tomorrow-you be glad you kept?',
+      'One more thing. What made today yours?'
     ];
-    let promptIdx = 0;
 
-    function buildPromptDots() {
-      const dots = document.getElementById('promptDots');
-      if (!dots) return;
-      dots.innerHTML = PROMPTS.map((_, i) =>
-        `<span style="
-          display:inline-block; width:5px; height:5px; border-radius:50%;
-          background:${i === 0 ? 'rgba(181,123,247,0.9)' : 'rgba(255,255,255,0.2)'};
-          margin: 0 3px; transition: background 0.3s;
-        " data-dot="${i}"></span>`
-      ).join('');
+    function initPrompt() {
+      const today = todayKey();
+      if (localStorage.getItem('dopamine_prompt_date') !== today) {
+        localStorage.setItem('dopamine_prompt_date', today);
+        localStorage.setItem('dopamine_prompt_index', '0');
+      }
     }
 
-    function showPrompt(idx) {
+    function advancePrompt() {
+      const idx = parseInt(localStorage.getItem('dopamine_prompt_index') || '0', 10);
+      const next = (idx + 1) % PROMPT_POOL.length;
+      localStorage.setItem('dopamine_prompt_index', String(next));
       const el = document.getElementById('tpcPrompt');
       if (!el) return;
+      el.style.transition = 'opacity 0.2s ease';
       el.style.opacity = '0';
       setTimeout(() => {
-        el.textContent = PROMPTS[idx];
+        el.textContent = PROMPT_POOL[idx];
         el.style.opacity = '1';
       }, 200);
     }
 
-    function nextPrompt() {
-      promptIdx = (promptIdx + 1) % PROMPTS.length;
-      showPrompt(promptIdx);
+    function nextPrompt() { /* no-op: click no longer cycles */ }
+
+    // ── Daily greeting ───────────────────────────────────
+    const DAILY_GREETINGS = [
+      'DOPA is ready. What happened this morning?',
+      'New day. DOPA is listening.',
+      'Something good is already out there. DOPA is waiting.',
+      "Today hasn't started yet. Let's change that.",
+      'DOPA showed up. Now you do.',
+      'The day just started writing itself. Help DOPA read it.',
+      'Something good happened in the last hour. DOPA needs it.',
+      'Your brain is already running. Give DOPA the good parts.',
+      "Morning. One moment. That's all.",
+      'DOPA is here. What did this morning give you?',
+      'The best part of this morning is still fresh. Catch it.',
+      'New day. New moments. DOPA is reading.',
+      'Whatever happened this morning — DOPA wants to keep it.',
+      "Today is unwritten. Let's change that together.",
+      'DOPA waited all night for today. Make it worth it.'
+    ];
+
+    function initDailyGreeting() {
+      const today = todayKey();
+      if (localStorage.getItem('dopamine_last_greeting_date') !== today) {
+        localStorage.setItem('dopamine_last_greeting_date', today);
+        const idx = parseInt(localStorage.getItem('dopamine_greeting_index') || '0', 10);
+        localStorage.setItem('dopamine_greeting_text', DAILY_GREETINGS[idx % DAILY_GREETINGS.length]);
+        localStorage.setItem('dopamine_greeting_index', String((idx + 1) % DAILY_GREETINGS.length));
+      }
     }
 
-    buildPromptDots();
-    setInterval(() => {
-      promptIdx = (promptIdx + 1) % PROMPTS.length;
-      showPrompt(promptIdx);
-    }, 4000);
+    function getTodayGreeting() {
+      return localStorage.getItem('dopamine_greeting_text') || DAILY_GREETINGS[0];
+    }
+
+    // ── Account age helper ────────────────────────────────
+    function getAccountAgeDays() {
+      const all = loadMoments();
+      if (all.length > 0) {
+        const first = all.slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0];
+        return Math.max(1, Math.floor((Date.now() - new Date(first.createdAt).getTime()) / 86400000) + 1);
+      }
+      if (currentUser && currentUser.created_at) {
+        return Math.max(1, Math.floor((Date.now() - new Date(currentUser.created_at).getTime()) / 86400000) + 1);
+      }
+      return 1;
+    }
+
+    function getPullLineText() {
+      const d = getAccountAgeDays();
+      if (d >= 7) return 'Seven days. Tomorrow DOPA shows you something you did not know about yourself.';
+      if (d >= 5) return 'Three days. DOPA is starting to see who you are.';
+      if (d >= 3) return 'DOPA has two days now. Tomorrow it shows you the pattern.';
+      return 'Tomorrow morning DOPA reflects your day back to you.';
+    }
 
     // ── Today entries renderer ───────────────────────────
     function renderTodayEntries() {
@@ -3478,15 +3584,36 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const exp  = document.getElementById('tpcExpanded');
       const winsCount = document.getElementById('tpcWinsCount');
       const closingWrap = document.getElementById('tpcClosingWrap');
+      const emptyState = document.getElementById('tpcEmptyState');
+      const pullLine = document.getElementById('anticipatedPullLine');
+      const ambientPull = document.getElementById('ypcAmbientPull');
+      if (ambientPull) ambientPull.style.display = (!entries || entries.length === 0) ? 'block' : 'none';
       if (!entries || entries.length === 0) {
         if (deck) deck.style.display = 'none';
         if (exp)  exp.style.display  = 'none';
         if (winsCount) winsCount.textContent = '';
         if (closingWrap) closingWrap.style.display = 'none';
+        if (pullLine) pullLine.style.display = 'none';
+        if (emptyState) {
+          emptyState.textContent = getTodayGreeting();
+          emptyState.style.opacity = '0';
+          emptyState.style.transition = 'opacity 0.3s ease';
+          emptyState.style.display = 'block';
+          requestAnimationFrame(() => { emptyState.style.opacity = '1'; });
+        }
         return;
       }
+      if (emptyState) emptyState.style.display = 'none';
+      if (pullLine) {
+        if (entries.length >= 3) {
+          pullLine.textContent = getPullLineText();
+          pullLine.style.display = 'block';
+        } else {
+          pullLine.style.display = 'none';
+        }
+      }
       if (deck) deck.style.display = 'block';
-      if (winsCount) winsCount.textContent = entries.length + ' saved';
+      if (winsCount) winsCount.textContent = entries.length === 1 ? '1 moment kept' : entries.length + ' moments kept';
 
       const top = entries[0];
       const topTags = [top.autoTag, ...(top.tags ? top.tags.split(',') : [])].filter(Boolean);
@@ -3531,11 +3658,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
 
     applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
+    initPrompt();
+    initDailyGreeting();
     renderTodayEntries();
 
     // ── Share progress (Canvas image) ────────────────────
     async function shareProgress() {
-      if (navigator.vibrate) navigator.vibrate(10);
       const moments = loadMoments();
       const streak  = calcStreak(moments);
       const total   = moments.length;
@@ -3859,107 +3987,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       setTimeout(() => ripple.remove(), 400);
     }
 
-    // ── Save overlay (Items 1, 10, 14) ────────────────────────
-    const GHOST_VARIANTS = [
-      "You almost didn't keep that.",
-      "Gone if you hadn't.",
-      "Caught.",
-      "That one was close.",
-      "Most people let that go.",
-      "You stopped for it.",
-      "That one's yours now.",
-      "It would have disappeared."
-    ];
-
-    function showSaveCaught(totalCount) {
-      if (localStorage.getItem('dopa_accumulation_fired') === 'true') {
-        // already fired once ever — never fire accumulation overlay again
-      }
-      const isAccumulation = totalCount === 10 &&
-        localStorage.getItem('dopa_accumulation_fired') !== 'true';
-      if (isAccumulation) {
-        localStorage.setItem('dopa_accumulation_fired', 'true');
-      }
-
-      const idx = parseInt(localStorage.getItem('dopa_ghost_index') || '0', 10);
-      const ghostText = isAccumulation
-        ? "10 moments you almost didn't keep."
-        : GHOST_VARIANTS[idx % GHOST_VARIANTS.length];
-      if (!isAccumulation) {
-        localStorage.setItem('dopa_ghost_index',
-          String((idx + 1) % GHOST_VARIANTS.length));
-      }
-
-      const holdMs = isAccumulation ? 3000 : 4000;
-
-      const overlay = document.createElement('div');
-      overlay.style.cssText = [
-        'position:fixed', 'top:0', 'left:0', 'width:100%', 'height:100%',
-        'background:rgba(0,0,0,0.92)', 'z-index:9999',
-        'display:flex', 'flex-direction:column',
-        'align-items:center', 'justify-content:center',
-        'pointer-events:none', 'opacity:1'
-      ].join(';');
-
-      const glow = document.createElement('div');
-      glow.style.cssText = [
-        'position:absolute',
-        'top:calc(50% - 250px)', 'left:calc(50% - 250px)',
-        'width:500px', 'height:500px',
-        'border-radius:50%',
-        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
-        'animation:save-overlay-glow 1s ease-out forwards',
-        'pointer-events:none'
-      ].join(';');
-
-      const bloom = document.createElement('div');
-      bloom.style.cssText = [
-        'position:absolute', 'bottom:0', 'left:50%',
-        'transform:translateX(-50%)',
-        'width:100%', 'height:70%',
-        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
-          'rgba(255,176,32,0.09) 0%,' +
-          'rgba(255,176,32,0.04) 35%,' +
-          'transparent 70%)',
-        'pointer-events:none', 'z-index:0'
-      ].join(';');
-
-      const textWrap = document.createElement('div');
-      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
-
-      const hero = document.createElement('p');
-      hero.textContent = 'There it is.';
-      hero.style.cssText = [
-        'font-size:72px', 'font-weight:800', 'color:#FFB020',
-        'line-height:1.0', 'text-align:center',
-        'margin:0', 'padding:0 24px',
-        'font-family:inherit', 'letter-spacing:-0.5px'
-      ].join(';');
-
-      const ghost = document.createElement('p');
-      ghost.textContent = ghostText;
-      ghost.style.cssText = [
-        'font-size:20px', 'font-weight:400',
-        'color:rgba(255,255,255,0.65)',
-        'letter-spacing:0.02em', 'text-align:center',
-        'margin:20px 0 0 0', 'padding:0 24px',
-        'pointer-events:none'
-      ].join(';');
-
-      textWrap.appendChild(hero);
-      textWrap.appendChild(ghost);
-      overlay.appendChild(bloom);
-      overlay.appendChild(glow);
-      overlay.appendChild(textWrap);
-      document.body.appendChild(overlay);
-
-      setTimeout(() => {
-        overlay.style.transition = 'opacity 0.3s ease';
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.remove(), 300);
-      }, holdMs);
-    }
-
     // ── Day Completion State (3 wins) ─────────────────────────
     const LIGHT_MILESTONE_VARIANTS = {
       10: { hero: "{name}. Look at your screen.",    sub: "Ten days of evidence. The difference is visible now." },
@@ -4153,18 +4180,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     window.showReveal7Overlay  = showReveal7Overlay;
     window.showReveal14Overlay = showReveal14Overlay;
 
-    const THREE_WIN_VARIANTS = [
-      { hero: "{name}. Day {N}. Three in.",            sub: "Every time you show up, your brain gets better at finding the good. There's more good today." },
-      { hero: "Day {N}. Challenge met.",               sub: "{name}, you're not just keeping a streak. You're becoming someone who does this." },
-      { hero: "{N} days. Three wins.",                 sub: "This is what your version of structure looks like. It's working." },
-      { hero: "{name}. Day {N} locked in.",            sub: "Three moments captured. More are waiting." },
-      { hero: "Day {N}. You showed up, {name}.",       sub: "Consistent people build extraordinary lives. You're being consistent." },
-      { hero: "{N} days strong.",                      sub: "{name}, growth doesn't announce itself. It just keeps happening. Like this." },
-      { hero: "Three in. Day {N} of your streak.",     sub: "Your best moments today may still be ahead." },
-      { hero: "{name}. {N} days of showing up.",       sub: "The day isn't finished with you yet." },
-      { hero: "Day {N}. Three and counting.",          sub: "You thought structure wasn't for you. Look at what you're building." },
-      { hero: "Challenge met. Day {N}, {name}.",       sub: "Three wins is the commitment. Everything after this is the reward." }
-    ];
 
     const RETURN_STATE_VARIANTS = [
       { hero: "{name}. You came back.",          sub: "Coming back is harder than starting. You did both." },
@@ -4251,81 +4266,47 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     }
     window.showReturnStateOverlay = showReturnStateOverlay;
 
-    function showThreeWinOverlay(streakCount) {
-      const raw = localStorage.getItem(NAME_KEY) || '';
-      const displayName = raw ? (raw.split(' ')[0] || raw) : '';
-      const N = String(streakCount);
-      const idx = parseInt(localStorage.getItem('dopa_three_win_index') || '0', 10);
-      const variant = THREE_WIN_VARIANTS[idx];
-      localStorage.setItem('dopa_three_win_index', String((idx + 1) % 10));
-
-      function fill(s) { return s.replace(/{name}/g, displayName).replace(/{N}/g, N); }
+    function showDayCompleteOverlay() {
+      const dayKey = 'dopa_day_complete_' + todayKey();
+      if (localStorage.getItem(dayKey)) return;
+      localStorage.setItem(dayKey, '1');
+      mixpanel.track('Day Complete Reached', { wins_today: 3 });
 
       const overlay = document.createElement('div');
       overlay.style.cssText = [
         'position:fixed','top:0','left:0','width:100%','height:100%',
-        'background:rgba(0,0,0,0.92)','z-index:9999',
+        'background:#07040E','z-index:9999',
         'display:flex','flex-direction:column',
         'align-items:center','justify-content:center',
         'pointer-events:none','opacity:1'
       ].join(';');
 
-      const glow = document.createElement('div');
-      glow.style.cssText = [
-        'position:absolute',
-        'top:calc(50% - 250px)','left:calc(50% - 250px)',
-        'width:500px','height:500px','border-radius:50%',
-        'background:radial-gradient(circle,rgba(255,176,32,0.06) 0%,transparent 70%)',
-        'animation:save-overlay-glow 1s ease-out forwards',
-        'pointer-events:none'
-      ].join(';');
+      const line1 = document.createElement('p');
+      line1.textContent = 'Today is locked.';
+      line1.style.cssText = 'font-size:24px;font-weight:400;color:#ffffff;margin:0;padding:0;text-align:center;';
 
-      const bloom = document.createElement('div');
-      bloom.style.cssText = [
-        'position:absolute','bottom:0','left:50%',
-        'transform:translateX(-50%)',
-        'width:100%','height:70%',
-        'background:radial-gradient(ellipse 80% 60% at 50% 100%,' +
-          'rgba(255,176,32,0.09) 0%,' +
-          'rgba(255,176,32,0.04) 35%,' +
-          'transparent 70%)',
-        'pointer-events:none','z-index:0'
-      ].join(';');
+      const line2 = document.createElement('p');
+      line2.textContent = 'DOPA read every word.';
+      line2.style.cssText = 'font-size:24px;font-weight:400;color:#FFB020;margin:0;padding:0;text-align:center;';
 
-      const textWrap = document.createElement('div');
-      textWrap.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;animation:textArrive 0.2s cubic-bezier(0.22,1,0.36,1) forwards';
+      const gap = document.createElement('div');
+      gap.style.cssText = 'height:32px;';
 
-      const hero = document.createElement('p');
-      hero.textContent = fill(variant.hero);
-      hero.style.cssText = [
-        'font-size:56px','font-weight:800','color:#FFB020',
-        'line-height:1.1','text-align:center',
-        'margin:0','padding:0 24px',
-        'font-family:inherit','letter-spacing:-0.5px'
-      ].join(';');
+      const line3 = document.createElement('p');
+      line3.textContent = 'Tomorrow morning it comes back to you. Only you see it.';
+      line3.style.cssText = 'font-size:15px;font-weight:400;color:rgba(255,255,255,0.45);margin:0;padding:0 24px;text-align:center;';
 
-      const sub = document.createElement('p');
-      sub.textContent = fill(variant.sub);
-      sub.style.cssText = [
-        'font-size:20px','font-weight:400',
-        'color:rgba(255,255,255,0.65)',
-        'letter-spacing:0.02em','text-align:center',
-        'margin:20px 0 0 0','padding:0 24px',
-        'pointer-events:none'
-      ].join(';');
-
-      textWrap.appendChild(hero);
-      textWrap.appendChild(sub);
-      overlay.appendChild(bloom);
-      overlay.appendChild(glow);
-      overlay.appendChild(textWrap);
+      overlay.appendChild(line1);
+      overlay.appendChild(line2);
+      overlay.appendChild(gap);
+      overlay.appendChild(line3);
       document.body.appendChild(overlay);
 
       setTimeout(() => {
-        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.transition = 'opacity 0.4s ease';
         overlay.style.opacity = '0';
-        setTimeout(() => overlay.remove(), 300);
-      }, 4000);
+        setTimeout(() => overlay.remove(), 400);
+      }, 3000);
     }
 
     // ── Personal Progress Bloom ──────────────────────────────
@@ -4502,6 +4483,10 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const text = document.getElementById('momentInput').value.trim();
       if (!text) return;
 
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = true;
+      saveBtn.classList.add('saving');
+
       const momentsBefore = loadMoments();
       const streakBefore = calcStreak(momentsBefore);
       // Preserve last meaningful streak before it can reset to 1
@@ -4529,7 +4514,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const todayCount = momentsBefore.filter(m => m.dateKey === todayKey()).length;
       playSaveTone();
       triggerRipple();
-      if (navigator.vibrate) navigator.vibrate(40);
+      // haptic fires at circle moment — see animation sequence below
 
       // Score update runs first so we can detect threshold crossing
       const scoreBefore = parseInt(localStorage.getItem('dopa_bg_score') || '0', 10);
@@ -4538,34 +4523,71 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       const lightMilestone = checkLightMilestone(scoreBefore, scoreAfter);
       const revealDay = checkRevealMilestone(streakAfter);
 
-      if (lightMilestone) {
-        showLightMilestoneOverlay(lightMilestone);
-      } else if (revealDay) {
-        showRevealOverlay(revealDay);
-      } else if (todayCount === 2) {
-        // Priority: Return State → Day Completion
-        const lastStreak = parseInt(localStorage.getItem('dopa_last_streak') || '0', 10);
-        if (streakAfter === 1 && lastStreak > 1) {
-          showReturnStateOverlay();
-        } else {
-          showThreeWinOverlay(streakAfter);
+      // Delay overlays until after the save animation completes (1.3s)
+      setTimeout(() => {
+        if (lightMilestone) {
+          showLightMilestoneOverlay(lightMilestone);
+        } else if (revealDay) {
+          showRevealOverlay(revealDay);
+        } else if (todayCount === 3) {
+          showDayCompleteOverlay();
         }
-      } else {
-        showSaveCaught(momentsBefore.length);
-      }
-      const saveBtn = document.getElementById('saveBtn');
-
-      document.getElementById('momentInput').value = '';
-      document.getElementById('charCount').textContent = '0/280';
-      setTimeout(() => { saveBtn.disabled = true; }, 700);
-      document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
-
+      }, 1400);
       const blobToUpload = currentPhotoBlob;
       const uploadId = String(newMoment.id);
       resetMediaInputs();
-
       updateLogStreak();
-      renderTodayEntries();
+
+      // ── Save animation + ghost line ──────────────────────────
+      const ghost = document.getElementById('saveGhostLine');
+      const savingText = document.getElementById('savingStateText');
+
+      // saving state text: show immediately, hide at ~400ms
+      const SAVING_TEXTS = [
+        'DOPA is reading this.',
+        'DOPA is building a picture of your day.',
+        'DOPA is locking in your day.'
+      ];
+      const savingIdx = todayCount <= 3 ? todayCount - 1 : 0;
+      if (savingText) {
+        savingText.textContent = SAVING_TEXTS[savingIdx];
+        savingText.style.opacity = '1';
+        setTimeout(() => { savingText.style.opacity = '0'; }, 400);
+      }
+
+      // ghost line: variable text by save count
+      const GHOST_TEXTS = [
+        'DOPA has it. It will not disappear.',
+        'Two moments. DOPA can see your day taking shape.',
+        'Today is locked. Tomorrow morning it comes back to you.'
+      ];
+      const ghostIdx = todayCount <= 3 ? todayCount - 1 : 0;
+      if (ghost) ghost.textContent = GHOST_TEXTS[ghostIdx];
+      // ghost: fade in at 0.5s
+      setTimeout(() => { if (ghost) { ghost.style.transition = 'opacity 0.3s ease'; ghost.style.opacity = '1'; } }, 500);
+      // ghost: fade out at 2.5s
+      setTimeout(() => { if (ghost) { ghost.style.transition = 'opacity 0.4s ease'; ghost.style.opacity = '0'; } }, 2500);
+      // circle appears at 0.4s
+      setTimeout(() => {
+        saveBtn.classList.remove('saving');
+        saveBtn.classList.add('save-done');
+        saveBtn.textContent = '✓';
+      }, 400);
+      // circle fades out at 1.0s
+      setTimeout(() => { saveBtn.style.transition = 'opacity 0.3s ease'; saveBtn.style.opacity = '0'; }, 1000);
+      // reset + clear + render at 1.3s
+      setTimeout(() => {
+        saveBtn.classList.remove('save-done');
+        saveBtn.style.opacity = '';
+        saveBtn.style.transition = '';
+        saveBtn.textContent = 'Save ✓';
+        saveBtn.disabled = true;
+        document.getElementById('momentInput').value = '';
+        document.getElementById('charCount').textContent = '0/280';
+        document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
+        renderTodayEntries();
+        advancePrompt();
+      }, 1300);
       maybeShowYesterdayWhisper(todayCount);
       setTimeout(() => showToast('Moment saved! 🌟'), 1600);
       checkStreakMilestone(streakBefore, streakAfter);
@@ -4689,6 +4711,15 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         photo: m.photo || null
       }));
 
+      // Ambient pull line: visible when today has no entries
+      const winsToday = allMoments.filter(m => m.dateKey === todayKey()).length;
+      const ambientPull = document.getElementById('ypcAmbientPull');
+      if (ambientPull) ambientPull.style.display = winsToday === 0 ? 'block' : 'none';
+
+      // Craving bridge: visible only when yesterday has entries
+      const bridge = document.getElementById('ypcCravingBridge');
+      if (bridge) bridge.style.display = moments.length > 0 ? 'block' : 'none';
+
       renderYesterdayAccumulation(allMoments, moments.length);
       initYesterdayCard(moments.length);
       ypcRenderStack(yesterdayEntries);
@@ -4756,7 +4787,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
             }
             requestAnimationFrame(() => {
               feelingEl.style.opacity = '1';
-              if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
             });
           }, 400);
         }
@@ -5519,6 +5549,7 @@ function checkInstallPrompt() {
       document.getElementById('stage2bScreen').style.display = 'none';
       document.getElementById('stage3Screen').style.display = 'flex';
       document.getElementById('stage3-glow').style.background = _onboardingGlowBg;
+      mixpanel.track('Signup Screen Viewed');
       setTimeout(() => document.getElementById('s3FirstName').focus(), 100);
     }
 
@@ -5535,6 +5566,7 @@ function checkInstallPrompt() {
       btn.disabled = true;
       const orig = btn.textContent;
       btn.textContent = '…';
+      mixpanel.track('Signup Attempted');
       const { data, error } = await sbClient.auth.signUp({
         email,
         password,
@@ -5545,6 +5577,7 @@ function checkInstallPrompt() {
       if (error) { errEl.textContent = error.message; return; }
       mixpanel.track('Signed Up');
       if (data.user && !data.session) {
+        mixpanel.track('Signup Confirmation Shown');
         document.getElementById('stage3FormArea').style.display = 'none';
         const confirmArea = document.getElementById('stage3ConfirmArea');
         confirmArea.style.display = 'flex';
@@ -5617,6 +5650,7 @@ function checkInstallPrompt() {
 
     function showAuthScreen() {
       document.getElementById('authScreen').style.display = 'flex';
+      mixpanel.track('Login Screen Viewed');
     }
     function hideAuthScreen() {
       document.getElementById('authScreen').style.display = 'none';
@@ -5625,6 +5659,7 @@ function checkInstallPrompt() {
     function toggleAuthMode() {
       authMode = authMode === 'signin' ? 'signup' : 'signin';
       if (authMode === 'signup') {
+        mixpanel.track('Signup Screen Viewed');
         document.getElementById('authTitle').textContent = 'Create Account';
         document.getElementById('authSubmitBtn').textContent = 'Create Account';
         document.getElementById('authToggleText').textContent = 'Already have an account?';
@@ -5656,12 +5691,14 @@ function checkInstallPrompt() {
       errEl.textContent = '';
       const origText = btn.textContent;
       btn.textContent = '...';
+      if (authMode === 'signup') mixpanel.track('Signup Attempted');
       const { data, error } = authMode === 'signin'
         ? await sbClient.auth.signInWithPassword({ email, password })
         : await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: 'https://mydopa.app/app.html' } });
       btn.disabled = false;
       btn.textContent = origText;
       if (error) { errEl.textContent = error.message; return; }
+      if (authMode === 'signin' && data?.session) mixpanel.track('Login Completed');
       if (authMode === 'signup' && data?.user) mixpanel.track('Signed Up');
       if (authMode === 'signup' && data?.user && !data?.session) { showAuthConfirm(email); }
     }
@@ -5701,6 +5738,7 @@ function checkInstallPrompt() {
       }
       document.getElementById('authMainContent').style.display = 'none';
       document.getElementById('authConfirmContent').style.display = 'block';
+      mixpanel.track('Signup Confirmation Shown');
     }
 
     function showAuthMain() {

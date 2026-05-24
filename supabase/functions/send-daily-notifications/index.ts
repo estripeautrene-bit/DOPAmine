@@ -4,76 +4,75 @@ import webpush from 'npm:web-push'
 type Slot     = 'ywg' | 'morning' | 'afternoon' | 'evening'
 type PairSlot = 'morning' | 'afternoon' | 'evening'
 
-const PAIRS: Record<string, Record<PairSlot, string>> = {
-  A: {
-    morning:   "Something good is already out there. Go find your first one.",
-    afternoon: "Afternoon check. How many wins have you caught today?",
-    evening:   "Last chance to close the day right. What was good?"
-  },
-  B: {
-    morning:   "Bet you can't name 3 good things before noon.",
-    afternoon: "Still taking that bet. How many have you logged?",
-    evening:   "Don't you dare close this day without 3 wins logged."
-  },
-  C: {
-    morning:   "[N] days. Today makes [N+1]. Your 3 are out there.",
-    afternoon: "Day [N+1] in progress. How many wins today?",
-    evening:   "[N+1] days. Your 3 wins close it out."
-  },
-  D: {
-    morning:   "3 things are going to happen today. Start watching.",
-    afternoon: "What have you noticed so far? Catch what\'s worth keeping.",
-    evening:   "Day\'s almost done. What was good?"
-  },
-  E: {
-    morning:   "New day. What you built is still here. Find your 3.",
-    afternoon: "Welcome back. How many wins today?",
-    evening:   "End it strong. One more good thing is out there."
-  },
-  F: {
-    morning:   "Day [DAY]. Still building. 3 wins is the whole practice.",
-    afternoon: "Still building. How many wins today?",
-    evening:   "Day [DAY] done right means 3 wins. How close are you?"
-  },
-  H: {
-    morning:   "Weekend. Still 3. Easier when the day slows down.",
-    afternoon: "Mid-day. Weekend wins count just as much. How many?",
-    evening:   "End the weekend right. 3 wins. Done?"
-  },
-  I: {
-    morning:   "3 is your floor. What\'s today\'s ceiling?",
-    afternoon: "How many are you at? You usually go past 3.",
-    evening:   "3 minimum. You usually go past it. How many today?"
-  }
-}
+// ── Morning copy — three behavioral types ───────────────────────────
+const MORNING_TYPE1 = [
+  "DOPA is ready for more. What else happened this morning?",
+  "Tomorrow morning DOPA has something for you. Build it today.",
+  "DOPA will read everything you log today. Give it something."
+]
+const MORNING_TYPE2 = [
+  "Your brain is already discarding something good right now. Beat it.",
+  "In 12 seconds your brain will file this under forgettable. Save it first.",
+  "Something just happened. You know which one. Don't let it go.",
+  "The good things from this morning are already fading. Catch one.",
+  "Right now your brain is deciding what to keep. Help it choose.",
+  "The commute. The coffee. The quiet moment. Fading. Save one.",
+  "Good things happened this morning. Save one before it goes."
+]
+const MORNING_TYPE3 = [
+  "Three things happened before 9am worth keeping. Do you know what they were?",
+  "Something happened this morning you will not remember by tonight. Catch it now.",
+  "The best part of this morning is fading. You have about an hour before it is gone.",
+  "Your brain is doing its morning sort right now. Help it keep the good ones.",
+  "Something good is already happening. DOPA needs you to catch it."
+]
 
-// Pair J – "The Ghost": 3 context variants, selected at job creation time
+// ── Afternoon copy ──────────────────────────────────────────────────
+const AFTERNOON_TYPE1 = [
+  "Your reflection tomorrow morning depends on what you log today.",
+  "DOPA is building your day's picture. More moments make it clearer.",
+  "The afternoon always has something worth keeping. What is it?"
+]
+const AFTERNOON_TYPE2 = [
+  "The morning had good things in it. They are fading. Save one.",
+  "What happened this morning that you almost let go?",
+  "Something good just happened in the last hour. You know what it is."
+]
+
+// ── Evening copy ────────────────────────────────────────────────────
+const EVENING_TYPE1 = [
+  "Everything you log tonight shapes what DOPA shows you tomorrow.",
+  "Tomorrow morning DOPA reflects your day back. Give it something to work with.",
+  "Tonight DOPA reads what you logged. What did today give you?"
+]
+const EVENING_TYPE2 = [
+  "Today closes in a few hours. DOPA is waiting for what happened.",
+  "The day's last moments are the easiest to lose. Save one now.",
+  "Tonight is the last chance to catch today. What happened?"
+]
+
+// ── Pair J — Ghost notifications ────────────────────────────────────
 const PAIR_J: Record<string, Partial<Record<PairSlot, string>>> = {
   WEEKDAY: {
     morning:   "Something good is about to happen today. Will you catch it?",
     afternoon: "Something good probably just happened. Did you keep it?",
-    evening:   "The day\'s almost gone. What\'s worth keeping from it?"
+    evening:   "The day's almost gone. One good thing. Before it disappears."
   },
   POSTGYM: {
-    morning:   "That workout just happened. You going to remember it tonight?"
-    // afternoon/evening fall back to WEEKDAY variant
+    morning: "The gym happened. DOPA wants to know what else did."
   },
   WEEKEND: {
-    morning:   "Weekends move fast. Something good is already happening.",
-    afternoon: "Mid-weekend check. What\'s been good so far today?",
-    evening:   "Weekend\'s almost done. What would be a shame to forget?"
+    morning: "Weekends move fast. Something good is already happening."
   }
 }
 
-const DEFAULT_ROTATION = ['A', 'B', 'D']
-
-// Yesterday Was Good – 5 rotating copy variants
+// ── Yesterday Was Good ──────────────────────────────────────────────
 const YWG_VARIANTS = [
-  "Yesterday had {n} good things in it. Do you remember them?",
-  "You noticed {n} things yesterday. Come see what they add up to.",
-  "Your {n} moments from yesterday are waiting. What do they make you feel today?",
-  "Something good happened yesterday. {n} times actually.",
-  "Yesterday left {n} things behind. They're still here."
+  "DOPA read yesterday. Something worth seeing is waiting.",
+  "Your reflection from yesterday is ready. Only you see it.",
+  "DOPA noticed something about your day. Come see what it found.",
+  "Yesterday has something to say. DOPA is ready to show you.",
+  "Your day from yesterday. DOPA kept it. Come read it."
 ]
 
 interface UserState {
@@ -85,26 +84,24 @@ interface UserState {
   avg_daily_wins_7d: number
 }
 
-function applyVars(copy: string, state: UserState): string {
-  return copy
-    .replace(/\[N\+1\]/g, String(state.streak_count + 1))
-    .replace(/\[N\]/g,    String(state.streak_count))
-    .replace(/\[DAY\]/g,  String(state.account_age_days))
+function pickRandom(arr: string[]): string {
+  return arr[Math.floor(Math.random() * arr.length)]
 }
 
-function afternoonCopy(pairId: string, state: UserState): string {
-  if (state.wins_today >= 3) return "Already at 3. Good morning."
-  if (state.wins_today === 2) return "Two in. One more and the day is done right."
-  if (state.wins_today === 1) return "One in. Two to go. You\'ve got time."
-  return applyVars(PAIRS[pairId]?.afternoon ?? PAIRS.A.afternoon, state)
+// last_open_date: pass from push_subscriptions when available; null → default TYPE 2
+function morningMessage(state: UserState, lastOpenDate: string | null, tz: string): string {
+  if (state.wins_today >= 1) return pickRandom(MORNING_TYPE1)
+  const today = dateKey(tz, 0)
+  if (lastOpenDate && lastOpenDate !== today) return pickRandom(MORNING_TYPE3)
+  return pickRandom(MORNING_TYPE2)
 }
 
-function eveningCopy(pairId: string, state: UserState): string {
-  if (state.wins_today >= 4) return "Past 3 today. That\'s a good day."
-  if (state.wins_today === 3) return applyVars(PAIRS[pairId]?.evening ?? PAIRS.A.evening, state)
-  if (state.wins_today === 2) return "Two down. One more and the day is done right."
-  if (state.wins_today === 1) return "One down. Two more before the day closes."
-  return "Still time. What\'s one good thing from today? Start there."
+function afternoonMessage(state: UserState): string {
+  return state.wins_today >= 1 ? pickRandom(AFTERNOON_TYPE1) : pickRandom(AFTERNOON_TYPE2)
+}
+
+function eveningMessage(state: UserState): string {
+  return state.wins_today >= 1 ? pickRandom(EVENING_TYPE1) : pickRandom(EVENING_TYPE2)
 }
 
 function addMinutesToHHMM(hhmm: string, minutes: number): string {
@@ -113,9 +110,8 @@ function addMinutesToHHMM(hhmm: string, minutes: number): string {
   return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
 }
 
-function getYWGCopy(winsYesterday: number, variantIndex: number): string {
+function getYWGCopy(variantIndex: number): string {
   return YWG_VARIANTS[variantIndex % YWG_VARIANTS.length]
-    .replace(/{n}/g, String(winsYesterday))
 }
 
 function localHHMM(timezone: string): string {
@@ -223,23 +219,14 @@ function getJCopy(pairId: string, slot: PairSlot): string {
   return PAIR_J[variant]?.[slot] ?? PAIR_J.WEEKDAY[slot] ?? ''
 }
 
-function selectPair(
+// Returns J_WEEKDAY/J_POSTGYM/J_WEEKEND for ghost-variant users; 'DEFAULT' otherwise
+function selectVariant(
   state: UserState,
   timezone: string,
   moments: { date_key: string; created_at: string }[]
 ): string {
-  const dow       = dayOfWeek(timezone)
-  const isWeekend = dow === 'Saturday' || dow === 'Sunday'
-
-  if (state.missed_yesterday && state.account_age_days > 14) return 'E'
-  if (state.avg_daily_wins_7d > 3.5 && state.account_age_days >= 7) return 'I'
-  if (state.streak_count >= 3) return 'C'
-  if (isWeekend) return 'H'
-  if (state.account_age_days <= 14) return 'F'
   if (state.account_age_days <= 21) return detectJVariant(state, timezone, moments)
-
-  const dayIndex = Math.floor(Date.now() / 86400000) % 3
-  return DEFAULT_ROTATION[dayIndex]
+  return 'DEFAULT'
 }
 
 const FIXED_TIMES: Record<string, string> = { afternoon: '12:30', evening: '20:30' }
@@ -327,42 +314,26 @@ Deno.serve(async (req) => {
         if (slot === 'ywg') {
           if (state.wins_yesterday < 1) return
           const variantIndex = s.last_ywg_variant_index ?? 0
-          message = getYWGCopy(state.wins_yesterday, variantIndex)
+          message = getYWGCopy(variantIndex)
           ywgUpdates.push({ id: s.id, nextIndex: (variantIndex + 1) % YWG_VARIANTS.length })
         } else if (slot === 'morning') {
-          const pair = selectPair(state, tz, momentsByUser[s.user_id] ?? [])
-          message = pair.startsWith('J_')
-            ? getJCopy(pair, 'morning')
-            : applyVars(PAIRS[pair].morning, state)
-          pairUpdates.push({ id: s.id, pair })
+          const variant = selectVariant(state, tz, momentsByUser[s.user_id] ?? [])
+          message = variant.startsWith('J_')
+            ? getJCopy(variant, 'morning')
+            : morningMessage(state, null, tz)
+          pairUpdates.push({ id: s.id, pair: variant })
         } else {
-          const pair      = s.last_morning_pair_id ?? 'A'
-          const isJ       = pair.startsWith('J_')
-          const isSameDayG = pair === 'G'
+          const pair = s.last_morning_pair_id ?? 'DEFAULT'
+          const isJ  = pair.startsWith('J_')
 
           if (slot === 'afternoon') {
-            if (isJ) {
-              // J suppression: wins >= 3 at send time → fall back to regular copy
-              message = state.wins_today >= 3
-                ? afternoonCopy('A', state)
-                : getJCopy(pair, 'afternoon')
-            } else if (!isSameDayG && state.wins_today === 0) {
-              // wins_today = 0 at midday trigger — fire J weekday afternoon copy
-              message = PAIR_J.WEEKDAY.afternoon!
-            } else {
-              message = afternoonCopy(pair, state)
-            }
+            message = isJ
+              ? (getJCopy(pair, 'afternoon') || afternoonMessage(state))
+              : afternoonMessage(state)
           } else {
-            if (dayOfWeek(tz) === 'Sunday') {
-              if (state.wins_today >= 3) return
-              message = "What happened this week that you almost didn't catch?"
-            } else if (isJ) {
-              message = state.wins_today >= 3
-                ? eveningCopy('A', state)
-                : getJCopy(pair, 'evening')
-            } else {
-              message = eveningCopy(pair, state)
-            }
+            message = isJ
+              ? (getJCopy(pair, 'evening') || eveningMessage(state))
+              : eveningMessage(state)
           }
         }
 

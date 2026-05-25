@@ -1,7 +1,7 @@
 // DOPAmine Service Worker
 // Version 1.0 — Push Notifications
 
-const CACHE_NAME = 'dopamine-v40';
+const CACHE_NAME = 'dopamine-v41';
 
 // Install — activate immediately
 self.addEventListener('install', event => {

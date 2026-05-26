@@ -28,9 +28,7 @@ function wrap(opts: {
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;">
 <tr><td align="center" style="padding:40px 24px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="position:relative;padding:48px 48px 56px;background:#0E0B1A;border-radius:16px;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 80% at 50% 85%,rgba(255,176,32,0.85) 0%,rgba(200,110,0,0.55) 28%,rgba(120,60,0,0.35) 50%,rgba(60,25,0,0.15) 68%,transparent 82%);pointer-events:none;"></div>
-  <div style="position:relative;">
+<tr><td style="padding:48px 48px 56px;background-color:#0E0B1A;background-image:url('https://mydopa.app/images/bloom-bg.png');background-size:100% 100%;background-repeat:no-repeat;border-radius:16px;overflow:hidden;">
     <div style="text-align:center;margin-bottom:40px;">
       <img src="https://mydopa.app/images/dopa.png" width="64" height="64" alt="DOPA" style="border-radius:16px;display:block;margin:0 auto 12px;">
       <div style="font-size:1.1rem;font-weight:900;color:white;letter-spacing:-0.3px;line-height:1.1;${FONT};">DOPA<span style="font-weight:400;color:#A855F7;">mine</span></div>
@@ -53,7 +51,6 @@ function wrap(opts: {
         <a href="mailto:hello@mydopa.app?subject=unsubscribe" style="color:rgba(255,176,32,0.4);text-decoration:none;">Unsubscribe</a>
       </span>
     </div>
-  </div>
 </td></tr>
 </table>
 </td></tr>
@@ -299,9 +296,9 @@ function wrapC(name: string, em: CE): string {
   let b = ''
   if (PHASE[em.day]) b += cp(PHASE[em.day])
   for (const par of em.body) b += cp(par)
-  if (em.day <= 7)  b += cp(TOMORROW)
-  if (em.day <= 13) b += cp(REPLY_INV)
-  b += cpq(em.q)
+  if (em.day > 1 && em.day <= 7)  b += cp(TOMORROW)
+  if (em.day > 1 && em.day <= 13) b += cp(REPLY_INV)
+  if (em.day !== 1) b += cpq(em.q)
   if (em.ref) b += cp(REF_BLOCK)
   const prog = `<p style="font-size:11px;color:#BBBBBB;text-align:center;font-family:sans-serif;margin:0 0 24px;letter-spacing:1px;text-transform:uppercase;">${progressLabel(em.day)}</p>`
   const back = BACKWARD_LINES[em.day]

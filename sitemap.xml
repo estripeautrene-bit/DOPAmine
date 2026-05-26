@@ -5,13 +5,21 @@
   <!-- Homepage -->
   <url>
     <loc>https://mydopa.app/</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- App -->
+  <url>
+    <loc>https://mydopa.app/app.html</loc>
+    <lastmod>2026-05-25</lastmod>
   </url>
 
   <!-- Blog Index -->
   <url>
     <loc>https://mydopa.app/blog/</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -19,6 +27,7 @@
   <!-- Blog Post 1 — English -->
   <url>
     <loc>https://mydopa.app/blog/can-you-remember-last-tuesday</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -26,6 +35,7 @@
   <!-- Blog Post 2 — English -->
   <url>
     <loc>https://mydopa.app/blog/no-better-predictor-than-your-past</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -33,6 +43,7 @@
   <!-- Blog Post 3 — English -->
   <url>
     <loc>https://mydopa.app/blog/consistency-is-the-compounding-effect</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -40,6 +51,7 @@
   <!-- Blog Post 2 — Spanish -->
   <url>
     <loc>https://mydopa.app/blog/no-hay-mejor-predicador-que-el-pasado</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mydopa.app/blog/no-hay-mejor-predicador-que-el-pasado"/>
@@ -49,13 +61,15 @@
   <!-- Blog Post 4 — English -->
   <url>
     <loc>https://mydopa.app/blog/five-to-one-rule-negativity-bias</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Blog Post 4 — Spanish -->
   <url>
-    <loc>https://mydopa.app/blog/cinco-a-uno-sesgo-negatividad</loc>
+    <loc>https://mydopa.app/blog/cinco-a-uno-sesgo-de-negatividad</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -63,6 +77,7 @@
   <!-- Blog Post 4 — German -->
   <url>
     <loc>https://mydopa.app/blog/fuenf-zu-eins-negativitaets-bias</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

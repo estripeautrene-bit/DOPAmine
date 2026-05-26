@@ -24,14 +24,15 @@ function wrap(opts: {
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 </head>
-<body style="margin:0;padding:0;background:#06000D;${FONT};">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#06000D;">
+<body style="margin:0;padding:0;background:#0E0B1A;${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;">
 <tr><td align="center" style="padding:40px 24px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="position:relative;padding:48px 48px 56px;background:#06000D;border-radius:16px;overflow:hidden;">
+<tr><td style="position:relative;padding:48px 48px 56px;background:#0E0B1A;border-radius:16px;overflow:hidden;">
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 80% at 50% 85%,rgba(255,176,32,0.85) 0%,rgba(200,110,0,0.55) 28%,rgba(120,60,0,0.35) 50%,rgba(60,25,0,0.15) 68%,transparent 82%);pointer-events:none;"></div>
   <div style="position:relative;">
     <div style="text-align:center;margin-bottom:40px;">
+      <img src="https://mydopa.app/images/dopa.png" width="64" height="64" alt="DOPA" style="border-radius:16px;display:block;margin:0 auto 12px;">
       <div style="font-size:1.1rem;font-weight:900;color:white;letter-spacing:-0.3px;line-height:1.1;${FONT};">DOPA<span style="font-weight:400;color:#A855F7;">mine</span></div>
       <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;${FONT};">GREAT YESTERDAY. BETTER TOMORROW.</div>
     </div>
@@ -121,14 +122,12 @@ function tmplWelcome(name: string): string {
 
 function tmplDay3Active(name: string): string {
   return wrap({
-    eyebrow:  'DAY 3',
+    eyebrow:  'DAY 3 OF 7',
     name,
-    headline: 'Most people<br/>quit before this.',
-    body:     bp('You didn\'t.') +
-              bp('Something\'s forming.') +
-              bpBreak() +
+    headline: 'Three days.',
+    body:     bp('DOPA sees it building.') +
               bpLast('Keep going.'),
-    sig:      '— DOPAmine',
+    sig:      '— DOPA',
     ctaLabel: 'See your streak →',
     ctaUrl:   'https://mydopa.app/app.html'
   })
@@ -138,14 +137,12 @@ function tmplDay3Active(name: string): string {
 
 function tmplDay3Dormant(name: string): string {
   return wrap({
-    eyebrow:   'DAY 3',
+    eyebrow:   'DAY 3 OF 7',
     name,
-    headline:  'The bar<br/>is low.',
-    body:      bp('3 good things. That\'s it. The whole practice.') +
-               bpBreak() +
-               bp('You\'ve still got 4 days to feel the difference.') +
-               bpLast('The dare is still open. So is the app.'),
-    sig:       '— DOPAmine',
+    headline:  'Three days.',
+    body:      bp('DOPA sees it building.') +
+               bpLast('Keep going.'),
+    sig:       '— DOPA',
     ctaLabel:  'Find my 3 →',
     ctaUrl:    'https://mydopa.app/app.html'
   })
@@ -155,17 +152,11 @@ function tmplDay3Dormant(name: string): string {
 
 function tmplDay7(name: string): string {
   return wrap({
-    eyebrow:  'DAY 7',
+    eyebrow:  'DAY 7 OF 7',
     name,
-    headline: 'One week.<br/>You proved it.',
-    body:     bp('Seven days ago, this was a bet. Now it\'s something else.') +
-              bpBreak() +
-              bp('Your brain has been doing this quietly the whole time — looking for the good, holding onto it, building on it.') +
-              bpBreak() +
-              bp('That\'s not a claim. That\'s what you built.') +
-              bpBreak() +
-              bpLast('Tomorrow morning, a note lands in your inbox. Don\'t miss it.'),
-    sig:      '— DOPAmine',
+    headline: 'Seven days.',
+    body:     bpLast('You proved the dare works.'),
+    sig:      '— DOPA',
     ctaLabel: 'See your week →',
     ctaUrl:   'https://mydopa.app/app.html'
   })
@@ -175,14 +166,15 @@ function tmplDay7(name: string): string {
 
 function tmplDay8(name: string): string {
   const pp = (t: string) =>
-    `<p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#111111;${FONT};">${t}</p>`
+    `<p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#F5F5F0;${FONT};">${t}</p>`
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="margin:0;padding:0;background:#ffffff;${FONT};">
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding:48px 48px 0;max-width:560px;text-align:center;">
-  <img src="https://mydopa.app/images/dopa-pulse.gif" alt="DOPA" width="80" style="display:block;margin:0 auto 16px;border-radius:50%;" />
+<body style="margin:0;padding:0;background:#0E0B1A;${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;">
+<tr><td style="padding:48px 48px 0;max-width:560px;text-align:center;background:#0E0B1A;">
+  <img src="https://mydopa.app/images/dopa.png" width="64" height="64" alt="DOPA" style="border-radius:16px;display:block;margin:0 auto 12px;">
+  <div style="font-size:1.1rem;font-weight:900;color:#F5F5F0;letter-spacing:-0.3px;line-height:1.1;font-family:-apple-system,Arial,sans-serif;">DOPA<span style="font-weight:400;color:#A855F7;">mine</span></div>
 </td></tr>
 <tr><td style="padding:0 48px 48px;max-width:560px;">
 ${pp(`${name},`)}
@@ -195,7 +187,7 @@ ${pp("If you're in, reply to this email and I'll send you a link directly.")}
 ${pp("If you're not ready, no pressure. The app stays free through Day 14 and I'll be in touch again then.")}
 ${pp('Either way — thank you for being here early.')}
 ${pp('Rene<br/>Founder, DOPAmine')}
-<p style="margin:40px 0 0;font-size:12px;color:#999999;${FONT};">If you'd prefer not to hear from me, reply 'unsubscribe' and I'll remove you immediately.</p>
+<p style="margin:40px 0 0;font-size:12px;color:rgba(255,255,255,0.4);${FONT};">If you'd prefer not to hear from me, reply 'unsubscribe' and I'll remove you immediately.</p>
 </td></tr>
 </table>
 </body>
@@ -226,20 +218,37 @@ function tmplDay14(name: string): string {
 
 // ─── Resend sender ────────────────────────────────────────────
 
+function htmlToText(html: string): string {
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/tr>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 async function sendEmail(opts: {
   from: string
   to: string
   subject: string
   html: string
   reply_to?: string
+  text?: string
 }): Promise<boolean> {
+  const payload = { ...opts, text: opts.text ?? htmlToText(opts.html) }
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${RESEND_KEY}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(opts)
+    body: JSON.stringify(payload)
   })
   if (!res.ok) {
     console.error('Resend error:', res.status, await res.text())
@@ -280,10 +289,10 @@ const PHASE: Record<number, string> = {
 interface CE { day: number; subject: string; preview: string; body: string[]; q: string; ref: boolean }
 
 function cp(t: string): string {
-  return `<p style="color:#333333;${SERIF_F};font-size:16px;line-height:1.7;margin:0 0 16px;">${t}</p>`
+  return `<p style="color:#F5F5F0;${SERIF_F};font-size:16px;line-height:1.7;margin:0 0 16px;">${t}</p>`
 }
 function cpq(t: string): string {
-  return `<p style="color:#333333;${SERIF_F};font-size:16px;line-height:1.7;margin:0 0 16px;font-style:italic;">${t}</p>`
+  return `<p style="color:#F5F5F0;${SERIF_F};font-size:16px;line-height:1.7;margin:0 0 16px;font-style:italic;">${t}</p>`
 }
 
 function wrapC(name: string, em: CE): string {
@@ -298,17 +307,17 @@ function wrapC(name: string, em: CE): string {
   const back = BACKWARD_LINES[em.day]
     ? `<p style="color:#888888;font-size:13px;text-align:center;${SERIF_F};margin:16px 0;">${BACKWARD_LINES[em.day]}</p>`
     : ''
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body style="margin:0;padding:0;background:#FAFAF8;${SANS_F};"><span style="display:none;max-height:0;overflow:hidden;">${em.preview}</span><table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8;"><tr><td align="center" style="padding:40px 24px;"><table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;"><tr><td style="padding:48px 48px 56px;background:#ffffff;border-radius:16px;"><div style="text-align:center;margin-bottom:32px;"><img src="${BRAIN}" alt="DOPA" width="48" style="display:block;margin:0 auto;" /></div><p style="font-size:20px;color:#7B3FE4;${SERIF_F};margin:0 0 24px;">${name},</p>${prog}${b}${back}${C_CTA}<p style="font-size:14px;color:#888888;${SANS_F};margin:0 0 24px;">— DOPA</p>${C_UNSUB}</td></tr></table></td></tr></table></body></html>`
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body style="margin:0;padding:0;background:#0E0B1A;${SANS_F};"><span style="display:none;max-height:0;overflow:hidden;">${em.preview}</span><table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;"><tr><td align="center" style="padding:40px 24px;"><table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;"><tr><td style="padding:48px 48px 56px;background:#0E0B1A;border-radius:16px;"><div style="text-align:center;margin-bottom:32px;"><img src="https://mydopa.app/images/dopa.png" width="64" height="64" alt="DOPA" style="border-radius:16px;display:block;margin:0 auto 12px;"><div style="font-size:1.1rem;font-weight:900;color:#F5F5F0;letter-spacing:-0.3px;line-height:1.1;font-family:-apple-system,Arial,sans-serif;">DOPA<span style="font-weight:400;color:#A855F7;">mine</span></div></div><p style="font-size:20px;color:#7B3FE4;${SERIF_F};margin:0 0 24px;">${name},</p>${prog}${b}${back}${C_CTA}<p style="font-size:14px;color:#F5F5F0;${SANS_F};margin:0 0 24px;">— DOPA</p>${C_UNSUB}</td></tr></table></td></tr></table></body></html>`
 }
 
 // ─── Campaign email data ──────────────────────────────────────
 
 const CAMPAIGN: CE[] = [
-  { day:1,   subject:"You started. That's everything.",                          preview:"James Clear has a rule. 1.01 x 365 = 37 times better. You just started.",                                    body:["Congratulations.","You just took the first step.","James Clear has a simple rule: 1% better every day. 1.01 x 365 days = 37 times better by this time next year. That is not motivation talk. That is math.","And you just started."],                                                                                                                                                                                                                                     q:"What will tomorrow's good thing be?",                               ref:false },
-  { day:2,   subject:"Day 2. You came back.",                                    preview:"Oprah did this every day for ten years. You are on day 2.",                                                  body:["Congratulations.","You showed up again.","Oprah has talked about her daily writing practice for years. Writing down the good things every day trained her brain to look for them while they were happening.","She started hunting for the good in her days.","That is exactly what you are building."],                                                                                                                                                                               q:"What did you hunt for today?",                                      ref:false },
-  { day:4,   subject:"Your brain is literally changing right now.",               preview:"Andrew Huberman says the neurochemistry is identical. Real win or logged win.",                              body:["Four days in. Congratulations.","Neuroscientist Andrew Huberman says the brain cannot distinguish between a real win and a logged win. The neurochemistry is identical.","Every moment you log rewires your brain to look for more good things.","You are doing that. Every single day."],                                                                                                                                                                                          q:"What did your brain log today?",                                    ref:false },
-  { day:5,   subject:"Day 5. Kobe called this.",                                 preview:"Kobe Bryant said it was always about the small things when nobody was watching.",                             body:["Five days. Congratulations.","Kobe Bryant said it was never about the big moments. It was about the small things done every day when nobody was watching.","You are doing exactly that."],                                                                                                                                                                                                                                                                                    q:"What small thing happened today that nobody saw?",                  ref:false },
-  { day:6,   subject:"Tomorrow is Day 7.",                                        preview:"Tomorrow is Day 7. One day from your first week. DOPA is ready.",                           body:["Tomorrow is your first week.","Six days in. One more and something shifts. The first week is the hardest part of any new practice. You are one day from having done it.","DOPA will be there tomorrow morning."],                                                                                                                                                                                                                                                            q:"What happened today that is worth keeping?",                        ref:false },
+  { day:1,   subject:"You started. That's everything.",                          preview:"James Clear has a rule. 1% better every day. Small wins add up.",                                           body:["James Clear has a rule.","1% better every day.","Small wins add up and compound. Keep it up.","Tomorrow morning DOPA reflects your day back to you."],                                                                                                                                                                                                                                                                                                                         q:"What will tomorrow's good thing be?",                               ref:false },
+  { day:2,   subject:"Day 2. You came back.",                                    preview:"You showed up again. That is the whole practice.",                                                           body:["You showed up again.","That is the whole practice."],                                                                                                                                                                                                                                                                                                                                                                                                                          q:"What did you come back for?",                                       ref:false },
+  { day:4,   subject:"Day 4.",                                                    preview:"Most people stop here. You did not.",                                                                        body:["Most people stop here.","You did not."],                                                                                                                                                                                                                                                                                                                                                                                                                                       q:"What kept you going?",                                              ref:false },
+  { day:5,   subject:"Day 5.",                                                    preview:"Two more days. Something is forming.",                                                                       body:["Two more days.","Something is forming."],                                                                                                                                                                                                                                                                                                                                                                                                                                      q:"What are you noticing?",                                            ref:false },
+  { day:6,   subject:"Day 6. One more.",                                          preview:"One day left. DOPA is watching.",                                                                            body:["One day left.","DOPA is watching."],                                                                                                                                                                                                                                                                                                                                                                                                                                           q:"What happened today?",                                              ref:false },
   { day:10,  subject:"The most powerful man in history did exactly this.",        preview:"Ryan Holiday writes about Marcus Aurelius. He did exactly this every day for decades.",                      body:["Ryan Holiday writes about Marcus Aurelius — the most powerful man in the world — who kept a daily journal for decades. Not for anyone else. Just to notice. Just to remember.","You are doing what emperors do."],                                                                                                                                                                                                                                                                   q:"What did you notice today that emperors would have kept?",          ref:false },
   { day:12,  subject:"McConaughey has done this for 30 years.",                  preview:"McConaughey has kept a journal for 30 years. He knows exactly why.",                                        body:["Matthew McConaughey has kept a journal for over thirty years. He says the days he does not write things down they disappear.","Your days are not disappearing. You are keeping them."],                                                                                                                                                                                                                                                                                          q:"What would have disappeared today if you had not kept it?",         ref:false },
   { day:16,  subject:"Brené Brown spent 12 years figuring this out.",            preview:"Brené Brown spent 12 years on this. Every joyful person she interviewed did it.",                           body:["Brené Brown spent twelve years researching joy. Every single joyful person she interviewed had one thing in common. They actively practiced noticing the good things.","That is exactly what you are doing."],                                                                                                                                                                                                                                                                      q:"What are you hunting for today?",                                   ref:false },
@@ -494,12 +503,7 @@ async function processQueue(supabase: ReturnType<typeof createClient>): Promise<
       continue
     }
 
-    const rawName = sub?.first_name
-      || user.raw_user_meta_data?.first_name
-      || user.raw_user_meta_data?.full_name
-      || user.raw_user_meta_data?.name
-      || 'there'
-    const name = displayName(rawName)
+    const name = sub?.first_name ? displayName(sub.first_name) : 'there'
 
     const ok = await sendEmail({
       from: 'DOPAmine <hello@mydopa.app>',
@@ -514,8 +518,7 @@ async function processQueue(supabase: ReturnType<typeof createClient>): Promise<
       }).eq('id', item.id)
       await supabase.from('push_subscriptions').upsert({
         user_id: item.user_id,
-        email_welcome_sent: true,
-        first_name: sub?.first_name ?? rawName
+        email_welcome_sent: true
       }, { onConflict: 'user_id' })
       sent++
     } else {
@@ -569,18 +572,12 @@ async function runDailyJob(supabase: ReturnType<typeof createClient>): Promise<R
 
     const ageDays   = Math.floor((now - new Date(authUser.created_at).getTime()) / 86400000)
     const winsTotal = winsByUser[sub.user_id] ?? 0
-    const rawName   = sub.first_name
-      || authUser.raw_user_meta_data?.first_name
-      || authUser.raw_user_meta_data?.full_name
-      || authUser.raw_user_meta_data?.name
-      || 'there'
-    const name      = displayName(rawName)
+    const name      = sub.first_name ? displayName(sub.first_name) : 'there'
     const email     = authUser.email as string
 
     await supabase.from('push_subscriptions').update({
       account_age_days: ageDays,
-      wins_total: winsTotal,
-      first_name: rawName
+      wins_total: winsTotal
     }).eq('id', sub.id)
     counts.stats_updated++
 

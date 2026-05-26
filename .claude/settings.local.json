@@ -37,7 +37,15 @@
       "Bash(sed -n '496,520p' /Users/reneestripeaut/DOPAmine/app.html)",
       "Bash(sed -n '1237,1248p' /Users/reneestripeaut/DOPAmine/app.html)",
       "Bash(sed -n '1,20p' /Users/reneestripeaut/DOPAmine/sw.js)",
-      "Bash(sed -n '515,521p' /Users/reneestripeaut/DOPAmine/app.html)"
+      "Bash(sed -n '515,521p' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(awk NR>=4729 && NR<=4770 {print NR\": \"$0} *)",
+      "Bash(awk 'NR>=4729 && NR<=4770' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(awk 'NR>=4730 && NR<=4785' /Users/reneestripeaut/DOPAmine/app.html)",
+      "Bash(npm config *)",
+      "Bash(npx hyperframes *)",
+      "mcp__plugin_supabase_supabase__list_projects",
+      "mcp__plugin_supabase_supabase__apply_migration",
+      "mcp__plugin_supabase_supabase__list_tables"
     ]
   }
 }

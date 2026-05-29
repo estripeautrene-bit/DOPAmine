@@ -2051,6 +2051,45 @@
     @keyframes microPulse { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
     .tpc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
 
+    /* ── Guided Entry ── */
+    .guided-category-q {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(181,123,247,0.65);
+      margin-bottom: 12px;
+    }
+    .guided-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .guided-chip {
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 50px;
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      background: rgba(123,47,190,0.12);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .guided-chip:active {
+      background: rgba(123,47,190,0.3);
+      color: #B57BF7;
+      border-color: #7B2FBE;
+    }
+    .guided-chip.else-chip {
+      border-color: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.35);
+      background: transparent;
+    }
+
     /* ── Auto time-of-day tag ── */
     .moment-tag-auto {
       font-size: 0.7rem;
@@ -2795,11 +2834,13 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       </div>
       <div id="streakProtectLabel" style="display:none;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:4px;"></div>
       <div class="tpc-prompt" id="tpcPrompt">YOUR DAY IS BUILDING.</div>
+      <div id="guidedCategoryQ" class="guided-category-q"></div>
+      <div id="guidedChipsRow" class="guided-chips-row"></div>
       <div class="tpc-input-area">
         <textarea
           id="momentInput"
           class="tpc-textarea"
-          placeholder="Today hasn't been written yet."
+          placeholder="Add your own thought..."
           maxlength="280"
           spellcheck="true"
           autocorrect="on"
@@ -3702,10 +3743,66 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       if (exp)  { exp.style.display = 'flex'; exp.style.flexDirection = 'column'; exp.style.gap = '5px'; }
     }
 
+    // ── Guided Entry System ──────────────────────────────────
+    const GUIDED_CATEGORIES = [
+      {
+        question: "What progress did you make today?",
+        prompts: ["Finished a task","Started a project","Sent an important email","Made a difficult call","Solved a problem","Made progress on a goal","Followed through on a commitment","Learned something useful","Improved a process","Organized my workspace","Completed paperwork","Handled a challenge","Stayed focused","Made a decision","Planned my week","Crossed something off my list","Took initiative","Prepared for a meeting","Closed a task","Moved a project forward","Asked for help","Delegated effectively","Improved a skill","Read something useful","Practiced discipline","Worked on a side project","Followed a routine","Stayed consistent","Reduced procrastination","Managed my time well","Finished a workout goal","Completed a training session","Built momentum","Took the first step","Kept a promise","Improved communication","Reviewed finances","Created something","Fixed an issue","Reached a milestone","Prepared for tomorrow","Executed a plan","Made measurable progress","Stayed productive","Overcame resistance","Improved my mindset","Focused on priorities","Maintained discipline","Took ownership"]
+      },
+      {
+        question: "What meaningful moment did you experience with someone today?",
+        prompts: ["Spent time with my spouse","Spent time with my children","Called a parent","Helped a friend","Received support","Shared a laugh","Had a meaningful conversation","Encouraged someone","Received encouragement","Showed appreciation","Received appreciation","Reconnected with someone","Met someone new","Listened carefully","Resolved a disagreement","Created a family memory","Strengthened a friendship","Supported a coworker","Celebrated someone","Shared a meal","Played with my children","Spent quality time","Helped a neighbor","Checked in on someone","Expressed warmth","Received kindness","Made someone smile","Felt understood","Connected emotionally","Helped solve a problem","Collaborated well","Shared advice","Learned from someone","Mentored someone","Received mentorship","Had a positive interaction","Strengthened trust","Spent time with family","Had a deep conversation","Supported my partner","Enjoyed company","Connected with a colleague","Helped a stranger","Shared good news","Celebrated together","Showed patience","Practiced empathy","Felt connected","Strengthened a relationship"]
+      },
+      {
+        question: "How did you take care of yourself today?",
+        prompts: ["Exercised","Went for a walk","Stretched","Drank water","Ate healthy","Slept well","Took a break","Managed stress","Meditated","Spent time outdoors","Went to the gym","Protected my energy","Rested when needed","Read a book","Reduced screen time","Took deep breaths","Improved posture","Prepared healthy food","Recovered physically","Took vitamins","Focused on sleep","Spent time in nature","Practiced mindfulness","Avoided unhealthy habits","Maintained a routine","Improved flexibility","Improved fitness","Managed emotions","Created quiet time","Protected boundaries","Asked for support","Took care of my health","Improved recovery","Focused on wellbeing","Relaxed intentionally","Took a mental break","Reduced anxiety","Maintained balance","Practiced self-respect","Made time for myself","Stayed hydrated","Improved energy","Reduced overwhelm","Stayed calm","Prioritized health","Practiced self-care","Improved resilience"]
+      },
+      {
+        question: "What made today better?",
+        prompts: ["Received good news","Enjoyed a meal","Felt hopeful","Felt proud","Experienced joy","Enjoyed nature","Enjoyed music","Had fun","Felt optimistic","Celebrated a win","Experienced calm","Read something inspiring","Enjoyed a hobby","Saw something beautiful","Smiled unexpectedly","Had a positive surprise","Enjoyed a quiet moment","Learned something new","Felt confident","Received recognition","Made progress","Enjoyed family time","Experienced kindness","Had a breakthrough","Appreciated life","Enjoyed laughter","Felt motivated","Found perspective","Experienced peace","Noticed improvement","Created a memory","Enjoyed success","Helped someone","Received help","Felt energized","Enjoyed creativity","Had a productive day","Found inspiration","Connected with someone","Overcame a challenge","Experienced abundance","Enjoyed freedom","Felt emotionally strong","Noticed beauty","Experienced momentum","Felt resilient","Ended the day well"]
+      }
+    ];
+
+    function initGuidedEntry() {
+      const cat = GUIDED_CATEGORIES[Math.floor(Math.random() * GUIDED_CATEGORIES.length)];
+      document.getElementById('guidedCategoryQ').textContent = cat.question;
+
+      const shuffled = cat.prompts.slice().sort(() => Math.random() - 0.5);
+      const picked = shuffled.slice(0, 5);
+
+      const row = document.getElementById('guidedChipsRow');
+      row.innerHTML = '';
+
+      picked.forEach(function(text) {
+        const btn = document.createElement('button');
+        btn.className = 'guided-chip';
+        btn.textContent = text;
+        btn.addEventListener('click', function() {
+          const ta = document.getElementById('momentInput');
+          ta.value = text;
+          ta.focus();
+          updateCharCount();
+        });
+        row.appendChild(btn);
+      });
+
+      const elseBtn = document.createElement('button');
+      elseBtn.className = 'guided-chip else-chip';
+      elseBtn.textContent = 'Something else.';
+      elseBtn.addEventListener('click', function() {
+        const ta = document.getElementById('momentInput');
+        ta.value = '';
+        ta.focus();
+        updateCharCount();
+      });
+      row.appendChild(elseBtn);
+    }
+
     applyBloom(parseFloat(localStorage.getItem('dopa_bg_score') || '0'));
     initPrompt();
     initDailyGreeting();
     renderTodayEntries();
+    initGuidedEntry();
 
     // ── Share progress (Canvas image) ────────────────────
     async function shareProgress() {
@@ -4603,6 +4700,7 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
         renderTodayEntries();
         advancePrompt();
+        initGuidedEntry();
       }, 1300);
       maybeShowYesterdayWhisper(todayCount);
       setTimeout(() => showToast('Moment saved! 🌟'), 1600);

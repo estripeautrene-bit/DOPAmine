@@ -562,8 +562,8 @@
     }
 
     .progress-total-num {
-      font-size: 4.5rem;
-      font-weight: 900;
+      font-size: 64px;
+      font-weight: 800;
       line-height: 1;
       letter-spacing: -2px;
       color: #FFFFFF !important;
@@ -571,17 +571,15 @@
       -webkit-background-clip: unset !important;
       -webkit-text-fill-color: #FFFFFF !important;
       background-clip: unset !important;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-total-label {
-      font-size: 0.78rem;
-      color: #FFFFFF !important;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4) !important;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       margin-top: 6px;
       font-weight: 600;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     .progress-streak-row {
@@ -590,8 +588,8 @@
       justify-content: center;
       gap: 8px;
       margin-top: 16px;
-      background: rgba(0,0,0,0.3) !important;
-      border: 1px solid rgba(123,47,190,0.3);
+      background: rgba(255,176,32,0.12) !important;
+      border: 1px solid rgba(255,176,32,0.3);
       border-radius: 50px;
       padding: 10px 20px;
       width: fit-content;
@@ -601,25 +599,22 @@
 
     .progress-streak-num {
       font-size: 1.4rem;
-      font-weight: 900;
-      color: #FFFFFF !important;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
+      font-weight: 700;
+      color: #FFB020 !important;
     }
 
     .progress-streak-text {
       font-size: 0.82rem;
-      color: #FFFFFF !important;
-      font-weight: 600;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
+      color: #FFB020 !important;
+      font-weight: 700;
     }
 
     .progress-streak-meaning {
       font-size: 0.75rem;
-      color: #FFFFFF !important;
+      color: rgba(255,255,255,0.5) !important;
       text-align: center;
       margin-top: 8px;
       font-style: italic;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.9);
     }
 
     /* Dot calendar */
@@ -637,7 +632,7 @@
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 6px;
-      background: #1A1530 !important;
+      background: #0E0B1A !important;
       border-radius: 12px;
       padding: 10px;
       position: relative;
@@ -647,19 +642,19 @@
     .dot-day {
       aspect-ratio: 1;
       border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #1A1A2E;
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.55rem;
-      color: transparent;
+      color: rgba(255,255,255,0.2);
       transition: background 0.2s;
       position: relative;
     }
 
     .dot-day.active {
-      background: linear-gradient(135deg, #7B2FBE, #B57BF7);
+      background: #7B2FBE;
       border-color: transparent;
       box-shadow: 0 0 8px rgba(123,47,190,0.5);
     }
@@ -764,9 +759,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #1A1530 !important;
-      border: 1px solid rgba(123,47,190,0.3);
-      border-radius: 14px;
+      background: #0E0B1A !important;
+      border: 1px solid rgba(123,47,190,0.15);
+      border-radius: 12px;
       padding: 12px 16px;
       min-width: 70px;
       position: relative;
@@ -800,8 +795,8 @@
     }
 
     .quick-stat {
-      background: #1A1530 !important;
-      border: 1px solid rgba(123,47,190,0.2);
+      background: #0E0B1A !important;
+      border: 1px solid rgba(165,85,247,0.15);
       border-radius: 12px;
       padding: 14px 10px;
       text-align: center;
@@ -812,12 +807,12 @@
     .quick-stat-num {
       font-size: 1.5rem;
       font-weight: 900;
-      color: #B57BF7;
+      color: #A855F7;
       line-height: 1;
     }
 
     .quick-stat-label {
-      font-size: 0.62rem;
+      font-size: 10px;
       color: rgba(255,255,255,0.35);
       margin-top: 4px;
       text-transform: uppercase;
@@ -1535,11 +1530,12 @@
     }
 
     .yesterday-card {
-      background: #1A1530 !important;
-      border-radius: 12px;
+      background: #0E0B1A !important;
+      border: 1px solid rgba(123,47,190,0.15);
+      border-left: 3px solid #7B2FBE;
+      border-radius: 14px;
       padding: 14px 16px;
       margin-bottom: 10px;
-      border-left: 3px solid #7B2FBE;
       position: relative;
       z-index: 2;
     }
@@ -1579,9 +1575,9 @@
 
     /* ── Yesterday protagonist card ── */
     .yesterday-protagonist-card {
-      background: #1A1530;
-      border: 1px solid rgba(255,176,32,0.26);
-      border-radius: 20px;
+      background: #0E0B1A;
+      border: 1px solid rgba(165,85,247,0.15);
+      border-radius: 18px;
       padding: 22px 20px 18px;
       margin-bottom: 16px;
       position: relative;
@@ -1612,15 +1608,15 @@
       margin: 0 auto 16px;
     }
     .ypc-headline {
-      font-size: 24px;
-      font-weight: 700;
-      color: #FAFAF7;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
       line-height: 1.1;
       margin-bottom: 10px;
     }
     .ypc-feeling {
-      font-size: 1.4rem;
-      color: rgba(255,255,255,0.95);
+      font-size: 16px;
+      color: #F0EEFF;
       line-height: 1.6;
       margin-bottom: 20px;
       min-height: 42px;
@@ -1633,9 +1629,9 @@
       margin-bottom: 16px;
     }
     .ypc-question {
-      font-size: 22px;
-      font-weight: 600;
-      color: #C026D3;
+      font-size: 16px;
+      font-weight: 700;
+      color: #A855F7;
       line-height: 1.2;
       margin-bottom: 5px;
     }
@@ -1646,19 +1642,19 @@
       margin-bottom: 13px;
     }
     .ypc-input-wrap {
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(192,38,211,0.16);
+      background: #06000D;
+      border: 1px solid rgba(165,85,247,0.2);
       border-radius: 12px;
-      padding: 14px 15px;
-      min-height: 160px;
-      height: 160px;
+      padding: 12px 14px;
+      min-height: 100px;
+      height: auto;
       cursor: text;
       position: relative;
       display: flex;
       align-items: flex-start;
       transition: border-color 0.2s ease;
     }
-    .ypc-input-wrap.focused { border-color: rgba(192,38,211,0.45); }
+    .ypc-input-wrap.focused { border-color: rgba(165,85,247,0.45); }
     .ypc-cursor {
       width: 2px;
       height: 17px;
@@ -1673,8 +1669,8 @@
       50%       { opacity: 0; }
     }
     .ypc-placeholder {
-      font-size: 13.5px;
-      color: rgba(201,190,216,0.33);
+      font-size: 14px;
+      color: rgba(255,255,255,0.25);
       font-style: italic;
       padding-left: 4px;
       pointer-events: none;
@@ -1683,14 +1679,14 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      min-height: 160px;
+      min-height: 100px;
       background: transparent;
       border: none;
       outline: none;
-      color: #FAFAF7;
-      font-size: 22px;
+      color: #F0EEFF;
+      font-size: 16px;
       font-family: -apple-system, sans-serif;
-      padding: 14px 15px;
+      padding: 12px 14px;
       resize: none;
       box-sizing: border-box;
       opacity: 0;
@@ -1698,17 +1694,22 @@
     .ypc-textarea.active { opacity: 1; }
     .ypc-send {
       width: 100%;
-      margin-top: 11px;
-      background: rgba(192,38,211,0.1);
-      border: 1px solid rgba(192,38,211,0.3);
-      border-radius: 11px;
-      padding: 13px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #C026D3;
+      margin-top: 10px;
+      background: #FFB020;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #06000D;
       cursor: pointer;
       text-align: center;
       -webkit-tap-highlight-color: transparent;
+    }
+    .ypc-send:disabled {
+      background: rgba(255,176,32,0.25);
+      color: rgba(0,0,0,0.4);
+      cursor: default;
     }
     .ypc-scarcity {
       font-size: 10px;
@@ -1799,8 +1800,8 @@
     .ypc-collapse-btn { width: 100%; margin-top: 4px; background: transparent; border: 1px solid rgba(183,123,247,0.14); border-radius: 9px; padding: 8px; font-size: 10px; color: rgba(183,123,247,0.42); cursor: pointer; text-align: center; }
     .ypc-closing-wrap { margin-top: 24px; display: flex; justify-content: center; position: relative; z-index: 2; }
     .ypc-closing-pill {
-      background: #1A1530;
-      border: 1px solid rgba(255,176,32,0.15);
+      background: #0E0B1A;
+      border: 1px solid rgba(123,47,190,0.2);
       border-radius: 40px;
       padding: 10px 22px;
       font-size: 13px;
@@ -1809,28 +1810,30 @@
     }
     .ypc-closing-you { color: #C026D3; font-weight: 600; }
     .ypc-acknowledgment {
-      background: #1A1530;
-      border: 1px solid rgba(192,38,211,0.22);
+      background: #0E0B1A;
+      border: 1px solid rgba(165,85,247,0.2);
       border-radius: 12px;
       padding: 20px 18px;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 700;
       font-style: normal;
       line-height: 1.4;
-      color: #FAFAF7;
+      color: #F0EEFF;
+    }
+    #ypcMascotQuestion {
+      color: #A855F7 !important;
+      font-style: italic !important;
     }
 
     /* ── Today protagonist card ── */
     .today-protagonist-card {
-      background: #1A1530;
-      border: 1px solid rgba(123,47,190,0.3);
-      border-top: 1px solid rgba(165,85,247,0.15);
-      border-radius: 20px;
+      background: #0E0B1A;
+      border: 1px solid rgba(165,85,247,0.15);
+      border-radius: 18px;
       padding: 22px 20px 18px;
       margin-bottom: 16px;
       position: relative;
       z-index: 2;
-      min-height: 420px;
     }
     .tpc-top-row {
       display: flex;
@@ -1855,7 +1858,7 @@
     }
     .tpc-prompt {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       letter-spacing: 0.08em;
       color: #ffffff;
@@ -1914,19 +1917,21 @@
       margin-left: auto;
     }
     .tpc-save-btn {
+      width: 100%;
       background: #FFB020;
       border: none;
-      border-radius: 24px;
-      padding: 12px 28px;
-      font-size: 0.9rem;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: #06000D;
       cursor: pointer;
+      margin-top: 10px;
       transition: opacity 0.15s, transform 0.1s;
-      white-space: nowrap;
     }
     .tpc-save-btn:disabled {
-      opacity: 0.35;
+      background: rgba(255,176,32,0.25);
+      color: rgba(0,0,0,0.4);
       cursor: default;
     }
     .tpc-save-btn:active {
@@ -2055,27 +2060,31 @@
 
     /* ── Guided Entry ── */
     .guided-category-q {
-      font-size: 0.95rem;
+      font-size: 14px;
       font-weight: 600;
       font-style: italic;
       letter-spacing: normal;
       color: #A855F7;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     .guided-chips-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 0;
     }
     .guided-chip {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: left;
       border: 1px solid rgba(165,85,247,0.35);
-      border-radius: 24px;
-      padding: 10px 18px;
-      font-size: 0.85rem;
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-size: 15px;
       font-weight: 500;
       color: #F0EEFF;
-      background: #0E0B1A;
+      background: #1A1A2E;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       font-family: inherit;
@@ -2085,13 +2094,38 @@
       background: #7B2FBE;
       border-color: #7B2FBE;
       color: #ffffff;
-      transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+      font-weight: 600;
     }
     .guided-chip.else-chip {
       border-color: rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.3);
       background: transparent;
       font-style: italic;
+    }
+    .tpc-compact-input {
+      width: 100%;
+      box-sizing: border-box;
+      background: #06000D;
+      border: 1px solid rgba(165,85,247,0.2);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      color: white;
+      resize: none;
+      overflow: hidden;
+      min-height: 46px;
+      height: auto;
+      display: block;
+      margin-top: 12px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .tpc-compact-input::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+    .tpc-compact-input:focus {
+      border-color: rgba(165,85,247,0.45);
     }
 
     /* ── Auto time-of-day tag ── */
@@ -2840,25 +2874,22 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
       <div class="tpc-prompt" id="tpcPrompt">YOUR DAY IS BUILDING.</div>
       <div id="guidedCategoryQ" class="guided-category-q"></div>
       <div id="guidedChipsRow" class="guided-chips-row"></div>
-      <div class="tpc-input-area">
-        <textarea
-          id="momentInput"
-          class="tpc-textarea"
-          placeholder="Add your own thought..."
-          maxlength="280"
-          spellcheck="true"
-          autocorrect="on"
-          autocapitalize="sentences"
-          oninput="updateCharCount()"
-        ></textarea>
-        <div class="photo-preview" id="photoPreview">
-          <img id="photoImg" src="" alt="moment photo" />
-          <button class="photo-remove" onclick="removePhoto()" title="Remove photo">✕</button>
-        </div>
+      <textarea
+        id="momentInput"
+        class="tpc-compact-input"
+        placeholder="Add your own thought..."
+        maxlength="280"
+        rows="1"
+        spellcheck="true"
+        autocorrect="on"
+        autocapitalize="sentences"
+        oninput="updateCharCount();autoResizeInput(this)"
+      ></textarea>
+      <div class="photo-preview" id="photoPreview">
+        <img id="photoImg" src="" alt="moment photo" />
+        <button class="photo-remove" onclick="removePhoto()" title="Remove photo">✕</button>
       </div>
-      <div class="tpc-bottom-row">
-        <button class="tpc-save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
-      </div>
+      <button class="tpc-save-btn" id="saveBtn" onclick="saveMoment()" disabled>Save ✓</button>
       <div id="savingStateText"></div>
       <div id="saveGhostLine"></div>
     </div>
@@ -2977,7 +3008,7 @@ mixpanel.init('4e61409ba22985123f4489eef8b3c23c', {track_pageview: true, persist
 
     <div id="summaryContent"></div>
 
-    <div id="notifSettingsRow" style="margin:24px 0 8px;padding:14px 16px;background:rgba(123,47,190,0.1);border:1px solid rgba(123,47,190,0.25);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="openNotifSettings()">
+    <div id="notifSettingsRow" style="margin:24px 0 8px;padding:14px 16px;background:#0E0B1A;border:1px solid rgba(165,85,247,0.15);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="openNotifSettings()">
       <div style="display:flex;align-items:center;gap:10px;">
         <span style="font-size:1.1rem;">🔔</span>
         <div>
@@ -3504,6 +3535,11 @@ if (document.getElementById('view-summary').classList.contains('active')) render
     function updateCharCount() {
       const val = document.getElementById('momentInput').value;
       document.getElementById('saveBtn').disabled = val.trim().length === 0;
+    }
+
+    function autoResizeInput(el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
     }
 
     function toggleTag(el) {
@@ -4707,7 +4743,9 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         saveBtn.style.transition = '';
         saveBtn.textContent = 'Save ✓';
         saveBtn.disabled = true;
-        document.getElementById('momentInput').value = '';
+        const mi = document.getElementById('momentInput');
+        mi.value = '';
+        mi.style.height = 'auto';
         document.querySelectorAll('.tag-chip.selected').forEach(el => el.classList.remove('selected'));
         renderTodayEntries();
         advancePrompt();
@@ -5148,12 +5186,12 @@ if (document.getElementById('view-summary').classList.contains('active')) render
 
       // ── Big number ──
       container.innerHTML = `
-        <div style="background:#1A1530 !important;border-radius:16px;padding:24px 20px;position:relative;z-index:2;text-align:center;">
+        <div style="background:#0E0B1A;border:1px solid rgba(165,85,247,0.15);border-radius:18px;padding:24px 20px;position:relative;z-index:2;text-align:center;">
           <div class="progress-hero">
             <div class="progress-total-num">${moments.length}</div>
             <div class="progress-total-label">Good moments captured</div>
             <div class="progress-streak-row">
-              <span style="font-size:1.4rem">🔥</span>
+              <span style="font-size:1.2rem">🔥</span>
               <span class="progress-streak-num">${streak}</span>
               <span class="progress-streak-text">day streak</span>
             </div>
@@ -5178,28 +5216,19 @@ if (document.getElementById('view-summary').classList.contains('active')) render
         </div>
 
         <!-- 30-day dot calendar -->
-        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Last 30 Days — tap a date to see entries</div></div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1A2E;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;color:rgba(255,255,255,0.5);">Last 30 Days — tap a date to see entries</div></div>
         <div class="dot-calendar" id="dotCalendar"></div>
         <div class="day-detail-panel" id="dayDetailPanel"></div>
 
         <!-- Top mood tags -->
-        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1530;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;">Your Top Moments</div></div>
+        <div style="text-align:center;margin:24px 0 12px;"><div class="progress-section-label" style="background:#1A1A2E;border-radius:8px;padding:4px 12px;display:inline-block;position:relative;z-index:2;margin:0;color:rgba(255,255,255,0.5);">Your Top Moments</div></div>
         <div class="top-tags-row" id="topTagsRow"></div>
 
       `;
 
-      // Force white text on all progress elements regardless of CSS cascade
+      // Ensure number stays white on iOS
       const numEl = container.querySelector('.progress-total-num');
       if (numEl) { numEl.style.color = '#FFFFFF'; numEl.style.webkitTextFillColor = '#FFFFFF'; numEl.style.background = 'none'; }
-      const totalLabelEl = container.querySelector('.progress-total-label');
-      if (totalLabelEl) totalLabelEl.style.color = '#FFFFFF';
-      const streakNumEl = container.querySelector('.progress-streak-num');
-      if (streakNumEl) streakNumEl.style.color = '#FFFFFF';
-      const streakTextEl = container.querySelector('.progress-streak-text');
-      if (streakTextEl) streakTextEl.style.color = '#FFFFFF';
-      const streakMeaningEl = container.querySelector('.progress-streak-meaning');
-      if (streakMeaningEl) streakMeaningEl.style.color = '#FFFFFF';
-      container.querySelectorAll('.progress-section-label').forEach(el => { el.style.color = '#FFFFFF'; });
 
       // ── Build 30-day dot calendar ──
       const activeDays = new Set(moments.map(m => m.dateKey));

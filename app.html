@@ -1608,14 +1608,14 @@
       margin: 0 auto 16px;
     }
     .ypc-headline {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: #ffffff;
       line-height: 1.1;
       margin-bottom: 10px;
     }
     .ypc-feeling {
-      font-size: 16px;
+      font-size: 18px;
       color: #F0EEFF;
       line-height: 1.6;
       margin-bottom: 20px;
@@ -1629,7 +1629,7 @@
       margin-bottom: 16px;
     }
     .ypc-question {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       color: #A855F7;
       line-height: 1.2;
@@ -1669,7 +1669,7 @@
       50%       { opacity: 0; }
     }
     .ypc-placeholder {
-      font-size: 14px;
+      font-size: 16px;
       color: rgba(255,255,255,0.25);
       font-style: italic;
       padding-left: 4px;
@@ -1793,7 +1793,7 @@
     .ypc-sh1-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
     .ypc-entries-expanded { display: flex; flex-direction: column; gap: 5px; opacity: 0.74; position: relative; z-index: 2; }
     .ypc-entry-card { background: #1A1530; border: 1px solid rgba(255,255,255,0.055); border-radius: 9px; padding: 10px 13px; }
-    .ypc-entry-text { font-size: 13px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
+    .ypc-entry-text { font-size: 16px; color: #FAFAF7; margin-bottom: 4px; line-height: 1.28; }
     .ypc-entry-meta { display: flex; align-items: center; gap: 6px; }
     .ypc-entry-time { font-size: 9.5px; color: rgba(201,190,216,0.3); }
     .ypc-entry-tag { font-size: 9px; color: #B57BF7; background: rgba(181,123,247,0.1); border-radius: 20px; padding: 2px 7px; }
@@ -1821,6 +1821,7 @@
       color: #F0EEFF;
     }
     #ypcMascotQuestion {
+      font-size: 16px !important;
       color: #A855F7 !important;
       font-style: italic !important;
     }
@@ -1922,7 +1923,7 @@
       border: none;
       border-radius: 12px;
       padding: 14px;
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
       color: #06000D;
       cursor: pointer;
@@ -2060,7 +2061,7 @@
 
     /* ── Guided Entry ── */
     .guided-category-q {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
       font-style: italic;
       letter-spacing: normal;
@@ -2080,9 +2081,9 @@
       text-align: left;
       border: 1px solid rgba(165,85,247,0.35);
       border-radius: 12px;
-      padding: 13px 16px;
-      font-size: 15px;
-      font-weight: 500;
+      padding: 15px 18px;
+      font-size: 17px;
+      font-weight: 600;
       color: #F0EEFF;
       background: #1A1A2E;
       cursor: pointer;
@@ -2109,7 +2110,7 @@
       border: 1px solid rgba(165,85,247,0.2);
       border-radius: 12px;
       padding: 12px 14px;
-      font-size: 15px;
+      font-size: 16px;
       font-family: inherit;
       color: white;
       resize: none;
@@ -5058,7 +5059,6 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       exp.innerHTML = entries.map(function(e) {
         return '<div class="ypc-entry-card">' +
           '<div class="ypc-entry-text">' + escapeHtml(e.text) + '</div>' +
-          (e.photo ? '<img class="card-photo" src="' + e.photo + '" alt="moment" style="width:100%;border-radius:8px;margin-top:8px;max-height:240px;object-fit:cover;display:block;" />' : '') +
           '<div class="ypc-entry-meta">' +
             '<span class="ypc-entry-time">' + (e.time || '') + '</span>' +
             (e.tag ? '<span class="ypc-entry-tag">' + escapeHtml(e.tag) + '</span>' : '') +
@@ -5161,6 +5161,26 @@ if (document.getElementById('view-summary').classList.contains('active')) render
       });
     })();
 
+    function shareStreak(streak) {
+      const text = streak > 0
+        ? `I'm on a ${streak}-day streak on DOPAmine — capturing good moments every day. 🔥`
+        : `I'm capturing good moments every day on DOPAmine. Try it!`;
+      if (navigator.share) {
+        navigator.share({ text }).catch(function() {});
+      } else {
+        navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard!'); }).catch(function() { showToast('Could not copy'); });
+      }
+    }
+
+    function shareApp() {
+      const text = 'DOPAmine — a tiny app that helps you notice the good in your day. Try it: https://reneestripeaut.github.io/DOPAmine/app.html';
+      if (navigator.share) {
+        navigator.share({ text }).catch(function() {});
+      } else {
+        navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard!'); }).catch(function() { showToast('Could not copy'); });
+      }
+    }
+
     // ── Summary ──────────────────────────────────────────────
     function renderSummary() {
       updateNotifSettingsRow();
@@ -5196,6 +5216,10 @@ if (document.getElementById('view-summary').classList.contains('active')) render
               <span class="progress-streak-text">day streak</span>
             </div>
             ${streak > 0 ? `<div class="progress-streak-meaning">${meaning}</div>` : ''}
+          </div>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:0;">
+            <button onclick="shareStreak(${streak})" style="width:100%;background:#FFB020;color:#06000D;font-weight:700;font-size:15px;border-radius:12px;padding:14px;border:none;margin-bottom:10px;cursor:pointer;font-family:inherit;">🔥 Share my streak</button>
+            <button onclick="shareApp()" style="width:100%;background:#1A1A2E;border:1px solid rgba(165,85,247,0.4);color:#F0EEFF;font-weight:600;font-size:15px;border-radius:12px;padding:14px;cursor:pointer;font-family:inherit;">✦ Share DOPAmine</button>
           </div>
         </div>
 

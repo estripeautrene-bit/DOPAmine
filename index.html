@@ -552,6 +552,13 @@ footer{border-top:1px solid rgba(123,47,190,.1);padding:36px;display:flex;align-
 </footer>
 
 <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    registrations.forEach(reg => {
+      reg.update();
+    });
+  });
+}
 // Slow crossfade carousel — 5s hold, 1.4s fade
 (function(){
   var ws = document.querySelectorAll('.slot-word');

@@ -279,7 +279,7 @@ footer{border-top:1px solid rgba(123,47,190,.1);padding:36px;display:flex;align-
   <div class="nav-r">
     <a href="#how" class="nav-a">How it works</a>
     <a href="#blog" class="nav-a">Brain Lab</a>
-    <a href="https://mydopa.app" class="nav-btn">Start the 7-day dare →</a>
+    <a href="https://mydopa.app/app.html" class="nav-btn">Start the 7-day dare →</a>
   </div>
 </nav>
 
@@ -311,7 +311,7 @@ footer{border-top:1px solid rgba(123,47,190,.1);padding:36px;display:flex;align-
     <p class="hero-sub">Two minutes a day. Three+ moments worth keeping. The daily practice that rewires your brain to see what is already working.</p>
 
     <div class="hero-cta">
-      <a href="https://mydopa.app" class="cta-primary">Start the 7-day dare →</a>
+      <a href="https://mydopa.app/app.html" class="cta-primary">Start the 7-day dare →</a>
       <p class="cta-fine">Free · No credit card · 2 minutes a day</p>
     </div>
   </div>
@@ -580,7 +580,7 @@ if ('serviceWorker' in navigator) {
 // CTAs
 function go(id){
   const v=document.getElementById(id).value.trim();
-  window.location.href=/\S+@\S+\.\S+/.test(v)?'https://mydopa.app?email='+encodeURIComponent(v):'https://mydopa.app';
+  window.location.href=/\S+@\S+\.\S+/.test(v)?'https://mydopa.app/app.html?email='+encodeURIComponent(v):'https://mydopa.app/app.html';
 }
 
 document.getElementById('finalBtn').onclick=()=>go('finalEmail');

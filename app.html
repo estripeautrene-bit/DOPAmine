@@ -5778,7 +5778,7 @@ function checkInstallPrompt() {
       btn.disabled = false;
       btn.textContent = orig;
       if (error) { errEl.textContent = error.message; return; }
-      mixpanel.track('Signed Up');
+      mixpanel.track('Signed Up', { source: new URLSearchParams(window.location.search).get('utm_source') || 'direct', medium: new URLSearchParams(window.location.search).get('utm_medium') || 'none', campaign: new URLSearchParams(window.location.search).get('utm_campaign') || 'none' });
       if (data.user && !data.session) {
         mixpanel.track('Signup Confirmation Shown');
         document.getElementById('stage3FormArea').style.display = 'none';
@@ -5902,7 +5902,7 @@ function checkInstallPrompt() {
       btn.textContent = origText;
       if (error) { errEl.textContent = error.message; return; }
       if (authMode === 'signin' && data?.session) mixpanel.track('Login Completed');
-      if (authMode === 'signup' && data?.user) mixpanel.track('Signed Up');
+      if (authMode === 'signup' && data?.user) mixpanel.track('Signed Up', { source: new URLSearchParams(window.location.search).get('utm_source') || 'direct', medium: new URLSearchParams(window.location.search).get('utm_medium') || 'none', campaign: new URLSearchParams(window.location.search).get('utm_campaign') || 'none' });
       if (authMode === 'signup' && data?.user && !data?.session) { showAuthConfirm(email); }
     }
 
@@ -6009,7 +6009,7 @@ function checkInstallPrompt() {
           currentUser = session ? session.user : null;
           if (session?.user?.id) localStorage.setItem('dopamine_uid', session.user.id);
           if (event === 'SIGNED_IN') {
-            mixpanel.track('Signed Up');
+            // Removed: was firing on every login, not just new signups
             if (session?.user) {
               const u = session.user;
               mixpanel.identify(u.id);

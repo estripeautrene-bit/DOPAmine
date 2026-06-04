@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post03 — Founder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      background: #06000D;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .bloom-bottom {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 105%,
+        rgba(255,176,32,0.20) 0%,
+        rgba(255,107,0,0.09) 28%,
+        rgba(123,47,190,0.05) 54%,
+        transparent 72%);
+      animation: breathe 7s ease-in-out infinite;
+    }
+
+    .bloom-top {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -5%,
+        rgba(109,40,217,0.11) 0%,
+        transparent 65%);
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      pointer-events: none;
+    }
+
+    /* Left vertical gradient rule */
+    .left-rule {
+      position: absolute;
+      left: 70px;
+      top: 80px;
+      bottom: 80px;
+      width: 3px;
+      background: linear-gradient(to bottom,
+        rgba(123,47,190,0.0) 0%,
+        rgba(123,47,190,0.9) 15%,
+        rgba(255,176,32,0.85) 50%,
+        rgba(123,47,190,0.9) 85%,
+        rgba(123,47,190,0.0) 100%);
+      border-radius: 2px;
+    }
+
+    /* Content anchored center-left, offset for rule */
+    .content {
+      position: absolute;
+      inset: 0;
+      padding: 80px 80px 120px 116px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 4.5px;
+      color: #FFB020;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: 74px;
+      line-height: 1.06;
+      color: #FAFAF7;
+      margin-bottom: 44px;
+      max-width: 840px;
+    }
+
+    .body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 23px;
+      line-height: 1.70;
+      color: #B57BF7;
+      max-width: 720px;
+    }
+
+    .body strong {
+      color: #FAFAF7;
+      font-weight: 400;
+    }
+
+    /* Signature — very low opacity, bottom-left */
+    .signature {
+      position: absolute;
+      bottom: 76px;
+      left: 116px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 19px;
+      color: rgba(250,250,247,0.16);
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.82; }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas" id="canvas">
+    <div class="bloom-bottom"></div>
+    <div class="bloom-top"></div>
+    <div class="grain"></div>
+
+    <div class="left-rule"></div>
+
+    <div class="content">
+      <div class="eyebrow">The Founder</div>
+      <h1 class="headline">"I used to end every day<br>thinking: what did I<br>even do today?"</h1>
+      <p class="body">
+        Not in a low way. I was moving. Building. Shipping.<br>
+        But nothing felt like it counted.<br><br>
+        <strong>The good stuff evaporated. The gaps stayed.</strong><br><br>
+        I built DOPAmine to fix that.<br>
+        Name 3 small wins. Watch the pattern emerge.<br>
+        The confidence isn't fake. It's evidence.
+      </p>
+    </div>
+
+    <p class="signature">— The founder of DOPAmine</p>
+  </div>
+
+  <script>
+    function scale() {
+      const c = document.getElementById('canvas');
+      const s = Math.min(window.innerWidth / 1080, window.innerHeight / 1080);
+      c.style.transform = `scale(${s})`;
+    }
+    scale();
+    window.addEventListener('resize', scale);
+  </script>
+</body>
+</html>

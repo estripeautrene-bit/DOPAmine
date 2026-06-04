@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post01 — Science</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      background: #06000D;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Bottom amber bloom */
+    .bloom-bottom {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 105%,
+        rgba(255,176,32,0.22) 0%,
+        rgba(255,107,0,0.10) 28%,
+        rgba(123,47,190,0.06) 54%,
+        transparent 72%);
+      animation: breathe 7s ease-in-out infinite;
+    }
+
+    /* Top purple bloom */
+    .bloom-top {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -5%,
+        rgba(109,40,217,0.15) 0%,
+        transparent 65%);
+    }
+
+    /* Film grain */
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      pointer-events: none;
+    }
+
+    /* Orb cluster — top right */
+    .orb-wrap {
+      position: absolute;
+      top: 52px;
+      right: 52px;
+      width: 260px;
+      height: 260px;
+    }
+
+    .orb-ring-outer {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(168,85,247,0.20);
+    }
+
+    .orb-ring-mid {
+      position: absolute;
+      inset: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(168,85,247,0.30);
+    }
+
+    .orb-core {
+      position: absolute;
+      inset: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(255,176,32,0.75) 0%,
+        rgba(255,107,0,0.45) 38%,
+        rgba(123,47,190,0.20) 68%,
+        transparent 100%);
+      animation: breathe 7s ease-in-out infinite;
+    }
+
+    /* Content — anchored bottom-left */
+    .content {
+      position: absolute;
+      inset: 0;
+      padding: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 4.5px;
+      color: #A855F7;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 110px;
+      line-height: 0.91;
+      color: #FAFAF7;
+      margin-bottom: 30px;
+    }
+
+    .headline em {
+      font-style: italic;
+      color: #FFB020;
+    }
+
+    .subline {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 22px;
+      line-height: 1.55;
+      color: #B57BF7;
+      border-left: 2px solid #7B2FBE;
+      padding-left: 18px;
+      max-width: 600px;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.82; }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas" id="canvas">
+    <div class="bloom-bottom"></div>
+    <div class="bloom-top"></div>
+    <div class="grain"></div>
+
+    <div class="orb-wrap">
+      <div class="orb-ring-outer"></div>
+      <div class="orb-ring-mid"></div>
+      <div class="orb-core"></div>
+    </div>
+
+    <div class="content">
+      <div class="eyebrow">The Science</div>
+      <h1 class="headline">Your brain<br>deletes the<br><em>good stuff.</em></h1>
+      <p class="subline">Negativity bias means every win today<br>is already fading. Here's how to hold onto it.</p>
+    </div>
+  </div>
+
+  <script>
+    function scale() {
+      const c = document.getElementById('canvas');
+      const s = Math.min(window.innerWidth / 1080, window.innerHeight / 1080);
+      c.style.transform = `scale(${s})`;
+    }
+    scale();
+    window.addEventListener('resize', scale);
+  </script>
+</body>
+</html>

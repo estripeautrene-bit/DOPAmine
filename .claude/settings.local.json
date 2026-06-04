@@ -45,7 +45,21 @@
       "Bash(npx hyperframes *)",
       "mcp__plugin_supabase_supabase__list_projects",
       "mcp__plugin_supabase_supabase__apply_migration",
-      "mcp__plugin_supabase_supabase__list_tables"
+      "mcp__plugin_supabase_supabase__list_tables",
+      "WebFetch(domain:mydopa.app)",
+      "Bash(sed -n '280,285p' /Users/reneestripeaut/DOPAmine/index.html)",
+      "Bash(sed -n '312,316p' /Users/reneestripeaut/DOPAmine/index.html)",
+      "Bash(sed -n '581,585p' /Users/reneestripeaut/DOPAmine/index.html)",
+      "Bash(bash *)",
+      "Bash(mkdir -p ~/DOPAmine/DOPAmine/social/posts)",
+      "Bash(cp ~/Downloads/Post01_Science.html ~/DOPAmine/DOPAmine/social/posts/Post01_Science.html)",
+      "Bash(cp ~/Downloads/Post02_Practice.html ~/DOPAmine/DOPAmine/social/posts/Post02_Practice.html)",
+      "Bash(cp ~/Downloads/Post03_Founder.html ~/DOPAmine/DOPAmine/social/posts/Post03_Founder.html)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(node export-posts.js)",
+      "Bash(cp \"/Users/reneestripeaut/Desktop/DOPAmine/Master Plans/PRODUCT/DOPA BRAIN/DOPAmine_logo_transparent.png\" ~/DOPAmine/DOPAmine/assets/brand/DOPAmine_logo_transparent.png)",
+      "Bash(cp \"/Users/reneestripeaut/Desktop/DOPAmine/Master Plans/PRODUCT/DOPA BRAIN/DOPA charachter menu.png\" ~/DOPAmine/DOPAmine/assets/brand/DOPA_character_sheet.png)"
     ]
   }
 }

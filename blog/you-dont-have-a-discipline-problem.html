@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- ── SEO ── -->
+<title>You Don't Have a Discipline Problem. You Have a Recognition Problem. | DOPAmine</title>
+<meta name="description" content="Most people don't lack discipline — they lack a way to see their own progress. Here's the behavioral science behind the recognition gap, and the 2-minute fix that closes it."/>
+<meta name="keywords" content="most people don't lack discipline, discipline problem, recognition problem, negativity bias, small wins theory, gap and the gain, progress tracking, self-improvement"/>
+<meta name="author" content="DOPAmine"/>
+<link rel="canonical" href="https://mydopa.app/blog/you-dont-have-a-discipline-problem"/>
+
+<!-- ── Open Graph / Social ── -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="You Don't Have a Discipline Problem. You Have a Recognition Problem."/>
+<meta property="og:description" content="Most people don't lack discipline — they lack a way to see their own progress. Here's the behavioral science behind the recognition gap."/>
+<meta property="og:url" content="https://mydopa.app/blog/you-dont-have-a-discipline-problem"/>
+<meta property="og:site_name" content="DOPAmine"/>
+<meta property="article:published_time" content="2026-06-03"/>
+<meta property="article:author" content="DOPAmine Founder"/>
+
+<!-- ── Twitter Card ── -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="You Don't Have a Discipline Problem. You Have a Recognition Problem."/>
+<meta name="twitter:description" content="Most people don't lack discipline — they lack a way to see their own progress."/>
+
+<!-- ── Fonts ── -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --purple-faint:  rgba(168,85,247,0.08);
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --off-white:     #F0EBF8;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --text-body:     #D4CAE8;
+  --font-d:        'Playfair Display', Georgia, serif;
+  --font-serif:    'DM Serif Display', Georgia, serif;
+  --font-b:        'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--text-body);
+  overflow-x: hidden;
+  line-height: 1;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-b); font-size: 18px; font-weight: 700; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-back {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--purple-mid); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(168,85,247,0.35);
+  color: var(--purple-bright);
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border-radius: 999px;
+  text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ─── HERO ─── */
+.post-hero {
+  padding: 80px 24px 64px;
+  max-width: 760px; margin: 0 auto;
+  position: relative;
+}
+.post-hero::before {
+  content: '';
+  position: fixed; top: 0; right: 0;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse at top right, rgba(123,47,190,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.post-meta {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 36px;
+}
+.post-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange-energy);
+  border: 1px solid rgba(255,176,32,0.25);
+  padding: 5px 12px; border-radius: 999px;
+}
+.post-date { font-size: 13px; color: var(--gray-muted); }
+.post-read { font-size: 13px; color: var(--gray-muted); }
+.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-muted); }
+
+.post-title {
+  font-family: var(--font-d);
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+.post-title em { font-style: italic; color: var(--purple-bright); }
+
+.post-deck {
+  font-size: clamp(17px, 2vw, 21px);
+  color: var(--gray-light); font-weight: 300; line-height: 1.65;
+  border-left: 2px solid var(--orange-energy);
+  padding-left: 20px; margin-bottom: 56px;
+}
+
+/* ─── ARTICLE ─── */
+.article {
+  max-width: 680px; margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.article p {
+  font-size: 18px; line-height: 1.78;
+  color: var(--text-body);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+.article h2 {
+  font-family: var(--font-d);
+  font-size: clamp(26px, 3.5vw, 36px);
+  font-weight: 900; line-height: 1.15;
+  color: var(--white);
+  margin: 64px 0 24px;
+}
+
+.article h3 {
+  font-size: 16px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--purple-mid);
+  margin: 48px 0 20px;
+}
+
+.article strong { color: var(--white); font-weight: 500; }
+.article em { font-style: italic; color: var(--gray-light); }
+
+/* Pull quote */
+.pull-quote {
+  font-family: var(--font-d);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700; font-style: italic;
+  line-height: 1.35;
+  color: var(--white);
+  border-left: 3px solid var(--purple-bright);
+  padding: 8px 0 8px 28px;
+  margin: 56px 0;
+}
+
+/* Highlight block */
+.highlight-block {
+  background: var(--navy-card);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-left: 3px solid var(--orange-energy);
+  border-radius: 0 16px 16px 0;
+  padding: 28px 32px;
+  margin: 48px 0;
+}
+.highlight-block p {
+  margin-bottom: 0;
+  font-size: 16px; line-height: 1.7;
+}
+.highlight-block .hl-label {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); font-weight: 600;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Reddit-style user quotes */
+.reddit-quote {
+  border-left: 2px solid rgba(168,85,247,0.3);
+  padding: 4px 0 4px 20px;
+  margin: 0 0 28px;
+}
+.reddit-quote p {
+  font-size: 17px; font-style: italic;
+  color: var(--gray-light);
+  margin-bottom: 0;
+}
+
+/* CTA block */
+.post-cta {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 24px;
+  padding: 52px 48px;
+  text-align: center;
+  margin: 80px 0 0;
+  position: relative; overflow: hidden;
+}
+.post-cta::before {
+  content: '';
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.07) 0%, rgba(123,47,190,0.05) 40%, transparent 70%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 16px;
+}
+.cta-title {
+  font-family: var(--font-d); font-size: clamp(24px, 4vw, 38px);
+  font-weight: 900; color: var(--white); margin-bottom: 16px; line-height: 1.15;
+}
+.cta-title em { font-style: italic; color: var(--purple-bright); }
+.cta-body { font-size: 16px; color: var(--gray-light); font-weight: 300; line-height: 1.65; max-width: 420px; margin: 0 auto 36px; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-size: 16px; font-weight: 600;
+  padding: 15px 36px; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 40px rgba(123,47,190,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 0 70px rgba(168,85,247,0.5); }
+.cta-fine { font-size: 13px; color: var(--gray-muted); margin-top: 14px; }
+
+/* More posts */
+.more-posts {
+  border-top: 1px solid rgba(123,47,190,0.1);
+  margin: 80px 0 0; padding: 60px 0 0;
+}
+.more-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--purple-mid); margin-bottom: 32px;
+}
+.more-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.more-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(123,47,190,0.12);
+  border-radius: 16px; padding: 28px 28px;
+  text-decoration: none; display: block;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.more-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-3px); }
+.more-card-tag { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--orange-energy); margin-bottom: 12px; }
+.more-card-title { font-family: var(--font-d); font-size: 20px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 10px; }
+.more-card-excerpt { font-size: 14px; color: var(--gray-muted); line-height: 1.6; font-weight: 300; }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid rgba(123,47,190,0.1);
+  padding: 36px 48px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  max-width: 760px; margin: 0 auto;
+}
+.footer-logo { font-family: var(--font-b); font-size: 16px; font-weight: 700; text-decoration: none; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tag { font-family: var(--font-d); font-size: 13px; font-style: italic; color: var(--gray-muted); }
+
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .post-hero { padding: 48px 20px 48px; }
+  .article { padding: 0 20px 80px; }
+  .article p { font-size: 17px; }
+  .post-cta { padding: 40px 28px; }
+  .more-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; padding: 32px 20px 40px; }
+  .nav-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">DOPA</span><span class="m">mine</span></a>
+  <a href="/blog" class="nav-back">← All posts</a>
+  <a href="https://mydopa.app/app.html" class="nav-cta">Try DOPAmine free →</a>
+</nav>
+
+<!-- POST HERO -->
+<header class="post-hero">
+  <div class="post-meta">
+    <span class="post-tag">The Science</span>
+    <span class="meta-dot"></span>
+    <span class="post-date">June 3, 2026</span>
+    <span class="meta-dot"></span>
+    <span class="post-read">7 min read</span>
+  </div>
+
+  <h1 class="post-title">
+    You Don't Have a Discipline Problem.<br/>
+    You Have a <em>Recognition Problem.</em>
+  </h1>
+
+  <p class="post-deck">
+    Most people who believe they lack discipline are actually making real progress. Their brain just isn't keeping score. Here's the behavioral science behind the recognition gap — and the 2-minute fix that closes it.
+  </p>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article">
+
+  <p>I posted something on Reddit this week.</p>
+
+  <p>Nothing complicated. Just an observation I'd been sitting with for a while:</p>
+
+  <div class="pull-quote">
+    Most people don't lack discipline. They simply fail to recognize their own progress.
+  </div>
+
+  <p>Within hours, thousands of people had seen it. Hundreds responded. And across every community — runners, cyclists, entrepreneurs, nurses, teachers — the replies said the same thing in different words.</p>
+
+  <p>They weren't describing a discipline problem.</p>
+
+  <p>They were describing a recognition problem.</p>
+
+  <h2>The Thing Your Brain Does With Every Win You Earn</h2>
+
+  <p>Here is what actually happens when you make progress.</p>
+
+  <p>You work toward something hard. You get better. The hard thing becomes easier. And then — almost immediately — the easier version becomes your new normal. The achievement gets absorbed. The bar moves up. And you are left with the feeling that you haven't moved at all.</p>
+
+  <p>A marathon runner described it this way:</p>
+
+  <div class="reddit-quote">
+    <p>"A year ago a 6 mile run sounded crazy. A 6 mile run today would be an easy run."</p>
+  </div>
+
+  <p>Another one said:</p>
+
+  <div class="reddit-quote">
+    <p>"I ran my first 10k and spent an hour planning the route. I reviewed every turn for days. I made an emergency plan and made sure my wife was free in case she had to come pick me up. Now my recovery runs are 10k, done in under an hour."</p>
+  </div>
+
+  <p>And another:</p>
+
+  <div class="reddit-quote">
+    <p>"Last year I counted 47 runs of a half marathon distance or further. Ten years ago I would have been really impressed with myself had I done one in a year."</p>
+  </div>
+
+  <p>These are not people who lack discipline. These are people who became so capable that their former achievements stopped feeling like achievements at all.</p>
+
+  <p>That is not a failure. That is what growth actually looks like.</p>
+
+  <p>But the brain doesn't log it that way.</p>
+
+  <h2>Why the Brain Deletes the Evidence</h2>
+
+  <p>The human brain is wired to filter for problems. Threats. What's missing. What's still broken.</p>
+
+  <p>This is <strong>negativity bias</strong> — the well-documented tendency to weight negative experiences more heavily than positive ones. Psychologist Rick Hanson describes it simply: the brain is like Velcro for bad experiences and Teflon for good ones.</p>
+
+  <p>The result is that progress tends to slide off.</p>
+
+  <p>A nurse described it without knowing the science behind it:</p>
+
+  <div class="reddit-quote">
+    <p>"IV insertions. I struggled with them so much for like the first year."</p>
+  </div>
+
+  <p>Now she inserts IVs without thinking. The skill that once felt impossible is invisible to her — not because it isn't there, but because it became routine. The brain stopped logging it as an achievement the moment it became reliable.</p>
+
+  <p>A teacher said:</p>
+
+  <div class="reddit-quote">
+    <p>"New teachers think they're teaching content. Then they realize they're actually teaching routines, expectations, and relationships first. Once that clicks — everything changes."</p>
+  </div>
+
+  <p>The click happened. The evidence of growth is real. But memory doesn't hold it. The brain has already moved on to the next problem.</p>
+
+  <h2>The Gap Between Improving and Feeling Like You're Improving</h2>
+
+  <p>One of the comments that stopped me came from r/Positivity.</p>
+
+  <div class="pull-quote">
+    "The gap between actually improving and feeling like you're improving is real."
+  </div>
+
+  <p>That sentence is worth reading twice.</p>
+
+  <p>The improvement can be happening in reality while the perception lags behind. By the time you recognize growth in one area, you've already moved on to the next thing you think needs fixing.</p>
+
+  <p>This is not a motivation problem. It is not a discipline problem. It is a <strong>timing problem</strong>.</p>
+
+  <p>Progress happens first. Recognition — if it comes at all — comes later. Sometimes much later. Sometimes never.</p>
+
+  <p>And in that gap, people conclude they're failing. They assume they're not doing enough. They question whether the work is working. They start looking for a better system, a stricter routine, a harder commitment.</p>
+
+  <p>When what they actually need is evidence of what they've already done.</p>
+
+  <h2>What Cyclists Figured Out That Most People Haven't</h2>
+
+  <p>Cyclists solved this problem before most of us knew it was a problem.</p>
+
+  <p>They called it Strava.</p>
+
+  <p>Strava doesn't make you faster. It keeps the record of how fast you used to be — so that when you look back, you can see how far you've come. You can look at a hill you once had to walk and see the time you rode it last year, and the better time you rode it this year.</p>
+
+  <p>The hill didn't get easier. You got stronger. Strava just kept the proof.</p>
+
+  <p>One rider described it:</p>
+
+  <div class="reddit-quote">
+    <p>"That hill I had to walk up five years ago? Last year I could ride up it in 2.5 minutes. This spring I did it in 2. I know I'm maintaining fitness and bettering myself."</p>
+  </div>
+
+  <p>Without the record, that progress would be invisible. The rider would feel the same level of effort — because effort normalizes — and conclude that nothing had changed.</p>
+
+  <div class="highlight-block">
+    <span class="hl-label">The record is the thing</span>
+    <p>Most people don't have a record for their life. They have a record for their rides, their weight, their finances. But not for who they are becoming. Not for the decisions they are making better. Not for the conversations they handle now that used to floor them. Not for the days they showed up even when they didn't want to. That evidence exists. It just disappears before anyone captures it.</p>
+  </div>
+
+  <h2>The Discipline Industry Has Been Selling You the Wrong Diagnosis</h2>
+
+  <p>The self-improvement industry is built on a single premise: you are not doing enough. Work harder. Build better habits. Be more disciplined.</p>
+
+  <p>And sometimes that diagnosis is right.</p>
+
+  <p>But a surprising number of people who believe they have a discipline problem are actually dealing with something different.</p>
+
+  <p>They are making progress. Real progress. The kind that shows up in results, in feedback, in outcomes. They are exercising more than they used to. Handling stress better. Learning faster. Earning more. Becoming better at the things that matter to them.</p>
+
+  <p>And yet when you ask them how they're doing — genuinely ask — they will tell you they're falling behind.</p>
+
+  <p>One person on Reddit described it:</p>
+
+  <div class="reddit-quote">
+    <p>"The problem wasn't that I wasn't moving. It was the self-judging itself."</p>
+  </div>
+
+  <p>Another said:</p>
+
+  <div class="reddit-quote">
+    <p>"The judging usually shows up the moment I'm about to actually feel good about something. Like a guard at the door."</p>
+  </div>
+
+  <p>That guard is real. It is well-documented in behavioral science. And it has nothing to do with discipline.</p>
+
+  <p>It has to do with recognition.</p>
+
+  <h2>What Actually Changes When You Start Keeping Score</h2>
+
+  <p>There is research behind this that matters.</p>
+
+  <p><strong>Karl Weick's work on small wins</strong> shows that people who acknowledge incremental progress are more likely to sustain effort over time — not because they feel more motivated, but because they have evidence that the effort is working.</p>
+
+  <p><strong>Rick Hanson's research on positive neuroplasticity</strong> shows that the brain requires deliberate effort to encode positive experiences — they need to be held in conscious awareness for at least 12 seconds to move from short-term to long-term memory. Without that effort, they evaporate.</p>
+
+  <p><strong>Dan Sullivan</strong>, the business coach, built an entire framework around this idea. He calls it the Gap and the Gain. Most people measure themselves against where they want to be — the Gap. The ones who sustain progress measure themselves against where they started — the Gain.</p>
+
+  <p>The math of your progress doesn't change. What changes is which direction you're looking.</p>
+
+  <h2>The 2-Minute Practice That Fixes the Recognition Problem</h2>
+
+  <p>The fix is not complicated.</p>
+
+  <p>It is a 2-minute daily practice. Three specific moments from your day — things that went well, things you handled, evidence of who you are becoming. Not a diary. Not a reflection exercise. A capture system.</p>
+
+  <p>The same way Strava captures your ride before the effort normalizes, this captures your wins before the brain files them as ordinary.</p>
+
+  <p>The research calls this <strong>implementation intentions</strong> — the act of making specific observations about your own behavior, which encodes them more durably than vague positive feelings. Gollwitzer and Sheeran found that people who make specific behavioral records are two to three times more likely to maintain progress toward their goals.</p>
+
+  <p>What gets captured gets kept. What gets kept becomes visible. What becomes visible becomes the foundation for knowing — actually knowing — how far you've come.</p>
+
+  <h2>Yesterday's Breakthrough Becomes Today's Baseline</h2>
+
+  <p>The marathon runners taught me something I hadn't put into words until this week.</p>
+
+  <p>The thing you once thought was extraordinary — your best effort, your hardest day, your biggest win — has a shelf life. Left uncaptured, it becomes your new starting point. The baseline resets. And you stand at the new baseline feeling like you haven't moved.</p>
+
+  <p>One runner said:</p>
+
+  <div class="pull-quote">
+    "This was impossible once, but is now routine."
+  </div>
+
+  <p>That sentence is not a complaint. It is one of the most honest descriptions of human growth I've ever read.</p>
+
+  <p>The work is working. The brain just doesn't know how to keep score.</p>
+
+  <p>DOPAmine does.</p>
+
+  <!-- CTA -->
+  <div class="post-cta">
+    <p class="cta-eyebrow">2 minutes · 3 moments · free</p>
+    <h2 class="cta-title">Start your free <em>14-day dare</em></h2>
+    <p class="cta-body">The recognition practice takes two minutes a day. DOPAmine captures your wins before your brain resets the baseline. No card. No commitment.</p>
+    <a href="https://mydopa.app/app.html" class="btn-cta">Start free — 14 days →</a>
+    <p class="cta-fine">Free. No card needed.</p>
+  </div>
+
+  <!-- More posts -->
+  <div class="more-posts">
+    <p class="more-label">Also from the lab</p>
+    <div class="more-grid">
+      <a href="/blog/can-you-remember-last-tuesday" class="more-card">
+        <p class="more-card-tag">The Science</p>
+        <h3 class="more-card-title">Can You Remember the Best Moment from Last Tuesday?</h3>
+        <p class="more-card-excerpt">Most people can't. Not because the day was bad — because your brain deleted it. Here's why, and what to do about it.</p>
+      </a>
+      <a href="/blog/consistency-is-the-compounding-effect" class="more-card">
+        <p class="more-card-tag">The Science</p>
+        <h3 class="more-card-title">Consistency Is the Compounding Effect Nobody Talks About</h3>
+        <p class="more-card-excerpt">Small actions compound. The problem is the brain stops counting them. Here's what changes when you force it to keep score.</p>
+      </a>
+    </div>
+  </div>
+
+</article>
+
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">DOPA</span><span class="m">mine</span></a>
+  <p class="footer-tag">"Your dopamine. From the inside."</p>
+</footer>
+
+<!-- Structured data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "You Don't Have a Discipline Problem. You Have a Recognition Problem.",
+  "description": "Most people don't lack discipline — they lack a way to see their own progress. Here's the behavioral science behind the recognition gap, and the 2-minute fix that closes it.",
+  "author": {
+    "@type": "Organization",
+    "name": "DOPAmine",
+    "url": "https://mydopa.app"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "DOPAmine",
+    "url": "https://mydopa.app"
+  },
+  "datePublished": "2026-06-03",
+  "dateModified": "2026-06-03",
+  "url": "https://mydopa.app/blog/you-dont-have-a-discipline-problem",
+  "keywords": "most people don't lack discipline, recognition problem, negativity bias, small wins, gap and the gain, progress tracking",
+  "articleSection": "The Science"
+}
+</script>
+
+</body>
+</html>

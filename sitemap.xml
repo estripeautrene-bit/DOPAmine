@@ -20,4 +20,8 @@
     <loc>https://mydopa.app/cinco-a-uno-sesgo-negatividad.html</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://mydopa.app/blog/you-dont-have-a-discipline-problem</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>

@@ -5,23 +5,43 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mydopa.app/consistency-is-the-compounding-effect.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mydopa.app/five-to-one-negativity-bias.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mydopa.app/fuenf-zu-eins-negativitaets-bias.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mydopa.app/cinco-a-uno-sesgo-negatividad.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://mydopa.app/blog/you-dont-have-a-discipline-problem</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/how-to-build-magnetic-confidence</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/two-minute-daily-mindset-practice</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/how-to-rewire-your-brain-to-be-positive</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/founder-story</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/wanting-vs-deciding</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/consistency-is-the-compounding-effect</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/five-to-one-rule-negativity-bias</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/cinco-a-uno-sesgo-de-negatividad</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/fuenf-zu-eins-negativitaets-bias</loc>
     <priority>0.8</priority>
   </url>
 </urlset>

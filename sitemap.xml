@@ -21,6 +21,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mydopa.app/blog/the-three-hour-drive</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mydopa.app/blog/founder-story</loc>
     <priority>0.8</priority>
   </url>

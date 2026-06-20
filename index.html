@@ -226,12 +226,12 @@ nav{
   display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
 }
 .mockup-frame{
-  border-radius:0;overflow:hidden;
-  background:transparent;
-  border:none;
+  border-radius:24px;overflow:hidden;
+  background:var(--panel);
+  border:1px solid rgba(168,85,247,0.15);
   aspect-ratio:9/19;
 }
-.mockup-frame img{width:100%;height:100%;display:block;object-fit:contain;}
+.mockup-frame img{width:100%;height:100%;display:block;object-fit:cover;object-position:top center;}
 
 /* ── QUIZ ENTRY ── */
 .quiz-entry{
@@ -674,34 +674,34 @@ footer{
         <circle cx="375" cy="170" r="163" fill="none" stroke="#FFB020" stroke-width="5" opacity="0.07"/>
         <circle cx="375" cy="170" r="163" fill="none" stroke="url(#dopa-og)" stroke-width="1.5"/>
 
-        <!-- LEFT CIRCLE: LEARNING -->
-        <rect x="152" y="56" width="46" height="46" rx="8" fill="rgba(123,47,190,0.18)" stroke="rgba(168,85,247,0.35)" stroke-width="1"/>
-        <g transform="translate(163,67) scale(0.83)">
+        <!-- LEFT CIRCLE: LEARNING — centered in exclusive zone x=112, vertically at mascot height -->
+        <rect x="89" y="91" width="46" height="46" rx="8" fill="rgba(123,47,190,0.18)" stroke="rgba(168,85,247,0.35)" stroke-width="1"/>
+        <g transform="translate(102,104) scale(0.83)">
           <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="#A855F7" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
-        <text x="175" y="118" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#A855F7">LEARNING</text>
-        <text x="175" y="137" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">The science</text>
-        <text x="175" y="153" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">and lessons</text>
-        <text x="175" y="169" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">that build</text>
-        <text x="175" y="185" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">understanding</text>
+        <text x="112" y="154" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#A855F7">LEARNING</text>
+        <text x="112" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">The science</text>
+        <text x="112" y="186" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">and lessons</text>
+        <text x="112" y="202" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">that build</text>
+        <text x="112" y="218" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">understanding</text>
 
-        <!-- CENTER OVERLAP: PULSING GLOW + MASCOT -->
-        <circle cx="275" cy="158" r="55" fill="rgba(255,176,32,0.05)"/>
-        <circle cx="275" cy="158" r="50" fill="none" stroke="rgba(255,176,32,0.5)" stroke-width="1"><animate attributeName="r" values="48;78;48" dur="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/></circle>
-        <circle cx="275" cy="158" r="44" fill="none" stroke="rgba(168,85,247,0.4)" stroke-width="1"><animate attributeName="r" values="42;68;42" dur="2.8s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" begin="0.6s" repeatCount="indefinite"/></circle>
-        <circle cx="275" cy="158" r="36" fill="none" stroke="rgba(255,176,32,0.3)" stroke-width="1"><animate attributeName="r" values="34;56;34" dur="2.8s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0;0.3" dur="2.8s" begin="1.2s" repeatCount="indefinite"/></circle>
-        <image href="assets/mascot.png" x="220" y="105" width="110" height="110"/>
-        <text x="275" y="242" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px" fill="#FFFFFF">MYDOPA</text>
+        <!-- CENTER OVERLAP: PULSING GLOW + MASCOT (77x77, 30% smaller than 110) -->
+        <circle cx="275" cy="160" r="42" fill="rgba(255,176,32,0.05)"/>
+        <circle cx="275" cy="160" r="36" fill="none" stroke="rgba(255,176,32,0.5)" stroke-width="1"><animate attributeName="r" values="36;62;36" dur="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/></circle>
+        <circle cx="275" cy="160" r="30" fill="none" stroke="rgba(168,85,247,0.4)" stroke-width="1"><animate attributeName="r" values="30;52;30" dur="2.8s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" begin="0.6s" repeatCount="indefinite"/></circle>
+        <circle cx="275" cy="160" r="24" fill="none" stroke="rgba(255,176,32,0.3)" stroke-width="1"><animate attributeName="r" values="24;42;24" dur="2.8s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0;0.3" dur="2.8s" begin="1.2s" repeatCount="indefinite"/></circle>
+        <image href="assets/mascot.png" x="237" y="122" width="77" height="77"/>
+        <text x="275" y="220" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px" fill="#FFFFFF">MYDOPA</text>
 
-        <!-- RIGHT CIRCLE: COACHING -->
-        <rect x="352" y="56" width="46" height="46" rx="8" fill="rgba(255,107,0,0.12)" stroke="rgba(255,176,32,0.35)" stroke-width="1"/>
-        <g transform="translate(363,67) scale(0.83)">
+        <!-- RIGHT CIRCLE: COACHING — centered in exclusive zone x=438, vertically at mascot height -->
+        <rect x="415" y="91" width="46" height="46" rx="8" fill="rgba(255,107,0,0.12)" stroke="rgba(255,176,32,0.35)" stroke-width="1"/>
+        <g transform="translate(428,104) scale(0.83)">
           <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke="#FFB020" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
-        <text x="375" y="118" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#FFB020">COACHING</text>
-        <text x="375" y="137" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">Support and</text>
-        <text x="375" y="153" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">guidance when</text>
-        <text x="375" y="169" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">you need it</text>
+        <text x="438" y="154" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#FFB020">COACHING</text>
+        <text x="438" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">Support and</text>
+        <text x="438" y="186" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">guidance when</text>
+        <text x="438" y="202" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">you need it</text>
       </svg>
       <p style="font-family:'DM Sans',sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:600;color:#FFB020;letter-spacing:0.3px;text-align:center;margin:20px 0 0;">Your progress. Your proof. Your power.</p>
     </div>

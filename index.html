@@ -310,7 +310,10 @@ footer{
 /* ── QUIZ OVERLAY ── */
 .quiz-overlay{
   position:fixed;inset:0;z-index:500;
-  background:var(--bg);
+  background:
+    radial-gradient(ellipse 500px 500px at -60px -60px,rgba(123,47,190,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 420px 420px at calc(100% + 60px) calc(100% + 60px),rgba(255,176,32,.13) 0%,transparent 70%),
+    var(--bg);
   display:none;flex-direction:column;
   overflow-y:auto;
 }
@@ -326,6 +329,7 @@ footer{
   display:flex;align-items:center;gap:6px;
   font-size:13px;font-weight:500;
 }
+.quiz-wordmark{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--off);letter-spacing:-.3px;}
 .quiz-progress-bar{
   height:3px;background:rgba(168,85,247,.15);
   border-radius:999px;flex:1;margin:0 24px;
@@ -338,15 +342,15 @@ footer{
 
 .quiz-screen{
   flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;
-  padding:20px 28px 48px;
+  align-items:center;justify-content:center;
+  padding:40px 28px;
   text-align:center;
   display:none;
 }
 .quiz-screen.active{display:flex;}
 
 .quiz-q{
-  font-family:var(--fd);font-size:clamp(22px,4vw,34px);
+  font-family:var(--fd);font-size:clamp(26px,4vw,34px);
   font-weight:700;line-height:1.2;letter-spacing:-.5px;
   color:var(--off);margin-bottom:40px;max-width:560px;
 }
@@ -357,26 +361,28 @@ footer{
   background:var(--panel);
   border:1px solid rgba(168,85,247,.18);
   border-radius:16px;cursor:pointer;
-  font-family:var(--fb);font-size:15px;font-weight:400;color:var(--off);
+  font-family:var(--fb);font-size:16px;font-weight:400;color:var(--off);
   text-align:left;transition:background .15s,border-color .15s;
   display:flex;align-items:center;gap:12px;
 }
 .quiz-card:hover{background:#130F23;border-color:rgba(168,85,247,.35);}
 .quiz-card.selected{background:var(--purple-core);border-color:var(--purple-core);color:#fff;}
 .quiz-card-emoji{font-size:20px;flex-shrink:0;}
+.quiz-icon-tile{width:40px;height:40px;flex-shrink:0;border-radius:8px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.2);display:flex;align-items:center;justify-content:center;}
+.quiz-card.selected .quiz-icon-tile{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);}
 
 /* Likert scale */
 .quiz-likert{display:flex;gap:8px;justify-content:center;width:100%;max-width:400px;}
 .likert-btn{
   flex:1;padding:14px 8px;
   background:var(--panel);border:1px solid rgba(168,85,247,.18);
-  border-radius:12px;cursor:pointer;font-size:11px;
+  border-radius:12px;cursor:pointer;font-size:13px;
   color:var(--muted);transition:all .15s;text-align:center;
 }
 .likert-btn:hover{border-color:rgba(168,85,247,.4);}
 .likert-btn.selected{background:var(--purple-core);border-color:var(--purple-core);color:#fff;}
 .likert-labels{display:flex;justify-content:space-between;width:100%;max-width:400px;margin-top:8px;}
-.likert-label{font-size:11px;color:var(--muted);}
+.likert-label{font-size:13px;color:var(--muted);}
 
 /* Response card */
 .response-card{
@@ -385,7 +391,7 @@ footer{
   background:rgba(255,176,32,.07);
   border:1px solid rgba(255,176,32,.18);
   border-radius:14px;
-  font-size:14px;color:rgba(250,250,247,0.75);
+  font-size:15px;color:rgba(250,250,247,0.75);
   line-height:1.65;text-align:left;
   display:none;
 }
@@ -826,20 +832,25 @@ footer{
 
   <!-- Nav bar -->
   <div class="quiz-nav">
-    <button class="quiz-back" id="quizBack" onclick="quizBack()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      Back
-    </button>
+    <span class="quiz-wordmark">MyDopa</span>
     <div class="quiz-progress-bar">
       <div class="quiz-progress-fill" id="quizFill" style="width:0%"></div>
     </div>
-    <span style="font-size:12px;color:var(--muted);width:60px;text-align:right;" id="quizStepLabel">1 of 7</span>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="quiz-back" id="quizBack" onclick="quizBack()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span style="font-size:12px;color:var(--muted);width:40px;text-align:right;" id="quizStepLabel">1 of 7</span>
+    </div>
   </div>
 
   <!-- Screen 0: Trust bridge -->
   <div class="quiz-screen active" id="qs0">
     <div class="quiz-interstitial">
-      <div class="quiz-interstitial-icon">📊</div>
+      <div class="quiz-interstitial-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
+      </div>
       <h2>Your progress is already happening.</h2>
       <p>Most people are moving forward every day. The brain just filters it out before it registers. This assessment shows you how much yours is keeping — and how much it is leaving behind.</p>
       <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;">Let's find out →</button>
@@ -851,19 +862,19 @@ footer{
     <p class="quiz-q">Right now, which of these feels most true?</p>
     <div class="quiz-cards">
       <button class="quiz-card" onclick="selectCard(this,1)">
-        <span class="quiz-card-emoji">🏃</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <span>I am moving fast but losing track of how far I have come</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,1)">
-        <span class="quiz-card-emoji">📈</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
         <span>I am making progress but I cannot really feel it</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,1)">
-        <span class="quiz-card-emoji">🔄</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
         <span>I work hard but end most days feeling behind</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,1)">
-        <span class="quiz-card-emoji">🎯</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
         <span>I know I am growing — I just want to capture it better</span>
       </button>
     </div>
@@ -874,11 +885,11 @@ footer{
   <div class="quiz-screen" id="qs2">
     <p class="quiz-q">At the end of a full day, how much of it can you actually name?</p>
     <div class="quiz-likert" id="ql2">
-      <button class="likert-btn" onclick="selectLikert(this,2,1)">😔</button>
-      <button class="likert-btn" onclick="selectLikert(this,2,2)">😐</button>
-      <button class="likert-btn" onclick="selectLikert(this,2,3)">🤔</button>
-      <button class="likert-btn" onclick="selectLikert(this,2,4)">🙂</button>
-      <button class="likert-btn" onclick="selectLikert(this,2,5)">😊</button>
+      <button class="likert-btn" onclick="selectLikert(this,2,1)">1</button>
+      <button class="likert-btn" onclick="selectLikert(this,2,2)">2</button>
+      <button class="likert-btn" onclick="selectLikert(this,2,3)">3</button>
+      <button class="likert-btn" onclick="selectLikert(this,2,4)">4</button>
+      <button class="likert-btn" onclick="selectLikert(this,2,5)">5</button>
     </div>
     <div class="likert-labels">
       <span class="likert-label">Almost none</span>
@@ -893,7 +904,9 @@ footer{
   <!-- Screen 3: Interstitial -->
   <div class="quiz-screen" id="qs3">
     <div class="quiz-interstitial">
-      <div class="quiz-interstitial-icon">🧠</div>
+      <div class="quiz-interstitial-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6m-5 3h4M12 2a6 6 0 0 1 6 6c0 2.2-1.2 4.2-3 5.3V16a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2.7C7.2 12.2 6 10.2 6 8a6 6 0 0 1 6-6z"/></svg>
+      </div>
       <h2>This is not a discipline problem.</h2>
       <p>The negativity bias filters out positive experiences before they reach long-term memory. Research shows a positive moment needs 12 seconds of conscious attention before your brain keeps it. Most wins never get those 12 seconds. That is what MyDopa fixes.</p>
       <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;">Continue</button>
@@ -905,19 +918,19 @@ footer{
     <p class="quiz-q">When you are in a tough moment, how quickly can you call up evidence that you handle things?</p>
     <div class="quiz-cards">
       <button class="quiz-card" onclick="selectCard(this,4)">
-        <span class="quiz-card-emoji">😔</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <span>It takes a while — I have to really think</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,4)">
-        <span class="quiz-card-emoji">😐</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
         <span>I can think of a few things but they feel distant</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,4)">
-        <span class="quiz-card-emoji">🙂</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <span>I have some examples but not enough to feel solid</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,4)">
-        <span class="quiz-card-emoji">💪</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <span>I can call it up fast — I know my track record</span>
       </button>
     </div>
@@ -932,19 +945,19 @@ footer{
     <p class="quiz-q">After a genuinely good day, what does your brain do with it?</p>
     <div class="quiz-cards">
       <button class="quiz-card" onclick="selectCard(this,5)">
-        <span class="quiz-card-emoji">😮‍💨</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></div>
         <span>By bedtime it is already gone — I am thinking about tomorrow</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,5)">
-        <span class="quiz-card-emoji">🌀</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <span>I remember it but it does not feel like proof of anything</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,5)">
-        <span class="quiz-card-emoji">✨</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
         <span>I hold onto it — it actually fuels the next day</span>
       </button>
       <button class="quiz-card" onclick="selectCard(this,5)">
-        <span class="quiz-card-emoji">🤷</span>
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <span>Honestly I rarely notice when I have had a good day</span>
       </button>
     </div>
@@ -1015,7 +1028,7 @@ footer{
       <p>Enter your email to save your results — and be first when MyDopa launches.</p>
       <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail"/>
       <button class="quiz-email-btn" onclick="submitQuizEmail()">Save my profile →</button>
-      <p class="quiz-trust">🔒 No spam. No credit card. Ever.</p>
+      <p class="quiz-trust" style="display:flex;align-items:center;justify-content:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> No spam. No credit card. Ever.</p>
       <div class="quiz-founding">
         Founding member pricing: <strong>$17.95/year</strong> — locked for life.<br>
         Public price at launch: $69.99/year.
@@ -1040,7 +1053,7 @@ footer{
   <!-- Screen 9: Confirmation -->
   <div class="quiz-screen" id="qs9">
     <div class="quiz-confirm-screen">
-      <div style="font-size:48px;margin-bottom:20px;">✓</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(123,47,190,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <h2>You are on the list.</h2>
       <p>We will send your progress profile to your email. When MyDopa launches, you will be first — at founding member pricing, locked for life.</p>
       <p class="quiz-confirm-tagline">Fall in love with your own progress. — DOPA</p>

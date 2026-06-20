@@ -199,7 +199,15 @@ nav{
   background:var(--panel);
   border:1px solid rgba(168,85,247,0.15);
   border-radius:20px;
+  padding:40px 36px;
+  display:flex;flex-direction:column;justify-content:center;
 }
+.vtp-headline{font-family:var(--fd);font-size:clamp(22px,2vw,30px);font-weight:900;line-height:1.1;letter-spacing:-.5px;color:var(--off);margin-bottom:20px;}
+.vtp-body{font-size:15px;font-weight:400;color:var(--gray);line-height:1.8;margin-bottom:28px;}
+.vtp-attr{display:flex;align-items:center;gap:12px;}
+.vtp-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.vtp-name{font-size:14px;font-weight:700;color:var(--off);}
+.vtp-title{font-size:12px;font-weight:400;color:var(--muted);margin-top:2px;}
 
 /* ── MOCKUP SECTION ── */
 .mockup-section{
@@ -576,7 +584,15 @@ footer{
       <p class="video-placeholder-text">Founder video · Coming soon</p>
     </div>
     <div class="video-text-panel">
-      <!-- FOUNDER VIDEO TEXT PANEL — content pending -->
+      <h2 class="vtp-headline">Why I built MyDopa</h2>
+      <p class="vtp-body">I was tired of motivation that fades. I wanted to build something that makes progress visible on the days you can't see it. This is that.</p>
+      <div class="vtp-attr">
+        <img src="assets/founder-avatar.jpg" alt="Rene Estripeaut" class="vtp-avatar">
+        <div>
+          <div class="vtp-name">Rene E.</div>
+          <div class="vtp-title">Founder of MyDopa</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

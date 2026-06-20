@@ -190,6 +190,35 @@ nav{
   font-style:italic;position:relative;z-index:1;
 }
 
+/* ── VIDEO COLS ── */
+.video-cols{
+  width:100%;max-width:1080px;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;
+}
+.video-text-panel{
+  background:var(--panel);
+  border:1px solid rgba(168,85,247,0.15);
+  border-radius:20px;
+}
+
+/* ── MOCKUP SECTION ── */
+.mockup-section{
+  position:relative;z-index:1;
+  padding:0 36px 80px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.mockup-inner{width:100%;max-width:1080px;}
+.mockup-copy{margin-bottom:48px;text-align:center;}
+.mockup-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.mockup-frame{
+  border-radius:20px;overflow:hidden;
+  background:var(--panel);
+  border:1px solid rgba(168,85,247,0.15);
+}
+.mockup-frame img{width:100%;display:block;}
+
 /* ── QUIZ ENTRY ── */
 .quiz-entry{
   position:relative;z-index:1;
@@ -473,7 +502,9 @@ footer{
   .quiz-screen{padding:16px 20px 40px;}
   .quiz-loader{padding:0 8px;}
   .loader-bar-label{width:130px;font-size:11px;}
-  .video-section,.quiz-entry,.blog{padding-left:20px;padding-right:20px;}
+  .video-section,.quiz-entry,.blog,.mockup-section{padding-left:20px;padding-right:20px;}
+  .video-cols{grid-template-columns:1fr;}
+  .mockup-grid{grid-template-columns:1fr;}
 }
 @media(max-width:480px){
   .sticky-cta{padding:12px 16px;}
@@ -537,11 +568,36 @@ footer{
 <!-- ═══ VIDEO PLACEHOLDER ═══ -->
 <section class="video-section reveal">
   <p class="video-label">Why I built this</p>
-  <div class="video-placeholder">
-    <div class="video-play">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+  <div class="video-cols">
+    <div class="video-placeholder">
+      <div class="video-play">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+      <p class="video-placeholder-text">Founder video · Coming soon</p>
     </div>
-    <p class="video-placeholder-text">Founder video · Coming soon</p>
+    <div class="video-text-panel">
+      <!-- FOUNDER VIDEO TEXT PANEL — content pending -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 3: MOCKUP SHOWCASE ═══ -->
+<section class="mockup-section reveal">
+  <div class="mockup-inner">
+    <div class="mockup-copy">
+      <!-- SECTION 3 HEADLINE/COPY — content pending -->
+    </div>
+    <div class="mockup-grid">
+      <div class="mockup-frame">
+        <img src="assets/mockup-welcome.png" alt="">
+      </div>
+      <div class="mockup-frame">
+        <img src="assets/mockup-allset.png" alt="">
+      </div>
+      <div class="mockup-frame">
+        <img src="assets/mockup-discoveries.png" alt="">
+      </div>
+    </div>
   </div>
 </section>
 

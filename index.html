@@ -783,6 +783,21 @@ footer{
   </div>
 </section>
 
+<!-- ═══ QUIZ CTA ═══ -->
+<section class="quiz-entry reveal">
+  <div class="quiz-inner">
+    <span class="eyebrow">The Quiz</span>
+    <h2 class="section-h" style="margin-top:20px;">Take the 2-minute quiz</h2>
+    <p class="section-sub" style="margin-top:16px;">Find out how much of your progress your brain is filtering out —<br>before you even realize it's gone.</p>
+    <a href="#" class="quiz-btn" onclick="openQuiz(event)">Take the quiz →</a>
+    <div class="quiz-proof">
+      <span><div class="quiz-proof-dot"></div>Built on 40 years of behavioral science</span>
+      <span><div class="quiz-proof-dot"></div>2 minutes · 7 questions</span>
+      <span><div class="quiz-proof-dot"></div>Founding member pricing locked</span>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="foot-logo">
@@ -1197,7 +1212,7 @@ function submitQuizEmail(){
 
 function submitEmail(email,cb){
   // Send via Resend
-  fetch('/api/waitlist',{
+  fetch('https://qcfoykmmbjvduspunvsb.supabase.co/functions/v1/waitlist',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({email:email})

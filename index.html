@@ -261,6 +261,14 @@ nav{
 }
 .quiz-btn:hover{transform:translateY(-3px);box-shadow:0 0 90px rgba(168,85,247,.7),0 6px 32px rgba(0,0,0,.4);}
 
+/* ── RESILIENCE HORIZON ── */
+.resilience-section{position:relative;z-index:1;padding:80px 36px;}
+.resilience-inner{width:100%;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:center;}
+.resilience-headline{font-family:var(--fd);font-size:clamp(28px,3vw,44px);font-weight:900;line-height:1.1;letter-spacing:-.5px;color:var(--off);margin-bottom:20px;}
+.resilience-sub{font-size:16px;font-weight:400;color:var(--gray);line-height:1.7;}
+.resilience-screen-wrap{border-radius:20px;overflow:hidden;box-shadow:0 0 60px rgba(123,47,190,0.18);}
+.resilience-screen{width:100%;display:block;object-fit:cover;transform:scale(1.08);transform-origin:center center;}
+
 /* ── BLOG ── */
 .blog{padding:80px 36px 100px;position:relative;z-index:1;}
 .blog-inner{max-width:900px;margin:0 auto;}
@@ -516,7 +524,8 @@ footer{
   .quiz-screen{padding:16px 20px 40px;}
   .quiz-loader{padding:0 8px;}
   .loader-bar-label{width:130px;font-size:11px;}
-  .video-section,.blog,.mockup-section{padding-left:20px;padding-right:20px;}
+  .video-section,.blog,.mockup-section,.resilience-section{padding-left:20px;padding-right:20px;}
+  .resilience-inner{grid-template-columns:1fr;}
   .video-cols{grid-template-columns:1fr;}
   .mockup-inner{grid-template-columns:1fr;}
   .mockup-grid{grid-template-columns:1fr;}
@@ -708,6 +717,19 @@ footer{
       <p style="font-family:'DM Sans',sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:600;color:#FFB020;letter-spacing:0.3px;text-align:center;margin:20px 0 0;">Your progress. Your proof. Your power.</p>
     </div>
 
+  </div>
+</section>
+
+<!-- ═══ RESILIENCE HORIZON ═══ -->
+<section class="resilience-section reveal">
+  <div class="resilience-inner">
+    <div class="resilience-copy">
+      <h2 class="resilience-headline">One off day doesn't erase what you're building.</h2>
+      <p class="resilience-sub">MyDopa shows the bigger picture so you stay motivated and keep going.</p>
+    </div>
+    <div class="resilience-screen-wrap">
+      <img src="assets/screen-progress.png" alt="MyDopa Resilience Horizon" class="resilience-screen">
+    </div>
   </div>
 </section>
 

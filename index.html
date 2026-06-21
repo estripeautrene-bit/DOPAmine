@@ -128,13 +128,13 @@ nav{
   backdrop-filter:blur(16px);
   border-top:1px solid rgba(168,85,247,0.2);
   padding:14px 24px;
-  text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:18px;
   transform:translateY(100%);transition:transform .3s ease;
 }
 .sticky-cta.visible{transform:translateY(0);}
-.sticky-cta-text{font-size:14px;color:var(--gray);display:none;margin-right:18px;vertical-align:middle;white-space:nowrap;}
+.sticky-cta-text{font-size:14px;color:var(--gray);display:none;}
 .sticky-cta-btn{
-  display:inline-flex;align-items:center;gap:8px;vertical-align:middle;
+  display:inline-flex;align-items:center;gap:8px;
   background:linear-gradient(135deg,var(--purple-core),#6D28D9);
   color:#fff;font-family:var(--fb);font-size:14px;font-weight:600;
   padding:11px 26px;border-radius:999px;border:none;cursor:pointer;
@@ -143,7 +143,7 @@ nav{
   transition:transform .2s;
 }
 .sticky-cta-btn:hover{transform:translateY(-1px);}
-@media(min-width:640px){.sticky-cta-text{display:inline;}}
+@media(min-width:640px){.sticky-cta-text{display:block;}}
   opacity:0;animation:rise .9s ease forwards .68s;
 }
 
@@ -800,7 +800,7 @@ footer{
   <div class="quiz-inner">
     <span class="eyebrow">The Quiz</span>
     <h2 class="section-h" style="margin-top:20px;">Take the 2-minute quiz</h2>
-    <p class="section-sub" style="margin-top:16px;">Find out how much of your progress your brain is filtering out —<br>before you even realize it's gone.</p>
+    <p class="section-sub" style="margin-top:16px;margin-left:auto;margin-right:auto;">Find out how much of your progress your brain is filtering out —<br>before you even realize it's gone.</p>
     <a href="#" class="quiz-btn" onclick="openQuiz(event)">Take the quiz →</a>
     <div class="quiz-proof">
       <span><div class="quiz-proof-dot"></div>Built on 40 years of behavioral science</span>

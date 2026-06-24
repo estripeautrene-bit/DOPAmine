@@ -315,13 +315,14 @@ footer{
     radial-gradient(ellipse 420px 420px at calc(100% + 60px) calc(100% + 60px),rgba(255,176,32,.13) 0%,transparent 70%),
     var(--bg);
   display:none;flex-direction:column;
-  overflow-y:auto;
+  overflow:hidden;
 }
 .quiz-overlay.active{display:flex;}
 
 .quiz-nav{
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 28px;flex-shrink:0;
+  position:relative;z-index:2;
 }
 .quiz-back{
   background:none;border:none;color:var(--gray);
@@ -346,8 +347,12 @@ footer{
   padding:40px 28px;
   text-align:center;
   display:none;
+  position:relative;z-index:2;
 }
 .quiz-screen.active{display:flex;}
+.quiz-bloom-top{position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:680px;height:680px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,0.16) 0%,rgba(168,85,247,0.06) 40%,transparent 70%);pointer-events:none;z-index:1;}
+.quiz-bloom-bottom{position:absolute;bottom:-100px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,176,32,0.07) 0%,transparent 70%);pointer-events:none;z-index:1;}
+#qs6.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;}
 
 .quiz-q{
   font-family:var(--fd);font-size:clamp(26px,4vw,34px);
@@ -832,6 +837,8 @@ footer{
 
 <!-- ═══ QUIZ OVERLAY ═══ -->
 <div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-bloom-top"></div>
+  <div class="quiz-bloom-bottom"></div>
 
   <!-- Nav bar -->
   <div class="quiz-nav">
@@ -854,15 +861,18 @@ footer{
       <div class="quiz-interstitial-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
       </div>
-      <h2>Your progress is already happening.</h2>
-      <p>Most people are moving forward every day. The brain just filters it out before it registers. This assessment shows you how much yours is keeping — and how much it is leaving behind.</p>
-      <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;">Let's find out →</button>
+      <h2>This may not be for everyone.</h2>
+      <p>MyDopa is not for people looking for another habit tracker, journal, or motivation app.</p>
+      <p>It is for people who are already moving — working, rebuilding, learning, showing up — but cannot always see whether their effort is actually adding up.</p>
+      <p>Take the Progress Profile to see if this is the problem your brain has been quietly living with.</p>
+      <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;margin-left:auto;margin-right:auto;">See if MyDopa fits me →</button>
     </div>
   </div>
 
   <!-- Screen 1: Q1 -->
   <div class="quiz-screen" id="qs1">
     <p class="quiz-q">Right now, which of these feels most true?</p>
+    <p style="font-size:15px;color:rgba(245,245,240,0.65);text-align:center;margin:-24px 0 24px;">Choose the one that sounds most like the progress you usually lose sight of.</p>
     <div class="quiz-cards">
       <button class="quiz-card" onclick="selectCard(this,1,'invisible-progress')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
@@ -916,7 +926,7 @@ footer{
       </div>
       <h2>This is not a discipline problem.</h2>
       <p>Most people are not missing progress. They are missing proof. Your brain filters out positive evidence before it becomes part of your self-trust. MyDopa helps you keep what you built.</p>
-      <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;">Continue</button>
+      <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;margin-left:auto;margin-right:auto;">Continue</button>
     </div>
   </div>
 
@@ -1002,7 +1012,7 @@ footer{
       </div>
       <!-- Popup 1 -->
       <div class="loader-popup" id="lp-popup1">
-        <p class="loader-popup-q">Do you track your evidence of progress anywhere right now?</p>
+        <p class="loader-popup-q">One last thing — do you currently track your wins anywhere?</p>
         <div class="loader-popup-btns">
           <button class="loader-popup-btn" onclick="loaderChoice(this,1)">No</button>
           <button class="loader-popup-btn" onclick="loaderChoice(this,1)">Sometimes</button>
@@ -1011,7 +1021,7 @@ footer{
       </div>
       <!-- Popup 2 -->
       <div class="loader-popup" id="lp-popup2">
-        <p class="loader-popup-q">Have you ever finished something you were proud of — and forgotten it within a week?</p>
+        <p class="loader-popup-q">Most people answer yes to this. Have you?</p>
         <div class="loader-popup-btns">
           <button class="loader-popup-btn" onclick="loaderChoice(this,2)">No</button>
           <button class="loader-popup-btn" onclick="loaderChoice(this,2)">Yes</button>

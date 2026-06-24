@@ -864,21 +864,25 @@ footer{
   <div class="quiz-screen" id="qs1">
     <p class="quiz-q">Right now, which of these feels most true?</p>
     <div class="quiz-cards">
-      <button class="quiz-card" onclick="selectCard(this,1)">
+      <button class="quiz-card" onclick="selectCard(this,1,'invisible-progress')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <span>I am moving fast but losing track of how far I have come</span>
+        <span>I keep moving but I cannot tell if any of it is actually adding up</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,1)">
+      <button class="quiz-card" onclick="selectCard(this,1,'identity-lag')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-        <span>I am making progress but I cannot really feel it</span>
+        <span>I know I am changing but my brain still treats me like the old version</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,1)">
+      <button class="quiz-card" onclick="selectCard(this,1,'feeling-behind')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
-        <span>I work hard but end most days feeling behind</span>
+        <span>I work hard but I end most days feeling behind everyone else</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,1)">
+      <button class="quiz-card" onclick="selectCard(this,1,'self-trust-gap')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-        <span>I know I am growing — I just want to capture it better</span>
+        <span>I handle things, but when I really need to trust myself, the evidence is not there</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,1,'life-on-pause')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg></div>
+        <span>My life keeps moving but it does not feel like it is building toward anything</span>
       </button>
     </div>
     <button class="quiz-continue" id="qc1" onclick="goNext()">Continue</button>
@@ -911,7 +915,7 @@ footer{
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>
       </div>
       <h2>This is not a discipline problem.</h2>
-      <p>The negativity bias filters out positive experiences before they reach long-term memory. Research shows a positive moment needs 12 seconds of conscious attention before your brain keeps it. Most wins never get those 12 seconds. That is what MyDopa fixes.</p>
+      <p>Most people are not missing progress. They are missing proof. Your brain filters out positive evidence before it becomes part of your self-trust. MyDopa helps you keep what you built.</p>
       <button class="quiz-continue visible" onclick="goNext()" style="margin-top:32px;">Continue</button>
     </div>
   </div>
@@ -965,7 +969,7 @@ footer{
       </button>
     </div>
     <div class="response-card" id="rc5">
-      The brain does not hold wins automatically. It holds threats. <strong>MyDopa is the daily habit that makes it hold wins instead.</strong>
+      The brain does not hold evidence automatically. It holds threats. <strong>MyDopa trains it to keep proof of what you built instead.</strong>
     </div>
     <button class="quiz-continue" id="qc5" onclick="goNext()">Continue</button>
   </div>
@@ -998,7 +1002,7 @@ footer{
       </div>
       <!-- Popup 1 -->
       <div class="loader-popup" id="lp-popup1">
-        <p class="loader-popup-q">Do you track your wins anywhere right now?</p>
+        <p class="loader-popup-q">Do you track your evidence of progress anywhere right now?</p>
         <div class="loader-popup-btns">
           <button class="loader-popup-btn" onclick="loaderChoice(this,1)">No</button>
           <button class="loader-popup-btn" onclick="loaderChoice(this,1)">Sometimes</button>
@@ -1027,8 +1031,8 @@ footer{
   <!-- Screen 7: Email gate -->
   <div class="quiz-screen" id="qs7">
     <div class="quiz-email-screen">
-      <h2>Your Progress Profile is ready.</h2>
-      <p>Enter your email to save your results — and be first when MyDopa launches.</p>
+      <h2 id="profileHeadline">Your Progress Profile is ready.</h2>
+      <p id="profileBody"></p>
       <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail"/>
       <button class="quiz-email-btn" onclick="submitQuizEmail()">Save my profile →</button>
       <label class="quiz-consent">
@@ -1108,6 +1112,7 @@ var totalQuestions=7;
 var screens=['qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs7','qs8','qs9'];
 var loaderStep=0;
 var loaderDone=false;
+let selectedProfile='';
 
 function openQuiz(e){
   if(e) e.preventDefault();
@@ -1129,6 +1134,7 @@ function showScreen(n){
   updateProgress(n);
   // Trigger loader when on loader screen
   if(n===6 && !loaderDone) startLoader();
+  if(n===7) renderProfileScreen();
 }
 
 function updateProgress(n){
@@ -1148,16 +1154,30 @@ function quizBack(){
 }
 
 // Card selection
-function selectCard(btn,screenIdx){
+function selectCard(btn,screenIdx,profile){
   var cards=btn.closest('.quiz-cards').querySelectorAll('.quiz-card');
   cards.forEach(function(c){c.classList.remove('selected');});
   btn.classList.add('selected');
+  if(profile) selectedProfile=profile;
   // Show response card if exists
   var rc=document.getElementById('rc'+screenIdx);
   if(rc) rc.classList.add('visible');
   // Show continue
   var qc=document.getElementById('qc'+screenIdx);
   if(qc) qc.classList.add('visible');
+}
+
+function renderProfileScreen(){
+  var profiles={
+    'invisible-progress':{h:'Your Progress Profile: Invisible Progress',p:'You are doing more than your brain is letting you keep. MyDopa helps you turn ordinary effort into visible evidence.'},
+    'feeling-behind':{h:'Your Progress Profile: Feeling Behind',p:'You are measuring yourself against what is missing, not what is building. MyDopa helps you collect proof that you are not standing still.'},
+    'identity-lag':{h:'Your Progress Profile: Identity Lag',p:'Your brain has not caught up to who you are becoming. MyDopa helps you close the gap between who you are and who you feel like.'},
+    'self-trust-gap':{h:'Your Progress Profile: Self-Trust Gap',p:'You have evidence that you handle things, but it does not come back fast when you need it. MyDopa helps make that evidence easier to access.'},
+    'life-on-pause':{h:'Your Progress Profile: Life on Pause',p:'You are doing more than pause feels like. MyDopa helps you collect proof that you are still moving.'}
+  };
+  var data=profiles[selectedProfile];
+  document.getElementById('profileHeadline').textContent=data?data.h:'Your Progress Profile is ready.';
+  document.getElementById('profileBody').textContent=data?data.p:'';
 }
 
 // Likert selection

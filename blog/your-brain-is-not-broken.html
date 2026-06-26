@@ -315,6 +315,18 @@
       .insight-box { padding: 24px 20px; }
       .cta-block { padding: 36px 24px; }
     }
+  
+/* ── ALSO FROM THE LAB ── */
+.lab-section { padding: 0 0 100px; }
+.lab-label { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+.lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.lab-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(123,47,190,0.15); border-radius: 14px; padding: 28px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; display: block; }
+.lab-card:hover { border-color: rgba(123,47,190,0.35); transform: translateY(-3px); }
+.lab-card-category { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--glow); margin-bottom: 12px; }
+.lab-card-title { font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 12px; }
+.lab-card-excerpt { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.lab-card-link { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--glow); font-weight: 600; }
+@media (max-width: 600px) { .lab-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -418,6 +430,28 @@
     </div>
 
   </article>
+
+
+<!-- ALSO FROM THE LAB -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="lab-section">
+    <p class="lab-label">Also from the lab</p>
+    <div class="lab-grid">
+      <a href="https://mydopa.app/blog/rick-hanson-negativity-bias" class="lab-card">
+        <p class="lab-card-category">The Science</p>
+        <p class="lab-card-title">Rick Hanson's Negativity Bias: The Full Explanation</p>
+        <p class="lab-card-excerpt">Velcro for the bad, Teflon for the good. Here is the complete science behind why the brain is built this way — and what Hanson's research says about changing it.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+      <a href="https://mydopa.app/blog/positive-neuroplasticity-how-to-rewire-your-brain" class="lab-card">
+        <p class="lab-card-category">Mental Resilience</p>
+        <p class="lab-card-title">Positive Neuroplasticity: How to Rewire Your Brain Deliberately</p>
+        <p class="lab-card-excerpt">Neuroplasticity is not a metaphor. Here is how to use it deliberately to build a brain that registers growth instead of filtering it out.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

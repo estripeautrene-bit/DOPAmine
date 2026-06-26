@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- SEO -->
+<title>How to Track Personal Progress | MyDopa</title>
+<meta name="description" content="The streak counter measures absence of failure. It does not measure presence of progress. Those are different things — and they produce completely different psychological effects."/>
+<link rel="canonical" href="https://mydopa.app/blog/how-to-track-personal-progress"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="How to Track Personal Progress"/>
+<meta property="og:description" content="The streak counter measures absence of failure. It does not measure presence of progress. Those are different things — and they produce completely different psychological effects."/>
+<meta property="og:url" content="https://mydopa.app/blog/how-to-track-personal-progress"/>
+<meta property="og:site_name" content="MyDopa"/>
+<meta property="og:image" content="https://mydopa.app/images/og-how-to-track-personal-progress.jpg"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="How to Track Personal Progress"/>
+<meta name="twitter:description" content="The streak counter measures absence of failure. It does not measure presence of progress. Those are different things — and they produce completely different psychological effects."/>
+<meta name="twitter:image" content="https://mydopa.app/images/og-how-to-track-personal-progress.jpg"/>
+
+<!-- JSON-LD BlogPosting Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Track Personal Progress",
+  "description": "The streak counter measures absence of failure. It does not measure presence of progress. Those are different things — and they produce completely different psychological effects.",
+  "url": "https://mydopa.app/blog/how-to-track-personal-progress",
+  "datePublished": "2026-06-25",
+  "dateModified": "2026-06-25",
+  "author": {
+    "@type": "Person",
+    "name": "René"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MyDopa",
+    "url": "https://mydopa.app"
+  },
+  "keywords": ["how to track personal progress", "personal progress tracking", "streak counter alternative", "daily wins", "progress journaling", "Karl Weick"],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mydopa.app/blog/how-to-track-personal-progress"
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --font-d: 'Playfair Display', Georgia, serif;
+  --font-b: 'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-d); font-size: 30px; font-weight: 900; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-back {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--purple-mid); }
+.nav-btn {
+  border: 1px solid rgba(168,85,247,0.4);
+  color: var(--purple-bright); font-family: var(--font-b); font-size: 13px; font-weight: 500;
+  padding: 9px 20px; border-radius: 999px; text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ── ARTICLE HERO ── */
+.article-hero {
+  padding: 140px 24px 80px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.article-hero::before {
+  content: '';
+  position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(123,47,190,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.1s;
+}
+.article-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--white); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.25s;
+}
+.article-h1 em { font-style: italic; color: var(--purple-bright); }
+.article-deck {
+  font-size: clamp(17px, 2vw, 21px); color: var(--gray-light);
+  font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto 48px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.article-deck strong { color: var(--white); font-weight: 500; }
+.article-meta {
+  font-size: 13px; color: var(--gray-muted);
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--purple-core), var(--purple-bright));
+  margin: 56px auto;
+  border-radius: 2px;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.article-body p {
+  font-size: 17px;
+  color: var(--gray-light);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+.article-body p strong { color: var(--white); font-weight: 600; }
+.article-body p em { font-style: italic; color: var(--purple-mid); }
+.article-body a { color: var(--purple-bright); text-decoration: underline; text-underline-offset: 3px; }
+.article-body a:hover { color: var(--purple-mid); }
+
+.article-body h2 {
+  font-family: var(--font-d);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 900; letter-spacing: -0.5px;
+  color: var(--white);
+  margin: 64px 0 28px;
+  line-height: 1.15;
+}
+.article-body h2 em { font-style: italic; color: var(--purple-bright); }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left: 3px solid var(--purple-bright);
+  padding: 20px 28px;
+  margin: 40px 0;
+  background: rgba(168,85,247,0.05);
+  border-radius: 0 8px 8px 0;
+}
+.pull-quote p {
+  font-family: var(--font-d);
+  font-size: clamp(18px, 2.5vw, 22px) !important;
+  font-style: italic;
+  color: var(--white) !important;
+  margin-bottom: 0 !important;
+  line-height: 1.5 !important;
+}
+.pull-quote cite {
+  display: block;
+  font-size: 13px;
+  color: var(--gray-muted);
+  font-style: normal;
+  margin-top: 12px;
+}
+
+/* ── THE DARE SECTION ── */
+.dare-section {
+  background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(255,176,32,0.06));
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 20px;
+  padding: 52px 48px;
+  margin: 80px 0 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.dare-section::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.1), transparent 70%);
+  pointer-events: none;
+}
+.dare-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.dare-headline {
+  font-family: var(--font-d);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 20px;
+}
+.dare-body {
+  font-size: 17px; color: var(--gray-light); line-height: 1.7;
+  max-width: 520px; margin: 0 auto 36px;
+}
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 20px;
+  padding: 52px 48px;
+  text-align: center;
+  margin: 64px 0;
+  position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.07), rgba(123,47,190,0.05) 40%, transparent 65%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.cta-headline {
+  font-family: var(--font-d);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 16px;
+}
+.cta-headline em { font-style: italic; color: var(--purple-bright); }
+.cta-sub {
+  font-size: 16px; color: var(--gray-muted); margin-bottom: 36px; line-height: 1.6;
+}
+.cta-pills {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.cta-pill {
+  font-size: 13px; font-weight: 600; padding: 8px 18px;
+  border-radius: 999px; border: 1px solid rgba(168,85,247,0.3);
+  color: var(--purple-mid);
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
+  padding: 17px 44px; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
+  border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
+.cta-fine { font-size: 13px; color: var(--gray-muted); margin-top: 16px; }
+.cta-tagline { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--purple-mid); text-shadow: 0 0 30px rgba(181,123,247,.25); margin-top: 24px; }
+
+/* ── ALSO FROM THE LAB ── */
+.lab-section {
+  padding: 0 0 100px;
+}
+.lab-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gray-muted); margin-bottom: 32px;
+}
+.lab-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.lab-card {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.1);
+  border-radius: 14px;
+  padding: 28px;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+  display: block;
+}
+.lab-card:hover {
+  border-color: rgba(168,85,247,0.3);
+  transform: translateY(-3px);
+}
+.lab-card-category {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 12px;
+}
+.lab-card-title {
+  font-family: var(--font-d);
+  font-size: 19px; font-weight: 700; color: var(--white);
+  line-height: 1.2; margin-bottom: 12px;
+}
+.lab-card-excerpt {
+  font-size: 14px; color: var(--gray-muted); line-height: 1.6;
+}
+.lab-card-link {
+  display: inline-block; margin-top: 16px;
+  font-size: 13px; color: var(--purple-bright); font-weight: 600;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy-panel);
+  border-top: 1px solid rgba(168,85,247,0.08);
+  padding: 48px 24px;
+  text-align: center;
+}
+.footer-logo { font-family: var(--font-b); font-size: 30px; font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 12px; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tagline { font-size: 14px; color: var(--gray-muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--purple-bright); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .article-hero { padding: 120px 20px 60px; }
+  .article-body { padding: 0 20px 60px; }
+  .dare-section { padding: 40px 24px; }
+  .cta-block { padding: 40px 24px; }
+  .lab-grid { grid-template-columns: 1fr; }
+  .nav-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <div class="nav-right">
+    <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+    <a href="https://mydopa.app" class="nav-btn">Take the dare →</a>
+  </div>
+</nav>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <p class="article-category">Small Wins</p>
+  <h1 class="article-h1">How to Track Personal Progress</h1>
+  <p class="article-deck">The streak counter measures absence of failure. It does not measure presence of progress. <strong>Those are different things — and they produce completely different psychological effects.</strong></p>
+  <p class="article-meta">By René &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 6 min read</p>
+</header>
+
+<div class="divider"></div>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+  <p>
+    The streak counter made sense as an idea.
+  </p>
+  <p>
+    Make progress visible. Give people something concrete to protect. Turn consistency into a game with a number that goes up every day you show up.
+  </p>
+  <p>
+    The problem is what happens the first time you miss.
+  </p>
+  <p>
+    The counter goes to zero. In one day, the entire visible record of your effort — every morning you woke up early, every session you pushed through, every small decision to keep going — gets replaced by the number two. Or one. Or zero. The negative is front and center. The months before it have vanished.
+  </p>
+  <p>
+    This is not a small design flaw. It is negativity bias built into an app that is supposed to fight negativity bias. The streak counter measures absence of failure. It does not measure presence of progress. Those are different things, and they produce completely different psychological effects.
+  </p>
+  <p>
+    There is a better way to track.
+  </p>
+
+  <h2>What tracking actually needs to do</h2>
+
+  <p>
+    Before choosing a method, it helps to be clear about the job.
+  </p>
+  <p>
+    Tracking personal progress has one real purpose: to give the brain retrievable evidence that effort is accumulating. Not to generate external accountability. Not to create a performance to show other people. To build a private body of proof that you can access when motivation fades, when doubt comes in, when the brain reaches back and finds nothing recent to work with.
+  </p>
+  <p>
+    For that purpose, the streak counter fails on a specific dimension. It measures behavior in binary terms — you did it or you did not — and resets to zero on any miss. This means the evidence it provides is primarily evidence of consistency, and it evaporates the moment consistency breaks.
+  </p>
+  <p>
+    Real progress tracking needs to survive a bad week. It needs to accumulate rather than reset. And it needs to capture something richer than whether you showed up — it needs to capture what showing up produced.
+  </p>
+
+  <h2>Why most tracking methods stop working</h2>
+
+  <p>
+    There are two common failure modes.
+  </p>
+  <p>
+    The first is complexity. The tracking system becomes the project. Elaborate spreadsheets, detailed logs, multi-axis measurements. These work briefly because building the system feels like progress. Once the system is built, maintaining it requires more effort than the habit it was tracking, and it collapses.
+  </p>
+  <p>
+    The second is abstraction. The tracked metric drifts away from the actual experience of progress. You track miles, not the feeling of being someone who runs. You track pages read, not what the ideas meant to you. You track hours worked, not what you built. The number goes up, but it tells you nothing about whether you are becoming who you are trying to become.
+  </p>
+  <p>
+    Both failure modes share the same root: the tracking is not capturing what the brain actually needs. The brain needs specific, concrete, emotionally relevant evidence — moments it can retrieve and recognize as real. Numbers on a spreadsheet are not that. A zero on a streak counter is definitely not that.
+  </p>
+
+  <h2>The method that actually works</h2>
+
+  <p>
+    The most effective form of personal progress tracking is the simplest: a daily written record of specific wins.
+  </p>
+  <p>
+    Not goals. Not metrics. Wins. Moments where you followed through, made a better choice, handled something well, built something, held to something, showed up for something or someone — including yourself.
+  </p>
+  <p>
+    Three per day is enough. Fewer feels too small to matter. More starts feeling like a task.
+  </p>
+  <p>
+    The specificity is what makes it work. "Had a good day" is not a win the brain can retrieve. "Stayed in the difficult conversation instead of shutting down, and we actually resolved it" is. "Went to the gym" dissolves within a week. "Went to the gym at 6am even though I had slept badly and almost talked myself out of it" stays retrievable for months.
+  </p>
+  <p>
+    This specificity is not about dramatizing ordinary events. It is about encoding them at a level of detail that the brain can actually hold. Rick Hanson's research on positive neuroplasticity shows that experiences need to be held in conscious awareness with some specificity and duration before they move from short-term registration to long-term memory. Vague positives do not make that transition. Specific ones do.
+  </p>
+
+  <h2>What to track and what to skip</h2>
+
+  <p>
+    Track behavior, not outcomes.
+  </p>
+  <p>
+    Outcomes are often outside your control and they arrive slowly. If you are tracking outcomes, you will go weeks without evidence of progress even in periods of genuine growth. This is demoralizing and inaccurate.
+  </p>
+  <p>
+    Behavior is always within your control and it happens daily. The decision to show up, the choice to respond thoughtfully instead of reactively, the hour spent on the thing that matters — these are real, specific, controllable events that happened today. Track these and you always have evidence, regardless of whether the outcome has arrived yet.
+  </p>
+  <p>
+    Also track character, not just productivity. The moment you stayed calm when you would normally have reacted. The time you told the truth when it was uncomfortable. The way you handled something with more patience than last month. These do not appear on a spreadsheet, but they are often the most meaningful evidence of who you are becoming.
+  </p>
+  <p>
+    <strong>Skip anything that resets.</strong> The reset mechanic is the problem with streak counters, and importing it into a different format solves nothing. Progress tracking should accumulate indefinitely. Missing a day should not erase what came before it.
+  </p>
+
+  <h2>The review practice that makes tracking compound</h2>
+
+  <p>
+    Capturing wins daily builds the raw evidence. Reviewing them regularly is what turns evidence into belief.
+  </p>
+  <p>
+    Once a week — Friday evening or Sunday morning work well — read back through the week's entries. Not to evaluate or grade yourself. To witness what actually happened. The brain's default is to remember the difficult moments and let the good ones fade. The review practice inverts this.
+  </p>
+  <p>
+    Once a month, read back through the full month. Look for patterns. What are you consistently doing well that you had not noticed as a consistent thing? Where has your floor moved — the baseline below which you no longer fall?
+  </p>
+  <p>
+    This is where progress becomes visible in the deeper sense. Not just "I did these things this week" but "I am someone who does these things now." The identity shift is slow and it is quiet, but it becomes readable in a month of specific, accumulated evidence.
+  </p>
+
+  <h2>The practical setup</h2>
+
+  <p>
+    A notebook works. An app works. A document on your phone works. The format does not matter. What matters is that it is always with you, that it takes under two minutes to complete, and that it never resets.
+  </p>
+  <p>
+    At the end of each day — before sleep is ideal — write three specific things. Name the moment. Name what you did. Name why it was evidence of someone building something.
+  </p>
+  <p>
+    Do this for thirty days before evaluating it. The practice does not feel like much in week one. By week four, you will have a body of evidence that your brain did not have before — and that body of evidence is what makes the next thirty days feel different.
+  </p>
+
+  <!-- THE DARE -->
+  <div class="dare-section reveal">
+    <p class="dare-eyebrow">The Dare</p>
+    <h2 class="dare-headline" style="margin: 0 0 20px;">Ready to start the practice?</h2>
+    <p class="dare-body">
+      Tonight, write three specific wins — not outcomes, not intentions, but concrete moments of behavior that happened today. Do it for seven days and watch a body of evidence appear where there was none.
+    </p>
+    <a href="https://mydopa.app" class="btn-primary">Start the 7-Day Dare →</a>
+    <p style="font-size:13px;color:var(--gray-muted);margin-top:16px;">Free for 7 days. No card needed.</p>
+  </div>
+
+</article>
+
+<!-- CTA BLOCK -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="cta-block reveal">
+    <p class="cta-eyebrow">Start today</p>
+    <h2 class="cta-headline">7 days &nbsp;·&nbsp; 3 moments &nbsp;·&nbsp; <em>free</em></h2>
+    <p class="cta-sub">The practice takes two minutes. The results take seven days to feel. The math does the rest.</p>
+    <div class="cta-pills">
+      <span class="cta-pill">No credit card</span>
+      <span class="cta-pill">No journaling</span>
+      <span class="cta-pill">No wellness speak</span>
+    </div>
+    <a href="https://mydopa.app" class="btn-primary">Start the 7-Day Dare →</a>
+    <p class="cta-fine">mydopa.app</p>
+    <p class="cta-tagline">Fall in love with your own progress. — DOPA</p>
+  </div>
+</div>
+
+<!-- ALSO FROM THE LAB -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="lab-section reveal">
+    <p class="lab-label">Also from the lab</p>
+    <div class="lab-grid">
+      <a href="https://mydopa.app/blog/daily-wins-habit-brain-rewire" class="lab-card">
+        <p class="lab-card-category">The Practice</p>
+        <p class="lab-card-title">The Daily Wins Habit: How 3 Things a Day Rewires Your Brain</p>
+        <p class="lab-card-excerpt">Three specific wins per day. Written down. Held for twelve seconds. Here is why this two-minute practice changes what the brain builds.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+      <a href="https://mydopa.app/blog/consistency-is-the-compounding-effect" class="lab-card">
+        <p class="lab-card-category">The Practice</p>
+        <p class="lab-card-title">Consistency Is the Compounding Effect</p>
+        <p class="lab-card-excerpt">Consistency is not the discipline to show up every day. It is the evidence that accumulates when you do — and evidence compounds the same way interest does.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <p class="footer-tagline">Fall in love with your own progress. — DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

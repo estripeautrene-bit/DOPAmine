@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- SEO -->
+<title>Why Most People Never Actually Commit to a Goal | MyDopa</title>
+<meta name="description" content="You wanted the goal. You did not commit to it. And those are not the same thing. Here is the neurological difference — and the three components of a genuine commitment."/>
+<link rel="canonical" href="https://mydopa.app/blog/why-most-people-never-actually-commit-to-a-goal"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Why Most People Never Actually Commit to a Goal"/>
+<meta property="og:description" content="You wanted the goal. You did not commit to it. And those are not the same thing. Here is the neurological difference — and the three components of a genuine commitment."/>
+<meta property="og:url" content="https://mydopa.app/blog/why-most-people-never-actually-commit-to-a-goal"/>
+<meta property="og:site_name" content="MyDopa"/>
+<meta property="og:image" content="https://mydopa.app/images/og-why-most-people-never-commit.jpg"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Why Most People Never Actually Commit to a Goal"/>
+<meta name="twitter:description" content="You wanted the goal. You did not commit to it. And those are not the same thing. Here is the neurological difference — and the three components of a genuine commitment."/>
+<meta name="twitter:image" content="https://mydopa.app/images/og-why-most-people-never-commit.jpg"/>
+
+<!-- JSON-LD BlogPosting Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why Most People Never Actually Commit to a Goal",
+  "description": "You wanted the goal. You did not commit to it. And those are not the same thing. Here is the neurological difference — and the three components of a genuine commitment.",
+  "url": "https://mydopa.app/blog/why-most-people-never-actually-commit-to-a-goal",
+  "datePublished": "2026-06-25",
+  "dateModified": "2026-06-25",
+  "author": {
+    "@type": "Person",
+    "name": "René"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MyDopa",
+    "url": "https://mydopa.app"
+  },
+  "keywords": ["why can't I commit to a goal", "wanting vs deciding", "decision fatigue", "implementation intentions", "goal commitment", "Peter Gollwitzer"],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mydopa.app/blog/why-most-people-never-actually-commit-to-a-goal"
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --font-d: 'Playfair Display', Georgia, serif;
+  --font-b: 'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-d); font-size: 30px; font-weight: 900; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-back {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--purple-mid); }
+.nav-btn {
+  border: 1px solid rgba(168,85,247,0.4);
+  color: var(--purple-bright); font-family: var(--font-b); font-size: 13px; font-weight: 500;
+  padding: 9px 20px; border-radius: 999px; text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ── ARTICLE HERO ── */
+.article-hero {
+  padding: 140px 24px 80px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.article-hero::before {
+  content: '';
+  position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(123,47,190,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.1s;
+}
+.article-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--white); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.25s;
+}
+.article-h1 em { font-style: italic; color: var(--purple-bright); }
+.article-deck {
+  font-size: clamp(17px, 2vw, 21px); color: var(--gray-light);
+  font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto 48px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.article-deck strong { color: var(--white); font-weight: 500; }
+.article-meta {
+  font-size: 13px; color: var(--gray-muted);
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--purple-core), var(--purple-bright));
+  margin: 56px auto;
+  border-radius: 2px;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.article-body p {
+  font-size: 17px;
+  color: var(--gray-light);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+.article-body p strong { color: var(--white); font-weight: 600; }
+.article-body p em { font-style: italic; color: var(--purple-mid); }
+.article-body a { color: var(--purple-bright); text-decoration: underline; text-underline-offset: 3px; }
+.article-body a:hover { color: var(--purple-mid); }
+
+.article-body h2 {
+  font-family: var(--font-d);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 900; letter-spacing: -0.5px;
+  color: var(--white);
+  margin: 64px 0 28px;
+  line-height: 1.15;
+}
+.article-body h2 em { font-style: italic; color: var(--purple-bright); }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left: 3px solid var(--purple-bright);
+  padding: 20px 28px;
+  margin: 40px 0;
+  background: rgba(168,85,247,0.05);
+  border-radius: 0 8px 8px 0;
+}
+.pull-quote p {
+  font-family: var(--font-d);
+  font-size: clamp(18px, 2.5vw, 22px) !important;
+  font-style: italic;
+  color: var(--white) !important;
+  margin-bottom: 0 !important;
+  line-height: 1.5 !important;
+}
+.pull-quote cite {
+  display: block;
+  font-size: 13px;
+  color: var(--gray-muted);
+  font-style: normal;
+  margin-top: 12px;
+}
+
+/* ── THE DARE SECTION ── */
+.dare-section {
+  background: linear-gradient(135deg, rgba(123,47,190,0.12), rgba(255,176,32,0.06));
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 20px;
+  padding: 52px 48px;
+  margin: 80px 0 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.dare-section::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.1), transparent 70%);
+  pointer-events: none;
+}
+.dare-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.dare-headline {
+  font-family: var(--font-d);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 20px;
+}
+.dare-body {
+  font-size: 17px; color: var(--gray-light); line-height: 1.7;
+  max-width: 520px; margin: 0 auto 36px;
+}
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 20px;
+  padding: 52px 48px;
+  text-align: center;
+  margin: 64px 0;
+  position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.07), rgba(123,47,190,0.05) 40%, transparent 65%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.cta-headline {
+  font-family: var(--font-d);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 16px;
+}
+.cta-headline em { font-style: italic; color: var(--purple-bright); }
+.cta-sub {
+  font-size: 16px; color: var(--gray-muted); margin-bottom: 36px; line-height: 1.6;
+}
+.cta-pills {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.cta-pill {
+  font-size: 13px; font-weight: 600; padding: 8px 18px;
+  border-radius: 999px; border: 1px solid rgba(168,85,247,0.3);
+  color: var(--purple-mid);
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
+  padding: 17px 44px; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
+  border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
+.cta-fine { font-size: 13px; color: var(--gray-muted); margin-top: 16px; }
+.cta-tagline { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--purple-mid); text-shadow: 0 0 30px rgba(181,123,247,.25); margin-top: 24px; }
+
+/* ── ALSO FROM THE LAB ── */
+.lab-section {
+  padding: 0 0 100px;
+}
+.lab-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gray-muted); margin-bottom: 32px;
+}
+.lab-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.lab-card {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.1);
+  border-radius: 14px;
+  padding: 28px;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+  display: block;
+}
+.lab-card:hover {
+  border-color: rgba(168,85,247,0.3);
+  transform: translateY(-3px);
+}
+.lab-card-category {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 12px;
+}
+.lab-card-title {
+  font-family: var(--font-d);
+  font-size: 19px; font-weight: 700; color: var(--white);
+  line-height: 1.2; margin-bottom: 12px;
+}
+.lab-card-excerpt {
+  font-size: 14px; color: var(--gray-muted); line-height: 1.6;
+}
+.lab-card-link {
+  display: inline-block; margin-top: 16px;
+  font-size: 13px; color: var(--purple-bright); font-weight: 600;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy-panel);
+  border-top: 1px solid rgba(168,85,247,0.08);
+  padding: 48px 24px;
+  text-align: center;
+}
+.footer-logo { font-family: var(--font-b); font-size: 30px; font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 12px; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tagline { font-size: 14px; color: var(--gray-muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--purple-bright); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .article-hero { padding: 120px 20px 60px; }
+  .article-body { padding: 0 20px 60px; }
+  .dare-section { padding: 40px 24px; }
+  .cta-block { padding: 40px 24px; }
+  .lab-grid { grid-template-columns: 1fr; }
+  .nav-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <div class="nav-right">
+    <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+    <a href="https://mydopa.app" class="nav-btn">Take the dare →</a>
+  </div>
+</nav>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <p class="article-category">Goals &amp; Commitment</p>
+  <h1 class="article-h1">Why Most People Never<br/><em>Actually Commit to a Goal</em></h1>
+  <p class="article-deck">You wanted the goal. You did not commit to it. And those are not the same thing. <strong>Here is the neurological difference — and the three components of a genuine commitment.</strong></p>
+  <p class="article-meta">By René &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 6 min read</p>
+</header>
+
+<div class="divider"></div>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+  <p>
+    You have set this goal before.
+  </p>
+  <p>
+    Not a version of it. This exact goal. Same intention, same starting point, same initial energy. And at some point — not in a dramatic moment of failure, but quietly — it stopped.
+  </p>
+  <p>
+    You told yourself it was timing. You told yourself you were not ready. You told yourself that next time you would be more serious about it. And you believed yourself, because the intention was genuine. It always is.
+  </p>
+  <p>
+    But here is what is worth examining: you wanted the goal. You did not commit to it. And those are not the same thing.
+  </p>
+
+  <h2>The neurological difference between wanting and deciding</h2>
+
+  <p>
+    Wanting a goal activates the brain's reward system — specifically the dopamine pathways associated with anticipation. Imagining the outcome generates a real neurological response. You feel something. It feels like motivation.
+  </p>
+  <p>
+    But wanting is future-oriented. It is built on the imagined version of the outcome, and imagined outcomes are unstable. They compete with other imagined outcomes. They fade when the day gets difficult. They dissolve entirely when the real cost of the goal becomes visible.
+  </p>
+  <p>
+    Deciding is different in a specific neurological way. A genuine decision activates the prefrontal cortex — the region responsible for planning, self-regulation, and the integration of long-term goals with present behavior. A decision does not just feel like something. It generates a specific intention structure that links the goal to the conditions under which you will act.
+  </p>
+  <p>
+    Psychologist Peter Gollwitzer's research on <a href="https://mydopa.app/blog/implementation-intentions">implementation intentions</a> — plans structured as "when X happens, I will do Y" — shows that this specific intention structure more than doubles goal achievement rates across dozens of studies. Not because the person is more motivated. Because their brain has a concrete script to run when the relevant moment arrives.
+  </p>
+  <p>
+    Wanting does not create this structure. Deciding does.
+  </p>
+
+  <h2>Why goals feel like commitments but are not</h2>
+
+  <p>
+    The problem is that wanting a goal feels identical to committing to one, from the inside.
+  </p>
+  <p>
+    You set the goal. You feel the energy of it. You tell someone about it, and the telling generates a brief sense of accountability. You might buy something related to it — a notebook, a piece of equipment, a course. Each of these actions feels like commitment because they require some investment.
+  </p>
+  <p>
+    But none of them are the actual commitment. They are the performance of commitment without the structure.
+  </p>
+  <p>
+    The actual commitment requires something the brain finds genuinely uncomfortable: a specific decision about what you will do when the moment arrives where you would otherwise not. Not when you feel ready. Not when conditions are ideal. When you are tired, when it is inconvenient, when every part of you wants to do something easier.
+  </p>
+  <p>
+    Most people never make this specific decision. They hold the goal as a wish — something they intend to pursue when circumstances cooperate — and mistake the wish for a commitment.
+  </p>
+  <p>
+    When circumstances do not cooperate, the wish fades. This gets labeled as a failure of willpower. It is actually a failure of structure.
+  </p>
+
+  <h2>The role of decision fatigue</h2>
+
+  <p>
+    There is a second mechanism that undermines commitment, and it operates entirely below conscious awareness.
+  </p>
+  <p>
+    Every decision you make across a day — what to eat, what to say in an email, whether to take the call — draws from the same cognitive resource. That resource is finite. As it depletes, the brain increasingly defaults to the easiest available option: whatever requires the least deliberation.
+  </p>
+  <p>
+    Roy Baumeister's research on decision fatigue shows that this depletion is not metaphorical. It is measurable. Judges give harsher sentences later in the day. People make impulsive food choices in the afternoon that they would not make in the morning. The quality of decision-making deteriorates predictably as the day progresses.
+  </p>
+  <p>
+    If your goal requires a decision at 6pm — whether to go to the gym, whether to work on the project, whether to make the call — you are competing against a depleted decision-making system. The brain is looking for the exit. It finds the easier option and calls it a choice.
+  </p>
+  <p>
+    The solution is not more willpower. It is fewer decisions. Goals that are embedded in specific, predetermined conditions — "when I sit down at my desk at 8am, I will work on the project for 45 minutes before I open email" — bypass the depletion entirely. <strong>The decision was already made. Nothing needs to be weighed.</strong>
+  </p>
+
+  <h2>What commitment actually requires</h2>
+
+  <p>
+    A genuine commitment has three components that most goal-setting misses entirely.
+  </p>
+  <p>
+    <strong>A specific when and where.</strong> Not "I will exercise more" but "I will be at the gym at 7am on Monday, Wednesday, and Friday." The specificity is not about rigidity. It is about giving the brain a concrete trigger rather than a vague intention.
+  </p>
+  <p>
+    <strong>A pre-decided response to the most likely obstacle.</strong> Every goal has a predictable point of failure — a moment, a condition, a competing pull that historically derails progress. Commitment means deciding in advance what you will do at that specific moment. Not hoping you will make the right choice. Deciding before the moment arrives.
+  </p>
+  <p>
+    <strong>Written evidence that the decision was made.</strong> The act of writing a commitment changes its neurological status. It moves from an internal intention — which the brain treats as provisional — to an external record, which it treats as more binding. This is why people who write goals achieve them at higher rates than people who only hold them in mind. The writing is not a formality. It is part of the commitment structure.
+  </p>
+  <p>
+    Most goal-setting involves none of these. It involves naming a desired outcome, feeling motivated about it, and relying on that motivation to generate the necessary behavior when the moment arrives. Motivation is unreliable. Structure is not.
+  </p>
+
+  <h2>The belief layer underneath all of this</h2>
+
+  <p>
+    There is one more thing worth naming, because it operates even deeper than structure.
+  </p>
+  <p>
+    Many people cannot fully commit to a goal because some part of them does not believe they will follow through. The previous attempts have built evidence — not of the goal's impossibility, but of their own unreliability. And the brain, being a pattern-recognition machine, uses that evidence to set the ceiling on commitment.
+  </p>
+  <p>
+    You say you are committed. The brain knows you said that before.
+  </p>
+  <p>
+    This is why commitment cannot be separated from self-trust — and why self-trust cannot be rebuilt through declarations alone. It gets rebuilt through small, kept promises. Specific, achievable commitments made and honored consistently. Each one adds a data point to the evidence base that says: I am someone who does what I say I will do.
+  </p>
+  <p>
+    The large goal that feels impossible to commit to becomes more possible once the internal record has enough of those data points. Not because the goal got easier. Because the person pursuing it has visible evidence of their own reliability.
+  </p>
+  <p>
+    That evidence has to be built. It cannot be decided into existence.
+  </p>
+
+  <h2>The practice</h2>
+
+  <p>
+    This week, take one goal you have set before and re-approach it differently.
+  </p>
+  <p>
+    Write down the specific when and where. Write down the most likely moment of failure and what you will do at that exact moment. Write down one small version of the commitment — small enough that the follow-through is almost certain.
+  </p>
+  <p>
+    Then follow through on that small version. Not because the small version achieves the goal. Because the follow-through builds the evidence that the commitment is real.
+  </p>
+  <p>
+    Commitment is not a feeling. It is a structure. Build the structure.
+  </p>
+
+  <!-- THE DARE -->
+  <div class="dare-section reveal">
+    <p class="dare-eyebrow">The Dare</p>
+    <h2 class="dare-headline" style="margin: 0 0 20px;">Ready to start the practice?</h2>
+    <p class="dare-body">
+      Pick one goal. Write the specific when and where, your most likely obstacle, and your pre-decided response to it. Then do the small version today — not to achieve the goal, but to prove the commitment is real.
+    </p>
+    <a href="https://mydopa.app" class="btn-primary">Start the 7-Day Dare →</a>
+    <p style="font-size:13px;color:var(--gray-muted);margin-top:16px;">Free for 7 days. No card needed.</p>
+  </div>
+
+</article>
+
+<!-- CTA BLOCK -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="cta-block reveal">
+    <p class="cta-eyebrow">Start today</p>
+    <h2 class="cta-headline">7 days &nbsp;·&nbsp; 3 moments &nbsp;·&nbsp; <em>free</em></h2>
+    <p class="cta-sub">The practice takes two minutes. The results take seven days to feel. The math does the rest.</p>
+    <div class="cta-pills">
+      <span class="cta-pill">No credit card</span>
+      <span class="cta-pill">No journaling</span>
+      <span class="cta-pill">No wellness speak</span>
+    </div>
+    <a href="https://mydopa.app" class="btn-primary">Start the 7-Day Dare →</a>
+    <p class="cta-fine">mydopa.app</p>
+    <p class="cta-tagline">Fall in love with your own progress. — DOPA</p>
+  </div>
+</div>
+
+<!-- ALSO FROM THE LAB -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="lab-section reveal">
+    <p class="lab-label">Also from the lab</p>
+    <div class="lab-grid">
+      <a href="https://mydopa.app/blog/implementation-intentions" class="lab-card">
+        <p class="lab-card-category">The Science</p>
+        <p class="lab-card-title">Implementation Intentions: The Research That Doubles Goal Achievement</p>
+        <p class="lab-card-excerpt">The same goal. The same motivation. The same person. Double the achievement rate. The variable is a specific kind of plan.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+      <a href="https://mydopa.app/blog/wanting-vs-deciding-a-goal" class="lab-card">
+        <p class="lab-card-category">Goals &amp; Commitment</p>
+        <p class="lab-card-title">The Difference Between Wanting a Goal and Deciding to Achieve It</p>
+        <p class="lab-card-excerpt">Wanting and deciding are neurologically different states. Here is what separates them — and why it determines everything that follows.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <p class="footer-tagline">Fall in love with your own progress. — DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

@@ -223,6 +223,31 @@ nav {
   display: flex; align-items: center; gap: 6px;
 }
 
+/* ─── SEARCH ─── */
+.search-wrap {
+  position: relative; max-width: 480px; margin: 0 auto 40px;
+}
+.search-input {
+  width: 100%; background: var(--navy-card);
+  border: 1px solid rgba(168,85,247,0.2); border-radius: 999px;
+  padding: 14px 48px 14px 22px;
+  font-family: var(--font-b); font-size: 15px; color: var(--white);
+  outline: none; transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--gray-muted); }
+.search-input:focus { border-color: rgba(168,85,247,0.5); }
+.search-clear {
+  position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--gray-muted);
+  cursor: pointer; font-size: 20px; line-height: 1;
+  display: none; padding: 0;
+}
+.search-clear.visible { display: block; }
+.search-empty {
+  display: none; text-align: center; padding: 64px 0; grid-column: 1 / -1;
+}
+.search-empty p { color: var(--gray-muted); font-size: 16px; }
+
 /* ─── SUBSCRIBE ─── */
 .subscribe-section {
   background: var(--navy-panel);
@@ -349,7 +374,13 @@ footer {
 <section class="grid-section">
   <p class="section-label reveal">All posts</p>
 
+  <div class="search-wrap">
+    <input type="search" class="search-input" id="blogSearch" placeholder="Search articles…" autocomplete="off" spellcheck="false"/>
+    <button class="search-clear" id="searchClear" aria-label="Clear search">×</button>
+  </div>
+
   <div class="post-grid">
+    <div class="search-empty" id="searchEmpty"><p>No articles match that search.</p></div>
 
     <a href="/blog/why-doing-the-work-does-not-feel-like-anything" class="post-card reveal d1">
       <p class="card-tag science">Invisible Progress</p>
@@ -686,6 +717,35 @@ els.forEach(el => io.observe(el));
     "url": "https://mydopa.app"
   }
 }
+</script>
+
+<script>
+(function () {
+  const input = document.getElementById('blogSearch');
+  const clear  = document.getElementById('searchClear');
+  const empty  = document.getElementById('searchEmpty');
+  const cards  = document.querySelectorAll('.post-card');
+
+  input.addEventListener('input', filter);
+
+  clear.addEventListener('click', function () {
+    input.value = '';
+    filter();
+    input.focus();
+  });
+
+  function filter() {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+    cards.forEach(function (card) {
+      const match = !q || card.textContent.toLowerCase().includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    clear.classList.toggle('visible', q.length > 0);
+    empty.style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+})();
 </script>
 
 </body>

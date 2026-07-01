@@ -109,11 +109,13 @@
 
   /* NAV — matches live site: dark bar, two-tone wordmark, CTA pill */
   .nav { background: var(--bg-dark); padding: 22px 24px; display:flex; align-items:center; justify-content:space-between; }
-  .wordmark { font-family: var(--fd); font-weight: 900; font-size: 22px; }
+  .wordmark { font-family: var(--fd); font-weight: 900; font-size: 32px; }
   .wordmark .my { color: #fff; }
   .wordmark .dopa { color: var(--purple-bright); }
   .wordmark sup { color: var(--purple-bright); font-size: 10px; }
   .cta-pill { background: var(--purple-core, #7B2FBE); color: #fff; font-family: var(--ui); font-weight: 500; font-size: 14px; text-decoration: none; padding: 10px 20px; border-radius: 999px; white-space: nowrap; }
+  .nav-home { font-size: 13px; color: var(--gray-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-home:hover { color: var(--purple-bright); }
 
   /* HERO — the dictionary artifact, quiet, editorial, matches the Reddit asset */
   .hero { padding: 90px 24px 70px; max-width: 720px; margin: 0 auto; }
@@ -170,6 +172,7 @@
 
   <nav class="nav">
     <div class="wordmark"><span class="my">My</span><span class="dopa">Dopa</span><sup>™</sup></div>
+    <a href="https://mydopa.app" class="nav-home">← mydopa.app</a>
     <a class="cta-pill" href="/?quiz=open">Join the waitlist →</a>
   </nav>
 

@@ -81,6 +81,9 @@ nav{
   transition:opacity .2s,transform .2s;
 }
 .nav-cta:hover{opacity:.9;transform:translateY(-1px);}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-link:hover{color:#fff;}
 
 /* ── GLOBAL AMBIENT BLOOM ── */
 .bloom{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
@@ -536,6 +539,7 @@ footer{
 /* ── RESPONSIVE ── */
 @media(max-width:800px){
   nav{padding:14px 20px;}
+  .nav-link{display:none;}
   .blog-grid{grid-template-columns:1fr;}
   .quiz-nav{padding:16px 20px;}
   .quiz-screen{padding:16px 20px 40px;}
@@ -574,7 +578,13 @@ footer{
   <a href="https://mydopa.app" class="logo">
     <span class="logo-text"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></span>
   </a>
-  <a href="#" class="nav-cta" onclick="openQuiz(event)">Join the waitlist →</a>
+  <div class="nav-links">
+    <a href="/meaning" class="nav-link">Meaning</a>
+    <a href="/examples" class="nav-link">Examples</a>
+    <a href="/word-mirrors" class="nav-link">Word mirrors</a>
+    <a href="/blog" class="nav-link">Blog</a>
+    <a href="#" class="nav-cta" onclick="openQuiz(event)">Join the waitlist →</a>
+  </div>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -823,6 +833,12 @@ footer{
     <div class="foot-wordmark"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></div>
   </div>
   <p class="foot-tagline">Fall in love with your own progress.</p>
+  <div class="foot-links">
+    <a href="/meaning">Meaning</a>
+    <a href="/examples">Examples</a>
+    <a href="/word-mirrors">Word mirrors</a>
+    <a href="/blog">Blog</a>
+  </div>
   <div class="foot-links">
     <a href="/privacy">Privacy Policy</a>
     <a href="/terms">Terms of Service</a>

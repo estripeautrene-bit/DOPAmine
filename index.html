@@ -1285,6 +1285,7 @@ function showToast(){
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape' && document.getElementById('quizOverlay').classList.contains('active')) closeQuiz();
 });
+if(new URLSearchParams(window.location.search).get('quiz')==='open') openQuiz();
 </script>
 
 <!-- ═══ PRIVACY POLICY STUB ═══ -->

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- SEO -->
+<title>The Hidden Cost of Breaking Promises to Yourself | MyDopa</title>
+<meta name="description" content="Every broken promise to yourself files a silent note: your word doesn't hold. Here's the mechanism behind that cost — and how to start closing the gap."/>
+<link rel="canonical" href="https://mydopa.app/blog/broken-promises-to-yourself"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="The Hidden Cost of Breaking Promises to Yourself"/>
+<meta property="og:description" content="Every broken promise to yourself files a silent note: your word doesn't hold. Here's the mechanism behind that cost — and how to start closing the gap."/>
+<meta property="og:url" content="https://mydopa.app/blog/broken-promises-to-yourself"/>
+<meta property="og:site_name" content="MyDopa"/>
+<meta property="og:image" content="https://mydopa.app/images/og-default.jpg"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="The Hidden Cost of Breaking Promises to Yourself"/>
+<meta name="twitter:description" content="Every broken promise to yourself files a silent note: your word doesn't hold. Here's the mechanism behind that cost — and how to start closing the gap."/>
+<meta name="twitter:image" content="https://mydopa.app/images/og-default.jpg"/>
+
+<!-- JSON-LD BlogPosting Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Hidden Cost of Breaking Promises to Yourself",
+  "description": "Every broken promise to yourself files a silent note: your word doesn't hold. Here's the mechanism behind that cost — and how to start closing the gap.",
+  "url": "https://mydopa.app/blog/broken-promises-to-yourself",
+  "datePublished": "2026-07-01",
+  "dateModified": "2026-07-01",
+  "author": {
+    "@type": "Person",
+    "name": "René"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MyDopa",
+    "url": "https://mydopa.app"
+  },
+  "keywords": ["broken promises to yourself", "self trust", "how to trust yourself", "keeping promises to yourself"],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mydopa.app/blog/broken-promises-to-yourself"
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --font-d: 'Playfair Display', Georgia, serif;
+  --font-b: 'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-d); font-size: 30px; font-weight: 900; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-back {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--purple-mid); }
+.nav-btn {
+  border: 1px solid rgba(168,85,247,0.4);
+  color: var(--purple-bright); font-family: var(--font-b); font-size: 13px; font-weight: 500;
+  padding: 9px 20px; border-radius: 999px; text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+/* ── ARTICLE HERO ── */
+.article-hero {
+  padding: 140px 24px 80px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.article-hero::before {
+  content: '';
+  position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(123,47,190,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.1s;
+}
+.article-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--white); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.25s;
+}
+.article-h1 em { font-style: italic; color: var(--purple-bright); }
+.article-deck {
+  font-size: clamp(17px, 2vw, 21px); color: var(--gray-light);
+  font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto 48px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.article-deck strong { color: var(--white); font-weight: 500; }
+.article-meta {
+  font-size: 13px; color: var(--gray-muted);
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--purple-core), var(--purple-bright));
+  margin: 56px auto;
+  border-radius: 2px;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.article-body p {
+  font-size: 17px;
+  color: var(--gray-light);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+.article-body p strong { color: var(--white); font-weight: 600; }
+.article-body p em { font-style: italic; color: var(--purple-mid); }
+
+.article-body h2 {
+  font-family: var(--font-d);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 900; letter-spacing: -0.5px;
+  color: var(--white);
+  margin: 64px 0 28px;
+  line-height: 1.15;
+}
+.article-body h2 em { font-style: italic; color: var(--purple-bright); }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 20px;
+  padding: 52px 48px;
+  text-align: center;
+  margin: 64px 0;
+  position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.07), rgba(123,47,190,0.05) 40%, transparent 65%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 20px;
+}
+.cta-headline {
+  font-family: var(--font-d);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 16px;
+}
+.cta-headline em { font-style: italic; color: var(--purple-bright); }
+.cta-sub {
+  font-size: 16px; color: var(--gray-muted); margin-bottom: 36px; line-height: 1.6;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-family: var(--font-b); font-size: 17px; font-weight: 600;
+  padding: 17px 44px; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 50px rgba(123,47,190,0.4); transition: transform 0.2s, box-shadow 0.2s;
+  border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 80px rgba(168,85,247,0.55); }
+.cta-fine { font-size: 13px; color: var(--gray-muted); margin-top: 16px; }
+.cta-tagline { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--purple-mid); text-shadow: 0 0 30px rgba(181,123,247,.25); margin-top: 24px; }
+
+/* ── ALSO FROM THE LAB ── */
+.lab-section {
+  padding: 0 0 100px;
+}
+.lab-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gray-muted); margin-bottom: 32px;
+}
+.lab-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.lab-card {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.1);
+  border-radius: 14px;
+  padding: 28px;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+  display: block;
+}
+.lab-card:hover {
+  border-color: rgba(168,85,247,0.3);
+  transform: translateY(-3px);
+}
+.lab-card-category {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 12px;
+}
+.lab-card-title {
+  font-family: var(--font-d);
+  font-size: 19px; font-weight: 700; color: var(--white);
+  line-height: 1.2; margin-bottom: 12px;
+}
+.lab-card-excerpt {
+  font-size: 14px; color: var(--gray-muted); line-height: 1.6;
+}
+.lab-card-link {
+  display: inline-block; margin-top: 16px;
+  font-size: 13px; color: var(--purple-bright); font-weight: 600;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy-panel);
+  border-top: 1px solid rgba(168,85,247,0.08);
+  padding: 48px 24px;
+  text-align: center;
+}
+.footer-logo { font-family: var(--font-d); font-size: 30px; font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 12px; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tagline { font-size: 14px; color: var(--gray-muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--purple-bright); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .article-hero { padding: 120px 20px 60px; }
+  .article-body { padding: 0 20px 60px; }
+  .cta-block { padding: 40px 24px; }
+  .lab-grid { grid-template-columns: 1fr; }
+  .nav-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <div class="nav-right">
+    <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+    <a href="https://mydopa.app" class="nav-btn">Take the dare →</a>
+  </div>
+</nav>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <p class="article-category">Self-Trust</p>
+  <h1 class="article-h1">The Hidden Cost of<br/><em>Breaking Promises to Yourself</em></h1>
+  <p class="article-deck">You said you'd go to bed by eleven. It's 12:40. Nothing bad happened. And yet something quietly shifted — <strong>the same way it shifted the last time, and the time before that.</strong></p>
+  <p class="article-meta">By René &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; 5 min read</p>
+</header>
+
+<div class="divider"></div>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+  <p>You said you'd go to bed by eleven. It's 12:40 and you're still scrolling. Nothing bad happened tonight because of it. No one is angry with you. No deadline was missed. And yet something quietly shifted, the same way it shifted the last time and the time before that — a small downward adjustment in how much your own word is worth to you.</p>
+
+  <p>That adjustment doesn't show up on any calendar. It doesn't have a symptom you can point to the next morning. But it compounds, and it's more expensive than almost anyone realizes.</p>
+
+  <h2>Why this one hurts differently</h2>
+
+  <p>When you break a promise to someone else, there's usually a conversation. An apology, an explanation, a chance to repair it. When you break a promise to yourself, there's no conversation. There's just a small, silent note filed somewhere in the back of your mind: <em>your word doesn't hold.</em> No one witnesses it. No one asks you to account for it. It just sits there, and the next time you make a promise to yourself, that note is part of the calculation, whether you're aware of it or not.</p>
+
+  <p>This is why people who are otherwise reliable — the ones who never miss a work deadline, who show up early for other people, who keep every commitment they make out loud — can still feel like they can't trust themselves at all. The promises that count for other people get tracked by other people. The promises that only count for you get tracked by no one, including you.</p>
+
+  <p>Think of the colleague who has never once missed a client deadline in three years, and who also hasn't managed to start the book she's been "going to write" for the same three years. Nobody is checking on the book. There's no calendar invite, no accountability partner, no consequence for another month passing without a page written. The deadlines she keeps are the ones with witnesses. The promise without a witness quietly slid to the bottom, not because it mattered less to her, but because nothing was built to catch it.</p>
+
+  <h2>What the cost actually looks like</h2>
+
+  <p>The real cost isn't any single broken promise. It's the twelfth broken promise about the same thing, each one slightly cheaper than the last because you already expected to break it. The first time you say you'll stop checking your phone after 10pm and don't, it stings a little. By the fifth time, it barely registers — not because it matters less, but because your brain has stopped expecting you to follow through, so there's nothing left to be disappointed about.</p>
+
+  <p>It shows up as the gap between what you say out loud and what you actually attempt. You stop telling people about goals before you've hit them, not out of humility, but because some part of you doesn't want witnesses to another promise that might not hold. You lower the target before you even start — "I'll just try to be a little better" instead of naming the actual thing you want — because a vague promise is harder to catch yourself breaking.</p>
+
+  <p>And it shows up physically, in the small delay before you commit to anything new. A friend suggests a plan for next month and there's a half-second hesitation before you say yes, because some part of you is already running the odds on whether you'll actually follow through, based on a track record you've never once looked at directly.</p>
+
+  <h2>The mechanism underneath it</h2>
+
+  <p>Every promise you keep to yourself is a small, single data point. On its own it means almost nothing. But identity is built from repetition, not from any one instance — you become "someone who follows through" the same slow way you became "someone who bites their nails" or "someone who remembers birthdays." Through hundreds of small, unexamined repetitions that eventually calcified into a belief about who you are.</p>
+
+  <p>The problem is that broken promises get repeated on purpose — replayed, apologized for internally, turned over at 11pm — while kept promises get zero repetition at all. You do the thing and move straight to the next task. No replay, no internal acknowledgment, nothing that would let it calcify into the identity it actually earned. So the identity that forms is lopsided: <strong>built heavily from the failures, almost not at all from the follow-through, even when the follow-through happened more often.</strong></p>
+
+  <h2>The reframe</h2>
+
+  <p>This is the exact gap MyDopa was built to close. Not another commitment device, not a bigger promise to make and risk breaking. A place to log the promise the moment you keep it — the 11pm you actually put the phone down, the workout you did on the day you didn't want to, the difficult email you sent instead of avoiding for another week. Written down while it's fresh, so it gets the repetition kept promises never used to get.</p>
+
+  <h2>One thing to do today</h2>
+
+  <p>Find one promise you kept this week that nobody, including you, gave any credit for. Not the big obvious one — the quiet one. The time you said you'd answer a message today and did, even though it would have been easy to let it slide to tomorrow. Write down exactly what it was. That single entry starts correcting a ledger that's been one-sided for a long time.</p>
+
+  <p>Your word to yourself was never as unreliable as it felt. It just never got written down.</p>
+
+  <p>There's a version of you a year from now who has kept dozens of small promises nobody else will ever know about — the early morning you didn't skip, the boundary you held without announcing it, the habit you rebuilt after letting it slip for a month. That version doesn't exist because of one dramatic turnaround. It exists because the small kept promises finally started getting counted.</p>
+
+</article>
+
+<!-- CTA BLOCK -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="cta-block reveal">
+    <p class="cta-eyebrow">Start today</p>
+    <h2 class="cta-headline">Your day is already full of wins.</h2>
+    <p class="cta-sub">You are just not keeping them. MyDopa fixes that.</p>
+    <a href="https://mydopa.app" class="btn-primary">Start the 7-Day Dare →</a>
+    <p class="cta-fine">mydopa.app</p>
+    <p class="cta-tagline">Fall in love with your own progress.</p>
+  </div>
+</div>
+
+<!-- ALSO FROM THE LAB -->
+<div style="max-width:700px;margin:0 auto;padding:0 24px;">
+  <div class="lab-section reveal">
+    <p class="lab-label">Also from the lab</p>
+    <div class="lab-grid">
+      <a href="https://mydopa.app/blog/why-dont-i-trust-myself-anymore" class="lab-card">
+        <p class="lab-card-category">Self-Trust</p>
+        <p class="lab-card-title">Why You Do Not Trust Yourself Anymore</p>
+        <p class="lab-card-excerpt">Self-trust doesn't break all at once. It erodes through a specific pattern — and the fix is more precise than you'd expect.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+      <a href="https://mydopa.app/blog/the-belief-ceiling" class="lab-card">
+        <p class="lab-card-category">The Science</p>
+        <p class="lab-card-title">The Belief Ceiling: The Hidden Limit Blocking Your Goals</p>
+        <p class="lab-card-excerpt">You have set this goal before. At roughly the same distance from the start, something happened. Not a dramatic failure. Something quieter.</p>
+        <span class="lab-card-link">Read →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span></a>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

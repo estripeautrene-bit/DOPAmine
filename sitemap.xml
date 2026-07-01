@@ -92,4 +92,52 @@
     <loc>https://mydopa.app/blog/daily-wins-habit-brain-rewire</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://mydopa.app/meaning</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/examples</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/word-mirrors</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/why-dont-i-trust-myself-anymore</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/you-dont-have-a-discipline-problem-self-trust</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/broken-promises-to-yourself</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/how-to-trust-yourself-again</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/self-trust-before-discipline</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/identity-lag-self-image-change</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/what-is-fomo-words-for-feelings</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/dopamine-hit-vs-earned-anticipation</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mydopa.app/blog/naming-emotions-feelings-without-words</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>

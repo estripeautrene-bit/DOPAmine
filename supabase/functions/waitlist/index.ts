@@ -170,7 +170,7 @@ Deno.serve(async (req) => {
       subject: 'Your Progress Profile is in.',
       html:    buildEmail1Html(displayFirst, q1_profile, visibility_score),
     }),
-  }).catch(() => {})
+  }).catch((err) => console.error('Email 1 send failed:', err))
 
   // Internal notification — fires only after successful DB upsert
   await fetch('https://api.resend.com/emails', {

@@ -954,19 +954,19 @@ footer{
   <div class="quiz-screen" id="qs4">
     <p class="quiz-q">When you are in a tough moment, how quickly can you call up evidence that you handle things?</p>
     <div class="quiz-cards">
-      <button class="quiz-card" onclick="selectCard(this,4)">
+      <button class="quiz-card" onclick="selectCard(this,4,null,'takes-a-while')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <span>It takes a while — I have to really think</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,4)">
+      <button class="quiz-card" onclick="selectCard(this,4,null,'feel-distant')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
         <span>I can think of a few things but they feel distant</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,4)">
+      <button class="quiz-card" onclick="selectCard(this,4,null,'not-enough-solid')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <span>I have some examples but not enough to feel solid</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,4)">
+      <button class="quiz-card" onclick="selectCard(this,4,null,'call-up-fast')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg></div>
         <span>I can call it up fast — I know my track record</span>
       </button>
@@ -981,19 +981,19 @@ footer{
   <div class="quiz-screen" id="qs5">
     <p class="quiz-q">After a genuinely good day, what does your brain do with it?</p>
     <div class="quiz-cards">
-      <button class="quiz-card" onclick="selectCard(this,5)">
+      <button class="quiz-card" onclick="selectCard(this,5,null,'gone-by-bedtime')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></div>
         <span>By bedtime it is already gone — I am thinking about tomorrow</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,5)">
+      <button class="quiz-card" onclick="selectCard(this,5,null,'no-proof')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <span>I remember it but it does not feel like proof of anything</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,5)">
+      <button class="quiz-card" onclick="selectCard(this,5,null,'fuels-next-day')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
         <span>I hold onto it — it actually fuels the next day</span>
       </button>
-      <button class="quiz-card" onclick="selectCard(this,5)">
+      <button class="quiz-card" onclick="selectCard(this,5,null,'rarely-notice')">
         <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <span>Honestly I rarely notice when I have had a good day</span>
       </button>
@@ -1034,28 +1034,72 @@ footer{
       <div class="loader-popup" id="lp-popup1">
         <p class="loader-popup-q">One last thing — do you currently track your wins anywhere?</p>
         <div class="loader-popup-btns">
-          <button class="loader-popup-btn" onclick="loaderChoice(this,1)">No</button>
-          <button class="loader-popup-btn" onclick="loaderChoice(this,1)">Sometimes</button>
-          <button class="loader-popup-btn" onclick="loaderChoice(this,1)">Yes</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,1,'no')">No</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,1,'sometimes')">Sometimes</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,1,'yes')">Yes</button>
         </div>
       </div>
       <!-- Popup 2 -->
       <div class="loader-popup" id="lp-popup2">
         <p class="loader-popup-q">Most people answer yes to this. Have you?</p>
         <div class="loader-popup-btns">
-          <button class="loader-popup-btn" onclick="loaderChoice(this,2)">No</button>
-          <button class="loader-popup-btn" onclick="loaderChoice(this,2)">Yes</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,2,'no')">No</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,2,'yes')">Yes</button>
         </div>
       </div>
       <!-- Popup 3 -->
       <div class="loader-popup" id="lp-popup3">
         <p class="loader-popup-q">Are you ready to see what you have actually been building?</p>
         <div class="loader-popup-btns">
-          <button class="loader-popup-btn" onclick="loaderChoice(this,3)">Not sure</button>
-          <button class="loader-popup-btn" onclick="loaderChoice(this,3)">Yes, show me</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,3,'not-sure')">Not sure</button>
+          <button class="loader-popup-btn" onclick="loaderChoice(this,3,'yes-show-me')">Yes, show me</button>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Screen 6a: Age group -->
+  <div class="quiz-screen" id="qs6a">
+    <p class="quiz-q">What age group are you in?</p>
+    <div class="quiz-cards">
+      <button class="quiz-card" onclick="selectCard(this,'6a',null,'18-27')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <span>18–27</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,'6a',null,'28-35')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <span>28–35</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,'6a',null,'36-50')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <span>36–50</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,'6a',null,'51+')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+        <span>51+</span>
+      </button>
+    </div>
+    <button class="quiz-continue" id="qc6a" onclick="goNext()">Continue</button>
+  </div>
+
+  <!-- Screen 6b: Sex -->
+  <div class="quiz-screen" id="qs6b">
+    <p class="quiz-q">What's your sex?</p>
+    <div class="quiz-cards">
+      <button class="quiz-card" onclick="selectCard(this,'6b',null,'male')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span>Male</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,'6b',null,'female')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+        <span>Female</span>
+      </button>
+      <button class="quiz-card" onclick="selectCard(this,'6b',null,'prefer_not_to_say')">
+        <div class="quiz-icon-tile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span>Prefer not to say</span>
+      </button>
+    </div>
+    <button class="quiz-continue" id="qc6b" onclick="goNext()">Continue</button>
   </div>
 
   <!-- Screen 7: Email gate -->
@@ -1138,11 +1182,12 @@ if(localStorage.getItem('cookieAccepted')) document.getElementById('cookieBanner
 
 // ── QUIZ STATE ──
 var currentScreen=0;
-var totalQuestions=7;
-var screens=['qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs7','qs8','qs9'];
+var totalQuestions=9;
+var screens=['qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs6a','qs6b','qs7','qs8','qs9'];
 var loaderStep=0;
 var loaderDone=false;
 let selectedProfile='';
+var quizAnswers={q1_profile:'',q2_likert:null,q3_evidence:'',q4_good_day:'',q5_tracks_wins:'',q6_people_yes:'',q7_ready:'',age_group:'',sex:''};
 
 function openQuiz(e){
   if(e) e.preventDefault();
@@ -1164,7 +1209,7 @@ function showScreen(n){
   updateProgress(n);
   // Trigger loader when on loader screen
   if(n===6 && !loaderDone) startLoader();
-  if(n===7) renderProfileScreen();
+  if(n===9) renderProfileScreen();
 }
 
 function updateProgress(n){
@@ -1184,11 +1229,17 @@ function quizBack(){
 }
 
 // Card selection
-function selectCard(btn,screenIdx,profile){
+function selectCard(btn,screenIdx,profile,value){
   var cards=btn.closest('.quiz-cards').querySelectorAll('.quiz-card');
   cards.forEach(function(c){c.classList.remove('selected');});
   btn.classList.add('selected');
-  if(profile) selectedProfile=profile;
+  if(profile){selectedProfile=profile;quizAnswers.q1_profile=profile;}
+  if(value){
+    if(screenIdx===4)         quizAnswers.q3_evidence=value;
+    else if(screenIdx===5)    quizAnswers.q4_good_day=value;
+    else if(screenIdx==='6a') quizAnswers.age_group=value;
+    else if(screenIdx==='6b') quizAnswers.sex=value;
+  }
   // Show response card if exists
   var rc=document.getElementById('rc'+screenIdx);
   if(rc) rc.classList.add('visible');
@@ -1215,6 +1266,7 @@ function selectLikert(btn,screenIdx,val){
   var btns=btn.closest('.quiz-likert').querySelectorAll('.likert-btn');
   btns.forEach(function(b){b.classList.remove('selected');});
   btn.classList.add('selected');
+  quizAnswers.q2_likert=val;
   var rc=document.getElementById('rc'+screenIdx);
   if(rc) rc.classList.add('visible');
   var qc=document.getElementById('qc'+screenIdx);
@@ -1251,10 +1303,13 @@ function startLoader(){
   },800);
 }
 
-function loaderChoice(btn,popupNum){
+function loaderChoice(btn,popupNum,value){
   var btns=btn.closest('.loader-popup-btns').querySelectorAll('.loader-popup-btn');
   btns.forEach(function(b){b.classList.remove('chosen');});
   btn.classList.add('chosen');
+  if(popupNum===1)      quizAnswers.q5_tracks_wins=value;
+  else if(popupNum===2) quizAnswers.q6_people_yes=value;
+  else if(popupNum===3) quizAnswers.q7_ready=value;
   // Next popup or proceed
   setTimeout(function(){
     if(popupNum===1){

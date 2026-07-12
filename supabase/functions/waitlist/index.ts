@@ -76,7 +76,7 @@ function buildEmail1Html(name: string, profile: string | null, score: number): s
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E0B1A;">
 <tr><td align="center" style="padding:40px 24px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="padding:48px 48px 56px;background-color:#0E0B1A;background-image:url('https://mydopa.app/images/bloom-bg.png');background-size:100% 100%;background-repeat:no-repeat;border-radius:16px;overflow:hidden;">
+<tr><td style="padding:48px 48px 56px;background-color:#0E0B1A;border-radius:16px;overflow:hidden;">
   ${header}
   <div style="font-size:0.65rem;font-weight:700;color:rgba(255,176,32,0.7);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;${FONT};">YOUR PROGRESS PROFILE</div>
   <div style="font-size:3rem;font-weight:900;color:#B57BF7;font-family:Georgia,'Times New Roman',serif;line-height:1;margin-bottom:8px;">${name}.</div>

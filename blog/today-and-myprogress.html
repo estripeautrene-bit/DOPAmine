@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Today &amp; MyProgress: Your Memory Loses It, We Capture It — MyDopa</title>
+  <meta name="description" content="TODAY catches wins the moment they happen. MyProgress turns them into a pattern you can actually see. Here is how both features work together." />
+  <meta property="og:title" content="Today &amp; MyProgress: Your Memory Loses It, We Capture It" />
+  <meta property="og:description" content="TODAY catches wins the moment they happen. MyProgress turns them into a pattern you can actually see. Here is how both features work together." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://mydopa.app/blog/today-and-myprogress" />
+  <meta property="og:site_name" content="MyDopa" />
+  <link rel="canonical" href="https://mydopa.app/blog/today-and-myprogress" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #0E0B1A;
+      --darker:  #080610;
+      --purple:  #7B2FBE;
+      --purple2: #9B4FDE;
+      --glow:    #B57BF7;
+      --gold:    #FFB020;
+      --muted:   rgba(255,255,255,0.5);
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(14,11,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(123,47,190,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.95rem;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--glow); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--white); }
+
+    .hero {
+      position: relative;
+      padding: 140px 24px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .hero::before {
+      content: '';
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.25) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .post-category {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #D97706;
+      margin-bottom: 20px;
+      padding: 4px 12px;
+      border: 1px solid rgba(217,119,6,0.3);
+      border-radius: 50px;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .post-title em { color: var(--glow); font-style: italic; }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .post-meta-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .article {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .article p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 28px;
+    }
+
+    .article p strong { color: var(--white); font-weight: 600; }
+
+    .article h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--white);
+      margin: 56px 0 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--purple);
+      padding: 20px 28px;
+      margin: 40px 0;
+      background: rgba(123,47,190,0.08);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .insight-box {
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(181,123,247,0.08));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin: 48px 0;
+      text-align: center;
+    }
+
+    .insight-box .insight-line {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .insight-box .insight-attr {
+      font-size: 0.8rem;
+      color: var(--glow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .cta-block {
+      background: linear-gradient(135deg, rgba(123,47,190,0.25), rgba(181,123,247,0.1));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      margin-top: 64px;
+    }
+
+    .cta-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .cta-btn:hover {
+      background: var(--purple2);
+      transform: translateY(-2px);
+    }
+
+    .cta-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--glow);
+      text-shadow: 0 0 30px rgba(181,123,247,.25);
+      margin-top: 24px;
+    }
+
+    .lab-section { padding: 0 0 100px; }
+    .lab-label { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .lab-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(123,47,190,0.15); border-radius: 14px; padding: 28px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; display: block; }
+    .lab-card:hover { border-color: rgba(123,47,190,0.35); transform: translateY(-3px); }
+    .lab-card-category { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--glow); margin-bottom: 12px; }
+    .lab-card-title { font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 12px; }
+    .lab-card-excerpt { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .lab-card-link { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--glow); font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .insight-box { padding: 24px 20px; }
+      .cta-block { padding: 36px 24px; }
+      .lab-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
+    <a href="https://mydopa.app/blog" class="nav-back">← All Posts</a>
+  </nav>
+
+  <div class="hero">
+    <span class="post-category">Product and Founder</span>
+    <h1 class="post-title">Today &amp; MyProgress: Your Memory <em>Loses It,</em> We Capture It</h1>
+    <div class="post-meta">
+      <span>MyDopa</span>
+      <span class="post-meta-dot"></span>
+      <span>July 11, 2026</span>
+      <span class="post-meta-dot"></span>
+      <span>4 min read</span>
+    </div>
+  </div>
+
+  <article class="article">
+
+    <p>Remember that challenging conversation you had with your boss this morning? Remember how six months ago you'd have completely ducked out of it, but this time, you didn't? Fast forward to 9pm that same day, and poof.</p>
+
+    <p>It's vanished.</p>
+
+    <p>Your brain isn't big on recording wins the same way it records worries. Your worries would have played on a loop for days from that exact same talk. The win just goes up in smoke, filed away somewhere your memory can't be bothered to check again.</p>
+
+    <p>That's exactly what TODAY is here to stop.</p>
+
+    <h2>TODAY: Snatching the Win Before It Flees</h2>
+
+    <p>TODAY is for recording a win the moment it happens — that conversation you didn't dodge, that workout you did despite your brain telling you no, that time you caught yourself about to spiral and pulled back instead. Quick taps, zero writing marathon required. It's not about the word count. It's about the timing.</p>
+
+    <p>A win caught on the spot has a fighting chance to stick around. Revisited hours later, at the end of a hectic day, most of it has already disappeared — your brain busy hoarding potential threats and letting the rest go, the way it's built to. The good conversation doesn't get flagged the way the bad one does, so the good ones need to be grabbed before the day's usual filtering takes over.</p>
+
+    <div class="pull-quote">
+      <p>TODAY departs from a traditional diary. It asks you to snag something small, as it unfolds, before your inner voice quietly decides it wasn't that important.</p>
+    </div>
+
+    <p>Think about how many actual wins happen in an average week that never get this treatment. The friend you checked on without being asked. The deadline you hit without the usual last-minute panic. The urge to snap at someone that you caught and let pass instead. None of these feel big enough to remember on purpose. That's exactly why they're the ones most likely to vanish by 9pm, and exactly why TODAY exists to catch them while they're still there.</p>
+
+    <h2>MyProgress: Seeing the Accumulation</h2>
+
+    <p>A lone entry in TODAY is just one piece of data. By itself, it doesn't tell you much. MyProgress is where all those scattered data points start painting a clear picture — not a guess about how the week's been, not a feeling, but your factual account, laid out, built entirely from real wins.</p>
+
+    <p>The star of MyProgress is the Resilience Horizon.</p>
+
+    <h2>The Resilience Horizon</h2>
+
+    <p>Progress isn't a smooth, upward curve. A good week gets followed by several rough days, a run of momentum gets followed by a slump that makes you question whether anything actually improved. The dip is what you feel in the moment. The climb underneath it takes a step back to even notice.</p>
+
+    <p>The Resilience Horizon is that step back. It tracks your actions — logged, dated, undeniable — and turns that consistency into a line you can actually look at. Resilience here isn't a mood you're supposed to be having. <strong>It's a demonstrable output of days you actually lived.</strong></p>
+
+    <div class="insight-box">
+      <div class="insight-line">"Your mood on any given Tuesday is a terrible measure of your actual trajectory — it's built from the last few hours, not the last few months."</div>
+      <div class="insight-attr">What the Resilience Horizon measures instead</div>
+    </div>
+
+    <p>On a challenging day, that line simply is. It shows you the climb that's been happening underneath even your toughest week — concrete proof that the slump isn't the whole story, even when it's all you can feel right now.</p>
+
+    <p>This is the entire point of separating the feeling from the record. Your mood on any given Tuesday is real, but it's a terrible measure of your actual trajectory — it's built from whatever happened in the last few hours, not from the pattern of the last few months. The Resilience Horizon measures the thing your mood can't: what you've actually done, stacked up over enough time to mean something.</p>
+
+    <h2>The Big Takeaway</h2>
+
+    <p>None of this relies on you feeling better before you begin. Log what actually happened, right now, before your memory decides otherwise, and let the record do the one thing your mind won't: keep it safe.</p>
+
+    <p>Give it a shot tonight with one entry. No magnum opus needed — an everyday win, the kind you'd easily dismiss and let slip away, is exactly the kind your Resilience Horizon needs. Those are precisely the wins your memory loses first.</p>
+
+    <div class="cta-block">
+      <h3>One entry. That's all it takes.</h3>
+      <p>Log what happened today before the day decides it didn't matter.</p>
+      <a href="https://mydopa.app" class="cta-btn">Start the 7-Day Dare →</a>
+      <p class="cta-tagline">Fall in love with your own progress.</p>
+    </div>
+
+  </article>
+
+  <div style="max-width:700px;margin:0 auto;padding:0 24px;">
+    <div class="lab-section">
+      <p class="lab-label">Also from the lab</p>
+      <div class="lab-grid">
+        <a href="https://mydopa.app/blog/the-science-of-progress" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">The Science of Progress: How MyDopa Actually Works With Your Brain</p>
+          <p class="lab-card-excerpt">The negativity bias isn't a flaw — it's a survival feature. Here is the research behind why catching wins early changes everything.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+        <a href="https://mydopa.app/blog/mydopa-discoveries" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">Discoveries: Why Understanding the Pattern Changes What You Do Next</p>
+          <p class="lab-card-excerpt">TODAY records what happened. MyProgress shows you the pattern. Discoveries explains what that pattern actually means.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discoveries: Why Understanding the Pattern Changes What You Do Next — MyDopa</title>
+  <meta name="description" content="TODAY logs what happened. MyProgress shows the pattern. Discoveries is the audio layer that explains what your own data actually means — in five minutes." />
+  <meta property="og:title" content="Discoveries: Why Understanding the Pattern Changes What You Do Next" />
+  <meta property="og:description" content="TODAY logs what happened. MyProgress shows the pattern. Discoveries is the audio layer that explains what your own data actually means — in five minutes." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://mydopa.app/blog/mydopa-discoveries" />
+  <meta property="og:site_name" content="MyDopa" />
+  <link rel="canonical" href="https://mydopa.app/blog/mydopa-discoveries" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #0E0B1A;
+      --darker:  #080610;
+      --purple:  #7B2FBE;
+      --purple2: #9B4FDE;
+      --glow:    #B57BF7;
+      --gold:    #FFB020;
+      --muted:   rgba(255,255,255,0.5);
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(14,11,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(123,47,190,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.95rem;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--glow); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--white); }
+
+    .hero {
+      position: relative;
+      padding: 140px 24px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .hero::before {
+      content: '';
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.25) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .post-category {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #D97706;
+      margin-bottom: 20px;
+      padding: 4px 12px;
+      border: 1px solid rgba(217,119,6,0.3);
+      border-radius: 50px;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .post-title em { color: var(--glow); font-style: italic; }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .post-meta-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .article {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .article p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 28px;
+    }
+
+    .article p strong { color: var(--white); font-weight: 600; }
+
+    .article h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--white);
+      margin: 56px 0 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--purple);
+      padding: 20px 28px;
+      margin: 40px 0;
+      background: rgba(123,47,190,0.08);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .insight-box {
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(181,123,247,0.08));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin: 48px 0;
+      text-align: center;
+    }
+
+    .insight-box .insight-line {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .insight-box .insight-attr {
+      font-size: 0.8rem;
+      color: var(--glow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .cta-block {
+      background: linear-gradient(135deg, rgba(123,47,190,0.25), rgba(181,123,247,0.1));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      margin-top: 64px;
+    }
+
+    .cta-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .cta-btn:hover {
+      background: var(--purple2);
+      transform: translateY(-2px);
+    }
+
+    .cta-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--glow);
+      text-shadow: 0 0 30px rgba(181,123,247,.25);
+      margin-top: 24px;
+    }
+
+    .lab-section { padding: 0 0 100px; }
+    .lab-label { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .lab-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(123,47,190,0.15); border-radius: 14px; padding: 28px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; display: block; }
+    .lab-card:hover { border-color: rgba(123,47,190,0.35); transform: translateY(-3px); }
+    .lab-card-category { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--glow); margin-bottom: 12px; }
+    .lab-card-title { font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 12px; }
+    .lab-card-excerpt { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .lab-card-link { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--glow); font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .insight-box { padding: 24px 20px; }
+      .cta-block { padding: 36px 24px; }
+      .lab-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
+    <a href="https://mydopa.app/blog" class="nav-back">← All Posts</a>
+  </nav>
+
+  <div class="hero">
+    <span class="post-category">Product and Founder</span>
+    <h1 class="post-title">Discoveries: Why <em>Understanding the Pattern</em> Changes What You Do Next</h1>
+    <div class="post-meta">
+      <span>MyDopa</span>
+      <span class="post-meta-dot"></span>
+      <span>July 11, 2026</span>
+      <span class="post-meta-dot"></span>
+      <span>4 min read</span>
+    </div>
+  </div>
+
+  <article class="article">
+
+    <p>By now you're probably logging your wins in TODAY, and watching your Resilience Horizon expand in MyProgress — a tangible, cumulative record of days you showed up. That answers the question of what happened. It doesn't yet answer the next question: why.</p>
+
+    <p>That's the gap Discoveries is built to bridge.</p>
+
+    <p>You know the other kind of gap already. You finish a book or binge a show that illuminates exactly why you keep doing what you keep doing, and for 24 hours you feel like a new person who's finally found the missing piece. Then it wears off, because nothing in the explanation ever connected back to your everyday life. It stayed a cool idea you learned once — the kind that skips right past Tuesday morning.</p>
+
+    <h2>What a Discovery Really Is</h2>
+
+    <p>A Discovery is an audio micro-lesson, around five minutes, meant for your commute or a walk, not a study session. It skips generic self-help wisdom and links directly to what you just logged in TODAY, or what you've seen take shape in your MyProgress dashboard. Logging and reviewing get an explanation attached to them.</p>
+
+    <p>TODAY is the record of what happened. MyProgress shows you the pattern. <strong>Discoveries explains the meaning of that pattern</strong> — built from your own evidence, not offered as trivia.</p>
+
+    <h2>What You'll Really Learn</h2>
+
+    <p>Discoveries unpack the gulf between deciding to do something and actually doing it — why intentions rarely make it through the gauntlet of an ordinary Tuesday, and how to build a bridge across that gap. Others explore the silent operating assumptions powering your choices, the beliefs you never intentionally chose but act on every day. Others get into the space between wishing you were a certain kind of person and having evidence you already are.</p>
+
+    <div class="pull-quote">
+      <p>The lessons ask you to look at your own record and recognize the pattern once you know what you're looking for — not buy into a general theory about people as an abstract.</p>
+    </div>
+
+    <p>Someone logging their wins for a few weeks might notice their commitments to other people have near-perfect follow-through, while their commitments to themselves quietly vanish over the weekend. A Discovery targeting that exact gap connects straight to that person's own log data, explaining a pattern that's already visible instead of introducing the idea cold.</p>
+
+    <p>This is the part a general self-help book can't do. It can describe the pattern in the abstract, using someone else's made-up example. A Discovery describes the pattern using the actual weekends already sitting in that person's own record — the same weekends they lived through, now explained instead of just noticed.</p>
+
+    <h2>Why Audio, Why Now</h2>
+
+    <p>Five minutes, spoken, fits into a life already packed to the gills, no study time required. You get a bite-sized lesson to absorb on your way to work, before your coffee's done steaming, ending with a single actionable step — a reflection, a prompt, an experiment — rather than a data dump that fades the way information usually fades over a normal day.</p>
+
+    <div class="insight-box">
+      <div class="insight-line">"Learning why you do what you do turns your life from uncontrollable weather into patterns you can actually work with."</div>
+      <div class="insight-attr">What Discoveries actually changes</div>
+    </div>
+
+    <p>Beneath the five-minute package, each Discovery draws on rigorous research — habit formation, self-efficacy, implementation intentions, the psychology of identity shifts. None of that needs to be upfront. What matters most is what the research explains: why you do what you do, and what you can start doing differently, right now, using proof you already have, recorded in your own TODAY entries.</p>
+
+    <h2>What Comes Next</h2>
+
+    <p>Understanding a pattern on your own gets you halfway there. The other half gets cemented and reinforced when you actually practice the insight around other people exploring their own patterns. A concept held in solitude fades the same way a good moment fades without anything to bring it back. Sharing a realization with someone else, and watching them recognize the same pattern in their own life, makes the insight social — and social is what makes it stick.</p>
+
+    <p>That's what Praxis is for: the actual space where these lessons get put into practice, around people who are watching their own patterns take shape too.</p>
+
+    <div class="cta-block">
+      <h3>Start building your own pattern.</h3>
+      <p>Log today. Let Discoveries explain what it means.</p>
+      <a href="https://mydopa.app" class="cta-btn">Start the 7-Day Dare →</a>
+      <p class="cta-tagline">Fall in love with your own progress.</p>
+    </div>
+
+  </article>
+
+  <div style="max-width:700px;margin:0 auto;padding:0 24px;">
+    <div class="lab-section">
+      <p class="lab-label">Also from the lab</p>
+      <div class="lab-grid">
+        <a href="https://mydopa.app/blog/today-and-myprogress" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">Today &amp; MyProgress: Your Memory Loses It, We Capture It</p>
+          <p class="lab-card-excerpt">TODAY is for recording a win the moment it happens. MyProgress is where all those scattered data points start painting a clear picture.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+        <a href="https://mydopa.app/blog/mydopa-praxis" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">Praxis: Where Understanding Becomes Practice</p>
+          <p class="lab-card-excerpt">Knowing something and living it are two different things. Praxis is where what you figured out from Discoveries gets put into action, out in the open.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

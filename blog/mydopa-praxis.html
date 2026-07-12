@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Praxis: Where Understanding Becomes Practice — MyDopa</title>
+  <meta name="description" content="Knowing something and living it are two different things. Praxis is where what you figured out from Discoveries gets shared, tested, and built on with other people doing the same work." />
+  <meta property="og:title" content="Praxis: Where Understanding Becomes Practice" />
+  <meta property="og:description" content="Knowing something and living it are two different things. Praxis is where what you figured out from Discoveries gets shared, tested, and built on with other people doing the same work." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://mydopa.app/blog/mydopa-praxis" />
+  <meta property="og:site_name" content="MyDopa" />
+  <link rel="canonical" href="https://mydopa.app/blog/mydopa-praxis" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #0E0B1A;
+      --darker:  #080610;
+      --purple:  #7B2FBE;
+      --purple2: #9B4FDE;
+      --glow:    #B57BF7;
+      --gold:    #FFB020;
+      --muted:   rgba(255,255,255,0.5);
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(14,11,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(123,47,190,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.95rem;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--glow); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--white); }
+
+    .hero {
+      position: relative;
+      padding: 140px 24px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .hero::before {
+      content: '';
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,190,0.25) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .post-category {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #D97706;
+      margin-bottom: 20px;
+      padding: 4px 12px;
+      border: 1px solid rgba(217,119,6,0.3);
+      border-radius: 50px;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .post-title em { color: var(--glow); font-style: italic; }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .post-meta-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .article {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .article p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 28px;
+    }
+
+    .article p strong { color: var(--white); font-weight: 600; }
+
+    .article h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--white);
+      margin: 56px 0 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--purple);
+      padding: 20px 28px;
+      margin: 40px 0;
+      background: rgba(123,47,190,0.08);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .insight-box {
+      background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(181,123,247,0.08));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin: 48px 0;
+      text-align: center;
+    }
+
+    .insight-box .insight-line {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .insight-box .insight-attr {
+      font-size: 0.8rem;
+      color: var(--glow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .cta-block {
+      background: linear-gradient(135deg, rgba(123,47,190,0.25), rgba(181,123,247,0.1));
+      border: 1px solid rgba(123,47,190,0.4);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      margin-top: 64px;
+    }
+
+    .cta-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .cta-btn:hover {
+      background: var(--purple2);
+      transform: translateY(-2px);
+    }
+
+    .cta-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--glow);
+      text-shadow: 0 0 30px rgba(181,123,247,.25);
+      margin-top: 24px;
+    }
+
+    .lab-section { padding: 0 0 100px; }
+    .lab-label { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .lab-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(123,47,190,0.15); border-radius: 14px; padding: 28px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; display: block; }
+    .lab-card:hover { border-color: rgba(123,47,190,0.35); transform: translateY(-3px); }
+    .lab-card-category { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--glow); margin-bottom: 12px; }
+    .lab-card-title { font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 12px; }
+    .lab-card-excerpt { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .lab-card-link { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--glow); font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .insight-box { padding: 24px 20px; }
+      .cta-block { padding: 36px 24px; }
+      .lab-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
+    <a href="https://mydopa.app/blog" class="nav-back">← All Posts</a>
+  </nav>
+
+  <div class="hero">
+    <span class="post-category">Product and Founder</span>
+    <h1 class="post-title">Praxis: Where <em>Understanding</em> Becomes Practice</h1>
+    <div class="post-meta">
+      <span>MyDopa</span>
+      <span class="post-meta-dot"></span>
+      <span>July 11, 2026</span>
+      <span class="post-meta-dot"></span>
+      <span>4 min read</span>
+    </div>
+  </div>
+
+  <article class="article">
+
+    <p>You figured out what's going on — that five-minute lesson you listened to and suddenly understood. It explained the pattern that's been staring you right in the face from your own TODAY log, and the reason it's showing up. Real progress. But alone, not enough.</p>
+
+    <p>Knowing something and living it are two different things. No one's held you accountable to it yet.</p>
+
+    <p>That's why there's Praxis.</p>
+
+    <h2>What Praxis Actually Is</h2>
+
+    <p>Praxis is the space where what you figured out from Discoveries becomes actionable, out in the open, with other people working to bridge that same gap between knowing and doing. Forget comment sections, forget social media scrolling. Praxis is a structured zone where you get to show what you're actually trying to do, and showing up around others makes it much harder to let it slip through your fingers.</p>
+
+    <p>It's simple, and it's been true for centuries: people stick with commitments when someone else is around, even a little, even casually, no pressure required. Committing to yourself is easy — "yeah, I'll do it" is a promise you can quietly renegotiate at 11pm. <strong>Sharing that same commitment with people also doing it is a different ballgame entirely.</strong> The act of saying it out loud changes your relationship to it.</p>
+
+    <h2>Why This Isn't Just Support</h2>
+
+    <p>Sure, you could call Praxis an "encouragement zone," and there's encouragement there. But encouragement alone doesn't fill the knowing-doing gap.</p>
+
+    <p>What fills that gap? Specificity.</p>
+
+    <p>You share the exact moment you almost chickened out but followed through anyway — and someone else shares the same kind of moment right back. That's a second data point, someone else's, sitting next to your own log, turning what felt like a personal glitch into a real mechanism playing out in more than one life.</p>
+
+    <div class="pull-quote">
+      <p>Being able to explain something you've figured out is a much higher bar than knowing you understand it in private. It's the difference between following a recipe and cooking the dish from memory.</p>
+    </div>
+
+    <p>It's also where a Discovery moves from "yes, I understand that" to "I could explain this to another person, mid-conversation, under slightly real pressure." Being able to explain something you've figured out is a much higher bar than knowing you understand it in private. It's the difference between following a recipe and cooking the dish from memory.</p>
+
+    <h2>What This Looks Like in Practice</h2>
+
+    <p>Say you just finished a Discovery on the gap between intention and action. You show up to Praxis with a moment you just had: "Last night I almost blew off something I said I'd do, but I caught myself and did it anyway."</p>
+
+    <p>Share that with people who've lived the same pattern, and two things happen. You reinforce the win the same way writing it in TODAY does. And you test that insight against other people's real experience, not just your own.</p>
+
+    <div class="insight-box">
+      <div class="insight-line">"An entry said out loud to people who understood exactly why it mattered is harder to downplay. Someone else has witnessed it, not just noted it."</div>
+      <div class="insight-attr">The difference between a private note and a shared account</div>
+    </div>
+
+    <p>This is also where your TODAY log starts to matter beyond its own screen. An entry in your log is real, but it's easy to dismiss on a rough day — easy to talk yourself out of your own private notes. An entry that's been said out loud, once, to people who understood exactly why it mattered, is harder to downplay. Someone else has witnessed it, not just noted it.</p>
+
+    <h2>Where the Whole Loop Closes</h2>
+
+    <p>TODAY captures moments before they disappear from short-term memory. MyProgress reveals the pattern underneath the daily grind, with the Resilience Horizon showing the long game. Discoveries gives you the why, built from your own evidence, in five minutes. Praxis is where that why gets shared, tested, and built on with other people doing the same work.</p>
+
+    <p>None of these pieces accomplish much alone. Together, they form the complete loop — capture, see, understand, practice — built around one plain fact: what you're struggling with was never a discipline problem or a tracking problem. It's the gap between what actually happened in your life and what you were able to hold onto, understand, and use.</p>
+
+    <p>That gap is exactly what this whole system closes.</p>
+
+    <div class="cta-block">
+      <h3>Close the loop.</h3>
+      <p>Capture, see, understand, practice — all four in one place.</p>
+      <a href="https://mydopa.app" class="cta-btn">Start the 7-Day Dare →</a>
+      <p class="cta-tagline">Fall in love with your own progress.</p>
+    </div>
+
+  </article>
+
+  <div style="max-width:700px;margin:0 auto;padding:0 24px;">
+    <div class="lab-section">
+      <p class="lab-label">Also from the lab</p>
+      <div class="lab-grid">
+        <a href="https://mydopa.app/blog/mydopa-discoveries" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">Discoveries: Why Understanding the Pattern Changes What You Do Next</p>
+          <p class="lab-card-excerpt">TODAY records what happened. MyProgress shows you the pattern. Discoveries explains what that pattern actually means — in five minutes.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+        <a href="https://mydopa.app/blog/the-four-pillars" class="lab-card">
+          <p class="lab-card-category" style="color:#D97706">Product and Founder</p>
+          <p class="lab-card-title">The Four Pillars: Why Self-Development Only Works When You Work All Four</p>
+          <p class="lab-card-excerpt">Optimizing one pillar while the others drag. Development is a system — and systems require all their components.</p>
+          <span class="lab-card-link">Read →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

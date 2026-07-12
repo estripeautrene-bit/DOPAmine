@@ -1105,8 +1105,9 @@ footer{
   <!-- Screen 7: Email gate -->
   <div class="quiz-screen" id="qs7">
     <div class="quiz-email-screen">
-      <h2 id="profileHeadline">Your Progress Profile is ready.</h2>
-      <p id="profileBody"></p>
+      <h2>Your MyDopa Progress Profile is ready.</h2>
+      <p>We found the pattern behind how your progress becomes invisible. Enter your email and we'll send you your MyDopa Progress Profile, along with your first MyDopa exercise.</p>
+      <input class="quiz-email-input" type="text" placeholder="First name (optional)" id="quizFirstName" oninput="quizAnswers.first_name=this.value"/>
       <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail"/>
       <button class="quiz-email-btn" onclick="submitQuizEmail()">Save my profile →</button>
       <label class="quiz-consent">
@@ -1119,17 +1120,12 @@ footer{
     </div>
   </div>
 
-  <!-- Screen 8: Result -->
+  <!-- Screen 8: Confirmation -->
   <div class="quiz-screen" id="qs8">
-    <div class="quiz-result-screen">
-      <div class="result-score-ring">
-        <span class="result-score-num">34%</span>
-        <span class="result-score-label">Visibility</span>
-      </div>
-      <h2 class="result-h">Your Progress Visibility Score</h2>
-      <p class="result-p">Roughly two-thirds of what you are building every day is getting filtered out before your brain keeps it. This is not a character flaw. It is biology. And it is exactly what <span style="color:#fff;">My</span><span style="color:#A855F7;">Dopa</span>™ is built to fix.</p>
-      <p class="result-p">In 14 days of 2-minute daily captures, people report feeling the shift. By day 30, the evidence is visible. <strong>Yours is waiting.</strong></p>
-      <button class="result-cta" onclick="goNext()">I am on the list →</button>
+    <div class="quiz-confirm-screen">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(123,47,190,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2>Your Progress Profile is on its way.</h2>
+      <p>Check your inbox in a few minutes.</p>
     </div>
   </div>
 
@@ -1187,7 +1183,7 @@ var screens=['qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs6a','qs6b','qs7','qs8'
 var loaderStep=0;
 var loaderDone=false;
 let selectedProfile='';
-var quizAnswers={q1_profile:'',q2_likert:null,q3_evidence:'',q4_good_day:'',q5_tracks_wins:'',q6_people_yes:'',q7_ready:'',age_group:'',sex:''};
+var quizAnswers={q1_profile:'',q2_likert:null,q3_evidence:'',q4_good_day:'',q5_tracks_wins:'',q6_people_yes:'',q7_ready:'',age_group:'',sex:'',first_name:''};
 
 function openQuiz(e){
   if(e) e.preventDefault();
@@ -1209,7 +1205,7 @@ function showScreen(n){
   updateProgress(n);
   // Trigger loader when on loader screen
   if(n===6 && !loaderDone) startLoader();
-  if(n===9) renderProfileScreen();
+
 }
 
 function updateProgress(n){

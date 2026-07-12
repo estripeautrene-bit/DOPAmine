@@ -1107,7 +1107,7 @@ footer{
     <div class="quiz-email-screen">
       <h2>Your MyDopa Progress Profile is ready.</h2>
       <p>We found the pattern behind how your progress becomes invisible. Enter your email and we'll send you your MyDopa Progress Profile, along with your first MyDopa exercise.</p>
-      <input class="quiz-email-input" type="text" placeholder="First name (optional)" id="quizFirstName" oninput="quizAnswers.first_name=this.value"/>
+      <input class="quiz-email-input" type="text" placeholder="First name" id="quizFirstName" oninput="quizAnswers.first_name=this.value"/>
       <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail"/>
       <button class="quiz-email-btn" onclick="submitQuizEmail()">Save my profile →</button>
       <label class="quiz-consent">
@@ -1324,6 +1324,11 @@ function loaderChoice(btn,popupNum,value){
 
 // ── EMAIL SUBMIT ──
 function submitQuizEmail(){
+  var fn=document.getElementById('quizFirstName').value.trim();
+  if(!fn){
+    document.getElementById('quizFirstName').focus();
+    return;
+  }
   if(!document.getElementById('quizConsent').checked){
     document.getElementById('quizConsent').focus();
     return;

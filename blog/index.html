@@ -875,6 +875,7 @@ els.forEach(el => io.observe(el));
     cards.forEach(function (card) {
       const match = !q || card.textContent.toLowerCase().includes(q);
       card.style.display = match ? '' : 'none';
+      if (match && q) card.classList.add('in');
       if (match) visible++;
     });
     clear.classList.toggle('visible', q.length > 0);

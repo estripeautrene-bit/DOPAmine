@@ -541,10 +541,27 @@ footer{
 .d1{transition-delay:.04s;}.d2{transition-delay:.1s;}.d3{transition-delay:.16s;}
 .d4{transition-delay:.22s;}.d5{transition-delay:.28s;}.d6{transition-delay:.34s;}
 
+/* ── FAQ ── */
+.faq-item{background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:16px;overflow:hidden;}
+.faq-item summary{padding:22px 28px;font-size:16px;font-weight:600;color:var(--off);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:'+';font-size:22px;font-weight:300;color:var(--purple-bright);flex-shrink:0;margin-left:16px;transition:transform .25s;}
+.faq-item[open] summary::after{transform:rotate(45deg);}
+.faq-item p{padding:0 28px 22px;margin:0;}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--off);flex-direction:column;gap:5px;align-items:center;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px;transition:transform .25s,opacity .25s;}
+.nav-mobile-menu{display:none;position:fixed;top:57px;left:0;right:0;background:rgba(6,0,13,0.97);border-bottom:1px solid rgba(168,85,247,0.12);backdrop-filter:blur(20px);padding:20px 24px;z-index:199;flex-direction:column;gap:16px;}
+.nav-mobile-menu.open{display:flex;}
+.nav-mobile-menu a{font-size:15px;color:var(--gray);text-decoration:none;font-weight:500;}
+.nav-mobile-menu a:hover{color:#fff;}
+
 /* ── RESPONSIVE ── */
 @media(max-width:800px){
   nav{padding:14px 20px;}
   .nav-link{display:none;}
+  .nav-hamburger{display:flex;}
   .blog-grid{grid-template-columns:1fr;}
   .quiz-nav{padding:16px 20px;}
   .quiz-screen{padding:16px 20px 40px;}
@@ -590,8 +607,17 @@ footer{
     <a href="/feelings" class="nav-link">Feelings</a>
     <a href="/blog" class="nav-link">Blog</a>
     <a href="#" class="nav-cta" onclick="openQuiz(event)">Join the waitlist →</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="/meaning">Meaning</a>
+  <a href="/examples">Examples</a>
+  <a href="/word-mirrors">Word mirrors</a>
+  <a href="/feelings">Feelings</a>
+  <a href="/blog">Blog</a>
+  <a href="#" onclick="openQuiz(event);document.getElementById('navMobileMenu').classList.remove('open')">Join the waitlist →</a>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
@@ -616,10 +642,10 @@ footer{
   <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
     <span class="eyebrow">The Recognition Moment</span>
     <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;margin:24px 0 32px;text-align:left;">
-      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"By six o'clock, the feeling of the good stuff is already gone. I can list three good things that happened — but most of what they felt like is lost."</p>
+      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"By six o'clock, I couldn't tell you what today proved about who I'm becoming."</p>
       <p style="font-size:13px;color:var(--muted);margin-top:12px;">— an early reflection from our founder, before MyDopa existed</p>
     </div>
-    <p class="section-sub" style="max-width:100%;">The moment happens. The feeling fades before you write it down. By the time you sit still long enough to remember, most of what it felt like is already gone — not because it didn't matter, but because nothing caught it in time. When those moments disappear one by one, the evidence of who you are becoming disappears with them.</p>
+    <p class="section-sub" style="max-width:100%;">The moments that matter are the ones that prove you're becoming more resilient, more consistent, more disciplined. Those fade before you write them down, not because they didn't matter, but because nothing caught them in time. When they disappear one by one, the evidence of who you're becoming disappears with them.</p>
   </div>
 </section>
 
@@ -628,28 +654,57 @@ footer{
   <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
     <span class="eyebrow">The Hidden Cause</span>
     <h2 class="section-h">What if you're not actually behind?</h2>
-    <p class="section-sub" style="max-width:100%;margin:0 auto 32px;">Some things ask you to build for years before anyone can see the building — including you. While it's happening, it looks like nothing. Maybe the problem was never your timeline. Maybe it's that your mind keeps grading your unfinished progress against everyone else's finished result, instead of against who you were six months ago.</p>
+    <p class="section-sub" style="max-width:100%;margin:0 auto 32px;">Some things ask you to build for years before anyone can see it — including you. Maybe the problem was never your timeline. Maybe your mind keeps comparing your unfinished progress to everyone else's finished result, instead of who you were six months ago.</p>
     <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;text-align:left;">
-      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"It is hard to know how much we've progressed. If there is some kind of evidence we can see, then it'll be easier for people like me to not compare ourselves with others, or to compare our efforts with nothingness."</p>
+      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"If there's evidence I can see, it's easier not to compare myself with others — or with nothing."</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ VIDEO PLACEHOLDER ═══ -->
-<section class="video-section reveal">
-  <span class="eyebrow">Why I Built This</span>
-  <div class="video-cols">
-    <video
-      src="/assets/video/founder-video.mp4"
-      controls
-      preload="metadata"
-      style="width:100%;max-width:780px;aspect-ratio:16/9;border-radius:20px;border:1px solid rgba(168,85,247,0.15);display:block;background:#0E0B1A;"
-    ></video>
-    <div class="video-text-panel">
-      <h2 class="vtp-headline">Why I <span style="color:var(--amber);">built</span> <span class="logo-text" style="font-size:1em;"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></span></h2>
-      <p class="vtp-body">For most of my life, I was the person who starts things and doesn't finish. No structure, I told myself — bad at school, scared of anything that asked me to sit still and concentrate.</p>
-      <p class="vtp-body" style="margin-top:16px;">I stopped drinking, got in shape, ran a 10K and then a half marathon — things I'd have told you, a few years earlier, weren't for someone like me. People noticed before I did. My temper changed. My businesses did better.</p>
-      <p class="vtp-body" style="margin-top:16px;">I built the first version of MyDopa to solve my own problem: proof that any of it was real. I have the self-worth now to walk into this without doubting myself — building something out of my own experience, at a scale I used to think was for other people. I am making my own progress visible by talking about it. MyDopa is the proof of its own concept.</p>
+<!-- ═══ USP STATEMENT ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">What MyDopa Does</span>
+    <h2 class="section-h">MyDopa makes invisible personal progress visible, understandable, and cumulative.</h2>
+    <p class="section-sub" style="max-width:100%;"><em>MyDopa is the Strava for mental resilience.</em></p>
+    <p class="section-sub" style="max-width:100%;margin-top:16px;">So you can stop guessing whether you're changing and start seeing the proof.</p>
+  </div>
+</section>
+
+<!-- ═══ WHAT CHANGES WHEN YOU SEE IT ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow reveal">What Changes When You See It</span>
+
+    <div class="reveal" style="display:flex;flex-direction:column;gap:20px;text-align:left;margin:32px 0 40px;">
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--purple-bright);margin-bottom:12px;">Accuracy</p>
+        <p class="vtp-body">You're probably doing better than you think. Your mind is wired to notice what goes wrong faster than what goes right — seeing your progress in real time helps correct that imbalance.</p>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--purple-bright);margin-bottom:12px;">Clarity</p>
+        <p class="vtp-body">The fog lifts the moment you can see it. Without a clear view of your wins, your mind defaults to endless planning and self-doubt — daily visibility cuts through it.</p>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--purple-bright);margin-bottom:12px;">Self-Confidence</p>
+        <p class="vtp-body">You already have more proof than you think. Real confidence is self-trust built on evidence, not affirmations — a visible history of kept promises you can point to.</p>
+      </div>
+    </div>
+
+    <p class="section-sub reveal" style="max-width:100%;margin-bottom:24px;">You stop letting one setback define the week.</p>
+    <p class="reveal" style="font-size:15px;"><a href="#" onclick="openQuiz(event)" style="color:var(--purple-bright);text-decoration:none;">Curious what your own progress would show? →</a></p>
+  </div>
+</section>
+
+<!-- ═══ FOUNDER PROOF ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">Why I Built This</span>
+    <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:40px 36px;margin:24px 0 0;text-align:left;">
+      <p style="font-family:var(--fd);font-size:20px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;margin-bottom:28px;">"I built the first version of MyDopa to solve my own problem: proof that any of it was real."</p>
       <div class="vtp-attr">
         <img src="assets/founder-avatar.jpg" alt="Rene Estripeaut" class="vtp-avatar">
         <div>
@@ -661,182 +716,12 @@ footer{
   </div>
 </section>
 
-<!-- ═══ WHAT YOU ACTUALLY BUILD ═══ -->
-<section style="position:relative;z-index:1;padding:120px 36px;">
-  <div style="max-width:760px;margin:0 auto;text-align:center;">
-    <span class="eyebrow reveal">What You Actually Build</span>
-
-    <div class="reveal" style="display:flex;flex-direction:column;gap:20px;text-align:left;margin:32px 0 40px;">
-
-      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Accuracy</p>
-        <p class="vtp-body">Accuracy is a fairer, more complete scoreboard — not a promise of perfect objectivity. Our minds are hardwired for survival, which means they naturally flag, amplify, and remember our failures while quietly discarding our daily wins. This internal glitch creates a skewed perception of our own capabilities. On MyDopa, accuracy means correcting that baseline distortion — capturing your progress in real time so you can look at your life through a lens shaped by evidence, instead of whatever went wrong most recently.</p>
-      </div>
-
-      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Clarity</p>
-        <p class="vtp-body">Clarity is the sharp focus that emerges when you stop overthinking and start doing. Without a clear view of your wins, your mind defaults to a fog of endless planning, hesitation, and self-doubt. Clarity on MyDopa isn't about having a perfect map of the next five years; it's the immediate, grounded awareness of what you're capable of today. By keeping your daily growth visible, self-doubt has less room to dominate, leaving you with a clearer read on your momentum and your next best move.</p>
-      </div>
-
-      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Self-Confidence</p>
-        <p class="vtp-body">Self-confidence is the byproduct of proof over promises. True confidence can't be faked with affirmations or hype — it's self-trust built on accumulated evidence. MyDopa redefines self-confidence as a visible history of kept promises to yourself. When you can look at a record of daily proof that you follow through, your confidence becomes less dependent on mood — because it's backed by evidence you can actually point to.</p>
-      </div>
-    </div>
-
-    <p class="section-sub reveal" style="max-width:100%;margin-bottom:36px;">You stop letting one setback define the week. You recognize the commitments you are keeping, understand what is changing, and make your next decision from evidence rather than doubt.</p>
-
-    <a href="#" class="quiz-btn reveal" onclick="openQuiz(event)">How clearly can you see your own progress? Take the two-minute Progress Profile →</a>
-  </div>
-</section>
-
-<!-- ═══ DOPA ═══ -->
-<section style="position:relative;z-index:1;padding:80px 36px;">
-  <div class="reveal" style="max-width:600px;margin:0 auto;text-align:center;">
-    <span class="eyebrow">DOPA</span>
-    <p class="section-sub" style="max-width:100%;margin-top:16px;">DOPA is who walks you through it — explaining what your patterns mean in Discoveries, celebrating the streaks and milestones as they happen, and signing off every note along the way. Not the one doing the work. The one who makes sure you see it.</p>
-  </div>
-</section>
-
-<!-- ═══ SECTION 3: MOCKUP SHOWCASE ═══ -->
-<section class="mockup-section reveal">
-  <span class="eyebrow" style="width:100%;max-width:1080px;margin:0 auto 24px;display:block;">The Daily Practice</span>
-  <div class="mockup-inner">
-    <div class="mockup-grid">
-      <div class="mockup-frame">
-        <img src="assets/mockup-welcome.png" alt="">
-      </div>
-      <div class="mockup-frame">
-        <img src="assets/mockup-allset.png" alt="">
-      </div>
-      <div class="mockup-frame">
-        <img src="assets/mockup-discoveries.png" alt="">
-      </div>
-    </div>
-    <div class="mockup-copy">
-      <h2 class="mockup-headline">Everything you need to build a stronger mindset, with a daily practice.</h2>
-      <ul class="mockup-bullets">
-        <li class="mockup-bullet">
-          <div class="mockup-bullet-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          </div>
-          <span class="mockup-bullet-text">Learn the why behind the practice</span>
-        </li>
-        <li class="mockup-bullet">
-          <div class="mockup-bullet-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-          </div>
-          <span class="mockup-bullet-text">Evidence-based lessons that stick</span>
-        </li>
-        <li class="mockup-bullet">
-          <div class="mockup-bullet-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-          </div>
-          <span class="mockup-bullet-text">Simple, daily actions that create change</span>
-        </li>
-        <li class="mockup-bullet">
-          <div class="mockup-bullet-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
-          </div>
-          <span class="mockup-bullet-text">See your progress over time</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ VENN SECTION ═══ -->
-<section style="background:#06000D;padding:60px 40px;position:relative;overflow:hidden;font-family:'DM Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;box-sizing:border-box;z-index:1;">
-  <div style="position:absolute;top:42%;left:20%;transform:translate(-50%,-50%);width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(123,47,190,0.14) 0%,transparent 68%);pointer-events:none;"></div>
-  <div style="position:absolute;top:42%;left:76%;transform:translate(-50%,-50%);width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,0.09) 0%,transparent 68%);pointer-events:none;"></div>
-  <div style="position:relative;z-index:1;max-width:980px;margin:0 auto;display:flex;align-items:center;gap:60px;">
-
-    <!-- Left: headline + subhead -->
-    <div style="flex:0 0 260px;">
-      <span class="eyebrow" style="margin-bottom:16px;">How It Works</span>
-      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(26px,3.2vw,40px);font-weight:900;line-height:1.05;letter-spacing:-0.5px;color:#FAFAF7;margin:0 0 18px;">
-        MyDopa is the <em style="color:#A855F7;font-style:italic;">Strava</em> for mental resilience.
-      </h2>
-      <p style="font-size:15px;font-weight:400;color:rgba(201,190,216,0.75);line-height:1.7;margin:0;">
-        Built to make your mindset progress visible.
-      </p>
-    </div>
-
-    <!-- Right: Venn diagram + tagline -->
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-      <svg viewBox="0 0 560 345" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;height:auto;overflow:visible;">
-        <defs>
-          <radialGradient id="dopa-pg" cx="28%" cy="50%" r="72%"><stop offset="0%" stop-color="#C084FC" stop-opacity="0.95"/><stop offset="100%" stop-color="#7B2FBE" stop-opacity="0.4"/></radialGradient>
-          <radialGradient id="dopa-og" cx="72%" cy="50%" r="72%"><stop offset="0%" stop-color="#FFB020" stop-opacity="0.95"/><stop offset="100%" stop-color="#FF6B00" stop-opacity="0.35"/></radialGradient>
-          <clipPath id="dopa-lc"><circle cx="175" cy="170" r="163"/></clipPath>
-        </defs>
-        <!-- Circle fills -->
-        <circle cx="175" cy="170" r="163" fill="rgba(123,47,190,0.07)"/>
-        <circle cx="375" cy="170" r="163" fill="rgba(255,107,0,0.05)"/>
-        <circle cx="375" cy="170" r="163" fill="rgba(255,176,32,0.055)" clip-path="url(#dopa-lc)"/>
-        <!-- Circle strokes -->
-        <circle cx="175" cy="170" r="163" fill="none" stroke="#A855F7" stroke-width="5" opacity="0.07"/>
-        <circle cx="175" cy="170" r="163" fill="none" stroke="url(#dopa-pg)" stroke-width="1.5"/>
-        <circle cx="375" cy="170" r="163" fill="none" stroke="#FFB020" stroke-width="5" opacity="0.07"/>
-        <circle cx="375" cy="170" r="163" fill="none" stroke="url(#dopa-og)" stroke-width="1.5"/>
-
-        <!-- LEFT CIRCLE: LEARNING — centered in exclusive zone x=112, vertically at mascot height -->
-        <rect x="89" y="91" width="46" height="46" rx="8" fill="rgba(123,47,190,0.18)" stroke="rgba(168,85,247,0.35)" stroke-width="1"/>
-        <g transform="translate(102,104) scale(0.83)">
-          <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="#A855F7" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <text x="112" y="154" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#A855F7">LEARNING</text>
-        <text x="112" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">The science</text>
-        <text x="112" y="186" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">and lessons</text>
-        <text x="112" y="202" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">that build</text>
-        <text x="112" y="218" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">understanding</text>
-        <text x="112" y="234" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px" fill="#A855F7">BOOKS &amp; VIDEOS</text>
-
-        <!-- CENTER OVERLAP: PULSING GLOW + MASCOT (77x77, 30% smaller than 110) -->
-        <circle cx="275" cy="160" r="42" fill="rgba(255,176,32,0.05)"/>
-        <circle cx="275" cy="160" r="36" fill="none" stroke="rgba(255,176,32,0.5)" stroke-width="1"><animate attributeName="r" values="36;62;36" dur="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/></circle>
-        <circle cx="275" cy="160" r="30" fill="none" stroke="rgba(168,85,247,0.4)" stroke-width="1"><animate attributeName="r" values="30;52;30" dur="2.8s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" begin="0.6s" repeatCount="indefinite"/></circle>
-        <circle cx="275" cy="160" r="24" fill="none" stroke="rgba(255,176,32,0.3)" stroke-width="1"><animate attributeName="r" values="24;42;24" dur="2.8s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0;0.3" dur="2.8s" begin="1.2s" repeatCount="indefinite"/></circle>
-        <image href="assets/mascot.png" x="237" y="122" width="77" height="77"/>
-
-        <!-- RIGHT CIRCLE: COACHING — centered in exclusive zone x=438, vertically at mascot height -->
-        <rect x="415" y="91" width="46" height="46" rx="8" fill="rgba(255,107,0,0.12)" stroke="rgba(255,176,32,0.35)" stroke-width="1"/>
-        <g transform="translate(428,104) scale(0.83)">
-          <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke="#FFB020" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <text x="438" y="154" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="2px" fill="#FFB020">COACHING</text>
-        <text x="438" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">Support and</text>
-        <text x="438" y="186" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">guidance when</text>
-        <text x="438" y="202" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" font-weight="400" fill="rgba(250,250,247,0.75)">you need it</text>
-        <text x="438" y="218" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px" fill="#FFB020">EVENTS &amp;</text>
-        <text x="438" y="231" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px" fill="#FFB020">ONE ON ONE SESSIONS</text>
-      </svg>
-      <p style="font-family:'DM Sans',sans-serif;font-size:clamp(14px,1.5vw,17px);font-weight:600;color:#FFB020;letter-spacing:0.3px;text-align:center;margin:20px 0 0;">Your progress. Your proof. Your power.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ═══ RESILIENCE HORIZON ═══ -->
-<section class="resilience-section reveal">
-  <div class="resilience-inner">
-    <div class="resilience-copy">
-      <span class="eyebrow" style="margin-bottom:16px;">Your Progress</span>
-      <h2 class="resilience-headline">One off day doesn't erase what you're building.</h2>
-      <p class="resilience-sub">MyDopa shows the bigger picture so you stay motivated and keep going.</p>
-    </div>
-    <div class="resilience-screen-wrap">
-      <img src="assets/screen-progress.png" alt="MyDopa Resilience Horizon" class="resilience-screen">
-    </div>
-  </div>
-</section>
-
 <!-- ═══ BRAIN LAB ═══ -->
 <section class="blog" id="blog">
   <div class="blog-inner">
     <span class="eyebrow reveal">The Brain Lab</span>
-    <h2 class="section-h reveal">Read the science<br>behind the <em>practice.</em></h2>
-    <p class="section-sub reveal" style="margin-bottom:40px;">Short essays for people who want smart, useful explanations without turning personal growth into homework.</p>
+    <h2 class="section-h reveal">The science behind your progress.</h2>
+    <p class="section-sub reveal" style="margin-bottom:40px;">Short essays for people who want smart explanations without turning growth into homework.</p>
     <div class="blog-grid">
       <a href="https://mydopa.app/blog" class="blog-card reveal d1">
         <span class="blog-tag">Neuroscience</span>
@@ -881,16 +766,50 @@ footer{
   </div>
 </section>
 
+<!-- ═══ FAQ ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div style="max-width:680px;margin:0 auto;">
+    <span class="eyebrow reveal" style="display:block;text-align:center;margin-bottom:40px;">A Few Questions</span>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:12px;">
+
+      <details class="faq-item">
+        <summary>What exactly is MyDopa?</summary>
+        <p class="vtp-body">A daily practice that captures the moments proving you're growing, then shows you the pattern over time.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How long does the daily practice take?</summary>
+        <p class="vtp-body">A minute or two a day. Some days less.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What happens if I miss a day?</summary>
+        <p class="vtp-body">Nothing breaks. One off day doesn't erase what you're building.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What happens after I take the quiz?</summary>
+        <p class="vtp-body">You'll receive your Progress Profile and discover where your brain may be overlooking your progress.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>When does MyDopa launch?</summary>
+        <p class="vtp-body">Soon. Founding member pricing is locked in now for anyone who takes the quiz early.</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
 <!-- ═══ QUIZ CTA ═══ -->
 <section class="quiz-entry reveal">
   <div class="quiz-inner">
     <span class="eyebrow">The Quiz</span>
-    <h2 class="section-h" style="margin-top:20px;">Take the 2-minute quiz</h2>
-    <p class="section-sub" style="margin-top:16px;margin-left:auto;margin-right:auto;">Find out how much of your progress your brain is filtering out —<br>before you even realize it's gone.</p>
+    <h2 class="section-h" style="margin-top:20px;">Let's find out where you are.</h2>
+    <p class="section-sub" style="margin-top:16px;margin-left:auto;margin-right:auto;">Two minutes. Seven questions. Find out what your own progress has been trying to tell you.</p>
     <a href="#" class="quiz-btn" onclick="openQuiz(event)">Take the quiz →</a>
     <div class="quiz-proof">
-      <span><div class="quiz-proof-dot"></div>Built on 40 years of behavioral science</span>
-      <span><div class="quiz-proof-dot"></div>2 minutes · 7 questions</span>
+      <span><div class="quiz-proof-dot"></div>Built on decades of behavioral science</span>
       <span><div class="quiz-proof-dot"></div>Founding member pricing locked</span>
     </div>
   </div>
@@ -1216,6 +1135,14 @@ function dismissCookie(){
   localStorage.setItem('cookieAccepted','1');
 }
 if(localStorage.getItem('cookieAccepted')) document.getElementById('cookieBanner').style.display='none';
+
+// ── HAMBURGER ──
+(function(){
+  var btn=document.getElementById('navHamburger');
+  var menu=document.getElementById('navMobileMenu');
+  if(!btn||!menu) return;
+  btn.addEventListener('click',function(){menu.classList.toggle('open');});
+})();
 
 // ── SCROLL REVEALS ──
 (function(){

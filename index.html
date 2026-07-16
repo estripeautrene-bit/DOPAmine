@@ -326,14 +326,14 @@ footer{
     radial-gradient(ellipse 420px 420px at calc(100% + 60px) calc(100% + 60px),rgba(255,176,32,.13) 0%,transparent 70%),
     var(--bg);
   display:none;flex-direction:column;
-  overflow:hidden;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 .quiz-overlay.active{display:flex;}
 
 .quiz-nav{
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 28px;flex-shrink:0;
-  position:relative;z-index:2;
+  position:sticky;top:0;background:#06000D;z-index:3;
 }
 .quiz-back{
   background:none;border:none;color:var(--gray);
@@ -611,6 +611,30 @@ footer{
   </div>
 </section>
 
+<!-- ═══ RECOGNITION MOMENT ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">The Recognition Moment</span>
+    <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;margin:24px 0 32px;text-align:left;">
+      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"By six o'clock, the feeling of the good stuff is already gone. I can list three good things that happened — but most of what they felt like is lost."</p>
+      <p style="font-size:13px;color:var(--muted);margin-top:12px;">— an early reflection from our founder, before MyDopa existed</p>
+    </div>
+    <p class="section-sub" style="max-width:100%;">The moment happens. The feeling fades before you write it down. By the time you sit still long enough to remember, most of what it felt like is already gone — not because it didn't matter, but because nothing caught it in time. When those moments disappear one by one, the evidence of who you are becoming disappears with them.</p>
+  </div>
+</section>
+
+<!-- ═══ HIDDEN CAUSE ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div class="reveal" style="max-width:680px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">The Hidden Cause</span>
+    <h2 class="section-h">What if you're not actually behind?</h2>
+    <p class="section-sub" style="max-width:100%;margin:0 auto 32px;">Some things ask you to build for years before anyone can see the building — including you. While it's happening, it looks like nothing. Maybe the problem was never your timeline. Maybe it's that your mind keeps grading your unfinished progress against everyone else's finished result, instead of against who you were six months ago.</p>
+    <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;text-align:left;">
+      <p style="font-family:var(--fd);font-size:18px;font-weight:700;font-style:italic;color:var(--gray);line-height:1.7;">"It is hard to know how much we've progressed. If there is some kind of evidence we can see, then it'll be easier for people like me to not compare ourselves with others, or to compare our efforts with nothingness."</p>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ VIDEO PLACEHOLDER ═══ -->
 <section class="video-section reveal">
   <span class="eyebrow">Why I Built This</span>
@@ -623,7 +647,9 @@ footer{
     ></video>
     <div class="video-text-panel">
       <h2 class="vtp-headline">Why I <span style="color:var(--amber);">built</span> <span class="logo-text" style="font-size:1em;"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></span></h2>
-      <p class="vtp-body">I was tired of motivation that fades. I wanted to build something that makes progress visible on the days you can't see it. This is that.</p>
+      <p class="vtp-body">For most of my life, I was the person who starts things and doesn't finish. No structure, I told myself — bad at school, scared of anything that asked me to sit still and concentrate.</p>
+      <p class="vtp-body" style="margin-top:16px;">I stopped drinking, got in shape, ran a 10K and then a half marathon — things I'd have told you, a few years earlier, weren't for someone like me. People noticed before I did. My temper changed. My businesses did better.</p>
+      <p class="vtp-body" style="margin-top:16px;">I built the first version of MyDopa to solve my own problem: proof that any of it was real. I have the self-worth now to walk into this without doubting myself — building something out of my own experience, at a scale I used to think was for other people. I am making my own progress visible by talking about it. MyDopa is the proof of its own concept.</p>
       <div class="vtp-attr">
         <img src="assets/founder-avatar.jpg" alt="Rene Estripeaut" class="vtp-avatar">
         <div>
@@ -632,6 +658,43 @@ footer{
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══ WHAT YOU ACTUALLY BUILD ═══ -->
+<section style="position:relative;z-index:1;padding:120px 36px;">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow reveal">What You Actually Build</span>
+
+    <div class="reveal" style="display:flex;flex-direction:column;gap:20px;text-align:left;margin:32px 0 40px;">
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Accuracy</p>
+        <p class="vtp-body">Accuracy is a fairer, more complete scoreboard — not a promise of perfect objectivity. Our minds are hardwired for survival, which means they naturally flag, amplify, and remember our failures while quietly discarding our daily wins. This internal glitch creates a skewed perception of our own capabilities. On MyDopa, accuracy means correcting that baseline distortion — capturing your progress in real time so you can look at your life through a lens shaped by evidence, instead of whatever went wrong most recently.</p>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Clarity</p>
+        <p class="vtp-body">Clarity is the sharp focus that emerges when you stop overthinking and start doing. Without a clear view of your wins, your mind defaults to a fog of endless planning, hesitation, and self-doubt. Clarity on MyDopa isn't about having a perfect map of the next five years; it's the immediate, grounded awareness of what you're capable of today. By keeping your daily growth visible, self-doubt has less room to dominate, leaving you with a clearer read on your momentum and your next best move.</p>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:32px 36px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B57BF7;margin-bottom:12px;">Self-Confidence</p>
+        <p class="vtp-body">Self-confidence is the byproduct of proof over promises. True confidence can't be faked with affirmations or hype — it's self-trust built on accumulated evidence. MyDopa redefines self-confidence as a visible history of kept promises to yourself. When you can look at a record of daily proof that you follow through, your confidence becomes less dependent on mood — because it's backed by evidence you can actually point to.</p>
+      </div>
+    </div>
+
+    <p class="section-sub reveal" style="max-width:100%;margin-bottom:36px;">You stop letting one setback define the week. You recognize the commitments you are keeping, understand what is changing, and make your next decision from evidence rather than doubt.</p>
+
+    <a href="#" class="quiz-btn reveal" onclick="openQuiz(event)">How clearly can you see your own progress? Take the two-minute Progress Profile →</a>
+  </div>
+</section>
+
+<!-- ═══ DOPA ═══ -->
+<section style="position:relative;z-index:1;padding:80px 36px;">
+  <div class="reveal" style="max-width:600px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">DOPA</span>
+    <p class="section-sub" style="max-width:100%;margin-top:16px;">DOPA is who walks you through it — explaining what your patterns mean in Discoveries, celebrating the streaks and milestones as they happen, and signing off every note along the way. Not the one doing the work. The one who makes sure you see it.</p>
   </div>
 </section>
 
@@ -1240,9 +1303,12 @@ function selectCard(btn,screenIdx,profile,value){
   // Show response card if exists
   var rc=document.getElementById('rc'+screenIdx);
   if(rc) rc.classList.add('visible');
-  // Show continue
+  // Show continue and scroll it into view (it may be off-screen on small mobile viewports)
   var qc=document.getElementById('qc'+screenIdx);
-  if(qc) qc.classList.add('visible');
+  if(qc){
+    qc.classList.add('visible');
+    setTimeout(function(){qc.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+  }
 }
 
 function renderProfileScreen(){
@@ -1267,7 +1333,10 @@ function selectLikert(btn,screenIdx,val){
   var rc=document.getElementById('rc'+screenIdx);
   if(rc) rc.classList.add('visible');
   var qc=document.getElementById('qc'+screenIdx);
-  if(qc) qc.classList.add('visible');
+  if(qc){
+    qc.classList.add('visible');
+    setTimeout(function(){qc.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+  }
 }
 
 // ── LOADER ──

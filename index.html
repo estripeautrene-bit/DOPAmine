@@ -1382,26 +1382,6 @@ document.addEventListener('keydown',function(e){
 if(new URLSearchParams(window.location.search).get('quiz')==='open') openQuiz();
 </script>
 
-<!-- ═══ PRIVACY POLICY STUB ═══ -->
-<div id="privacyModal" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(6,0,13,0.95);overflow-y:auto;padding:80px 24px;">
-  <div style="max-width:680px;margin:0 auto;">
-    <button onclick="document.getElementById('privacyModal').style.display='none'" style="background:none;border:none;color:var(--gray);font-size:14px;cursor:pointer;margin-bottom:24px;">← Close</button>
-    <h1 style="font-family:var(--fd);font-size:32px;font-weight:900;color:var(--off);margin-bottom:16px;">Privacy Policy</h1>
-    <p style="color:var(--gray);line-height:1.8;font-size:15px;">MyDopa collects your email address solely to notify you when the product launches and to send you founding member information. We do not sell, share, or rent your email to any third party. You can unsubscribe at any time by replying to any email we send you. We use Resend to manage email delivery. Questions: <a href="mailto:hello@mydopa.app" style="color:var(--purple-bright);">hello@mydopa.app</a></p>
-    <h2 style="font-family:var(--fd);font-size:20px;font-weight:700;color:var(--off);margin:28px 0 12px;">Cookies</h2>
-    <p style="color:var(--gray);line-height:1.8;font-size:15px;">We use minimal cookies for essential site function. We do not use advertising cookies or tracking pixels. By accepting cookies you agree to this minimal use.</p>
-  </div>
-</div>
-
-<script>
-// Override privacy link to open modal instead of navigating
-document.querySelectorAll('a[href="/privacy"]').forEach(function(a){
-  a.onclick=function(e){e.preventDefault();document.getElementById('privacyModal').style.display='block';};
-});
-document.querySelectorAll('a[href="/terms"]').forEach(function(a){
-  a.onclick=function(e){e.preventDefault();document.getElementById('privacyModal').style.display='block';};
-});
-</script>
 
 </body>
 </html>

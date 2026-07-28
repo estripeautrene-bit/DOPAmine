@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- ── SEO ── -->
+<title>When Accomplishment Stops Working | MyDopa</title>
+<meta name="description" content="You hit the thing you were chasing. For about a day it felt like it was supposed to feel. Then Tuesday came, and it didn't. Here's the exact mechanism behind why achievement feels empty."/>
+<meta name="keywords" content="why does accomplishment feel empty, achievement feels hollow, goal achieved feels empty, why success feels hollow, hedonic adaptation, accomplishment depression"/>
+<meta name="author" content="MyDopa"/>
+<link rel="canonical" href="https://mydopa.app/blog/when-accomplishment-stops-working"/>
+
+<!-- ── Open Graph / Social ── -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="When Accomplishment Stops Working"/>
+<meta property="og:description" content="You hit the thing you were chasing. For about a day it felt right. Then Tuesday came, and it didn't. Here's why."/>
+<meta property="og:url" content="https://mydopa.app/blog/when-accomplishment-stops-working"/>
+<meta property="og:site_name" content="MyDopa"/>
+<meta property="article:published_time" content="2026-07-01"/>
+<meta property="article:author" content="MyDopa Founder"/>
+
+<!-- ── Twitter Card ── -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="When Accomplishment Stops Working"/>
+<meta name="twitter:description" content="You hit the thing you were chasing. For about a day it felt right. Then Tuesday came, and it didn't."/>
+
+<!-- ── Fonts ── -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-core:   #7B2FBE;
+  --purple-bright: #A855F7;
+  --purple-deep:   #6D28D9;
+  --purple-mid:    #B57BF7;
+  --purple-faint:  rgba(168,85,247,0.08);
+  --orange-energy: #FFB020;
+  --orange-fire:   #FF6B00;
+  --navy-deep:     #06000D;
+  --navy-panel:    #0E0B1A;
+  --navy-card:     #110d1f;
+  --white:         #FFFFFF;
+  --off-white:     #F0EBF8;
+  --gray-muted:    #6B7280;
+  --gray-light:    #C9BED8;
+  --text-body:     #D4CAE8;
+  --font-d:        'Playfair Display', Georgia, serif;
+  --font-serif:    'DM Serif Display', Georgia, serif;
+  --font-b:        'DM Sans', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--navy-deep);
+  color: var(--text-body);
+  overflow-x: hidden;
+  line-height: 1;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  backdrop-filter: blur(24px);
+  background: rgba(6,0,13,0.85);
+  border-bottom: 1px solid rgba(168,85,247,0.08);
+}
+.logo { font-family: var(--font-d); font-size: 27px; font-weight: 900; text-decoration: none; }
+.logo .d { color: var(--white); }
+.logo .m { color: var(--purple-bright); font-weight: 400; }
+.nav-back {
+  font-size: 13px; color: var(--gray-muted); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--purple-mid); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(168,85,247,0.35);
+  color: var(--purple-bright);
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border-radius: 999px;
+  text-decoration: none; background: transparent;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+
+.post-hero {
+  padding: 80px 24px 64px;
+  max-width: 760px; margin: 0 auto;
+  position: relative;
+}
+.post-hero::before {
+  content: '';
+  position: fixed; top: 0; right: 0;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse at top right, rgba(123,47,190,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.post-meta {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 36px;
+}
+.post-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: #2DD4BF;
+  border: 1px solid rgba(45,212,191,0.3);
+  padding: 5px 12px; border-radius: 999px;
+}
+.post-date { font-size: 13px; color: var(--gray-muted); }
+.post-read { font-size: 13px; color: var(--gray-muted); }
+.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-muted); }
+
+.post-title {
+  font-family: var(--font-d);
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1.5px;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+.post-title em { font-style: italic; color: var(--purple-bright); }
+
+.post-deck {
+  font-size: clamp(17px, 2vw, 21px);
+  color: var(--gray-light); font-weight: 300; line-height: 1.65;
+  border-left: 2px solid var(--orange-energy);
+  padding-left: 20px; margin-bottom: 56px;
+}
+
+.article {
+  max-width: 680px; margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.article p {
+  font-size: 18px; line-height: 1.78;
+  color: var(--text-body);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+.article h2 {
+  font-family: var(--font-d);
+  font-size: clamp(26px, 3.5vw, 36px);
+  font-weight: 900; line-height: 1.15;
+  color: var(--white);
+  margin: 64px 0 24px;
+}
+
+.article strong { color: var(--white); font-weight: 500; }
+.article em { font-style: italic; color: var(--gray-light); }
+
+.pull-quote {
+  font-family: var(--font-d);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700; font-style: italic;
+  line-height: 1.35;
+  color: var(--white);
+  border-left: 3px solid var(--purple-bright);
+  padding: 8px 0 8px 28px;
+  margin: 56px 0;
+}
+
+.highlight-block {
+  background: var(--navy-card);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-left: 3px solid var(--orange-energy);
+  border-radius: 0 16px 16px 0;
+  padding: 28px 32px;
+  margin: 48px 0;
+}
+.highlight-block p {
+  margin-bottom: 0;
+  font-size: 17px; line-height: 1.7;
+}
+.highlight-block .hl-label {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--orange-energy); font-weight: 600;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.post-cta {
+  background: var(--navy-panel);
+  border: 1px solid rgba(168,85,247,0.15);
+  border-radius: 24px;
+  padding: 52px 48px;
+  text-align: center;
+  margin: 80px 0 0;
+  position: relative; overflow: hidden;
+}
+.post-cta::before {
+  content: '';
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,176,32,0.07) 0%, rgba(123,47,190,0.05) 40%, transparent 70%);
+  pointer-events: none;
+}
+.cta-eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange-energy); margin-bottom: 16px;
+}
+.cta-title {
+  font-family: var(--font-d); font-size: clamp(24px, 4vw, 38px);
+  font-weight: 900; color: var(--white); margin-bottom: 16px; line-height: 1.15;
+}
+.cta-title em { font-style: italic; color: var(--purple-bright); }
+.cta-body { font-size: 17px; color: var(--gray-light); font-weight: 300; line-height: 1.65; max-width: 420px; margin: 0 auto 36px; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--purple-core), var(--purple-deep));
+  color: var(--white); font-size: 17px; font-weight: 600;
+  padding: 15px 36px; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 40px rgba(123,47,190,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 0 70px rgba(168,85,247,0.5); }
+.cta-tagline { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--purple-bright); text-shadow: 0 0 30px rgba(168,85,247,.25); margin-top: 24px; }
+
+.more-posts {
+  border-top: 1px solid rgba(123,47,190,0.1);
+  margin: 80px 0 0; padding: 60px 0 0;
+}
+.more-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--purple-mid); margin-bottom: 32px;
+}
+.more-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.more-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(123,47,190,0.12);
+  border-radius: 16px; padding: 28px;
+  text-decoration: none; display: block;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.more-card:hover { border-color: rgba(168,85,247,0.3); transform: translateY(-3px); }
+.more-card-tag { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+.more-card-title { font-family: var(--font-d); font-size: 20px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 10px; }
+.more-card-excerpt { font-size: 14px; color: var(--gray-muted); line-height: 1.6; font-weight: 300; }
+
+footer {
+  border-top: 1px solid rgba(123,47,190,0.1);
+  padding: 36px 48px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  max-width: 760px; margin: 0 auto;
+}
+.footer-logo { font-family: var(--font-d); font-size: 24px; font-weight: 700; text-decoration: none; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--purple-bright); font-weight: 400; }
+.footer-tag { font-family: var(--font-d); font-size: 13px; font-style: italic; color: var(--gray-muted); }
+
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .post-hero { padding: 48px 20px 48px; }
+  .article { padding: 0 20px 80px; }
+  .article p { font-size: 17px; }
+  .post-cta { padding: 40px 28px; }
+  .more-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; padding: 32px 20px 40px; }
+  .nav-back { display: none; }
+}
+.logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <a href="/blog" class="nav-back">← All posts</a>
+  <a href="https://mydopa.app/?quiz=open" class="nav-cta">Take the quiz →</a>
+</nav>
+
+<header class="post-hero">
+  <div class="post-meta">
+    <span class="post-tag">The Science</span>
+    <span class="meta-dot"></span>
+    <span class="post-date">July 2026</span>
+    <span class="meta-dot"></span>
+    <span class="post-read">4 min read</span>
+  </div>
+
+  <h1 class="post-title">
+    When Accomplishment<br/>
+    <em>Stops Working</em>
+  </h1>
+
+  <p class="post-deck">
+    You hit the thing you were chasing. The promotion, the number on the scale, the deal that closed after eight months. For about a day it felt like it was supposed to feel. Then Tuesday came, and it didn't.
+  </p>
+</header>
+
+<article class="article">
+
+  <p>Nothing was wrong. You didn't lose the promotion. The number on the scale didn't move back. The deal stayed closed. But the feeling you were sure would still be there — the one you'd been picturing since March — just wasn't. You checked for it the way you'd check a pocket for keys you were sure you had. Nothing.</p>
+
+  <p>If you've started wondering whether something is broken in you, it isn't. This is not about being ungrateful, and it's not about setting the wrong goal. It's a specific, well-documented mechanism, and once you see it, the confusion mostly clears on its own.</p>
+
+  <h2>It Was Never Really the Promotion</h2>
+
+  <p>Here's the part almost nobody tells you before you start chasing something: the good feeling you get from accomplishing a goal was never really coming from the goal itself. It was coming from your brain registering <strong>progress toward</strong> something. The finish line and the feeling are two different systems, and they don't run on the same clock.</p>
+
+  <p>While you were working toward the promotion, your brain was tracking movement — the extra project you took on, the meeting where you finally spoke up, the manager who started copying you on things she used to handle alone. Each of those registered as progress, and progress is what your brain rewards. The promotion itself was just the moment the tracking stopped. There's no more movement to register, so there's nothing left for your brain to reward you for.</p>
+
+  <div class="pull-quote">
+    The reward was attached to the climb, and the climb is now over.
+  </div>
+
+  <h2>Real Life, Not Theory</h2>
+
+  <p>A woman spent four years building toward partner at her firm. She made partner in March. By May she told a friend she felt "weirdly flat," and immediately apologized for saying it — as if wanting more after getting exactly what she wanted made her ungrateful. It didn't. She just hadn't been told that the climb was where the feeling lived, and the summit is quiet by design.</p>
+
+  <div class="highlight-block">
+    <span class="hl-label">The same pattern, a different goal</span>
+    <p>A man who'd been trying to lose forty pounds for two years hit his number in January. He saw the exact figure he'd pictured on a sticky note on his mirror for months, and felt almost nothing. The daily habit of noticing small movement had been doing the emotional work the whole time. Once the number stopped moving, that daily signal disappeared with it.</p>
+  </div>
+
+  <p>Neither of them had a motivation problem. Both of them had stopped tracking the thing that was actually making them feel good, right when they finally arrived somewhere.</p>
+
+  <h2>What MyDopa Is Built Around</h2>
+
+  <p>This is the exact gap MyDopa is built to close. Most systems are built to help you get to the goal. Almost none of them are built to keep giving you evidence of movement once you're there — which is precisely the moment people report feeling lost.</p>
+
+  <p>MyDopa treats the climb as the point, not the finish line. Every small win logged along the way — the extra project, the pound down, the meeting you spoke up in — gets kept and shown back to you, so the sense of progress doesn't disappear the second the target is hit. The feeling you're chasing was never really about the destination. It's about staying in contact with your own forward motion, on the way there and after you arrive.</p>
+
+  <h2>One Thing to Do This Week</h2>
+
+  <p>Pick one thing you've already accomplished in the last year — something you worked toward and got. Write down three specific moments of movement that happened <em>before</em> you got there. Not the outcome. The steps. The email you sent, the conversation you had, the day you almost quit and didn't. Read them back. That list is where the feeling actually lived, and it's available to you again the next time you build one.</p>
+
+  <h2>The Identity Shift</h2>
+
+  <p>You are not someone who gets bored the moment things go right. You are someone whose brain rewards motion, and who is now learning to keep generating motion instead of waiting at finish lines for a feeling that was never going to be there. That's not a flaw to manage. It's a system to work with on purpose.</p>
+
+  <p style="font-size:14px; color:var(--gray-muted); margin-top:40px;">— DOPA</p>
+
+  <div class="post-cta">
+    <p class="cta-eyebrow">Your progress is the point</p>
+    <h2 class="cta-title">Start tracking the <em>climb</em>,<br/>not the finish line</h2>
+    <p class="cta-body">The feeling you're chasing lives in the daily evidence of movement. MyDopa keeps it where you can see it.</p>
+    <a href="https://mydopa.app/?quiz=open" class="btn-cta">Take the quiz →</a>
+    <p class="cta-tagline">Fall in love with your own progress.</p>
+  </div>
+
+  <div class="more-posts">
+    <p class="more-label">Also from the lab</p>
+    <div class="more-grid">
+      <a href="/blog/why-nothing-ever-feels-like-enough" class="more-card">
+        <p class="more-card-tag" style="color:#B57BF7">The Science</p>
+        <h3 class="more-card-title">Why Nothing Ever Feels Like Enough</h3>
+        <p class="more-card-excerpt">The pattern behind the moving target — why the next thing is always the one that was supposed to fix it.</p>
+      </a>
+      <a href="/blog/why-success-didnt-make-me-happy" class="more-card">
+        <p class="more-card-tag" style="color:#B57BF7">The Science</p>
+        <h3 class="more-card-title">Why Success Didn't Make Me Happy</h3>
+        <p class="more-card-excerpt">The arrival fallacy, from the other side of the goal. What the research says happens the moment you arrive.</p>
+      </a>
+    </div>
+  </div>
+
+</article>
+
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <p class="footer-tag">"Your dopamine. From the inside."</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "When Accomplishment Stops Working",
+  "description": "You hit the thing you were chasing. For about a day it felt right. Then Tuesday came. Here's the exact mechanism behind why achievement feels empty.",
+  "author": { "@type": "Organization", "name": "MyDopa", "url": "https://mydopa.app" },
+  "publisher": { "@type": "Organization", "name": "MyDopa", "url": "https://mydopa.app" },
+  "datePublished": "2026-07-01",
+  "dateModified": "2026-07-01",
+  "url": "https://mydopa.app/blog/when-accomplishment-stops-working",
+  "keywords": "accomplishment feels empty, achievement hollow, hedonic adaptation",
+  "articleSection": "The Science"
+}
+</script>
+
+</body>
+</html>

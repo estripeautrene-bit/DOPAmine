@@ -62,16 +62,10 @@
       border-bottom: 1px solid rgba(123,47,190,0.15);
     }
 
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.95rem;
-      font-weight: 900;
-      color: var(--white);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-logo span { color: var(--glow); }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.95rem; font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
+    .logo .d { color: var(--white); }
+    .logo .m { color: var(--glow); font-weight: 400; }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
 
     .nav-back {
       font-size: 0.82rem;
@@ -84,6 +78,8 @@
     }
 
     .nav-back:hover { color: var(--white); }
+    .nav-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(168,85,247,0.35); color: var(--glow); font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 999px; text-decoration: none; background: transparent; transition: all 0.2s; }
+    .nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--glow); }
 
     .hero {
       position: relative;
@@ -285,25 +281,34 @@
     }
   .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: #818CF8; margin-bottom: 28px;
+}
+.article-meta { font-size: 13px; color: var(--muted); }
+footer { border-top: 1px solid rgba(123,47,190,0.1); padding: 36px 24px 48px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; max-width: 760px; margin: 0 auto; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; text-decoration: none; }
+.footer-logo .d { color: var(--white); }
+.footer-logo .m { color: var(--glow); font-weight: 400; }
+.footer-tagline { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--glow); text-decoration: none; }
 </style>
 </head>
 <body>
 
   <nav>
-    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
-    <a href="https://mydopa.app/blog" class="nav-back">← All Posts</a>
+    <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+    <div class="nav-right">
+      <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+      <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+    </div>
   </nav>
 
   <div class="hero">
-    <span class="post-category">Product and Founder</span>
+    <p class="article-category">Product and Founder</p>
     <h1 class="post-title">Praxis: Where <em>Understanding</em> Becomes Practice</h1>
-    <div class="post-meta">
-      <span>By Dopa</span>
-      <span class="post-meta-dot"></span>
-      <span>July 2026</span>
-      <span class="post-meta-dot"></span>
-      <span>4 min read</span>
-    </div>
+    <p class="article-meta">By DOPA &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; 4 min read</p>
   </div>
 
   <article class="article">
@@ -383,6 +388,12 @@
       </div>
     </div>
   </div>
+
+<footer>
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
 
 </body>
 </html>

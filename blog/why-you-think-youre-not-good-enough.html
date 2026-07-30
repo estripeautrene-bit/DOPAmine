@@ -79,7 +79,7 @@ nav {
   transition: color 0.2s;
 }
 .nav-back:hover { color: var(--purple-mid); }
-.nav-cta {
+.nav-btn {
   display: inline-flex; align-items: center; gap: 8px;
   border: 1px solid rgba(168,85,247,0.35);
   color: var(--purple-bright);
@@ -88,7 +88,8 @@ nav {
   text-decoration: none; background: transparent;
   transition: all 0.2s;
 }
-.nav-cta:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+.nav-right { display: flex; align-items: center; gap: 24px; }
 
 .post-hero {
   padding: 80px 24px 64px;
@@ -267,24 +268,27 @@ footer {
 }
 .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: #818CF8; margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.1s;
+}
+.article-meta { font-size: 13px; color: var(--gray-muted); opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s; }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
-  <a href="/blog" class="nav-back">← All posts</a>
-  <a href="https://mydopa.app/?quiz=open" class="nav-cta">Take the quiz →</a>
+  <div class="nav-right">
+    <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+    <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+  </div>
 </nav>
 
 <header class="post-hero">
-  <div class="post-meta">
-    <span class="post-tag">The Science</span>
-    <span class="meta-dot"></span>
-    <span class="post-date">July 2026</span>
-    <span class="meta-dot"></span>
-    <span class="post-read">4 min read</span>
-  </div>
+  <p class="article-category">THE SCIENCE</p>
+  <p class="article-meta">By DOPA &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; 4 min read</p>
 
   <h1 class="post-title">
     The Real Reason You Think<br/>
@@ -365,7 +369,8 @@ footer {
 
 <footer>
   <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
-  <p class="footer-tag">"Your dopamine. From the inside."</p>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
 </footer>
 
 <script type="application/ld+json">

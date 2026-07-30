@@ -93,7 +93,7 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(123,47,190,0.15);
     }
-    .nav-logo {
+    .nav-logo, .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.95rem;
       font-weight: 900;
@@ -101,7 +101,9 @@
       text-decoration: none;
       letter-spacing: -0.02em;
     }
-    .nav-logo span { color: var(--glow); }
+    .nav-logo span, .logo .d { color: var(--white); }
+    .logo .m { color: var(--glow); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
     .nav-back {
       font-size: 0.82rem;
       color: var(--muted);
@@ -112,6 +114,18 @@
       transition: color 0.2s;
     }
     .nav-back:hover { color: var(--white); }
+    .nav-btn {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 8px 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover { background: #9B4FDE; }
     .hero {
       position: relative;
       padding: 140px 24px 80px;
@@ -314,23 +328,27 @@
 @media (max-width: 600px) { .lab-grid { grid-template-columns: 1fr; } }
   .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: #818CF8; margin-bottom: 28px;
+}
+.article-meta { font-size: 13px; color: var(--muted); }
+.footer-tagline { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--glow); text-decoration: none; }
 </style>
 </head>
 <body>
   <nav>
-    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
-    <a href="https://mydopa.app/blog" class="nav-back">← All Articles</a>
+    <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+    <div class="nav-right">
+      <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+      <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+    </div>
   </nav>
   <header class="hero">
-    <span class="post-category">Founder Story · 8 min read</span>
+    <p class="article-category">Founder Story</p>
     <h1 class="post-title">The <em>Three-Hour Drive</em> That Changed Everything</h1>
-    <div class="post-meta">
-      <span>René — Founder, MyDopa</span>
-      <div class="post-meta-dot"></div>
-      <span>June 2026</span>
-      <div class="post-meta-dot"></div>
-      <span>8 min read</span>
-    </div>
+    <p class="article-meta">By DOPA &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 8 min read</p>
   </header>
   <article class="article">
     <p>There is a version of December 29, 2023 that I look back on now and feel almost grateful for. At the time it did not feel like anything except a very good party. My friend Coco was getting married in El Valle de Antón — a mountain town about two hours from Panama City, green and cool in a way the city never is. There was Japanese scotch. There was dancing. There was the particular freedom that comes from being somewhere beautiful with people you love and no reason to be anywhere else.</p>
@@ -397,6 +415,12 @@
     </div>
   </div>
 </div>
+
+<footer style="background:rgba(14,11,26,0.9);border-top:1px solid rgba(123,47,190,0.15);padding:48px 24px;text-align:center;">
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
 
 </body>
 </html>

@@ -80,7 +80,8 @@ nav {
   transition: color 0.2s;
 }
 .nav-back:hover { color: var(--purple-mid); }
-.nav-cta {
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-btn {
   display: inline-flex; align-items: center; gap: 8px;
   border: 1px solid rgba(168,85,247,0.35);
   color: var(--purple-bright);
@@ -89,7 +90,7 @@ nav {
   text-decoration: none; background: transparent;
   transition: all 0.2s;
 }
-.nav-cta:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
+.nav-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--purple-bright); }
 
 /* ─── HERO ─── */
 .post-hero {
@@ -300,7 +301,8 @@ footer {
 .footer-logo { font-family: var(--font-d); font-size: 24px; font-weight: 700; text-decoration: none; }
 .footer-logo .d { color: var(--white); }
 .footer-logo .m { color: var(--purple-bright); font-weight: 400; }
-.footer-tag { font-family: var(--font-d); font-size: 13px; font-style: italic; color: var(--gray-muted); }
+.footer-tagline { font-size: 14px; color: var(--gray-muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--purple-bright); text-decoration: none; }
 
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
@@ -314,30 +316,31 @@ footer {
 }
 .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category {
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+  color: #818CF8; margin-bottom: 28px;
+}
+.article-meta { font-size: 13px; color: var(--gray-muted); }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
-  <a href="/blog" class="nav-back">← All posts</a>
-  <a href="https://mydopa.app/?quiz=open" class="nav-cta">Take the quiz →</a>
+  <div class="nav-right">
+    <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+    <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+  </div>
 </nav>
 
 <!-- POST HERO -->
 <header class="post-hero">
-  <div class="post-meta">
-    <span class="post-tag">Negativity Bias</span>
-    <span class="meta-dot"></span>
-    <span class="post-date">May 14, 2026</span>
-    <span class="meta-dot"></span>
-    <span class="post-read">5 min read</span>
-  </div>
-
+  <p class="article-category">Negativity Bias</p>
   <h1 class="post-title">
     Can You Remember the Best Moment<br/>
     from <em>Last Tuesday?</em>
   </h1>
+  <p class="article-meta">By DOPA &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; 5 min read</p>
 
   <p class="post-deck">
     Most people can't. Not because the day was bad — but because your brain is wired to discard good moments the instant they happen. Here's what that costs you, and what you can do about it.
@@ -493,7 +496,8 @@ footer {
 
 <footer>
   <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
-  <p class="footer-tag">"Your dopamine. From the inside."</p>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
 </footer>
 
 <!-- Structured data for SEO -->

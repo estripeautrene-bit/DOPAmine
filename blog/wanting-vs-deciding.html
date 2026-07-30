@@ -18,10 +18,14 @@
     html { scroll-behavior: smooth; }
     body { font-family: "DM Sans", sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; line-height: 1.7; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(14,11,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(123,47,190,0.15); }
-    .nav-logo { font-family: "Playfair Display", serif; font-size: 1.95rem; font-weight: 900; color: var(--white); text-decoration: none; }
-    .nav-logo span { color: var(--glow); }
+    .nav-logo, .logo { font-family: "Playfair Display", serif; font-size: 1.95rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .nav-logo span, .logo .d { color: var(--white); }
+    .logo .m { color: var(--glow); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
     .nav-back { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-back:hover { color: var(--white); }
+    .nav-btn { display: inline-block; background: var(--purple); color: var(--white); font-weight: 600; font-size: 0.82rem; padding: 8px 18px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
+    .nav-btn:hover { background: var(--purple2); }
     .hero { padding: 140px 24px 80px; max-width: 760px; margin: 0 auto; }
     .post-category { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #34D399; margin-bottom: 20px; padding: 4px 12px; border: 1px solid rgba(52,211,153,0.3); border-radius: 50px; }
     .post-title { font-family: "Playfair Display", serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 28px; }
@@ -64,19 +68,24 @@
 @media (max-width: 600px) { .lab-grid { grid-template-columns: 1fr; } }
   .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #818CF8; margin-bottom: 28px; }
+.article-meta { font-size: 13px; color: var(--muted); }
+.footer-tagline { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--glow); text-decoration: none; }
 </style>
 </head>
 <body>
   <nav>
-    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
-    <a href="https://mydopa.app/blog" class="nav-back">← All Posts</a>
+    <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+    <div class="nav-right">
+      <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+      <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+    </div>
   </nav>
   <div class="hero">
-    <span class="post-category">Goals & Commitment · Commitment Science</span>
+    <p class="article-category">Goals &amp; Commitment · Commitment Science</p>
     <h1 class="post-title">The Difference Between <em>Wanting</em> Something and Actually Deciding to Have It</h1>
-    <div class="post-meta">
-      <span>MyDopa</span><span class="post-meta-dot"></span><span>June 2026</span><span class="post-meta-dot"></span><span>8 min read</span>
-    </div>
+    <p class="article-meta">By DOPA &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 8 min read</p>
   </div>
   <article class="article">
     <p>You want it. You have wanted it for a long time. The body. The business. The relationship. The creative work. The confidence. The kind of day that feels like yours. And wanting has not been enough. There is a specific neurological and psychological gap between wanting something and deciding to have it. It is not a gap in effort. It is not a gap in worthiness. It is a gap in commitment — and commitment operates by completely different rules than desire.</p>
@@ -139,6 +148,12 @@
     </div>
   </div>
 </div>
+
+<footer style="background:rgba(14,11,26,0.9);border-top:1px solid rgba(123,47,190,0.15);padding:48px 24px;text-align:center;">
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
 
 </body>
 </html>

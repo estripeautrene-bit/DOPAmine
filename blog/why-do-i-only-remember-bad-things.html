@@ -43,10 +43,14 @@
     body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; line-height: 1.7; }
     body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(14,11,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(123,47,190,0.15); }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.95rem; font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
-    .nav-logo span { color: var(--glow); }
+    .nav-logo, .logo { font-family: 'Playfair Display', serif; font-size: 1.95rem; font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-logo span, .logo .d { color: var(--white); }
+    .logo .m { color: var(--glow); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
     .nav-back { font-size: 0.82rem; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
     .nav-back:hover { color: var(--white); }
+    .nav-btn { display: inline-block; background: linear-gradient(135deg, #7B2FBE, #B57BF7); color: white; text-decoration: none; padding: 8px 18px; border-radius: 50px; font-weight: 600; font-size: 0.82rem; transition: transform 0.15s; }
+    .nav-btn:hover { transform: translateY(-1px); }
     .hero { position: relative; padding: 140px 24px 80px; max-width: 760px; margin: 0 auto; z-index: 1; }
     .hero::before { content: ''; position: fixed; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(123,47,190,0.25) 0%, transparent 70%); top: -100px; right: -150px; pointer-events: none; z-index: 0; }
     .post-category { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2DD4BF; margin-bottom: 20px; padding: 4px 12px; border: 1px solid rgba(45,212,191,0.3); border-radius: 50px; }
@@ -87,23 +91,24 @@
 @media (max-width: 600px) { .lab-grid { grid-template-columns: 1fr; } }
   .logo .tm { font-size: .36em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
 .footer-logo .tm { font-size: .4em; font-weight: 700; vertical-align: super; color: #B57BF7; margin-left: .04em; }
+.article-category { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #818CF8; margin-bottom: 28px; }
+.article-meta { font-size: 13px; color: var(--muted); }
+.footer-tagline { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+.footer-url { font-size: 13px; color: var(--glow); text-decoration: none; }
 </style>
 </head>
 <body>
   <nav>
-    <a href="https://mydopa.app" class="nav-logo">My<span>Dopa</span></a>
-    <a href="https://mydopa.app/blog" class="nav-back">← All Articles</a>
+    <a href="https://mydopa.app" class="logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+    <div class="nav-right">
+      <a href="https://mydopa.app/blog" class="nav-back">← All articles</a>
+      <a href="https://mydopa.app/?quiz=open" class="nav-btn">Take the quiz →</a>
+    </div>
   </nav>
   <header class="hero">
-    <span class="post-category">Negativity Bias · 5 min read</span>
+    <p class="article-category">Negativity Bias</p>
     <h1 class="post-title">Why Do I Only <em>Remember Bad Things?</em></h1>
-    <div class="post-meta">
-      <span>René — The Brain Lab</span>
-      <div class="post-meta-dot"></div>
-      <span>June 2026</span>
-      <div class="post-meta-dot"></div>
-      <span>5 min read</span>
-    </div>
+    <p class="article-meta">By DOPA &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 5 min read</p>
   </header>
   <article class="article">
     <p>You had a good conversation today. Someone said something kind last week that you barely registered. Three months ago you handled something difficult in a way you would have been proud of — and you have not thought about it since. But the email that landed wrong two years ago? Still there. The comment someone made in passing that stung? Vivid. The failure from last year that you have replayed more times than you can count? Practically a film.</p>
@@ -162,6 +167,12 @@
     </div>
   </div>
 </div>
+
+<footer style="background:rgba(14,11,26,0.9);border-top:1px solid rgba(123,47,190,0.15);padding:48px 24px;text-align:center;">
+  <a href="https://mydopa.app" class="footer-logo"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></a>
+  <p class="footer-tagline">— DOPA</p>
+  <a href="https://mydopa.app" class="footer-url">mydopa.app</a>
+</footer>
 
 </body>
 </html>

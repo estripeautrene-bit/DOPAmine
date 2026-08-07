@@ -638,7 +638,7 @@ footer{
     <span class="hero-eyebrow">Visibility-Powered Motivation</span>
     <h1 class="hero-h">Fall in love with your <span style="color:#FFB020;">own</span> progress.</h1>
     <p class="hero-sub"><span class="logo-text" style="font-size:1em;"><span class="d">My</span><span class="m">Dopa</span><span class="tm">™</span></span> makes it <span style="color:var(--amber);">visible.</span></p>
-    <a href="#" class="quiz-btn" onclick="openQuiz(event)">Take the quiz →</a>
+    <a href="#" class="quiz-btn" onclick="openQuiz(event)">Request Your Invitation →</a>
     <div class="quiz-proof">
       <span><div class="quiz-proof-dot"></div>Built on 40 years of behavioral science</span>
       <span><div class="quiz-proof-dot"></div>2 minutes · 7 questions</span>
@@ -821,7 +821,7 @@ footer{
     <span class="eyebrow">The Quiz</span>
     <h2 class="section-h" style="font-size:clamp(40px,7vw,80px);letter-spacing:-2px;margin-top:20px;">Let's find out <span style="color:var(--amber);">where you are.</span></h2>
     <p style="font-size:19px;color:var(--off);line-height:1.7;margin-top:20px;margin-left:auto;margin-right:auto;max-width:500px;">Two minutes. Seven questions. Find out what your own progress has been trying to tell you.</p>
-    <a href="#" class="quiz-btn" onclick="openQuiz(event)">Take the quiz →</a>
+    <a href="#" class="quiz-btn" onclick="openQuiz(event)">Request Your Invitation →</a>
     <div class="quiz-proof">
       <span><div class="quiz-proof-dot"></div>Built on decades of behavioral science</span>
       <span><div class="quiz-proof-dot"></div>Founding member pricing locked</span>
@@ -855,7 +855,7 @@ footer{
 <!-- ═══ STICKY CTA ═══ -->
 <div class="sticky-cta" id="stickyCta">
   <span class="sticky-cta-text">Find out what your brain is filtering out.</span>
-  <a href="#" class="sticky-cta-btn" onclick="openQuiz(event)">Take the quiz →</a>
+  <a href="#" class="sticky-cta-btn" onclick="openQuiz(event)">Request Your Invitation →</a>
 </div>
 
 <!-- ═══ QUIZ OVERLAY ═══ -->
@@ -874,6 +874,25 @@ footer{
         Back
       </button>
       <span style="font-size:12px;color:var(--muted);width:40px;text-align:right;" id="quizStepLabel">1 of 7</span>
+    </div>
+  </div>
+
+  <!-- Screen Invite: Name, email, consent -->
+  <div class="quiz-screen" id="qs_invite">
+    <div class="quiz-email-screen">
+      <h2>Request your My<span style="color:var(--purple-bright);">Dopa</span> invitation.</h2>
+      <p>Tell us where to send your Progress Profile — then take the quiz to find out what your brain has been filtering out.</p>
+      <input class="quiz-email-input" type="text" placeholder="First name" id="inviteFirstName"/>
+      <input class="quiz-email-input" type="email" placeholder="your@email.com" id="inviteEmail"/>
+      <button class="quiz-email-btn" onclick="submitInvitation()">Request My Invitation →</button>
+      <label class="quiz-consent">
+        <input type="checkbox" id="inviteConsent">
+        <span>Yes, send me my MyDopa Progress Profile and add me to the early MyDopa email list. I understand I can unsubscribe at any time.</span>
+      </label>
+      <p class="quiz-disclosure">By submitting, you agree that MyDopa may process your email address, age group, sex, quiz answers, and Progress Profile result to generate your result and send you the early MyDopa email series. See the <a href="/privacy.html" target="_blank">Privacy Policy</a>.</p>
+      <div class="quiz-founding">
+        Special founding member pricing—revealed soon
+      </div>
     </div>
   </div>
 
@@ -1098,26 +1117,7 @@ footer{
         <span>Prefer not to say</span>
       </button>
     </div>
-    <button class="quiz-continue" id="qc6b" onclick="goNext()">Continue</button>
-  </div>
-
-  <!-- Screen 7: Email gate -->
-  <div class="quiz-screen" id="qs7">
-    <div class="quiz-email-screen">
-      <h2>Your My<span style="color:var(--purple-bright);">Dopa</span> Progress Profile is ready.</h2>
-      <p>We found the pattern behind how your progress becomes invisible. Enter your email and we'll send you your My<span style="color:var(--purple-bright);">Dopa</span> Progress Profile, along with your first My<span style="color:var(--purple-bright);">Dopa</span> exercise.</p>
-      <input class="quiz-email-input" type="text" placeholder="First name" id="quizFirstName" oninput="quizAnswers.first_name=this.value"/>
-      <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail"/>
-      <button class="quiz-email-btn" onclick="submitQuizEmail()">Save my profile →</button>
-      <label class="quiz-consent">
-        <input type="checkbox" id="quizConsent">
-        <span>Yes, send me my MyDopa Progress Profile and add me to the early MyDopa email list. I understand I can unsubscribe at any time.</span>
-      </label>
-      <p class="quiz-disclosure">By submitting, you agree that MyDopa may process your email address, age group, sex, quiz answers, and Progress Profile result to generate your result and send you the early MyDopa email series. See the <a href="/privacy.html" target="_blank">Privacy Policy</a>.</p>
-      <div class="quiz-founding">
-        Special founding member pricing—revealed soon
-      </div>
-    </div>
+    <button class="quiz-continue" id="qc6b" onclick="completeQuiz()">Continue</button>
   </div>
 
   <!-- Screen 8: Confirmation -->
@@ -1198,11 +1198,12 @@ if(localStorage.getItem('cookieChoice')) document.getElementById('cookieBanner')
 // ── QUIZ STATE ──
 var currentScreen=0;
 var totalQuestions=9;
-var screens=['qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs6a','qs6b','qs7','qs8','qs9'];
+var screens=['qs_invite','qs0','qs1','qs2','qs3','qs4','qs5','qs6','qs6a','qs6b','qs8','qs9'];
 var loaderStep=0;
 var loaderDone=false;
 let selectedProfile='';
 var quizAnswers={q1_profile:'',q2_likert:null,q3_evidence:'',q4_good_day:'',q5_tracks_wins:'',q6_people_yes:'',q7_ready:'',age_group:'',sex:'',first_name:''};
+var capturedEmail='';
 
 function openQuiz(e){
   if(e) e.preventDefault();
@@ -1223,7 +1224,7 @@ function showScreen(n){
   document.getElementById(screens[n]).classList.add('active');
   updateProgress(n);
   // Trigger loader when on loader screen
-  if(n===6 && !loaderDone) startLoader();
+  if(screens[n]==='qs6' && !loaderDone) startLoader();
 
 }
 
@@ -1348,6 +1349,30 @@ function loaderChoice(btn,popupNum,value){
 }
 
 // ── EMAIL SUBMIT ──
+function completeQuiz(){
+  submitEmail(capturedEmail,function(){goNext();},'quiz_completed');
+}
+
+function submitInvitation(){
+  var fn=document.getElementById('inviteFirstName').value.trim();
+  if(!fn){
+    document.getElementById('inviteFirstName').focus();
+    return;
+  }
+  if(!document.getElementById('inviteConsent').checked){
+    document.getElementById('inviteConsent').focus();
+    return;
+  }
+  var v=document.getElementById('inviteEmail').value.trim();
+  if(!/\S+@\S+\.\S+/.test(v)){
+    document.getElementById('inviteEmail').focus();
+    return;
+  }
+  capturedEmail=v;
+  quizAnswers.first_name=fn;
+  submitEmail(v,function(){goNext();},'invitation_requested');
+}
+
 function submitQuizEmail(){
   var fn=document.getElementById('quizFirstName').value.trim();
   if(!fn){
@@ -1366,15 +1391,14 @@ function submitQuizEmail(){
   submitEmail(v,function(){goNext();});
 }
 
-function submitEmail(email,cb){
-  // Send via Resend
+function submitEmail(email,cb,stage){
+  stage=stage||'quiz_completed';
   fetch('https://qcfoykmmbjvduspunvsb.supabase.co/functions/v1/waitlist',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:email,answers:quizAnswers})
+    body:JSON.stringify({email:email,answers:quizAnswers,stage:stage})
   }).catch(function(){});
-  // Optimistic
-  showToast();
+  if(stage==='quiz_completed') showToast();
   if(cb) cb();
 }
 

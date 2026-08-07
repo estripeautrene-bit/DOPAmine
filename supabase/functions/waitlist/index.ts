@@ -318,6 +318,7 @@ Deno.serve(async (req) => {
   const q4_good_day      = (answers.q4_good_day       ?? '') as string
   const consent_version  = (answers.consent_version   ?? null) as string | null
   const consent_source   = (answers.consent_source    ?? null) as string | null
+  const stage            = ((body.stage ?? 'quiz_completed') as string).trim()
 
   const visibility_score =
     q2_likert +
@@ -328,6 +329,39 @@ Deno.serve(async (req) => {
     SUPABASE_URL,
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
   )
+
+  // ── invitation_requested: save contact info only, no email send ──
+  if (stage === 'invitation_requested') {
+    const { error } = await supabase
+      .from('waitlist_subscribers')
+      .upsert({
+        email,
+        first_name,
+        consent_status:    'subscribed',
+        consent_timestamp: new Date().toISOString(),
+        consent_version,
+        consent_source,
+      }, { onConflict: 'email' })
+
+    if (error) {
+      console.error('Supabase upsert error:', error)
+      return new Response(JSON.stringify({ error: 'Database error' }), {
+        status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
+      })
+    }
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200, headers: { ...CORS, 'Content-Type': 'application/json' },
+    })
+  }
+
+  // ── quiz_completed: guard against double email send ──
+  const { data: existing } = await supabase
+    .from('waitlist_subscribers')
+    .select('email_1_status')
+    .eq('email', email)
+    .single()
+
+  const alreadySent = existing?.email_1_status === 'sent'
 
   const { error: upsertError } = await supabase
     .from('waitlist_subscribers')
@@ -349,6 +383,12 @@ Deno.serve(async (req) => {
     console.error('Supabase upsert error:', upsertError)
     return new Response(JSON.stringify({ error: 'Database error' }), {
       status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
+    })
+  }
+
+  if (alreadySent) {
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200, headers: { ...CORS, 'Content-Type': 'application/json' },
     })
   }
 
